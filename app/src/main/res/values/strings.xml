@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">GeoFind</string>
+    <string name="title_activity_maps">Mapa</string>
+
+
+    <string name="google_maps_API_key">AIzaSyCNKbWcHYUAYBNj_3etkUn5d_tm7ftYNSY</string>
 </resources>
