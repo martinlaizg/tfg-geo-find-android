@@ -4,4 +4,6 @@
 
 
     <string name="google_maps_API_key">AIzaSyCNKbWcHYUAYBNj_3etkUn5d_tm7ftYNSY</string>
+    <string name="registry">Registry</string>
+    <string name="registered">Registrado cómo: </string>
 </resources>
