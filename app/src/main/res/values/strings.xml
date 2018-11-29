@@ -87,4 +87,6 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="name">Name</string>
+    <string name="solicitar_informacion">Solicitar informacion</string>
+    <string name="thermometer">Termometro</string>
 </resources>
