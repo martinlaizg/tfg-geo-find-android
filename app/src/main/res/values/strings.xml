@@ -93,4 +93,11 @@
     <string name="close">Close</string>
     <string name="title_activity_drawer">DrawerActivity</string>
     <string name="search_title">Busqueda</string>
+    <string name="description_user_image">User profile image</string>
+    <string name="nav_header_username">username</string>
+    <string name="nav_header_name">Nombre completo de usuario</string>
+    <string name="password_input">Password</string>
+    <string name="confirm_password_input">Confirm password</string>
+    <string name="email_input">Email</string>
+    <string name="app_logo_description">App logo</string>
 </resources>

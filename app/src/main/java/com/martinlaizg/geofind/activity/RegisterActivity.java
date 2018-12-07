@@ -10,8 +10,6 @@ import android.widget.Toast;
 
 import com.martinlaizg.geofind.R;
 
-import java.io.StringReader;
-
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText name, email, password, c_password;
@@ -26,10 +24,10 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         loading = findViewById(R.id.loading);
-        name = findViewById(R.id.name);
-        email = findViewById(R.id.email);
-        password = findViewById(R.id.password);
-        c_password = findViewById(R.id.c_password);
+        name = findViewById(R.id.name_input);
+        email = findViewById(R.id.email_input);
+        password = findViewById(R.id.password_input);
+        c_password = findViewById(R.id.c_password_input);
         btn_registr = findViewById(R.id.btn_registry);
 
         btn_registr.setOnClickListener(new View.OnClickListener() {
