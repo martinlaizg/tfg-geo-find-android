@@ -5,12 +5,12 @@
     android:layout_height="96dp"
     android:background="@color/colorAccent"
     android:clickable="true"
+    android:focusable="true"
     android:foreground="?attr/selectableItemBackgroundBorderless"
     android:gravity="bottom"
     android:orientation="horizontal"
     android:padding="16dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark"
-    android:focusable="true">
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
         android:id="@+id/user_image"
@@ -29,9 +29,9 @@
         android:paddingEnd="16dp">
 
         <RelativeLayout
-            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true">
 
             <TextView
                 android:id="@+id/nav_header_name"
@@ -44,8 +44,8 @@
                 android:id="@+id/nav_header_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/nav_header_username"
                 android:layout_below="@+id/nav_header_name"
+                android:text="@string/nav_header_username"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
         </RelativeLayout>
     </RelativeLayout>

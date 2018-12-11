@@ -9,47 +9,49 @@
     android:paddingLeft="30dp"
     android:paddingTop="60dp"
     android:paddingRight="30dp"
-    android:theme="@style/NoActionBar"
+    android:theme="@style/AppTheme.NoActionBar"
     tools:context=".activity.RegisterActivity">
 
     <ImageView
         android:id="@+id/image_register"
         android:layout_width="match_parent"
         android:layout_height="160dp"
-        android:src="@drawable/app_logo_light"
-        android:contentDescription="@string/app_logo_description" />
+        android:contentDescription="@string/app_logo_description"
+        android:src="@drawable/ic_geo_find_logo_light" />
 
     <LinearLayout
-        android:layout_below="@id/image_register"
         android:id="@+id/register_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/image_register"
         android:orientation="vertical">
 
         <!-- Name input -->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <EditText
                 android:id="@+id/name_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/name"
                 android:inputType="textPersonName"
-                android:textColor="@color/colorText"/>
+                android:textColor="@color/colorText" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Email input -->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <EditText
                 android:id="@+id/email_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/email_input"
                 android:inputType="textEmailAddress"
-                android:textColor="@color/colorText"/>
+                android:textColor="@color/colorText" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Password input -->
@@ -57,13 +59,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:passwordToggleEnabled="true">
+
             <EditText
                 android:id="@+id/password_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password_input"
                 android:inputType="textPassword"
-                android:textColor="@color/colorText"/>
+                android:textColor="@color/colorText" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Confirm password input -->
@@ -71,13 +74,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:passwordToggleEnabled="true">
+
             <EditText
                 android:id="@+id/c_password_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/confirm_password_input"
                 android:inputType="textPassword"
-                android:textColor="@color/colorText"/>
+                android:textColor="@color/colorText" />
         </android.support.design.widget.TextInputLayout>
 
         <Button

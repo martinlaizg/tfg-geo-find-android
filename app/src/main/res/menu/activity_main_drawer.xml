@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group>
+        <item
+            android:id="@+id/nav_users"
+            android:title="@string/users" />
+        <!--android:icon="@drawable/ic_menu_camera"-->
+        <item
+            android:id="@+id/nav_maps"
+            android:title="@string/maps" />
+        <item
+            android:id="@+id/nav_locations"
+            android:title="@string/locations" />
+    </group>
+
+    <item android:title="@string/account_settings">
+        <menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:title="@string/settings" />
+            <item
+                android:id="@+id/nav_log_out"
+                android:title="@string/log_out" />
+        </menu>
+    </item>
+
+</menu>
