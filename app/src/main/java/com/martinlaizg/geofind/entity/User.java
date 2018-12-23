@@ -9,19 +9,34 @@ public class User {
     private String id;
     private String email;
     private String username;
+    private String password;
     private Date bdate;
     private UserType user_type;
     private Date created_at;
     private Date updated_at;
+    private String message;
 
-    public User(String id, String email, String username, Date bdate, UserType user_type, Date created_at, Date updated_at) {
+    public User(String id, String email, String username, String password, Date bdate, UserType user_type, Date created_at, Date updated_at, String message) {
         this.id = id;
         this.email = email;
         this.username = username;
+        this.password = password;
         this.bdate = bdate;
         this.user_type = user_type;
         this.created_at = created_at;
         this.updated_at = updated_at;
+        this.message = message;
+    }
+
+    public User(String email, String password) {
+        this.id = "";
+        this.email = email;
+        this.username = "";
+        this.password = password;
+        this.bdate = new Date();
+        this.user_type = UserType.USER;
+        this.created_at = new Date();
+        this.updated_at = new Date();
     }
 
     public String getId() {
@@ -78,5 +93,21 @@ public class User {
 
     public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

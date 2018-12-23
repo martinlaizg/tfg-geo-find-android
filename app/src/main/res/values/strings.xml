@@ -31,7 +31,7 @@
     <string name="locations">Localizaciones</string>
     <string name="maps">Maps</string>
     <string name="users">Usuarios</string>
-    <string name="login">Login</string>
+    <string name="login">Iniciar sesión</string>
     <string name="pref_title_sync_frequency">ccc</string>
     <string name="pref_title_system_sync_settings">ddd</string>
     <string name="pref_title_new_message_notifications">eee</string>
@@ -43,4 +43,6 @@
     <string name="pref_title_display_name">aaaaa</string>
     <string name="pref_title_add_friends_to_messages">aaaa</string>
     <string name="registry">Registrarse</string>
+    <string name="create_account">Crear cuenta</string>
+    <string name="no_has_account_question">Aún no tienes una cuenta?</string>
 </resources>

@@ -69,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_log_out:
                         Toast.makeText(getApplicationContext(), "Log out", Toast.LENGTH_SHORT).show();
                         sp.edit().putBoolean(Preferences.LOGGED, false).apply();
+                        sp.edit().putString(Preferences.USER, "").apply();
+                        finish();
                         break;
                     default:
                         Toast.makeText(getApplicationContext(), "Default item", Toast.LENGTH_SHORT).show();

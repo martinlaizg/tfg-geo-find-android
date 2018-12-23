@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 public class Preferences {
 
     public static final String LOGGED = "logged";
+    public static final String USER = "loggedUser";
 
     private static final String APP_KEY = "MiApp";
     private String key;

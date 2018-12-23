@@ -3,20 +3,33 @@ package com.martinlaizg.geofind.activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.auth.Auth;
+import com.martinlaizg.geofind.client.RestClient;
+import com.martinlaizg.geofind.client.RetrofitInstance;
+import com.martinlaizg.geofind.client.login.LoginRequest;
+import com.martinlaizg.geofind.client.login.LoginResponse;
 import com.martinlaizg.geofind.config.Preferences;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class LoginActivity extends AppCompatActivity {
+
+    // Log tag
+    private static final String LOG_TAG = LoginActivity.class.getSimpleName();
 
     // View elements
     private EditText emailInput, passwordInput;
     private Button loginButton;
+    private Button goRegistryButton;
 
     private SharedPreferences sp;
 
@@ -31,28 +44,54 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initView() {
-
         // Inputs
         emailInput = findViewById(R.id.login_email_input);
         passwordInput = findViewById(R.id.login_password_input);
 
-        // Button
+        // Buttons
         loginButton = findViewById(R.id.login_btn);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean logged = Auth.login(emailInput.getText().toString(), passwordInput.getText().toString());
-                sp.edit().putBoolean(Preferences.LOGGED, logged).apply();
-                if (logged) {
-                    Toast.makeText(getApplicationContext(), "Logeado correctamente", Toast.LENGTH_SHORT).show();
-                    finish();
-                    return;
-                }
-                // TODO: mostrar mensaje de error de login
-                Toast.makeText(getApplicationContext(), "Error al logear", Toast.LENGTH_LONG).show();
+                login(emailInput.getText().toString(), passwordInput.getText().toString());
             }
         });
 
+        goRegistryButton = findViewById(R.id.login_register_btn);
+        goRegistryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+    }
+
+    private void login(final String email, String password) {
+        RestClient client = RetrofitInstance.getRestClient();
+        LoginRequest lreq = new LoginRequest(email, password);
+        client.login(lreq).enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                switch (response.code()) {
+                    case 200:
+                        Toast.makeText(LoginActivity.this, "Login correcto", Toast.LENGTH_SHORT).show();
+                        sp.edit().putBoolean(Preferences.LOGGED, true).apply();
+                        String stringUser = new Gson().toJson(response.body().getUser());
+                        finish();
+                        break;
+                    default:
+                        Toast.makeText(LoginActivity.this, "Respuesta desconocida", Toast.LENGTH_SHORT).show();
+                        Log.d(LOG_TAG, response.body().getUser().getMessage());
+                        sp.edit().putBoolean(Preferences.LOGGED, false).apply();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "Algo ha ido mal con la conexión", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void checkLogin() {
