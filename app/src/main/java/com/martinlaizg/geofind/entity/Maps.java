@@ -2,7 +2,9 @@ package com.martinlaizg.geofind.entity;
 
 import com.martinlaizg.geofind.entity.enums.PlayLevel;
 
-public class Map {
+import java.util.Date;
+
+public class Maps {
 
     private String id;
     private String name;
@@ -10,10 +12,12 @@ public class Map {
     private String state;
     private String city;
     private PlayLevel min_level;
-    private String created_at;
-    private String updated_at;
+    private Date created_at;
+    private Date updated_at;
+    private Integer creator_id;
+    private User creator;
 
-    public Map(String id, String name, String country, String state, String city, PlayLevel min_level, String created_at, String updated_at) {
+    public Maps(String id, String name, String country, String state, String city, PlayLevel min_level, Date created_at, Date updated_at, Integer creator_id, User creator) {
         this.id = id;
         this.name = name;
         this.country = country;
@@ -22,6 +26,8 @@ public class Map {
         this.min_level = min_level;
         this.created_at = created_at;
         this.updated_at = updated_at;
+        this.creator_id = creator_id;
+        this.creator = creator;
     }
 
     public String getId() {
@@ -72,19 +78,35 @@ public class Map {
         this.min_level = min_level;
     }
 
-    public String getCreated_at() {
+    public Date getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(String created_at) {
+    public void setCreated_at(Date created_at) {
         this.created_at = created_at;
     }
 
-    public String getUpdated_at() {
+    public Date getUpdated_at() {
         return updated_at;
     }
 
-    public void setUpdated_at(String updated_at) {
+    public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public Integer getCreator_id() {
+        return creator_id;
+    }
+
+    public void setCreator_id(Integer creator_id) {
+        this.creator_id = creator_id;
+    }
+
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
     }
 }

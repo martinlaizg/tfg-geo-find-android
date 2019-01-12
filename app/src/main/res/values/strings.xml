@@ -45,4 +45,9 @@
     <string name="registry">Registrarse</string>
     <string name="create_account">Crear cuenta</string>
     <string name="no_has_account_question">Aún no tienes una cuenta?</string>
+    <string name="connection_failure">Error de conexión</string>
+    <string name="map_image_description">Map image</string>
+    <string name="map_name">Map name</string>
+    <string name="map_creator">Map creator</string>
+    <string name="default_progress">8/24</string>
 </resources>

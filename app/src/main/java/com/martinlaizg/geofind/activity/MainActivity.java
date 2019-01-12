@@ -10,11 +10,17 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.adapter.UserAdapter;
 import com.martinlaizg.geofind.config.Preferences;
+import com.martinlaizg.geofind.entity.User;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     // SharedPreferences
     private SharedPreferences sp;
-    private UserAdapter adapter;
+    private TextView navName;
+    private TextView navUsername;
 
 
     @Override
@@ -34,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sp = Preferences.getInstance(getApplicationContext());
-        initView();
         checkLogin();
+        initView();
     }
 
     private void initView() {
@@ -59,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_maps:
                         Toast.makeText(getApplicationContext(), "List maps", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), MapsListActivity.class);
+                        startActivity(intent);
+                        finish();
                         break;
                     case R.id.nav_locations:
                         Toast.makeText(getApplicationContext(), "List locations", Toast.LENGTH_SHORT).show();
@@ -70,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Log out", Toast.LENGTH_SHORT).show();
                         sp.edit().putBoolean(Preferences.LOGGED, false).apply();
                         sp.edit().putString(Preferences.USER, "").apply();
+                        intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
                         finish();
                         break;
                     default:
@@ -81,13 +93,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        View headerView = navigationView.getHeaderView(0);
+        navName = headerView.findViewById(R.id.nav_header_name);
+        navUsername = headerView.findViewById(R.id.nav_header_username);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        String stringUser = sp.getString(Preferences.USER, "");
+        if (!Objects.equals(stringUser, "")) {
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+            User user = gson.fromJson(stringUser, User.class);
+
+            navName.setText(user.getEmail());
+            navUsername.setText(user.getUsername());
+
+        }
     }
 
     private void checkLogin() {
         if (!sp.getBoolean(Preferences.LOGGED, false)) {
             Log.i(LOG_TAG, "User not logged");
-            Intent intent = new Intent(this, LoginActivity.class);
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
         }
     }

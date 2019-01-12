@@ -13,8 +13,10 @@ import com.google.gson.Gson;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.client.RestClient;
 import com.martinlaizg.geofind.client.RetrofitInstance;
+import com.martinlaizg.geofind.client.error.APIError;
+import com.martinlaizg.geofind.client.error.ErrorUtils;
 import com.martinlaizg.geofind.client.login.LoginRequest;
-import com.martinlaizg.geofind.client.login.LoginResponse;
+import com.martinlaizg.geofind.client.user.UserResponse;
 import com.martinlaizg.geofind.config.Preferences;
 
 import retrofit2.Call;
@@ -24,7 +26,7 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
 
     // Log tag
-    private static final String LOG_TAG = LoginActivity.class.getSimpleName();
+    private static final String TAG = LoginActivity.class.getSimpleName();
 
     // View elements
     private EditText emailInput, passwordInput;
@@ -70,26 +72,30 @@ public class LoginActivity extends AppCompatActivity {
     private void login(final String email, String password) {
         RestClient client = RetrofitInstance.getRestClient();
         LoginRequest lreq = new LoginRequest(email, password);
-        client.login(lreq).enqueue(new Callback<LoginResponse>() {
+        client.login(lreq).enqueue(new Callback<UserResponse>() {
             @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                switch (response.code()) {
-                    case 200:
-                        Toast.makeText(LoginActivity.this, "Login correcto", Toast.LENGTH_SHORT).show();
-                        sp.edit().putBoolean(Preferences.LOGGED, true).apply();
-                        String stringUser = new Gson().toJson(response.body().getUser());
-                        finish();
-                        break;
-                    default:
-                        Toast.makeText(LoginActivity.this, "Respuesta desconocida", Toast.LENGTH_SHORT).show();
-                        Log.d(LOG_TAG, response.body().getUser().getMessage());
-                        sp.edit().putBoolean(Preferences.LOGGED, false).apply();
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                if (response.isSuccessful()) { // Response code 200->300
+                    // Parse response to JSON
+                    String stringUser = new Gson().toJson(response.body());
+                    Toast.makeText(LoginActivity.this, "Login correcto", Toast.LENGTH_SHORT).show();
+                    // Save status to preferences
+                    sp.edit().putBoolean(Preferences.LOGGED, true).apply();
+                    sp.edit().putString(Preferences.USER, stringUser).apply();
+                    finish();
+                } else {
+                    APIError error = ErrorUtils.parseError(response);
+                    String errorMessage = error.getMessage();
+                    Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, errorMessage);
+                    sp.edit().putBoolean(Preferences.LOGGED, false).apply();
+                    sp.edit().putString(Preferences.USER, "").apply();
                 }
             }
 
             @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, "Algo ha ido mal con la conexión", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), getString(R.string.connection_failure), Toast.LENGTH_SHORT).show();
             }
         });
     }

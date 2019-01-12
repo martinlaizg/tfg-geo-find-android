@@ -1,27 +1,20 @@
-package com.martinlaizg.geofind.entity;
+package com.martinlaizg.geofind.client.user;
 
-import com.martinlaizg.geofind.entity.enums.UserType;
-
-import java.util.Date;
-
-public class User {
-
+public class UserResponse {
     private String id;
     private String email;
     private String username;
     private String name;
-    private String password;
-    private Date bdate;
-    private UserType user_type;
-    private Date created_at;
-    private Date updated_at;
+    private String bdate;
+    private String user_type;
+    private String created_at;
+    private String updated_at;
 
-    public User(String id, String email, String username, String name, String password, Date bdate, UserType user_type, Date created_at, Date updated_at) {
+    public UserResponse(String id, String email, String username, String name, String bdate, String user_type, String created_at, String updated_at) {
         this.id = id;
         this.email = email;
         this.username = username;
         this.name = name;
-        this.password = password;
         this.bdate = bdate;
         this.user_type = user_type;
         this.created_at = created_at;
@@ -60,43 +53,35 @@ public class User {
         this.name = name;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Date getBdate() {
+    public String getBdate() {
         return bdate;
     }
 
-    public void setBdate(Date bdate) {
+    public void setBdate(String bdate) {
         this.bdate = bdate;
     }
 
-    public UserType getUser_type() {
+    public String getUser_type() {
         return user_type;
     }
 
-    public void setUser_type(UserType user_type) {
+    public void setUser_type(String user_type) {
         this.user_type = user_type;
     }
 
-    public Date getCreated_at() {
+    public String getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(Date created_at) {
+    public void setCreated_at(String created_at) {
         this.created_at = created_at;
     }
 
-    public Date getUpdated_at() {
+    public String getUpdated_at() {
         return updated_at;
     }
 
-    public void setUpdated_at(Date updated_at) {
+    public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
     }
 }

@@ -1,20 +1,28 @@
 package com.martinlaizg.geofind.client.login;
 
-import com.martinlaizg.geofind.Validator;
-import com.martinlaizg.geofind.entity.User;
-
 public class LoginRequest {
 
-    private User user;
+    private String email;
+    private String password;
 
     public LoginRequest(String email, String password) {
-        user = new User(email, password);
+        this.email = email;
+        this.password = password;
     }
 
+    public String getEmail() {
+        return email;
+    }
 
-    public boolean validate() {
-        String email = user.getEmail();
-        String password = user.getPassword();
-        return Validator.isEmail(email) && !email.isEmpty() && !password.isEmpty();
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
