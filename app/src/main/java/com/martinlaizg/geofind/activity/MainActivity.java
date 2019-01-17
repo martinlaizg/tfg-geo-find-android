@@ -4,36 +4,40 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.entity.User;
+import com.martinlaizg.geofind.fragment.MainFragment;
+import com.martinlaizg.geofind.fragment.MapsListFragment;
 
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentTransaction;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     // Other
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     // Drawer
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
+    private Toolbar toolbar;
     private NavigationView navigationView;
     // SharedPreferences
     private SharedPreferences sp;
-    private TextView navName;
-    private TextView navUsername;
 
 
     @Override
@@ -46,69 +50,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        drawer = findViewById(R.id.drawer_layout);
+        // Initial fragment
+        MainFragment mainFragment = new MainFragment();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, mainFragment);
+        fragmentTransaction.commit();
 
-        // Activar la apertura y cierre del panel lateral
-        toggle = new ActionBarDrawerToggle(this, drawer, R.string.open, R.string.close);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Drawer
+        drawer = findViewById(R.id.drawer);
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
-        navigationView = findViewById(R.id.left_drawer);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.nav_users:
-                        Toast.makeText(getApplicationContext(), "List users", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.nav_maps:
-                        Toast.makeText(getApplicationContext(), "List maps", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(), MapsListActivity.class);
-                        startActivity(intent);
-                        finish();
-                        break;
-                    case R.id.nav_locations:
-                        Toast.makeText(getApplicationContext(), "List locations", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.nav_settings:
-                        Toast.makeText(getApplicationContext(), "Go settings", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.nav_log_out:
-                        Toast.makeText(getApplicationContext(), "Log out", Toast.LENGTH_SHORT).show();
-                        sp.edit().putBoolean(Preferences.LOGGED, false).apply();
-                        sp.edit().putString(Preferences.USER, "").apply();
-                        intent = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(intent);
-                        finish();
-                        break;
-                    default:
-                        Toast.makeText(getApplicationContext(), "Default item", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-                return true;
-
-            }
-        });
-
-        View headerView = navigationView.getHeaderView(0);
-        navName = headerView.findViewById(R.id.nav_header_name);
-        navUsername = headerView.findViewById(R.id.nav_header_username);
+        // Navigation View
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         String stringUser = sp.getString(Preferences.USER, "");
         if (!Objects.equals(stringUser, "")) {
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
             User user = gson.fromJson(stringUser, User.class);
-
-            navName.setText(user.getEmail());
-            navUsername.setText(user.getUsername());
 
         }
     }
@@ -121,6 +89,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -141,4 +117,43 @@ public class MainActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         toggle.onConfigurationChanged(newConfig);
     }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.nav_users:
+                Toast.makeText(getApplicationContext(), "List users", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_maps:
+                Toast.makeText(getApplicationContext(), "List maps", Toast.LENGTH_SHORT).show();
+                MapsListFragment fragment = new MapsListFragment();
+                FragmentTransaction fragmentTransaction =
+                        getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, fragment);
+                fragmentTransaction.commit();
+                break;
+            case R.id.nav_locations:
+                Toast.makeText(getApplicationContext(), "List locations", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_settings:
+                Toast.makeText(getApplicationContext(), "Go settings", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_log_out:
+                Toast.makeText(getApplicationContext(), "Log out", Toast.LENGTH_SHORT).show();
+                sp.edit().putBoolean(Preferences.LOGGED, false).apply();
+                sp.edit().putString(Preferences.USER, "").apply();
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+            default:
+                Toast.makeText(getApplicationContext(), "Default item", Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+
 }

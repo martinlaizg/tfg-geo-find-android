@@ -6,10 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="30dp"
-    android:paddingTop="40dp"
-    android:paddingRight="30dp"
-    android:theme="@style/AppTheme.NoActionBar"
+    android:padding="@dimen/big_margin"
     tools:context=".activity.LoginActivity">
 
     <ImageView
@@ -24,11 +21,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/image_register"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
 
         <!-- Email input -->
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -38,11 +36,11 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/email_input"
                 android:inputType="textEmailAddress"
-                android:text="martinlaizg@gmail.com" />
-        </android.support.design.widget.TextInputLayout>
+                android:text="@string/default_email" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Password input -->
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:passwordToggleEnabled="true">
@@ -53,28 +51,30 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/password_input"
                 android:inputType="textPassword"
-                android:text="martinlaizg" />
-        </android.support.design.widget.TextInputLayout>
+                android:text="@string/default_password" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/login_btn"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="@dimen/normal_button"
+            android:layout_marginTop="@dimen/normal_margin"
             android:text="@string/login" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/normal_margin"
             android:text="@string/no_has_account_question"
             android:textAlignment="center"
-            android:textSize="14dp" />
+            android:textColor="#757575"
+            android:textSize="@dimen/small_text" />
 
         <Button
             android:id="@+id/login_register_btn"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="@dimen/normal_button"
+            android:layout_marginTop="@dimen/micro_margin"
             android:text="@string/create_account" />
 
     </LinearLayout>

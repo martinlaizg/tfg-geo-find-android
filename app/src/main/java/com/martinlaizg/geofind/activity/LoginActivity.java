@@ -2,7 +2,6 @@ package com.martinlaizg.geofind.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +18,7 @@ import com.martinlaizg.geofind.client.login.LoginRequest;
 import com.martinlaizg.geofind.client.user.UserResponse;
 import com.martinlaizg.geofind.config.Preferences;
 
+import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

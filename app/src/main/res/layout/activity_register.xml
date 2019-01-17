@@ -9,7 +9,6 @@
     android:paddingLeft="30dp"
     android:paddingTop="60dp"
     android:paddingRight="30dp"
-    android:theme="@style/AppTheme.NoActionBar"
     tools:context=".activity.RegisterActivity">
 
     <ImageView
@@ -17,7 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:contentDescription="@string/app_logo_description"
-        android:src="@drawable/ic_geo_find_logo_light" />
+        android:src="@drawable/ic_geo_find_logo_light"
+        android:tint="@color/primary_text" />
 
     <LinearLayout
         android:id="@+id/register_form"
@@ -27,7 +27,7 @@
         android:orientation="vertical">
 
         <!-- Name input -->
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -37,11 +37,11 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/name"
                 android:inputType="textPersonName"
-                android:textColor="@color/colorText" />
-        </android.support.design.widget.TextInputLayout>
+                android:textColor="@color/primary_text" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Email input -->
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -51,11 +51,11 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/email_input"
                 android:inputType="textEmailAddress"
-                android:textColor="@color/colorText" />
-        </android.support.design.widget.TextInputLayout>
+                android:textColor="@color/primary_text" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Password input -->
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:passwordToggleEnabled="true">
@@ -66,11 +66,11 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/password_input"
                 android:inputType="textPassword"
-                android:textColor="@color/colorText" />
-        </android.support.design.widget.TextInputLayout>
+                android:textColor="@color/primary_text" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Confirm password input -->
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:passwordToggleEnabled="true">
@@ -81,15 +81,15 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/confirm_password_input"
                 android:inputType="textPassword"
-                android:textColor="@color/colorText" />
-        </android.support.design.widget.TextInputLayout>
+                android:textColor="@color/primary_text" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btn_registry"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_marginTop="20dp"
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="@color/primary"
             android:text="@string/registry"
             android:textColor="@android:color/white" />
 

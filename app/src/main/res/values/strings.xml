@@ -50,4 +50,9 @@
     <string name="map_name">Map name</string>
     <string name="map_creator">Map creator</string>
     <string name="default_progress">8/24</string>
+    <string name="default_email">martinlaizg@gmail.com</string>
+    <string name="default_password">martinlaizg</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
