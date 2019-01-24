@@ -7,20 +7,20 @@ import android.widget.TextView;
 
 import com.martinlaizg.geofind.ItemClickListener;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.entity.Maps;
+import com.martinlaizg.geofind.entity.Location;
 
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MapsAdapter extends RecyclerView.Adapter<MapsAdapter.MapsViewHolder> {
+public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.LocationViewHolder> {
 
-    private ArrayList<Maps> maps;
+    private ArrayList<Location> locations;
     private ItemClickListener itemClickListener;
 
-    public MapsAdapter(ArrayList<Maps> maps) {
-        this.maps = maps;
+    public LocationAdapter(ArrayList<Location> locations) {
+        this.locations = locations;
     }
 
     public void setItemClickListener(ItemClickListener itemClickListener) {
@@ -29,37 +29,36 @@ public class MapsAdapter extends RecyclerView.Adapter<MapsAdapter.MapsViewHolder
 
     @NonNull
     @Override
-    public MapsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public LocationViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.fragment_maps, viewGroup, false);
-        return new MapsViewHolder(view);
+                .inflate(R.layout.fragment_location, viewGroup, false);
+        return new LocationViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MapsViewHolder holder, int i) {
-        TextView mapName = holder.mapName;
-        TextView mapCreator = holder.mapCreator;
+    public void onBindViewHolder(@NonNull LocationViewHolder holder, int i) {
         holder.setItemClickListener(itemClickListener);
-        mapName.setText(maps.get(i).getName());
-        mapCreator.setText(maps.get(i).getCreator().getUsername());
+        holder.locationName.setText(locations.get(i).getName());
+        // TODO: cambiar "300m" por la distancia real
+        holder.locationDistance.setText("300m");
 
     }
 
     @Override
     public int getItemCount() {
-        return maps.size();
+        return locations.size();
     }
 
-    class MapsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class LocationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView mapName;
-        TextView mapCreator;
+        TextView locationName;
+        TextView locationDistance;
         ItemClickListener itemClickListener;
 
-        MapsViewHolder(@NonNull View itemView) {
+        LocationViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.mapName = itemView.findViewById(R.id.map_name);
-            this.mapCreator = itemView.findViewById(R.id.map_creator);
+            this.locationName = itemView.findViewById(R.id.location_name);
+            this.locationDistance = itemView.findViewById(R.id.location_distance);
         }
 
         public void setItemClickListener(ItemClickListener itemClickListener) {

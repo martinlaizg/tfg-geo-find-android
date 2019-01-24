@@ -11,4 +11,7 @@
     <dimen name="normal_button">48dp</dimen>
     <dimen name="app_bar_layout_height">56dp</dimen>
     <dimen name="small_elevation">5dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="card_spacing">4dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

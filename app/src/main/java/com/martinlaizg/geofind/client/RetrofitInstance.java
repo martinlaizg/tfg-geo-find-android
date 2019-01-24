@@ -24,6 +24,7 @@ public class RetrofitInstance {
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
         }
+
         return retrofit;
     }
 

@@ -23,10 +23,12 @@ public interface RestClient {
     // Get maps with optional filter
     @GET("maps")
     Call<List<Maps>> getMap(
-            @QueryMap Map<String, String> options);
+            @QueryMap Map<String, String> params);
 
+    // Get locations TODO: replace with the correct params or body
     @GET("locations")
-    Call<List<Location>> getLocations();
+    Call<List<Location>> getLocations(
+            @QueryMap Map<String, String> params);
 
     // Login user
     @POST("login")

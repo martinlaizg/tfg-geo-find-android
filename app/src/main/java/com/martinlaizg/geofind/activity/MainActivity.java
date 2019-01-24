@@ -2,7 +2,6 @@ package com.martinlaizg.geofind.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -14,8 +13,9 @@ import com.google.gson.GsonBuilder;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.entity.User;
+import com.martinlaizg.geofind.fragment.LocationFragment;
 import com.martinlaizg.geofind.fragment.MainFragment;
-import com.martinlaizg.geofind.fragment.MapsListFragment;
+import com.martinlaizg.geofind.fragment.MapsFragment;
 
 import java.util.Objects;
 
@@ -25,12 +25,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     // Other
-    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = MainActivity.class.getSimpleName();
     // Drawer
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Drawer
         drawer = findViewById(R.id.drawer);
@@ -83,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void checkLogin() {
         if (!sp.getBoolean(Preferences.LOGGED, false)) {
-            Log.i(LOG_TAG, "User not logged");
+            Log.i(TAG, "User not logged");
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
         }
@@ -98,62 +100,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (toggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        toggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        toggle.onConfigurationChanged(newConfig);
-    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        boolean fragmentTransaction = false;
+        Fragment fragment = null;
+        menuItem.setChecked(true);
+
         switch (menuItem.getItemId()) {
-            case R.id.nav_users:
-                Toast.makeText(getApplicationContext(), "List users", Toast.LENGTH_SHORT).show();
+            case R.id.menu_users:
+                Toast.makeText(this, "Cargar usuarios", Toast.LENGTH_SHORT).show();
+                fragment = new MapsFragment();
+                fragmentTransaction = true;
                 break;
-            case R.id.nav_maps:
-                Toast.makeText(getApplicationContext(), "List maps", Toast.LENGTH_SHORT).show();
-                MapsListFragment fragment = new MapsListFragment();
-                FragmentTransaction fragmentTransaction =
-                        getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, fragment);
-                fragmentTransaction.commit();
+            case R.id.menu_maps:
+                Toast.makeText(this, "Cargar mapas", Toast.LENGTH_SHORT).show();
+                fragment = new MapsFragment();
+                fragmentTransaction = true;
                 break;
-            case R.id.nav_locations:
-                Toast.makeText(getApplicationContext(), "List locations", Toast.LENGTH_SHORT).show();
+            case R.id.menu_locations:
+                Toast.makeText(this, "Cargar localizaciones", Toast.LENGTH_SHORT).show();
+                fragment = new LocationFragment();
+                fragmentTransaction = true;
                 break;
-            case R.id.nav_settings:
-                Toast.makeText(getApplicationContext(), "Go settings", Toast.LENGTH_SHORT).show();
+            case R.id.menu_settings:
+                Toast.makeText(this, "Ir a ajustes", Toast.LENGTH_SHORT).show();
+                menuItem.setChecked(false);
                 break;
-            case R.id.nav_log_out:
-                Toast.makeText(getApplicationContext(), "Log out", Toast.LENGTH_SHORT).show();
-                sp.edit().putBoolean(Preferences.LOGGED, false).apply();
-                sp.edit().putString(Preferences.USER, "").apply();
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-                finish();
-                break;
-            default:
-                Toast.makeText(getApplicationContext(), "Default item", Toast.LENGTH_SHORT).show();
+            case R.id.menu_log_out:
+                Toast.makeText(this, "Cerrar sesión", Toast.LENGTH_SHORT).show();
+                menuItem.setChecked(false);
                 break;
         }
-
-        drawer.closeDrawer(GravityCompat.START);
+        if (fragmentTransaction) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .commit();
+        }
+        drawer.closeDrawers();
         return true;
     }
-
-
 }

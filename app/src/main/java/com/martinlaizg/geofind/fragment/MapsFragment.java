@@ -31,9 +31,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MapsListFragment extends Fragment {
+public class MapsFragment extends Fragment {
 
-    private static final String TAG = MapsListFragment.class.getSimpleName();
+    private static final String TAG = MapsFragment.class.getSimpleName();
     SharedPreferences sp;
 
     private MapsAdapter adapter;
