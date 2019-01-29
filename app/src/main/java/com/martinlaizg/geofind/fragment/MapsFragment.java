@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.martinlaizg.geofind.ItemClickListener;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.adapter.MapsAdapter;
 import com.martinlaizg.geofind.client.RestClient;
@@ -50,13 +49,7 @@ public class MapsFragment extends Fragment {
         recyclerView = view.findViewById(R.id.map_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         maps = new ArrayList<>();
-        adapter = new MapsAdapter(maps);
-        adapter.setItemClickListener(new ItemClickListener() {
-            @Override
-            public void onClick(View view, int position, boolean isLongClick) {
-                Toast.makeText(getActivity(), "Has pulsado " + position, Toast.LENGTH_SHORT).show();
-            }
-        });
+        adapter = new MapsAdapter(getActivity(), maps);
         recyclerView.setAdapter(adapter);
 
         return view;

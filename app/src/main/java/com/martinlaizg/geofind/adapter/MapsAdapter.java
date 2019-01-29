@@ -1,12 +1,15 @@
 package com.martinlaizg.geofind.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.martinlaizg.geofind.ItemClickListener;
+import com.google.android.material.card.MaterialCardView;
 import com.martinlaizg.geofind.R;
+import com.martinlaizg.geofind.activity.GoogleMapsActivity;
 import com.martinlaizg.geofind.entity.Maps;
 
 import java.util.ArrayList;
@@ -17,14 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MapsAdapter extends RecyclerView.Adapter<MapsAdapter.MapsViewHolder> {
 
     private ArrayList<Maps> maps;
-    private ItemClickListener itemClickListener;
+    private Context context;
 
-    public MapsAdapter(ArrayList<Maps> maps) {
+    public MapsAdapter(Context context, ArrayList<Maps> maps) {
         this.maps = maps;
-    }
-
-    public void setItemClickListener(ItemClickListener itemClickListener) {
-        this.itemClickListener = itemClickListener;
+        this.context = context;
     }
 
     @NonNull
@@ -36,13 +36,19 @@ public class MapsAdapter extends RecyclerView.Adapter<MapsAdapter.MapsViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MapsViewHolder holder, int i) {
-        TextView mapName = holder.mapName;
-        TextView mapCreator = holder.mapCreator;
-        holder.setItemClickListener(itemClickListener);
-        mapName.setText(maps.get(i).getName());
-        mapCreator.setText(maps.get(i).getCreator().getUsername());
+    public void onBindViewHolder(@NonNull MapsViewHolder holder, final int i) {
+        final Maps map = maps.get(i);
+        holder.mapName.setText(map.getName());
+        holder.mapCreator.setText(map.getCreator().getUsername());
+        holder.materialCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, GoogleMapsActivity.class);
+                intent.putExtra(GoogleMapsActivity.MAP_ID_KEY, map.getId());
 
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -50,25 +56,17 @@ public class MapsAdapter extends RecyclerView.Adapter<MapsAdapter.MapsViewHolder
         return maps.size();
     }
 
-    class MapsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class MapsViewHolder extends RecyclerView.ViewHolder {
 
         TextView mapName;
         TextView mapCreator;
-        ItemClickListener itemClickListener;
+        MaterialCardView materialCardView;
 
         MapsViewHolder(@NonNull View itemView) {
             super(itemView);
             this.mapName = itemView.findViewById(R.id.map_name);
             this.mapCreator = itemView.findViewById(R.id.map_creator);
-        }
-
-        public void setItemClickListener(ItemClickListener itemClickListener) {
-            this.itemClickListener = itemClickListener;
-        }
-
-        @Override
-        public void onClick(View v) {
-            itemClickListener.onClick(v, getAdapterPosition(), false);
+            this.materialCardView = itemView.findViewById(R.id.map_list_item);
         }
     }
 

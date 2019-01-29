@@ -4,8 +4,8 @@
     android:id="@+id/map_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="@dimen/normal_margin"
-    android:layout_marginRight="@dimen/normal_margin"
+    android:layout_marginStart="@dimen/small_margin"
+    android:layout_marginEnd="@dimen/small_margin"
     android:background="@android:color/transparent"
     tools:context=".fragment.MapsFragment"
     tools:listitem="@layout/fragment_maps" />

@@ -65,4 +65,5 @@
     <string name="play_map">Map</string>
     <string name="play_compass">compass</string>
     <string name="play_therm">therm</string>
+    <string name="title_activity_google_maps">Google Maps</string>
 </resources>

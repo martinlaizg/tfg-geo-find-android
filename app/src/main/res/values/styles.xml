@@ -6,16 +6,13 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowBackground">@color/background</item>
     </style>
 
     <style name="AppTheme.AppBar" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">?attr/colorAccent</item>
         <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-    </style>
-
-    <style name="AppTheme.CardView">
-        <item name="android:background">#ffffff</item>
     </style>
 
     <style name="AppTheme.ProgressBar" parent="Widget.AppCompat.ProgressBar.Horizontal">

@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.martinlaizg.geofind.ItemClickListener;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.adapter.LocationAdapter;
 import com.martinlaizg.geofind.client.RestClient;
@@ -53,12 +52,6 @@ public class LocationFragment extends Fragment {
         recyclerView = view.findViewById(R.id.location_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new LocationAdapter(locations);
-        adapter.setItemClickListener(new ItemClickListener() {
-            @Override
-            public void onClick(View view, int position, boolean isLongClick) {
-                Toast.makeText(getActivity(), "Has pulsado " + position, Toast.LENGTH_SHORT).show();
-            }
-        });
         recyclerView.setAdapter(adapter);
 
         return view;

@@ -23,9 +23,6 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         this.locations = locations;
     }
 
-    public void setItemClickListener(ItemClickListener itemClickListener) {
-        this.itemClickListener = itemClickListener;
-    }
 
     @NonNull
     @Override
