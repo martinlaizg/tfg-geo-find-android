@@ -14,4 +14,6 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="card_spacing">4dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="max_play_button">128dp</dimen>
+    <dimen name="min_play_button">64dp</dimen>
 </resources>

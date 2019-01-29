@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#1976d2</color>
-    <color name="primary_light">#63a4ff</color>
-    <color name="primary_dark">#004ba0</color>
-    <color name="primary_text">#222222</color>
-    <color name="secondary">#efebe9</color>
-    <color name="secondary_light">#ffffff</color>
-    <color name="secondary_dark">#bdb9b7</color>
-    <color name="secondary_text">#000000</color>
-    <color name="windowBackground">#E9E9E9</color>
-    <color name="toolBarText">#fafafa</color>
-    <color name="card_title">#DE000000</color>
-    <color name="card_subtitle">#99000000</color>
+    <color name="colorPrimary">#64b5f6</color>
+    <color name="colorPrimaryDark">#2286c3</color>
+    <color name="primaryLightColor">#9be7ff</color>
+    <color name="textColorPrimary">#000000</color>
+    <color name="secondaryColor">#ec407a</color>
+    <color name="secondaryLightColor">#ff77a9</color>
+    <color name="secondaryDarkColor">#b4004e</color>
+    <color name="secondaryTextColor">#000000</color>
+    <color name="colorAccent">#ff0000</color>
 </resources>

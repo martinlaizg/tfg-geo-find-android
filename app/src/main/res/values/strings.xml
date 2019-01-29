@@ -62,4 +62,7 @@
     <string name="default_map_description">Descripción de ejemplo para el mapa. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam venenatis sagittis nunc nec congue. Suspendisse nec porttitor nunc, id vehicula sem. Cras ornare, nisl vitae interdum dignissim, neque felis ullamcorper ipsum, et venenatis tellus massa nec enim. Praesent a erat augue. Cras semper velit in erat rutrum, vitae facilisis dolor.</string>
     <string name="title_activity_basic">BasicActivity</string>
     <string name="expandable_icon_description">Expandir/Contraer opciones mapa</string>
+    <string name="play_map">Map</string>
+    <string name="play_compass">compass</string>
+    <string name="play_therm">therm</string>
 </resources>

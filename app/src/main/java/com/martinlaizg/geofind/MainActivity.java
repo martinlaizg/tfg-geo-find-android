@@ -1,4 +1,4 @@
-package com.martinlaizg.geofind.activity;
+package com.martinlaizg.geofind;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.martinlaizg.geofind.R;
+import com.martinlaizg.geofind.activity.LoginActivity;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.entity.User;
 import com.martinlaizg.geofind.fragment.LocationFragment;

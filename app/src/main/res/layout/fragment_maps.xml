@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/map_list_item"
-    style="@style/MaterialCardView"
+    style="@style/AppTheme.CardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/card_spacing"
@@ -11,7 +12,7 @@
     android:clickable="true"
     android:focusable="true"
     android:minHeight="200dp"
-    app:cardBackgroundColor="@color/secondary">
+    tools:context=".MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,9 +43,8 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@string/map_name"
-                android:textColor="@color/card_title"
                 android:textSize="20sp" />
-
+            <!-- TODO: revisar esta seccion -->
             <TextView
                 android:id="@+id/map_creator"
                 android:layout_width="wrap_content"
@@ -56,7 +56,6 @@
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="-5dp"
                 android:text="@string/map_creator"
-                android:textColor="@color/card_subtitle"
                 android:textSize="14sp" />
 
         </RelativeLayout>
@@ -65,7 +64,6 @@
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="194dp"
-            android:clickable="true"
             android:contentDescription="@string/map_main_image"
             android:focusable="true"
             android:scaleType="centerCrop"
@@ -81,24 +79,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-
                 android:ellipsize="end"
                 android:maxLines="4"
                 android:text="@string/default_map_description"
-                android:textColor="@color/card_subtitle"
                 android:textSize="14sp" />
 
 
             <ProgressBar
                 android:id="@+id/map_progress_bar"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                style="@style/AppTheme.ProgressBar"
                 android:layout_width="280dp"
                 android:layout_height="@dimen/progress_bar"
                 android:layout_alignBottom="@+id/progress_value"
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="8dp"
-                android:progress="33"
-                android:progressTint="@color/primary_light" />
+                android:progress="33" />
 
             <TextView
                 android:id="@+id/progress_value"
@@ -106,7 +101,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/expandable_icon"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
                 android:layout_toStartOf="@+id/expandable_icon"
                 android:text="@string/default_progress"
                 android:textColor="#88000000"
@@ -120,7 +114,6 @@
                 android:layout_below="@+id/map_main_description"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
                 android:background="@android:color/transparent"
                 android:clickable="true"
                 android:contentDescription="@string/expandable_icon_description"
@@ -129,12 +122,37 @@
 
         </RelativeLayout>
 
-        <androidx.appcompat.view.menu.ExpandedMenuView
-            android:id="@+id/expandable_zone"
+        <LinearLayout
+            android:id="@+id/expandable_menu"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="64dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
-        </androidx.appcompat.view.menu.ExpandedMenuView>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/play_map"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_margin"
+                android:layout_weight="1"
+                android:text="@string/play_map" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/play_compass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_margin"
+                android:layout_weight="1"
+                android:text="@string/play_compass" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/play_therm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_margin"
+                android:layout_weight="1"
+                android:text="@string/play_therm" />
+        </LinearLayout>
 
     </LinearLayout>
 

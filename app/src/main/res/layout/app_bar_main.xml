@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.MainActivity">
+    tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        style="@style/AppTheme.AppBar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_layout_height"
-        android:theme="@style/AppBarLayout">
+        android:layout_height="@dimen/app_bar_layout_height">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
