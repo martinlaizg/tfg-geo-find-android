@@ -1,10 +1,12 @@
 package com.martinlaizg.geofind.entity.enums;
 
+import com.google.gson.annotations.SerializedName;
+
 public enum UserType {
 
-    ADMIN("Administrador"),
-    CREATOR("Creador"),
-    USER("Usuario");
+    @SerializedName("admin") ADMIN("Administrador"),
+    @SerializedName("creator") CREATOR("Creador"),
+    @SerializedName("user") USER("Usuario");
 
     private String title;
 

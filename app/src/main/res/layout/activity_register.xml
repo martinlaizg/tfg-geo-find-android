@@ -1,87 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingLeft="30dp"
+    android:paddingTop="60dp"
     android:paddingRight="30dp"
-    android:paddingTop="80dp"
-    android:theme="@style/AppTheme.NoActionBar"
     tools:context=".activity.RegisterActivity">
 
-
-    <!-- Name input -->
-    <android.support.design.widget.TextInputLayout
+    <ImageView
+        android:id="@+id/image_register"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <EditText
-            android:id="@+id/name"
-            android:hint="@string/name"
-            android:inputType="textPersonName"
-            android:textColor="@color/colorText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </android.support.design.widget.TextInputLayout>
+        android:layout_height="160dp"
+        android:contentDescription="@string/app_logo_description"
+        android:src="@drawable/ic_geo_find_logo_light"
+        android:tint="@color/textColorPrimary" />
 
-    <!-- Email input -->
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <EditText
-            android:id="@+id/email"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:textColor="@color/colorText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </android.support.design.widget.TextInputLayout>
-
-    <!-- Password input -->
-    <android.support.design.widget.TextInputLayout
+    <LinearLayout
+        android:id="@+id/register_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:passwordToggleEnabled="true">
-        <EditText
-            android:id="@+id/password"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:textColor="@color/colorText"
+        android:layout_below="@id/image_register"
+        android:orientation="vertical">
+
+        <!-- Name input -->
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content">
 
-    <!-- Password input -->
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:passwordToggleEnabled="true">
-        <EditText
-            android:id="@+id/c_password"
-            android:hint="Confirm password"
-            android:inputType="textPassword"
-            android:textColor="@color/colorText"
+            <EditText
+                android:id="@+id/name_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/name"
+                android:inputType="textPersonName"
+                android:textColor="@color/textColorPrimary" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Email input -->
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content">
 
-    <ProgressBar
-        android:id="@+id/loading"
-        android:layout_marginTop="20dp"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/email_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email_input"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/textColorPrimary" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/btn_registry"
-        android:backgroundTint="@color/colorPrimary"
-        android:textColor="@android:color/white"
-        android:text="@string/registry"
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="55dp" />
+        <!-- Password input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:passwordToggleEnabled="true">
 
-</LinearLayout>
+            <EditText
+                android:id="@+id/password_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password_input"
+                android:inputType="textPassword"
+                android:textColor="@color/textColorPrimary" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Confirm password input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:passwordToggleEnabled="true">
+
+            <EditText
+                android:id="@+id/c_password_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/confirm_password_input"
+                android:inputType="textPassword"
+                android:textColor="@color/textColorPrimary" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <!-- TODO: cambiar por material button -->
+        <Button
+            android:id="@+id/btn_registry"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/registry"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+</RelativeLayout>

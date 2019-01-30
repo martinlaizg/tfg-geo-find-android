@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_sync_frequency_titles">aaa</string-array>
+    <string-array name="pref_sync_frequency_values">bbb</string-array>
+    <string-array name="pref_example_list_titles">aaaa</string-array>
+    <string-array name="pref_example_list_values">aaaa</string-array>
+</resources>

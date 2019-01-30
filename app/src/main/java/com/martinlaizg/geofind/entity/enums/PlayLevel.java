@@ -1,12 +1,12 @@
 package com.martinlaizg.geofind.entity.enums;
 
-import com.martinlaizg.geofind.R;
+import com.google.gson.annotations.SerializedName;
 
 public enum PlayLevel {
     // TODO: extraer a resources
-    THERM("termometro"),
-    COMPASS("brujula"),
-    ANY("cualquiera");
+    @SerializedName("therm") THERM("therm"),
+    @SerializedName("compass") COMPASS("compass"),
+    @SerializedName("any") ANY("any");
 
     private String text;
 

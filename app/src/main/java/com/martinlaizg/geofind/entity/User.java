@@ -9,15 +9,19 @@ public class User {
     private String id;
     private String email;
     private String username;
+    private String name;
+    private String password;
     private Date bdate;
     private UserType user_type;
     private Date created_at;
     private Date updated_at;
 
-    public User(String id, String email, String username, Date bdate, UserType user_type, Date created_at, Date updated_at) {
+    public User(String id, String email, String username, String name, String password, Date bdate, UserType user_type, Date created_at, Date updated_at) {
         this.id = id;
         this.email = email;
         this.username = username;
+        this.name = name;
+        this.password = password;
         this.bdate = bdate;
         this.user_type = user_type;
         this.created_at = created_at;
@@ -46,6 +50,22 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Date getBdate() {
