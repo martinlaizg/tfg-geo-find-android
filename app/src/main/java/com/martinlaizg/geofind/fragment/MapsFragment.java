@@ -69,7 +69,6 @@ public class MapsFragment extends Fragment {
                     maps.clear();
                     maps.addAll(listMaps);
                     // String mapsString = new Gson().toJson(maps);
-                    Toast.makeText(getActivity(), "Mapas cargados correctamente", Toast.LENGTH_SHORT).show();
                     adapter.notifyItemInserted(1);
                 } else {
                     APIError error = ErrorUtils.parseError(response);

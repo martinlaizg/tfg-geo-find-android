@@ -13,6 +13,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
 
 public interface RestClient {
@@ -25,10 +26,14 @@ public interface RestClient {
     Call<List<Maps>> getMap(
             @QueryMap Map<String, String> params);
 
-    // Get locations TODO: replace with the correct params or body
+    // Get locations
     @GET("locations")
     Call<List<Location>> getLocations(
             @QueryMap Map<String, String> params);
+
+    // Get single map
+    @GET("maps/{id}")
+    Call<Maps> getSingleMap(@Path("id") String id);
 
     // Login user
     @POST("login")

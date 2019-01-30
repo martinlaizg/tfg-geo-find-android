@@ -16,4 +16,6 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="max_play_button">128dp</dimen>
     <dimen name="min_play_button">64dp</dimen>
+    <dimen name="map_card_corner_radius">-32dp</dimen>
+    <dimen name="map_card_corner_radius_negative">-32dp</dimen>
 </resources>
