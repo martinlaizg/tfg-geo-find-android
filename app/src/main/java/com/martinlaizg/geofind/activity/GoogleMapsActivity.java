@@ -104,7 +104,9 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        // Set padding bottom for show Google logo on map
+        int radius = (int) getResources().getDimension(R.dimen.map_card_corner_radius);
+        mMap.setPadding(0,0,0,radius);
         // Add a marker in Sydney and move the camera
         location = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(location).title("Marker in Sydney"));
