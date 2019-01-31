@@ -5,12 +5,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.martinlaizg.geofind.activity.LoginActivity;
+import com.martinlaizg.geofind.activity.personal.MyAccountActivity;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.entity.User;
 import com.martinlaizg.geofind.fragment.LocationFragment;
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.drawer);
         sp = Preferences.getInstance(getApplicationContext());
         checkLogin();
         initView();
@@ -70,6 +72,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Navigation View
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Ir a perfil del usuario", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), MyAccountActivity.class));
+            }
+        });
+
     }
 
     @Override

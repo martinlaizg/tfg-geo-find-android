@@ -12,6 +12,7 @@
     <style name="AppTheme.AppBar" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">?attr/colorAccent</item>
         <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="android:popupTheme">@style/Theme.MaterialComponents.Light</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
 
