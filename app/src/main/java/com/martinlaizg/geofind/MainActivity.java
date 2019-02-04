@@ -59,7 +59,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.replace(R.id.fragment_container, mainFragment);
         fragmentTransaction.commit();
 
-        toolbar = findViewById(R.id.toolbar);
+        View view = findViewById(R.id.app_bar_main);
+        view = view.findViewById(R.id.app_bar_layout);
+        toolbar = view.findViewById(R.id.main_toolbar);
+//        toolbar = view.findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

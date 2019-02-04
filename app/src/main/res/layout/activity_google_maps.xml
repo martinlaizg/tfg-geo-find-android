@@ -4,79 +4,100 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/app_bar_main"
+        layout="@layout/app_bar_main" />
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/map_card_view"
-        android:layout_alignParentTop="true"
+        android:layout_height="match_parent"
+        android:layout_below="@id/map_toolbar"
         android:layout_marginBottom="@dimen/map_card_corner_radius_negative" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/map_card_view"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/map_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginStart="@dimen/small_margin"
+        android:layout_marginEnd="@dimen/small_margin"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/map_card_corner_radius_negative"
+        app:cardCornerRadius="@dimen/map_card_corner_radius"
+        app:cardElevation="8dp">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/map_card_corner_radius_negative"
-            app:cardCornerRadius="32dp"
-            app:cardElevation="8dp">
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/map_card_corner_radius">
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/map_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="@dimen/normal_margin"
+                android:layout_marginTop="@dimen/normal_margin"
+                android:layout_toStartOf="@+id/expandable_map_description_icon"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Titulo del mapa"
+                android:textSize="24sp" />
+
+            <ImageButton
+                android:id="@+id/expandable_map_description_icon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="@dimen/normal_margin"
+                android:src="@drawable/ic_arrow_down"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/expandable_icon_description" />
+
+            <TextView
+                android:id="@+id/map_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/map_title"
+                android:layout_alignStart="@+id/map_title"
+                android:layout_toStartOf="@+id/expandable_map_description_icon"
+                android:text="Localizacion del mapa"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:ellipsize="end"
+                android:maxLines="1" />
+
+            <TextView
+                android:id="@+id/map_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/map_location"
+                android:layout_alignStart="@+id/map_location"
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_alignEnd="@id/expandable_map_description_icon"
+                android:ellipsize="end"
+                android:maxLines="4"
+                android:text="@string/default_map_description"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <!-- TODO: añadir botón desplegable de la descripción -->
+
+            <!-- TODO: cambiar imagen única por vista horizontal de imagenes -->
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:layout_below="@+id/map_description"
+                android:layout_margin="@dimen/normal_margin"
+                android:scaleType="center"
+                android:contentDescription="@string/map_image_description"
+                android:src="@drawable/default_map_image" />
+        </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/map_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginStart="@dimen/normal_margin"
-                    android:layout_marginTop="@dimen/normal_margin"
-                    android:text="Titulo del mapa"
-                    android:textSize="24sp" />
-
-                <TextView
-                    android:id="@+id/map_location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/map_title"
-                    android:layout_alignStart="@+id/map_title"
-                    android:text="Localizacion del mapa"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/map_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/map_location"
-                    android:layout_alignStart="@+id/map_location"
-                    android:layout_marginTop="@dimen/small_margin"
-                    android:layout_marginEnd="@dimen/normal_margin"
-                    android:ellipsize="end"
-                    android:maxLines="4"
-                    android:text="@string/default_map_description"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <!-- TODO: añadir botón desplegable de la descripción -->
-
-                <!-- TODO: cambiar imagen única por vista horizontal de imagenes -->
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@+id/map_description"
-                    android:layout_alignStart="@id/map_description"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginTop="@dimen/big_margin"
-                    android:contentDescription="@string/map_image_description"
-                    android:paddingBottom="40dp"
-                    android:src="@drawable/default_map_image" />
-            </RelativeLayout>
-
-        </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

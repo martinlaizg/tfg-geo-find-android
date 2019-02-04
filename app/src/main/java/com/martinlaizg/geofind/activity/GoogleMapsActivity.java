@@ -21,12 +21,12 @@ import com.martinlaizg.geofind.entity.Maps;
 import java.util.HashMap;
 import java.util.Map;
 
-import androidx.fragment.app.FragmentActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class GoogleMapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     // Value to get destination map
     public static final String MAP_ID_KEY = "map_id_key";
@@ -96,7 +96,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         mMap = googleMap;
         // Set padding bottom for show Google logo on map
         int radius = (int) getResources().getDimension(R.dimen.map_card_corner_radius);
-        mMap.setPadding(0,0,0,radius);
+        mMap.setPadding(0, 0, 0, radius);
         // Add a marker in Sydney and move the camera
         location = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(location).title("Marker in Sydney"));
