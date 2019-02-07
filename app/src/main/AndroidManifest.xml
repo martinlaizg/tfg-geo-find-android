@@ -24,7 +24,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-        <activity android:name=".activity.personal.MyAccountActivity"></activity>
+        <activity android:name=".activity.personal.create.MapCreatorActivity"></activity>
+        <activity android:name=".activity.personal.MyAccountActivity" />
 
         <uses-library
             android:name="org.apache.http.legacy"

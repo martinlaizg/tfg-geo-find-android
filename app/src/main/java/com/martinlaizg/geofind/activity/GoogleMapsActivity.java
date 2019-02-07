@@ -16,12 +16,17 @@ import com.martinlaizg.geofind.client.RestClient;
 import com.martinlaizg.geofind.client.RetrofitInstance;
 import com.martinlaizg.geofind.client.error.APIError;
 import com.martinlaizg.geofind.client.error.ErrorUtils;
+import com.martinlaizg.geofind.entity.Location;
 import com.martinlaizg.geofind.entity.Maps;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,50 +37,51 @@ public class GoogleMapsActivity extends AppCompatActivity implements OnMapReadyC
     public static final String MAP_ID_KEY = "map_id_key";
     private static final String TAG = GoogleMapsActivity.class.getSimpleName();
 
-    private Integer map_id;
-
     private GoogleMap mMap;
 
-    private TextView mapTitle;
-    private TextView mapLocation;
-    private TextView mapDescription;
-    private LatLng location;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.map_title)
+    TextView mapTitle;
+    @BindView(R.id.map_location)
+    TextView mapLocation;
+    @BindView(R.id.map_description)
+    TextView mapDescription;
+    @BindView(R.id.map)
+    MapView mapView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_maps);
+        ButterKnife.bind(this);
 
-        MapView mapView = findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mapView.onResume(); // needed to get the map to display immediately
 
         mapView.getMapAsync(this);
         String id = getIntent().getStringExtra(MAP_ID_KEY);
 
-        map_id = Integer.parseInt(id);
-        mapTitle = findViewById(R.id.map_title);
-        mapLocation = findViewById(R.id.map_location);
-        mapDescription = findViewById(R.id.map_description);
-
-        loadMap(map_id);
+        loadMap(id);
     }
 
-    private void loadMap(Integer map_id) {
+    private void loadMap(String map_id) {
         RestClient restClient = RetrofitInstance.getRestClient();
         Map<String, String> parameters = new HashMap<>();
 
-        restClient.getSingleMap(map_id.toString()).enqueue(new Callback<Maps>() {
+        restClient.getSingleMap(map_id).enqueue(new Callback<Maps>() {
             @Override
             public void onResponse(Call<Maps> call, Response<Maps> response) {
                 if (response.isSuccessful()) { // Response code 200->300
                     Toast.makeText(GoogleMapsActivity.this, "Carga de mapa correcto", Toast.LENGTH_SHORT).show();
-
                     Maps map = response.body();
                     mapTitle.setText(map.getName());
                     mapLocation.setText(map.getCity());
                     mapDescription.setText(map.getCity());
+
+                    setMapLocation(map.getLocations());
                 } else {
                     APIError error = ErrorUtils.parseError(response);
                     String errorMessage = error.getMessage();
@@ -91,6 +97,23 @@ public class GoogleMapsActivity extends AppCompatActivity implements OnMapReadyC
         });
     }
 
+    void setMapLocation(List<Location> map_locations) {
+        Double latSum = 0.0;
+        Double lonSum = 0.0;
+        for (Location loc : map_locations) {
+            Double lat = Double.valueOf(loc.getLat());
+            latSum += lat;
+            Double lon = Double.valueOf(loc.getLon());
+            lonSum += lon;
+            LatLng location = new LatLng(lat, lon);
+            mMap.addMarker(new MarkerOptions().position(location).title(loc.getName()));
+        }
+        double latCamera = latSum / map_locations.size();
+        double lonCamera = lonSum / map_locations.size();
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latCamera, lonCamera)));
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -98,7 +121,7 @@ public class GoogleMapsActivity extends AppCompatActivity implements OnMapReadyC
         int radius = (int) getResources().getDimension(R.dimen.map_card_corner_radius);
         mMap.setPadding(0, 0, 0, radius);
         // Add a marker in Sydney and move the camera
-        location = new LatLng(-34, 151);
+        LatLng location = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(location).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
     }

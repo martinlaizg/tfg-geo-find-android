@@ -3,6 +3,7 @@ package com.martinlaizg.geofind.entity;
 import com.martinlaizg.geofind.entity.enums.PlayLevel;
 
 import java.util.Date;
+import java.util.List;
 
 public class Maps {
 
@@ -16,6 +17,7 @@ public class Maps {
     private Date updated_at;
     private Integer creator_id;
     private User creator;
+    private List<Location> locations;
 
     public Maps(String id, String name, String country, String state, String city, PlayLevel min_level, Date created_at, Date updated_at, Integer creator_id, User creator) {
         this.id = id;
@@ -108,5 +110,13 @@ public class Maps {
 
     public void setCreator(User creator) {
         this.creator = creator;
+    }
+
+    public List<Location> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
     }
 }

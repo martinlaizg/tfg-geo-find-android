@@ -5,15 +5,29 @@
     android:layout_height="match_parent"
     tools:context=".activity.personal.MyAccountActivity">
 
+    <include layout="@layout/app_bar_main" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/app_bar_layout_height">
 
         <TextView
-            android:id="@+id/profile_user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/normal_margin"
+            android:text="@string/action_settings"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/create_map_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/normal_margin"
+            android:text="@string/create_map_text" />
+
     </RelativeLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

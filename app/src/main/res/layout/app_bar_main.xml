@@ -12,9 +12,7 @@
         android:layout_height="wrap_content"
         app:liftOnScroll="true">
 
-        <include
-            android:id="@+id/main_toolbar"
-            layout="@layout/toolbar" />
+        <include layout="@layout/toolbar" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

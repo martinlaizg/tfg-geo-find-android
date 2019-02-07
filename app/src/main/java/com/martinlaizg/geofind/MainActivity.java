@@ -29,16 +29,23 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    // Other
     private static final String TAG = MainActivity.class.getSimpleName();
-    // Drawer
-    private DrawerLayout drawer;
-    private ActionBarDrawerToggle toggle;
-    private Toolbar toolbar;
-    private NavigationView navigationView;
+
+
+    @BindView(R.id.drawer)
+    DrawerLayout drawer;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.nav_view)
+    NavigationView navigationView;
+
     // SharedPreferences
     private SharedPreferences sp;
 
@@ -47,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawer);
+        ButterKnife.bind(MainActivity.this);
         sp = Preferences.getInstance(getApplicationContext());
         checkLogin();
         initView();
@@ -59,21 +67,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.replace(R.id.fragment_container, mainFragment);
         fragmentTransaction.commit();
 
-        View view = findViewById(R.id.app_bar_main);
-        view = view.findViewById(R.id.app_bar_layout);
-        toolbar = view.findViewById(R.id.main_toolbar);
-//        toolbar = view.findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Drawer
-        drawer = findViewById(R.id.drawer);
-        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        // Navigation View
-        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
@@ -139,6 +140,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.menu_settings:
                 Toast.makeText(this, "Ir a ajustes", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, MyAccountActivity.class);
+                startActivity(intent);
                 menuItem.setChecked(false);
                 break;
             case R.id.menu_log_out:
