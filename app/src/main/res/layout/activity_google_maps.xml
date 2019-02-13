@@ -10,16 +10,14 @@
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/app_bar_layout_height"
-        android:layout_marginBottom="@dimen/map_card_corner_radius_negative" />
+        android:layout_height="300dp"
+        android:layout_marginTop="@dimen/app_bar_layout_height" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/map_card_view"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_marginStart="@dimen/small_margin"
-        android:layout_marginEnd="@dimen/small_margin"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/map"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/map_card_corner_radius_negative"
         app:cardCornerRadius="@dimen/map_card_corner_radius"
@@ -50,11 +48,11 @@
                 android:layout_height="32dp"
                 android:layout_alignParentEnd="true"
                 android:layout_margin="@dimen/normal_margin"
-                android:src="@drawable/ic_arrow_down"
-                android:clickable="true"
-                android:focusable="true"
                 android:background="@android:color/transparent"
-                android:contentDescription="@string/expandable_icon_description" />
+                android:clickable="true"
+                android:contentDescription="@string/expandable_icon_description"
+                android:focusable="true"
+                android:src="@drawable/ic_arrow_down" />
 
             <TextView
                 android:id="@+id/map_location"
@@ -63,11 +61,11 @@
                 android:layout_below="@+id/map_title"
                 android:layout_alignStart="@+id/map_title"
                 android:layout_toStartOf="@+id/expandable_map_description_icon"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="Localizacion del mapa"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:ellipsize="end"
-                android:maxLines="1" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/map_description"
@@ -75,8 +73,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/map_location"
                 android:layout_alignStart="@+id/map_location"
-                android:layout_marginTop="@dimen/small_margin"
                 android:layout_alignEnd="@id/expandable_map_description_icon"
+                android:layout_marginTop="@dimen/small_margin"
                 android:ellipsize="end"
                 android:maxLines="4"
                 android:text="@string/default_map_description"
@@ -91,8 +89,8 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/map_description"
                 android:layout_margin="@dimen/normal_margin"
-                android:scaleType="center"
                 android:contentDescription="@string/map_image_description"
+                android:scaleType="center"
                 android:src="@drawable/default_map_image" />
         </RelativeLayout>
 

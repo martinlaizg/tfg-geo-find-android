@@ -1,69 +1,68 @@
 package com.martinlaizg.geofind.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.client.RestClient;
 import com.martinlaizg.geofind.client.RetrofitInstance;
 import com.martinlaizg.geofind.client.error.APIError;
 import com.martinlaizg.geofind.client.error.ErrorUtils;
-import com.martinlaizg.geofind.client.login.LoginRequest;
-import com.martinlaizg.geofind.client.user.UserResponse;
 import com.martinlaizg.geofind.config.Preferences;
+import com.martinlaizg.geofind.entity.User;
 
 import androidx.appcompat.app.AppCompatActivity;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     // Log tag
     private static final String TAG = LoginActivity.class.getSimpleName();
 
     // View elements
-    private EditText emailInput, passwordInput;
-    private Button loginButton;
-    private Button goRegistryButton;
 
-    private SharedPreferences sp;
+    @BindView(R.id.login_email_input_layout)
+    TextInputLayout email_input;
+    @BindView(R.id.login_password_input_layout)
+    TextInputLayout password_input;
+
+    @BindView(R.id.login_button)
+    Button login_button;
+    @BindView(R.id.login_register_button)
+    Button registry_button;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        sp = Preferences.getInstance(getApplicationContext());
+        ButterKnife.bind(LoginActivity.this);
 
         initView();
         checkLogin();
     }
 
     private void initView() {
-        // Inputs
-        emailInput = findViewById(R.id.login_email_input);
-        passwordInput = findViewById(R.id.login_password_input);
-
-        // Buttons
-        loginButton = findViewById(R.id.login_btn);
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        login_button.setOnClickListener(this);
+        registry_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login(emailInput.getText().toString(), passwordInput.getText().toString());
-            }
-        });
-
-        goRegistryButton = findViewById(R.id.login_register_btn);
-        goRegistryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
+                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
 
@@ -71,13 +70,16 @@ public class LoginActivity extends AppCompatActivity {
 
     private void login(final String email, String password) {
         RestClient client = RetrofitInstance.getRestClient();
-        LoginRequest lreq = new LoginRequest(email, password);
-        client.login(lreq).enqueue(new Callback<UserResponse>() {
+        User user = new User(email, password);
+        client.login(user).enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+            public void onResponse(Call<User> call, Response<User> response) {
+
+                SharedPreferences sp = Preferences.getInstance(getApplicationContext());
                 if (response.isSuccessful()) { // Response code 200->300
                     // Parse response to JSON
-                    String stringUser = new Gson().toJson(response.body());
+                    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                    String stringUser = gson.toJson(response.body());
                     Toast.makeText(LoginActivity.this, "Login correcto", Toast.LENGTH_SHORT).show();
                     // Save status to preferences
                     sp.edit().putBoolean(Preferences.LOGGED, true).apply();
@@ -94,16 +96,37 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<UserResponse> call, Throwable t) {
+            public void onFailure(Call<User> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), getString(R.string.connection_failure), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void checkLogin() {
+        SharedPreferences sp = Preferences.getInstance(getApplicationContext());
         if (sp.getBoolean(Preferences.LOGGED, false)) {
             Toast.makeText(getApplicationContext(), "Ya estabas logeado", Toast.LENGTH_SHORT).show();
             finish();
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        try {
+            if (TextUtils.isEmpty(email_input.getEditText().getText())) {
+                email_input.setError(getString(R.string.required_email));
+                return;
+            }
+            if (TextUtils.isEmpty(password_input.getEditText().getText())) {
+                password_input.setError(getString(R.string.required_password));
+                return;
+            }
+        } catch (NullPointerException ex) {
+            Toast.makeText(getApplicationContext(), "Error de inputs", Toast.LENGTH_SHORT).show();
+        }
+
+        String email = email_input.getEditText().getText().toString();
+        String password = password_input.getEditText().getText().toString();
+        login(email, password);
     }
 }

@@ -5,11 +5,13 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.client.RestClient;
@@ -25,6 +27,7 @@ import java.util.Map;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -37,8 +40,6 @@ public class GoogleMapsActivity extends AppCompatActivity implements OnMapReadyC
     public static final String MAP_ID_KEY = "map_id_key";
     private static final String TAG = GoogleMapsActivity.class.getSimpleName();
 
-    private GoogleMap mMap;
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -48,9 +49,14 @@ public class GoogleMapsActivity extends AppCompatActivity implements OnMapReadyC
     TextView mapLocation;
     @BindView(R.id.map_description)
     TextView mapDescription;
+
+    @BindView(R.id.map_card_view)
+    CardView cardView;
+
     @BindView(R.id.map)
     MapView mapView;
 
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,11 +81,15 @@ public class GoogleMapsActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onResponse(Call<Maps> call, Response<Maps> response) {
                 if (response.isSuccessful()) { // Response code 200->300
-                    Toast.makeText(GoogleMapsActivity.this, "Carga de mapa correcto", Toast.LENGTH_SHORT).show();
                     Maps map = response.body();
+                    if (map == null) {
+                        Toast.makeText(GoogleMapsActivity.this, "Petición incorrecta", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     mapTitle.setText(map.getName());
                     mapLocation.setText(map.getCity());
-                    mapDescription.setText(map.getCity());
+                    // TODO: cambiar state por description cuando se obtenga de base de datos
+                    mapDescription.setText(map.getState());
 
                     setMapLocation(map.getLocations());
                 } else {
@@ -98,31 +108,34 @@ public class GoogleMapsActivity extends AppCompatActivity implements OnMapReadyC
     }
 
     void setMapLocation(List<Location> map_locations) {
-        Double latSum = 0.0;
-        Double lonSum = 0.0;
-        for (Location loc : map_locations) {
-            Double lat = Double.valueOf(loc.getLat());
-            latSum += lat;
-            Double lon = Double.valueOf(loc.getLon());
-            lonSum += lon;
-            LatLng location = new LatLng(lat, lon);
-            mMap.addMarker(new MarkerOptions().position(location).title(loc.getName()));
-        }
-        double latCamera = latSum / map_locations.size();
-        double lonCamera = lonSum / map_locations.size();
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latCamera, lonCamera)));
+        for (Location loc : map_locations) {
+            // Get lat and lon
+            Double lat = Double.valueOf(loc.getLat());
+            Double lon = Double.valueOf(loc.getLon());
+            // Create location object
+            LatLng location = new LatLng(lat, lon);
+            // Add marker to de map
+            mMap.addMarker(new MarkerOptions().position(location).title(loc.getName()));
+            // Add location for CameraUpdate
+            builder.include(location);
+        }
+        LatLngBounds bounds = builder.build();
+
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int padding = (int) (width * 0.10); // offset from edges of the map 10% of screen
+
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+        mMap.animateCamera(cu);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
         // Set padding bottom for show Google logo on map
-        int radius = (int) getResources().getDimension(R.dimen.map_card_corner_radius);
-        mMap.setPadding(0, 0, 0, radius);
-        // Add a marker in Sydney and move the camera
-        LatLng location = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(location).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+//        int radius = (int) getResources().getDimension(R.dimen.map_card_corner_radius);
+//        mMap.setPadding(0, 0, 0, radius);
     }
 }

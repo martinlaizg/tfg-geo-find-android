@@ -16,25 +16,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.LocationViewHolder> {
 
-    private ArrayList<Location> locations;
-    private ItemClickListener itemClickListener;
+    private final ArrayList<Location> locations;
 
-    public LocationAdapter(ArrayList<Location> locations) {
+    public LocationAdapter(final ArrayList<Location> locations) {
         this.locations = locations;
     }
 
 
     @NonNull
     @Override
-    public LocationViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext())
+    public LocationViewHolder onCreateViewHolder(@NonNull final ViewGroup viewGroup, final int i) {
+        final View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.fragment_location, viewGroup, false);
         return new LocationViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull LocationViewHolder holder, int i) {
-        holder.setItemClickListener(itemClickListener);
+    public void onBindViewHolder(@NonNull final LocationViewHolder holder, final int i) {
+//        holder.setItemClickListener(itemClickListener);
         holder.locationName.setText(locations.get(i).getName());
         // TODO: cambiar "300m" por la distancia real
         holder.locationDistance.setText("300m");
@@ -52,18 +51,18 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         TextView locationDistance;
         ItemClickListener itemClickListener;
 
-        LocationViewHolder(@NonNull View itemView) {
+        LocationViewHolder(@NonNull final View itemView) {
             super(itemView);
-            this.locationName = itemView.findViewById(R.id.location_name);
-            this.locationDistance = itemView.findViewById(R.id.location_distance);
+            locationName = itemView.findViewById(R.id.location_name);
+            locationDistance = itemView.findViewById(R.id.location_distance);
         }
 
-        public void setItemClickListener(ItemClickListener itemClickListener) {
+        public void setItemClickListener(final ItemClickListener itemClickListener) {
             this.itemClickListener = itemClickListener;
         }
 
         @Override
-        public void onClick(View v) {
+        public void onClick(final View v) {
             itemClickListener.onClick(v, getAdapterPosition(), false);
         }
     }

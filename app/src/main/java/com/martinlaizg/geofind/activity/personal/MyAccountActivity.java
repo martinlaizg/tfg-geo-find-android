@@ -23,7 +23,7 @@ public class MyAccountActivity extends AppCompatActivity {
     Button create_map_button;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_account);
 
@@ -36,19 +36,20 @@ public class MyAccountActivity extends AppCompatActivity {
 
         create_map_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MapCreatorActivity.class);
+            public void onClick(final View v) {
+                final Intent intent = new Intent(getApplicationContext(),
+                        MapCreatorActivity.class);
                 startActivity(intent);
             }
         });
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                this.finish();
+                finish();
                 return true;
         }
         return true;

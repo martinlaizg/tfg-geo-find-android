@@ -9,17 +9,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.martinlaizg.geofind.activity.LoginActivity;
 import com.martinlaizg.geofind.activity.personal.MyAccountActivity;
 import com.martinlaizg.geofind.config.Preferences;
-import com.martinlaizg.geofind.entity.User;
 import com.martinlaizg.geofind.fragment.LocationFragment;
 import com.martinlaizg.geofind.fragment.MainFragment;
 import com.martinlaizg.geofind.fragment.MapsFragment;
-
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -46,16 +41,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @BindView(R.id.nav_view)
     NavigationView navigationView;
 
-    // SharedPreferences
-    private SharedPreferences sp;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawer);
         ButterKnife.bind(MainActivity.this);
-        sp = Preferences.getInstance(getApplicationContext());
         checkLogin();
         initView();
     }
@@ -87,21 +78,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        String stringUser = sp.getString(Preferences.USER, "");
-        if (!Objects.equals(stringUser, "")) {
-            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-            User user = gson.fromJson(stringUser, User.class);
-
-        }
-    }
-
     private void checkLogin() {
+        SharedPreferences sp = Preferences.getInstance(getApplicationContext());
         if (!sp.getBoolean(Preferences.LOGGED, false)) {
             Log.i(TAG, "User not logged");
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
     }
@@ -118,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        SharedPreferences sp = Preferences.getInstance(getApplicationContext());
         boolean fragmentTransaction = false;
         Fragment fragment = null;
         menuItem.setChecked(true);
@@ -146,7 +129,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.menu_log_out:
                 Toast.makeText(this, "Cerrar sesión", Toast.LENGTH_SHORT).show();
+                sp.edit().putBoolean(Preferences.LOGGED, false).apply();
+                sp.edit().putString(Preferences.USER, "").apply();
                 menuItem.setChecked(false);
+                checkLogin();
                 break;
         }
         if (fragmentTransaction) {

@@ -1,32 +1,38 @@
 package com.martinlaizg.geofind.activity.personal.create;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.Toast;
 
+import com.martinlaizg.geofind.MainActivity;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.activity.personal.create.map.CreateLocations;
 import com.martinlaizg.geofind.activity.personal.create.map.CreateMapFragment;
+import com.martinlaizg.geofind.client.RestClient;
+import com.martinlaizg.geofind.client.RetrofitInstance;
+import com.martinlaizg.geofind.client.error.APIError;
+import com.martinlaizg.geofind.client.error.ErrorUtils;
+import com.martinlaizg.geofind.entity.Maps;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class MapCreatorActivity extends AppCompatActivity {
+public class MapCreatorActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private final String FRAGMENT_TAG = "FRAGMENT";
-
+    public static final String MAP_CREATOR_FRAGMENT = "MAP_CREATOR_FRAGMENT";
+    public Maps map;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.new_map_next)
-    Button next_button;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_creator);
         ButterKnife.bind(MapCreatorActivity.this);
@@ -36,28 +42,50 @@ public class MapCreatorActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        map = new Maps();
+
         // Initial fragment
-        CreateMapFragment fragment = CreateMapFragment.newInstance();
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.map_creator_frame_layout, fragment, FRAGMENT_TAG);
+        final CreateMapFragment fragment = CreateMapFragment.newInstance();
+        final FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.map_creator_frame_layout, fragment, MAP_CREATOR_FRAGMENT);
         fragmentTransaction.commit();
-
-        next_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TextView txtv = findViewById(R.id.new_map_name);
-                String name = txtv.getText().toString();
-                txtv = findViewById(R.id.new_map_description);
-                String desc = txtv.getText().toString();
-
-                Fragment fragment = CreateLocations.newInstance(name, desc);
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.map_creator_frame_layout, fragment)
-                        .commit();
-            }
-        });
 
 
     }
 
+    @Override
+    public void onClick(View v) {
+        RestClient client = RetrofitInstance.getRestClient();
+
+        client.createMap(map).enqueue(new Callback<Maps>() {
+            @Override
+            public void onResponse(Call<Maps> call, Response<Maps> response) {
+                if (response.isSuccessful()) { // Response code from 200 to 30
+                    Toast.makeText(getApplicationContext(), "Mapa creado correctamente", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                } else {
+                    APIError error = ErrorUtils.parseError(response);
+                    String errorMessage = error.getMessage();
+                    Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Maps> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), getString(R.string.connection_failure), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

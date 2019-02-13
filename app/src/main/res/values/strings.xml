@@ -70,4 +70,17 @@
     <string name="new_map_name">Nombre</string>
     <string name="new_map_description">Descripción</string>
     <string name="settings">Ajustes</string>
+    <string name="new_location_lon">Longitud</string>
+    <string name="new_location_lat">Latitud</string>
+    <string name="new_location">Añadir localización</string>
+    <string name="create_map">Crear mapa</string>
+    <string name="new_location_name">Nombre</string>
+    <string name="add_image">Añadir imagen</string>
+    <string name="required_name">Es obligatorio poner un nombre</string>
+    <string name="required_lat">Es obligatorio poner la latitud</string>
+    <string name="required_lon">Es obligatorio poner la longitud</string>
+    <string name="required_description">La descripción es obligatoria</string>
+    <string name="finish">Finalizar</string>
+    <string name="required_email">El email es obligatorio</string>
+    <string name="required_password">La contraseña es obligatoria</string>
 </resources>

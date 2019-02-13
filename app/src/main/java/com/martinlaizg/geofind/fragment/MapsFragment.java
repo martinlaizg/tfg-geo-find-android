@@ -1,6 +1,5 @@
 package com.martinlaizg.geofind.fragment;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,19 +32,18 @@ import retrofit2.Response;
 public class MapsFragment extends Fragment {
 
     private static final String TAG = MapsFragment.class.getSimpleName();
-    SharedPreferences sp;
 
     private MapsAdapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
     private RecyclerView recyclerView;
 
     private ArrayList<Maps> maps;
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container,
+                             @Nullable final Bundle savedInstanceState) {
         loadMaps();
-        View view = inflater.inflate(R.layout.fragment_maps_list, container, false);
+        final View view = inflater.inflate(R.layout.fragment_maps_list, container, false);
         recyclerView = view.findViewById(R.id.map_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         maps = new ArrayList<>();
@@ -57,30 +55,31 @@ public class MapsFragment extends Fragment {
 
 
     private void loadMaps() {
-        RestClient client = RetrofitInstance.getRestClient();
-        Map<String, String> paramsMap = new HashMap<>();
+        final RestClient client = RetrofitInstance.getRestClient();
+        final Map<String, String> paramsMap = new HashMap<>();
 
         client.getMap(paramsMap).enqueue(new Callback<List<Maps>>() {
             @Override
-            public void onResponse(Call<List<Maps>> call, Response<List<Maps>> response) {
+            public void onResponse(final Call<List<Maps>> call, final Response<List<Maps>> response) {
                 if (response.isSuccessful()) { // Response code 200->300
                     // Parse response to JSON
-                    List<Maps> listMaps = response.body();
+                    final List<Maps> listMaps = response.body();
                     maps.clear();
                     maps.addAll(listMaps);
                     // String mapsString = new Gson().toJson(maps);
                     adapter.notifyItemInserted(1);
                 } else {
-                    APIError error = ErrorUtils.parseError(response);
-                    String errorMessage = error.getMessage();
+                    final APIError error = ErrorUtils.parseError(response);
+                    final String errorMessage = error.getMessage();
                     Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
                     Log.d(TAG, errorMessage);
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Maps>> call, Throwable t) {
-                Toast.makeText(getActivity(), getString(R.string.connection_failure), Toast.LENGTH_SHORT).show();
+            public void onFailure(final Call<List<Maps>> call, final Throwable t) {
+                Toast.makeText(getActivity(), getString(R.string.connection_failure),
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }

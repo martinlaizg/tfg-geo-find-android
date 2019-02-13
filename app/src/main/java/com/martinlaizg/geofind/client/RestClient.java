@@ -1,7 +1,5 @@
 package com.martinlaizg.geofind.client;
 
-import com.martinlaizg.geofind.client.login.LoginRequest;
-import com.martinlaizg.geofind.client.user.UserResponse;
 import com.martinlaizg.geofind.entity.Location;
 import com.martinlaizg.geofind.entity.Maps;
 import com.martinlaizg.geofind.entity.User;
@@ -18,18 +16,13 @@ import retrofit2.http.QueryMap;
 
 public interface RestClient {
 
-    @GET("users")
-    Call<List<User>> getUsers();
-
     // Get maps with optional filter
     @GET("maps")
-    Call<List<Maps>> getMap(
-            @QueryMap Map<String, String> params);
+    Call<List<Maps>> getMap(@QueryMap Map<String, String> params);
 
     // Get locations
     @GET("locations")
-    Call<List<Location>> getLocations(
-            @QueryMap Map<String, String> params);
+    Call<List<Location>> getLocations(@QueryMap Map<String, String> params);
 
     // Get single map
     @GET("maps/{id}")
@@ -37,5 +30,9 @@ public interface RestClient {
 
     // Login user
     @POST("login")
-    Call<UserResponse> login(@Body LoginRequest body);
+    Call<User> login(@Body User body);
+
+    // Create a Map
+    @POST("maps")
+    Call<Maps> createMap(@Body Maps map);
 }

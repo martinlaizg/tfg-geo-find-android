@@ -8,24 +8,13 @@ public class APIError {
     public APIError() {
     }
 
-    public APIError(int error, String message) {
+    public APIError(final int error, final String message) {
         this.error = error;
         this.message = message;
-    }
-
-    public int getError() {
-        return error;
-    }
-
-    public void setError(int error) {
-        this.error = error;
     }
 
     public String getMessage() {
-        return message;
+        return this.message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

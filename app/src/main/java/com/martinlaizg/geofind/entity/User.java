@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class User {
 
-    private String id;
+    private Integer id;
     private String email;
     private String username;
     private String name;
@@ -16,23 +16,16 @@ public class User {
     private Date created_at;
     private Date updated_at;
 
-    public User(String id, String email, String username, String name, String password, Date bdate, UserType user_type, Date created_at, Date updated_at) {
-        this.id = id;
+    public User(String email, String password) {
         this.email = email;
-        this.username = username;
-        this.name = name;
         this.password = password;
-        this.bdate = bdate;
-        this.user_type = user_type;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -42,14 +35,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getName() {
@@ -98,5 +83,13 @@ public class User {
 
     public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
