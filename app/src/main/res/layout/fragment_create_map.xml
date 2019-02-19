@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.personal.create.map.CreateMapFragment">
+    tools:context=".views.activity.personal.create.map.CreateMapFragment">
 
     <TextView
         android:id="@+id/new_name_text"

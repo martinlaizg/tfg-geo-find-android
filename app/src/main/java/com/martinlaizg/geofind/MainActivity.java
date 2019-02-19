@@ -9,12 +9,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
-import com.martinlaizg.geofind.activity.LoginActivity;
-import com.martinlaizg.geofind.activity.personal.MyAccountActivity;
 import com.martinlaizg.geofind.config.Preferences;
-import com.martinlaizg.geofind.fragment.LocationFragment;
-import com.martinlaizg.geofind.fragment.MainFragment;
-import com.martinlaizg.geofind.fragment.MapsFragment;
+import com.martinlaizg.geofind.views.activity.LoginActivity;
+import com.martinlaizg.geofind.views.activity.personal.MyAccountActivity;
+import com.martinlaizg.geofind.views.fragment.LocationFragment;
+import com.martinlaizg.geofind.views.fragment.MainFragment;
+import com.martinlaizg.geofind.views.fragment.MapsFragment;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;

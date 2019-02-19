@@ -5,9 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.martinlaizg.geofind.ItemClickListener;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.entity.Location;
+import com.martinlaizg.geofind.dataAccess.database.entity.Location;
 
 import java.util.ArrayList;
 
@@ -45,11 +44,10 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         return locations.size();
     }
 
-    class LocationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class LocationViewHolder extends RecyclerView.ViewHolder {
 
         TextView locationName;
         TextView locationDistance;
-        ItemClickListener itemClickListener;
 
         LocationViewHolder(@NonNull final View itemView) {
             super(itemView);
@@ -57,14 +55,6 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
             locationDistance = itemView.findViewById(R.id.location_distance);
         }
 
-        public void setItemClickListener(final ItemClickListener itemClickListener) {
-            this.itemClickListener = itemClickListener;
-        }
-
-        @Override
-        public void onClick(final View v) {
-            itemClickListener.onClick(v, getAdapterPosition(), false);
-        }
     }
 
 }

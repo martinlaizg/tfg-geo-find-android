@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.activity.GoogleMapsActivity;
-import com.martinlaizg.geofind.entity.Maps;
+import com.martinlaizg.geofind.dataAccess.database.entity.Maps;
+import com.martinlaizg.geofind.views.activity.GoogleMapsActivity;
 
 import java.util.ArrayList;
 
@@ -39,7 +39,7 @@ public class MapsAdapter extends RecyclerView.Adapter<MapsAdapter.MapsViewHolder
     public void onBindViewHolder(@NonNull MapsViewHolder holder, final int i) {
         final Maps map = maps.get(i);
         holder.mapName.setText(map.getName());
-        holder.mapCreator.setText(map.getCreator().getUsername());
+//        holder.mapCreator.setText(map.getCreator().getUsername());
         holder.materialCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,9 +64,9 @@ public class MapsAdapter extends RecyclerView.Adapter<MapsAdapter.MapsViewHolder
 
         MapsViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.mapName = itemView.findViewById(R.id.map_name);
-            this.mapCreator = itemView.findViewById(R.id.map_creator);
-            this.materialCardView = itemView.findViewById(R.id.map_list_item);
+            mapName = itemView.findViewById(R.id.map_name);
+            mapCreator = itemView.findViewById(R.id.map_creator);
+            materialCardView = itemView.findViewById(R.id.map_list_item);
         }
     }
 

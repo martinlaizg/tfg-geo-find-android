@@ -9,7 +9,7 @@
     android:paddingLeft="30dp"
     android:paddingTop="60dp"
     android:paddingRight="30dp"
-    tools:context=".activity.RegisterActivity">
+    tools:context=".views.activity.RegisterActivity">
 
     <ImageView
         android:id="@+id/image_register"

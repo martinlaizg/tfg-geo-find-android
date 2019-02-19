@@ -7,5 +7,5 @@
     android:layout_marginStart="@dimen/small_margin"
     android:layout_marginEnd="@dimen/small_margin"
     android:background="@android:color/transparent"
-    tools:context=".fragment.MapsFragment"
+    tools:context=".views.fragment.MapsFragment"
     tools:listitem="@layout/fragment_maps" />
