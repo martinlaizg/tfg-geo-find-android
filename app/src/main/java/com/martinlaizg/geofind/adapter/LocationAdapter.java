@@ -6,27 +6,23 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.dataAccess.database.entity.Location;
+import com.martinlaizg.geofind.data.access.database.entity.Location;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.LocationViewHolder> {
 
-    private final ArrayList<Location> locations;
-
-    public LocationAdapter(final ArrayList<Location> locations) {
-        this.locations = locations;
-    }
-
+    private List<Location> locations = new ArrayList<>();
 
     @NonNull
     @Override
-    public LocationViewHolder onCreateViewHolder(@NonNull final ViewGroup viewGroup, final int i) {
-        final View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.fragment_location, viewGroup, false);
+    public LocationViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int i) {
+        final View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.fragment_location, parent, false);
         return new LocationViewHolder(view);
     }
 
@@ -42,6 +38,12 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     @Override
     public int getItemCount() {
         return locations.size();
+    }
+
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
+        notifyDataSetChanged();
+
     }
 
     class LocationViewHolder extends RecyclerView.ViewHolder {

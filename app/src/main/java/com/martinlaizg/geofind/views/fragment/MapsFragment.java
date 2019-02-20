@@ -9,16 +9,15 @@ import android.widget.Toast;
 
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.adapter.MapsAdapter;
-import com.martinlaizg.geofind.dataAccess.database.entity.Maps;
-import com.martinlaizg.geofind.dataAccess.retrofit.RestClient;
-import com.martinlaizg.geofind.dataAccess.retrofit.RetrofitInstance;
-import com.martinlaizg.geofind.dataAccess.retrofit.error.APIError;
-import com.martinlaizg.geofind.dataAccess.retrofit.error.ErrorUtils;
+import com.martinlaizg.geofind.data.access.database.entity.Map;
+import com.martinlaizg.geofind.data.access.retrofit.RestClient;
+import com.martinlaizg.geofind.data.access.retrofit.RetrofitInstance;
+import com.martinlaizg.geofind.data.access.retrofit.error.APIError;
+import com.martinlaizg.geofind.data.access.retrofit.error.ErrorUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,7 +35,8 @@ public class MapsFragment extends Fragment {
     private MapsAdapter adapter;
     private RecyclerView recyclerView;
 
-    private ArrayList<Maps> maps;
+    private ArrayList<Map> maps;
+
 
     @Nullable
     @Override
@@ -56,14 +56,14 @@ public class MapsFragment extends Fragment {
 
     private void loadMaps() {
         final RestClient client = RetrofitInstance.getRestClient();
-        final Map<String, String> paramsMap = new HashMap<>();
+        final java.util.Map paramsMap = new HashMap<>();
 
-        client.getMap(paramsMap).enqueue(new Callback<List<Maps>>() {
+        client.getMap(paramsMap).enqueue(new Callback<List<Map>>() {
             @Override
-            public void onResponse(final Call<List<Maps>> call, final Response<List<Maps>> response) {
+            public void onResponse(final Call<List<Map>> call, final Response<List<Map>> response) {
                 if (response.isSuccessful()) { // Response code 200->300
                     // Parse response to JSON
-                    final List<Maps> listMaps = response.body();
+                    final List<Map> listMaps = response.body();
                     maps.clear();
                     maps.addAll(listMaps);
                     // String mapsString = new Gson().toJson(maps);
@@ -77,7 +77,7 @@ public class MapsFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(final Call<List<Maps>> call, final Throwable t) {
+            public void onFailure(final Call<List<Map>> call, final Throwable t) {
                 Toast.makeText(getActivity(), getString(R.string.connection_failure),
                         Toast.LENGTH_SHORT).show();
             }

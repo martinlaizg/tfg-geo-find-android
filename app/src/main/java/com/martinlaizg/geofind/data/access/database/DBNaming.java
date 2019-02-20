@@ -1,4 +1,4 @@
-package com.martinlaizg.geofind.dataAccess.database;
+package com.martinlaizg.geofind.data.access.database;
 
 public class DBNaming {
 

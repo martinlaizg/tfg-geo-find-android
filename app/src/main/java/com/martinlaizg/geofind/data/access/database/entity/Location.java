@@ -1,4 +1,6 @@
-package com.martinlaizg.geofind.dataAccess.database.entity;
+package com.martinlaizg.geofind.data.access.database.entity;
+
+import java.sql.Date;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -11,10 +13,10 @@ public class Location {
     private String name;
     private String lat;
     private String lon;
-    private String created_at;
-    private String updated_at;
+    private Date created_at;
+    private Date updated_at;
 
-    public Location(int id, String name, String lat, String lon, String created_at, String updated_at) {
+    public Location(int id, String name, String lat, String lon, Date created_at, Date updated_at) {
         this.id = id;
         this.name = name;
         this.lat = lat;
@@ -55,19 +57,19 @@ public class Location {
         this.lon = lon;
     }
 
-    public String getCreated_at() {
+    public Date getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(String created_at) {
+    public void setCreated_at(Date created_at) {
         this.created_at = created_at;
     }
 
-    public String getUpdated_at() {
+    public Date getUpdated_at() {
         return updated_at;
     }
 
-    public void setUpdated_at(String updated_at) {
+    public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
     }
 }

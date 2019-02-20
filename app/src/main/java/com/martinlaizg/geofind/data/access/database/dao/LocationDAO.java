@@ -1,6 +1,6 @@
-package com.martinlaizg.geofind.dataAccess.database.dao;
+package com.martinlaizg.geofind.data.access.database.dao;
 
-import com.martinlaizg.geofind.dataAccess.database.entity.Location;
+import com.martinlaizg.geofind.data.access.database.entity.Location;
 
 import java.util.List;
 
@@ -22,6 +22,9 @@ public interface LocationDAO {
 
     @Delete
     void delete(Location location);
+
+    @Query("DELETE FROM locations")
+    void deleteAllLocations();
 
     @Query("SELECT * FROM locations")
     LiveData<List<Location>> getAllLocations();

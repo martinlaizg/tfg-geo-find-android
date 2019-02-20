@@ -6,9 +6,9 @@
 
     <include layout="@layout/app_bar_main" />
 
-    <com.google.android.gms.maps.MapView
+    <com.google.android.gms.map.MapView
         android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:name="com.google.android.gms.map.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_marginTop="@dimen/app_bar_layout_height" />

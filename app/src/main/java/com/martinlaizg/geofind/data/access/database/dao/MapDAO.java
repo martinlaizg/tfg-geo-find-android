@@ -1,6 +1,6 @@
-package com.martinlaizg.geofind.dataAccess.database.dao;
+package com.martinlaizg.geofind.data.access.database.dao;
 
-import com.martinlaizg.geofind.dataAccess.database.entity.Maps;
+import com.martinlaizg.geofind.data.access.database.entity.Map;
 
 import java.util.List;
 
@@ -12,17 +12,17 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 @Dao
-public interface MapsDAO {
+public interface MapDAO {
 
     @Insert
-    void insert(Maps maps);
+    void insert(Map map);
 
     @Update
-    void update(Maps maps);
+    void update(Map map);
 
     @Delete
-    void delete(Maps maps);
+    void delete(Map map);
 
     @Query("SELECT * FROM maps")
-    LiveData<List<Maps>> getAllMaps();
+    LiveData<List<Map>> getAllMaps();
 }

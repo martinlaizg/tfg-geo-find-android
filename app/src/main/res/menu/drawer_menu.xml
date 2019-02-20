@@ -8,7 +8,7 @@
             android:title="@string/users" />
         <item
             android:id="@+id/menu_maps"
-            android:title="@string/maps" />
+            android:title="@string/map" />
         <item
             android:id="@+id/menu_locations"
             android:title="@string/locations" />

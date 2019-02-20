@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.dataAccess.database.entity.Maps;
+import com.martinlaizg.geofind.data.access.database.entity.Map;
 import com.martinlaizg.geofind.views.activity.GoogleMapsActivity;
 
 import java.util.ArrayList;
@@ -19,10 +19,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class MapsAdapter extends RecyclerView.Adapter<MapsAdapter.MapsViewHolder> {
 
-    private ArrayList<Maps> maps;
+    private ArrayList<Map> maps;
     private Context context;
 
-    public MapsAdapter(Context context, ArrayList<Maps> maps) {
+    public MapsAdapter(Context context, ArrayList<Map> maps) {
         this.maps = maps;
         this.context = context;
     }
@@ -37,7 +37,7 @@ public class MapsAdapter extends RecyclerView.Adapter<MapsAdapter.MapsViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MapsViewHolder holder, final int i) {
-        final Maps map = maps.get(i);
+        final Map map = maps.get(i);
         holder.mapName.setText(map.getName());
 //        holder.mapCreator.setText(map.getCreator().getUsername());
         holder.materialCardView.setOnClickListener(new View.OnClickListener() {

@@ -1,7 +1,7 @@
-package com.martinlaizg.geofind.dataAccess.database.entity;
+package com.martinlaizg.geofind.data.access.database.entity;
 
 
-import com.martinlaizg.geofind.dataAccess.database.entity.enums.UserType;
+import com.martinlaizg.geofind.data.access.database.entity.enums.UserType;
 
 import java.sql.Date;
 

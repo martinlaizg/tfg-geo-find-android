@@ -1,6 +1,6 @@
-package com.martinlaizg.geofind.dataAccess.database.dao;
+package com.martinlaizg.geofind.data.access.database.dao;
 
-import com.martinlaizg.geofind.dataAccess.database.entity.User;
+import com.martinlaizg.geofind.data.access.database.entity.User;
 
 import java.util.List;
 

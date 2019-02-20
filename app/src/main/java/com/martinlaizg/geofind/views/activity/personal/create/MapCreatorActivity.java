@@ -8,11 +8,11 @@ import android.widget.Toast;
 
 import com.martinlaizg.geofind.MainActivity;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.dataAccess.database.entity.Maps;
-import com.martinlaizg.geofind.dataAccess.retrofit.RestClient;
-import com.martinlaizg.geofind.dataAccess.retrofit.RetrofitInstance;
-import com.martinlaizg.geofind.dataAccess.retrofit.error.APIError;
-import com.martinlaizg.geofind.dataAccess.retrofit.error.ErrorUtils;
+import com.martinlaizg.geofind.data.access.database.entity.Map;
+import com.martinlaizg.geofind.data.access.retrofit.RestClient;
+import com.martinlaizg.geofind.data.access.retrofit.RetrofitInstance;
+import com.martinlaizg.geofind.data.access.retrofit.error.APIError;
+import com.martinlaizg.geofind.data.access.retrofit.error.ErrorUtils;
 import com.martinlaizg.geofind.views.activity.personal.create.map.CreateMapFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,7 +27,7 @@ import retrofit2.Response;
 public class MapCreatorActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String MAP_CREATOR_FRAGMENT = "MAP_CREATOR_FRAGMENT";
-    public Maps map;
+    public Map map;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -56,9 +56,9 @@ public class MapCreatorActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         RestClient client = RetrofitInstance.getRestClient();
 
-        client.createMap(map).enqueue(new Callback<Maps>() {
+        client.createMap(map).enqueue(new Callback<Map>() {
             @Override
-            public void onResponse(Call<Maps> call, Response<Maps> response) {
+            public void onResponse(Call<Map> call, Response<Map> response) {
                 if (response.isSuccessful()) { // Response code from 200 to 30
                     Toast.makeText(getApplicationContext(), "Mapa creado correctamente", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -72,7 +72,7 @@ public class MapCreatorActivity extends AppCompatActivity implements View.OnClic
             }
 
             @Override
-            public void onFailure(Call<Maps> call, Throwable t) {
+            public void onFailure(Call<Map> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), getString(R.string.connection_failure), Toast.LENGTH_SHORT).show();
             }
         });

@@ -14,11 +14,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
-import com.martinlaizg.geofind.dataAccess.database.entity.User;
-import com.martinlaizg.geofind.dataAccess.retrofit.RestClient;
-import com.martinlaizg.geofind.dataAccess.retrofit.RetrofitInstance;
-import com.martinlaizg.geofind.dataAccess.retrofit.error.APIError;
-import com.martinlaizg.geofind.dataAccess.retrofit.error.ErrorUtils;
+import com.martinlaizg.geofind.data.access.database.entity.User;
+import com.martinlaizg.geofind.data.access.retrofit.RestClient;
+import com.martinlaizg.geofind.data.access.retrofit.RetrofitInstance;
+import com.martinlaizg.geofind.data.access.retrofit.error.APIError;
+import com.martinlaizg.geofind.data.access.retrofit.error.ErrorUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;

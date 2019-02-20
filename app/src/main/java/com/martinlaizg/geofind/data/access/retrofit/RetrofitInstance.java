@@ -1,4 +1,4 @@
-package com.martinlaizg.geofind.dataAccess.retrofit;
+package com.martinlaizg.geofind.data.access.retrofit;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

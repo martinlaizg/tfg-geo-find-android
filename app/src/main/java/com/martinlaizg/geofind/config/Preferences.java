@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.martinlaizg.geofind.dataAccess.database.entity.User;
+import com.martinlaizg.geofind.data.access.database.entity.User;
 import com.martinlaizg.geofind.utils.DateUtils;
 
 public class Preferences {

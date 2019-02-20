@@ -1,91 +1,65 @@
 package com.martinlaizg.geofind.views.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.adapter.LocationAdapter;
-import com.martinlaizg.geofind.dataAccess.database.entity.Location;
-import com.martinlaizg.geofind.dataAccess.retrofit.RestClient;
-import com.martinlaizg.geofind.dataAccess.retrofit.RetrofitInstance;
-import com.martinlaizg.geofind.dataAccess.retrofit.error.APIError;
-import com.martinlaizg.geofind.dataAccess.retrofit.error.ErrorUtils;
+import com.martinlaizg.geofind.data.access.database.entity.Location;
+import com.martinlaizg.geofind.views.model.LocationViewModel;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class LocationFragment extends Fragment {
 
     private static final String TAG = LocationFragment.class.getSimpleName();
+
+    @BindView(R.id.location_list)
+    RecyclerView recyclerView;
+
     private ArrayList<Location> locations;
     private LocationAdapter adapter;
-    private RecyclerView recyclerView;
+    private LocationViewModel locationViewModel;
 
     public LocationFragment() {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_location_list, container, false);
+        ButterKnife.bind(this, view);
         locations = new ArrayList<>();
-        loadLocations();
-        recyclerView = view.findViewById(R.id.location_list);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new LocationAdapter(locations);
+        adapter = new LocationAdapter();
         recyclerView.setAdapter(adapter);
 
-        return view;
-    }
 
+        locationViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
 
-    private void loadLocations() {
-        RestClient client = RetrofitInstance.getRestClient();
-        Map<String, String> params = new HashMap<>();
-
-        client.getLocations(params).enqueue(new Callback<List<Location>>() {
+        locationViewModel.getAllLocations().observe(this, new Observer<List<Location>>() {
             @Override
-            public void onResponse(Call<List<Location>> call, Response<List<Location>> response) {
-                if (response.isSuccessful()) { // Response code 200->300
-                    // Parse response to JSON
-                    List<Location> listLocation = response.body();
-                    locations.clear();
-                    locations.addAll(listLocation);
-                    // String locationsString = new Gson().toJson(locations);
-                    Toast.makeText(getActivity(), "Localizaciones cargados correctamente", Toast.LENGTH_SHORT).show();
-                    adapter.notifyItemInserted(1);
-                } else {
-                    APIError error = ErrorUtils.parseError(response);
-                    String errorMessage = error.getMessage();
-                    Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, errorMessage);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Location>> call, Throwable t) {
-                Toast.makeText(getActivity(), getString(R.string.connection_failure), Toast.LENGTH_SHORT).show();
+            public void onChanged(List<Location> locations) {
+                adapter.setLocations(locations);
             }
         });
+
+
+        return view;
     }
 
 }

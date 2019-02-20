@@ -28,7 +28,7 @@
     <string name="log_out">Cerrar sesión</string>
     <string name="account_settings">Ajustes de la cuenta</string>
     <string name="locations">Localizaciones</string>
-    <string name="maps">Maps</string>
+    <string name="map">Maps</string>
     <string name="users">Usuarios</string>
     <string name="login">Iniciar sesión</string>
     <string name="pref_title_sync_frequency">ccc</string>

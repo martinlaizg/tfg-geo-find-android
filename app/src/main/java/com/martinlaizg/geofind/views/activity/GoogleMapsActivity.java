@@ -13,9 +13,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.dataAccess.database.entity.Location;
-import com.martinlaizg.geofind.dataAccess.retrofit.RestClient;
-import com.martinlaizg.geofind.dataAccess.retrofit.RetrofitInstance;
+import com.martinlaizg.geofind.data.access.database.entity.Location;
+import com.martinlaizg.geofind.data.access.retrofit.RestClient;
+import com.martinlaizg.geofind.data.access.retrofit.RetrofitInstance;
 
 import java.util.HashMap;
 import java.util.List;

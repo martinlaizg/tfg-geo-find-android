@@ -1,4 +1,4 @@
-package com.martinlaizg.geofind.dataAccess.database.converter;
+package com.martinlaizg.geofind.data.access.database.converter;
 
 import java.sql.Date;
 

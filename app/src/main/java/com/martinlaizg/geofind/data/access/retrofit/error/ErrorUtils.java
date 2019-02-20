@@ -1,6 +1,6 @@
-package com.martinlaizg.geofind.dataAccess.retrofit.error;
+package com.martinlaizg.geofind.data.access.retrofit.error;
 
-import com.martinlaizg.geofind.dataAccess.retrofit.RetrofitInstance;
+import com.martinlaizg.geofind.data.access.retrofit.RetrofitInstance;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;

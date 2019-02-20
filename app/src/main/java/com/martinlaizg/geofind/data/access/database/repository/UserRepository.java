@@ -1,10 +1,10 @@
-package com.martinlaizg.geofind.dataAccess.database.repository;
+package com.martinlaizg.geofind.data.access.database.repository;
 
 import android.app.Application;
 
-import com.martinlaizg.geofind.dataAccess.database.AppDatabase;
-import com.martinlaizg.geofind.dataAccess.database.dao.UserDAO;
-import com.martinlaizg.geofind.dataAccess.database.entity.User;
+import com.martinlaizg.geofind.data.access.database.AppDatabase;
+import com.martinlaizg.geofind.data.access.database.dao.UserDAO;
+import com.martinlaizg.geofind.data.access.database.entity.User;
 
 import java.util.List;
 

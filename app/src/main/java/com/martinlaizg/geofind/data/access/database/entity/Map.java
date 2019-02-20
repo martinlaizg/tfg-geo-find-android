@@ -1,6 +1,6 @@
-package com.martinlaizg.geofind.dataAccess.database.entity;
+package com.martinlaizg.geofind.data.access.database.entity;
 
-import com.martinlaizg.geofind.dataAccess.database.entity.enums.PlayLevel;
+import com.martinlaizg.geofind.data.access.database.entity.enums.PlayLevel;
 
 import java.sql.Date;
 
@@ -8,7 +8,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "maps")
-public class Maps {
+public class Map {
 
     @PrimaryKey
     private int id;
@@ -22,7 +22,7 @@ public class Maps {
     private Date updated_at;
     private Integer creator_id;
 
-    public Maps(int id, String name, String country, String state, String description, String city, PlayLevel min_level, Date created_at, Date updated_at, Integer creator_id) {
+    public Map(int id, String name, String country, String state, String description, String city, PlayLevel min_level, Date created_at, Date updated_at, Integer creator_id) {
         this.id = id;
         this.name = name;
         this.country = country;

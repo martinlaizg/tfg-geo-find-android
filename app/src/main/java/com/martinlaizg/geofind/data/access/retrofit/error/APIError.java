@@ -1,4 +1,4 @@
-package com.martinlaizg.geofind.dataAccess.retrofit.error;
+package com.martinlaizg.geofind.data.access.retrofit.error;
 
 public class APIError {
 
