@@ -5,17 +5,10 @@
     <dimen name="big_margin">32dp</dimen>
     <dimen name="normal_text">16sp</dimen>
     <dimen name="small_text">16sp</dimen>
-    <dimen name="sub_text">12sp</dimen>
     <dimen name="progress_bar">4dp</dimen>
     <dimen name="drawer_header_height">128dp</dimen>
     <dimen name="normal_button">48dp</dimen>
     <dimen name="app_bar_layout_height">56dp</dimen>
-    <dimen name="small_elevation">5dp</dimen>
-    <dimen name="text_margin">16dp</dimen>
-    <dimen name="card_spacing">4dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="max_play_button">128dp</dimen>
-    <dimen name="min_play_button">64dp</dimen>
     <dimen name="map_card_corner_radius">16dp</dimen>
     <dimen name="map_card_corner_radius_negative">-16dp</dimen>
 </resources>

@@ -1,7 +1,6 @@
 package com.martinlaizg.geofind.views.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -14,30 +13,30 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entity.Location;
-import com.martinlaizg.geofind.data.access.retrofit.RestClient;
-import com.martinlaizg.geofind.data.access.retrofit.RetrofitInstance;
+import com.martinlaizg.geofind.data.access.database.entity.Map;
+import com.martinlaizg.geofind.views.model.MapListViewModel;
+import com.martinlaizg.geofind.views.model.MapViewModel;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class GoogleMapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     // Value to get destination map
-    public static final String MAP_ID_KEY = "map_id_key";
-    private static final String TAG = GoogleMapsActivity.class.getSimpleName();
+    public static final String MAP_ID = "map_id";
+    private static final String TAG = MapActivity.class.getSimpleName();
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @BindView(R.id.map_title)
-    TextView mapTitle;
+    @BindView(R.id.map_name)
+    TextView mapName;
     @BindView(R.id.map_location)
     TextView mapLocation;
     @BindView(R.id.map_description)
@@ -49,7 +48,10 @@ public class GoogleMapsActivity extends AppCompatActivity implements OnMapReadyC
     @BindView(R.id.map)
     MapView mapView;
 
+    MapListViewModel mapListViewModel;
+
     private GoogleMap mMap;
+    private MapViewModel mapViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,23 +61,21 @@ public class GoogleMapsActivity extends AppCompatActivity implements OnMapReadyC
 
         mapView.onCreate(savedInstanceState);
         mapView.onResume(); // needed to get the map to display immediately
-
         mapView.getMapAsync(this);
-        String id = getIntent().getStringExtra(MAP_ID_KEY);
+        String map_id = getIntent().getStringExtra(MAP_ID);
 
-        loadMap(id);
+        mapViewModel = ViewModelProviders.of(this).get(MapViewModel.class);
+        Map map = mapViewModel.getMap(map_id);
+        setMap(map);
+
+        mapListViewModel = ViewModelProviders.of(this).get(MapListViewModel.class);
+
     }
 
-    private void loadMap(String map_id) {
-        RestClient restClient = RetrofitInstance.getRestClient();
-        Map<String, String> parameters = new HashMap<>();
-
-        try {
-
-        } catch (Exception ex) {
-            Log.d(TAG, "loadMap: " + ex.getMessage());
-        }
-
+    private void setMap(Map map) {
+        mapName.setText(map.getName());
+        mapLocation.setText(map.getCity());
+        mapDescription.setText(map.getDescription());
     }
 
     void setMapLocation(List<Location> map_locations) {

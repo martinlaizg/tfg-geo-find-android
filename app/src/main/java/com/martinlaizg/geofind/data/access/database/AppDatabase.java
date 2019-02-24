@@ -12,6 +12,7 @@ import com.martinlaizg.geofind.data.access.database.dao.UserDAO;
 import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
 import com.martinlaizg.geofind.data.access.database.entity.User;
+import com.martinlaizg.geofind.data.access.database.entity.enums.UserType;
 
 import java.sql.Date;
 import java.util.Calendar;
@@ -43,7 +44,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     AppDatabase.class,
                     "geo_find_database").
                     fallbackToDestructiveMigration().
-                    addCallback(roomCallback).build();
+                    build();
         }
         return instance;
     }
@@ -55,18 +56,21 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract LocationDAO locationDAO();
 
     private static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void> {
-        private LocationDAO locationDAO;
+        private UserDAO userDAO;
 
         private PopulateDbAsyncTask(AppDatabase db) {
-            locationDAO = db.locationDAO();
+            userDAO = db.userDAO();
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
             Date date = new Date(Calendar.getInstance().getTime().getTime());
-            locationDAO.insert(new Location(1, "Nombre 1", "33.3333", "33.3333", date, date));
-            locationDAO.insert(new Location(2, "Nombre 2", "33.3333", "33.3333", date, date));
-            locationDAO.insert(new Location(3, "Nombre 3", "33.3333", "33.3333", date, date));
+            User user = new User();
+            user.setEmail("martinlaizg@gmail.com");
+            user.setName("Martin");
+            user.setPassword("martinlaizg");
+            user.setUser_type(UserType.ADMINISTRATOR);
+            userDAO.insert(user);
             return null;
         }
     }

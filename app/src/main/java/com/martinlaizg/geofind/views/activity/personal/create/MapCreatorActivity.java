@@ -4,25 +4,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import com.martinlaizg.geofind.MainActivity;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
-import com.martinlaizg.geofind.data.access.retrofit.RestClient;
-import com.martinlaizg.geofind.data.access.retrofit.RetrofitInstance;
-import com.martinlaizg.geofind.data.access.retrofit.error.APIError;
-import com.martinlaizg.geofind.data.access.retrofit.error.ErrorUtils;
+import com.martinlaizg.geofind.views.activity.MapActivity;
 import com.martinlaizg.geofind.views.activity.personal.create.map.CreateMapFragment;
+import com.martinlaizg.geofind.views.model.MapCreatorViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MapCreatorActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -31,11 +25,15 @@ public class MapCreatorActivity extends AppCompatActivity implements View.OnClic
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    MapCreatorViewModel mapCreatorViewModel;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_creator);
         ButterKnife.bind(MapCreatorActivity.this);
+
+        mapCreatorViewModel = ViewModelProviders.of(this).get(MapCreatorViewModel.class);
 
         // Toolbar
         setSupportActionBar(toolbar);
@@ -48,34 +46,17 @@ public class MapCreatorActivity extends AppCompatActivity implements View.OnClic
         final FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.map_creator_frame_layout, fragment, MAP_CREATOR_FRAGMENT);
         fragmentTransaction.commit();
-
-
     }
 
     @Override
     public void onClick(View v) {
-        RestClient client = RetrofitInstance.getRestClient();
 
-        client.createMap(map).enqueue(new Callback<Map>() {
-            @Override
-            public void onResponse(Call<Map> call, Response<Map> response) {
-                if (response.isSuccessful()) { // Response code from 200 to 30
-                    Toast.makeText(getApplicationContext(), "Mapa creado correctamente", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                } else {
-                    APIError error = ErrorUtils.parseError(response);
-                    String errorMessage = error.getMessage();
-                    Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
-                }
-            }
+        mapCreatorViewModel.insert(map);
 
-            @Override
-            public void onFailure(Call<Map> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), getString(R.string.connection_failure), Toast.LENGTH_SHORT).show();
-            }
-        });
+        Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+        intent.putExtra(MapActivity.MAP_ID, map.getId());
+        startActivity(intent);
+
     }
 
     @Override

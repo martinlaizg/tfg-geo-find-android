@@ -20,7 +20,6 @@
         android:tint="@color/textColorPrimary" />
 
     <LinearLayout
-        android:id="@+id/register_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/image_register"

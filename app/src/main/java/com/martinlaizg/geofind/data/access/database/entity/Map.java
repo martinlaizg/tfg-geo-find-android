@@ -4,6 +4,7 @@ import com.martinlaizg.geofind.data.access.database.entity.enums.PlayLevel;
 
 import java.sql.Date;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -11,7 +12,8 @@ import androidx.room.PrimaryKey;
 public class Map {
 
     @PrimaryKey
-    private int id;
+    @NonNull
+    private String id;
     private String name;
     private String country;
     private String state;
@@ -20,26 +22,14 @@ public class Map {
     private PlayLevel min_level;
     private Date created_at;
     private Date updated_at;
-    private Integer creator_id;
+    private String creator_id;
 
-    public Map(int id, String name, String country, String state, String description, String city, PlayLevel min_level, Date created_at, Date updated_at, Integer creator_id) {
-        this.id = id;
-        this.name = name;
-        this.country = country;
-        this.state = state;
-        this.description = description;
-        this.city = city;
-        this.min_level = min_level;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
-        this.creator_id = creator_id;
-    }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -107,11 +97,11 @@ public class Map {
         this.updated_at = updated_at;
     }
 
-    public Integer getCreator_id() {
+    public String getCreator_id() {
         return creator_id;
     }
 
-    public void setCreator_id(Integer creator_id) {
+    public void setCreator_id(String creator_id) {
         this.creator_id = creator_id;
     }
 }

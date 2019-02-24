@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/drawer_header"
     android:layout_width="wrap_content"
     android:layout_height="@dimen/drawer_header_height"
     android:background="@color/colorPrimaryDark"
@@ -12,7 +11,6 @@
     android:focusable="true">
 
     <ImageView
-        android:id="@+id/user_image"
         android:layout_width="80dp"
         android:layout_height="fill_parent"
         android:contentDescription="@string/description_user_image"
@@ -27,7 +25,6 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/drawer_header_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nav_header_name"
@@ -35,7 +32,6 @@
             android:textSize="@dimen/normal_text" />
 
         <TextView
-            android:id="@+id/drawer_header_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/micro_margin"

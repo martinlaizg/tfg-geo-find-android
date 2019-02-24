@@ -9,7 +9,6 @@
     android:paddingBottom="@dimen/small_margin">
 
     <ImageView
-        android:id="@+id/location_image"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:contentDescription="@string/location_description"

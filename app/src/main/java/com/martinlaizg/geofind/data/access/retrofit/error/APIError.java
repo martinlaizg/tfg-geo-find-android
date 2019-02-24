@@ -2,19 +2,17 @@ package com.martinlaizg.geofind.data.access.retrofit.error;
 
 public class APIError {
 
-    private int error;
+    private int statusCode;
     private String message;
 
     public APIError() {
     }
 
-    public APIError(final int error, final String message) {
-        this.error = error;
-        this.message = message;
+    public int status() {
+        return statusCode;
     }
 
-    public String getMessage() {
+    public String message() {
         return message;
     }
-
 }

@@ -1,6 +1,6 @@
 package com.martinlaizg.geofind.data.access.retrofit.error;
 
-import com.martinlaizg.geofind.data.access.retrofit.RetrofitInstance;
+import com.martinlaizg.geofind.data.access.retrofit.RetrofitService;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -10,9 +10,9 @@ import retrofit2.Converter;
 import retrofit2.Response;
 
 public class ErrorUtils {
+
     public static APIError parseError(Response<?> response) {
-        Converter<ResponseBody, APIError> converter = RetrofitInstance.getRetrofitInstance()
-                .responseBodyConverter(APIError.class, new Annotation[0]);
+        Converter<ResponseBody, APIError> converter = RetrofitService.getRetrofitInstance().responseBodyConverter(APIError.class, new Annotation[0]);
 
         APIError error;
 

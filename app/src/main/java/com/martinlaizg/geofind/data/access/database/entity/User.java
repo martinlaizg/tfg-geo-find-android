@@ -5,15 +5,16 @@ import com.martinlaizg.geofind.data.access.database.entity.enums.UserType;
 
 import java.sql.Date;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "users")
 public class User {
 
     @PrimaryKey
-    private int id;
+    @NonNull
+    private String id;
     private String email;
     private String username;
     private String name;
@@ -24,26 +25,11 @@ public class User {
     private Date updated_at;
 
 
-    public User(String email, String username, String name, String password, Date bdate, UserType user_type) {
-        this.email = email;
-        this.username = username;
-        this.name = name;
-        this.password = password;
-        this.bdate = bdate;
-        this.user_type = user_type;
-    }
-
-    @Ignore
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

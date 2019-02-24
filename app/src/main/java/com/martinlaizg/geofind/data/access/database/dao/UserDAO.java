@@ -25,4 +25,10 @@ public interface UserDAO {
 
     @Query("SELECT * FROM users")
     LiveData<List<User>> getAllUsers();
+
+    @Query("DELETE FROM users")
+    void deleteAllUsers();
+
+    @Query("SELECT * FROM users WHERE email = :email AND password = :password")
+    List<User> getUser(String email, String password);
 }

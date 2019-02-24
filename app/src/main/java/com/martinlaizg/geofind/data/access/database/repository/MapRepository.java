@@ -5,36 +5,44 @@ import android.app.Application;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
 import com.martinlaizg.geofind.data.access.database.dao.MapDAO;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
-import com.martinlaizg.geofind.data.access.database.entity.User;
+import com.martinlaizg.geofind.data.access.retrofit.service.MapService;
 
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
 
 public class MapRepository {
+
+
+    private MapService mapService;
     private MapDAO mapDAO;
+
+
     private LiveData<List<Map>> allMaps;
 
     public MapRepository(Application application) {
         AppDatabase database = AppDatabase.getInstance(application);
         mapDAO = database.mapDAO();
-        allMaps = mapDAO.getAllMaps();
+        mapService = MapService.getInstance();
     }
 
-    public void insert(User user) {
 
+    public LiveData<List<Map>> getAllMaps() {
+        return mapDAO.getAllMaps();
     }
 
-    public void update(User user) {
-
+    public Map getMap(String id) {
+        return mapDAO.getMap(id);
     }
 
-    public void delete(User user) {
-
+    public void refreshMaps() {
+        List<Map> maps = mapService.getAllMaps();
+        for (Map map : maps) {
+            mapDAO.insert(map);
+        }
     }
 
-    public void deleteAllUsers() {
-
+    public void insert(Map map) {
+        mapDAO.insert(map);
     }
-
 }

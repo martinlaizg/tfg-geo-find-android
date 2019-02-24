@@ -10,14 +10,24 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/app_bar_layout_height">
+        android:layout_marginStart="@dimen/normal_margin"
+        android:layout_marginTop="@dimen/app_bar_layout_height"
+        android:layout_marginEnd="@dimen/normal_margin">
 
         <TextView
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/normal_margin"
             android:text="@string/action_settings"
             android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/account_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:text="@string/user_name"
+            android:textSize="@dimen/normal_text" />
 
         <Button
             android:id="@+id/create_map_button"

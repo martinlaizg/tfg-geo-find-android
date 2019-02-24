@@ -34,8 +34,6 @@ public class LocationFragment extends Fragment {
     private LocationAdapter adapter;
     private LocationViewModel locationViewModel;
 
-    public LocationFragment() {
-    }
 
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,

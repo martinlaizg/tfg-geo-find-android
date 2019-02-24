@@ -19,7 +19,7 @@ public class Preferences {
 
     private String key;
 
-    public static User geLoggedUser(Context context) {
+    public static User getLoggedUser(Context context) {
         initializeSharedPreferences(context);
 
         String user_string = sp.getString(USER, "");
@@ -37,5 +37,12 @@ public class Preferences {
     public static SharedPreferences getInstance(Context applicationContext) {
         initializeSharedPreferences(applicationContext);
         return sp;
+    }
+
+    public static void setLoggedUser(Context context, User user) {
+        initializeSharedPreferences(context);
+        Gson gson = new GsonBuilder().setDateFormat(DateUtils.DATE_FORMAT).create();
+        String stringUser = gson.toJson(user);
+        sp.edit().putString(USER, stringUser).apply();
     }
 }

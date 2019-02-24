@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.martinlaizg.geofind.R;
+import com.martinlaizg.geofind.config.Preferences;
+import com.martinlaizg.geofind.data.access.database.entity.User;
 import com.martinlaizg.geofind.views.activity.personal.create.MapCreatorActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +22,9 @@ public class MyAccountActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.account_user_name)
+    TextView user_name;
+
     @BindView(R.id.create_map_button)
     Button create_map_button;
 
@@ -28,6 +34,9 @@ public class MyAccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_account);
 
         ButterKnife.bind(MyAccountActivity.this);
+
+        User user = Preferences.getLoggedUser(getApplication());
+        user_name.setText(user.getName());
 
         // Toolbar
         setSupportActionBar(toolbar);

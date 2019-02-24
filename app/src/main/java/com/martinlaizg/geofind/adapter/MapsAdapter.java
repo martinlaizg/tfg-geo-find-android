@@ -10,22 +10,19 @@ import android.widget.TextView;
 import com.google.android.material.card.MaterialCardView;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
-import com.martinlaizg.geofind.views.activity.GoogleMapsActivity;
+import com.martinlaizg.geofind.views.activity.MapActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MapsAdapter extends RecyclerView.Adapter<MapsAdapter.MapsViewHolder> {
 
-    private ArrayList<Map> maps;
-    private Context context;
-
-    public MapsAdapter(Context context, ArrayList<Map> maps) {
-        this.maps = maps;
-        this.context = context;
-    }
+    private List<Map> maps = new ArrayList<>();
 
     @NonNull
     @Override
@@ -39,16 +36,7 @@ public class MapsAdapter extends RecyclerView.Adapter<MapsAdapter.MapsViewHolder
     public void onBindViewHolder(@NonNull MapsViewHolder holder, final int i) {
         final Map map = maps.get(i);
         holder.mapName.setText(map.getName());
-//        holder.mapCreator.setText(map.getCreator().getUsername());
-        holder.materialCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, GoogleMapsActivity.class);
-                intent.putExtra(GoogleMapsActivity.MAP_ID_KEY, map.getId());
-
-                context.startActivity(intent);
-            }
-        });
+        holder.id = map.getId();
     }
 
     @Override
@@ -56,17 +44,34 @@ public class MapsAdapter extends RecyclerView.Adapter<MapsAdapter.MapsViewHolder
         return maps.size();
     }
 
+    public void setMaps(List<Map> maps) {
+        this.maps = maps;
+        notifyDataSetChanged();
+    }
+
     class MapsViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.map_name)
         TextView mapName;
+        @BindView(R.id.map_creator)
         TextView mapCreator;
+        @BindView(R.id.map_list_item)
         MaterialCardView materialCardView;
+
+        String id;
 
         MapsViewHolder(@NonNull View itemView) {
             super(itemView);
-            mapName = itemView.findViewById(R.id.map_name);
-            mapCreator = itemView.findViewById(R.id.map_creator);
-            materialCardView = itemView.findViewById(R.id.map_list_item);
+            ButterKnife.bind(this, itemView);
+            materialCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Context context = itemView.getContext();
+                    Intent intent = new Intent(context, MapActivity.class);
+                    intent.putExtra(MapActivity.MAP_ID, id);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 

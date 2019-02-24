@@ -81,7 +81,7 @@ public class CreateMapFragment extends Fragment implements View.OnClickListener 
         MapCreatorActivity parentActivity = (MapCreatorActivity) getActivity();
         parentActivity.map.setName(name);
         parentActivity.map.setDescription(description);
-        User user = Preferences.geLoggedUser(getContext());
+        User user = Preferences.getLoggedUser(getContext());
         parentActivity.map.setCreator_id(user.getId());
 
         final Fragment fragment = CreateLocationFragment.newInstance();

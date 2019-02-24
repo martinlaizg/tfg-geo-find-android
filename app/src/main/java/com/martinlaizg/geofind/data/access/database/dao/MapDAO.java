@@ -8,13 +8,14 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
 @Dao
 public interface MapDAO {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Map map);
 
     @Update
@@ -25,4 +26,11 @@ public interface MapDAO {
 
     @Query("SELECT * FROM maps")
     LiveData<List<Map>> getAllMaps();
+
+    @Query("DELETE FROM maps")
+    void deleteAllMaps();
+
+    @Query("SELECT * FROM maps WHERE id = :mapId")
+    Map getMap(String mapId);
+
 }

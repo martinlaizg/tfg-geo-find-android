@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map_list"
+    android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginStart="@dimen/small_margin"
-    android:layout_marginEnd="@dimen/small_margin"
-    android:background="@android:color/transparent"
-    tools:context=".views.fragment.MapsFragment"
-    tools:listitem="@layout/fragment_maps" />
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/map_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/small_margin"
+        android:layout_marginEnd="@dimen/small_margin"
+        android:background="@android:color/transparent"
+        tools:context=".views.fragment.MapListFragment"
+        tools:listitem="@layout/fragment_maps" />
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

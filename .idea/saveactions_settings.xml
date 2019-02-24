@@ -8,7 +8,6 @@
         <option value="reformat" />
         <option value="rearrange" />
         <option value="unnecessaryThis" />
-        <option value="suppressAnnotation" />
       </set>
     </option>
     <option name="configurationPath" value="" />

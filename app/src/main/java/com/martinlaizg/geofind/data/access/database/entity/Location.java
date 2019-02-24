@@ -1,7 +1,9 @@
 package com.martinlaizg.geofind.data.access.database.entity;
 
 import java.sql.Date;
+import java.util.UUID;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -9,15 +11,16 @@ import androidx.room.PrimaryKey;
 public class Location {
 
     @PrimaryKey
-    private int id;
+    @NonNull
+    private String id;
     private String name;
     private String lat;
     private String lon;
     private Date created_at;
     private Date updated_at;
 
-    public Location(int id, String name, String lat, String lon, Date created_at, Date updated_at) {
-        this.id = id;
+    public Location(String name, String lat, String lon, Date created_at, Date updated_at) {
+        id = UUID.randomUUID().toString();
         this.name = name;
         this.lat = lat;
         this.lon = lon;
@@ -25,11 +28,11 @@ public class Location {
         this.updated_at = updated_at;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

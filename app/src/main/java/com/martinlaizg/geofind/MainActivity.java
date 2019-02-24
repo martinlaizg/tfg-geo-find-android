@@ -14,7 +14,7 @@ import com.martinlaizg.geofind.views.activity.LoginActivity;
 import com.martinlaizg.geofind.views.activity.personal.MyAccountActivity;
 import com.martinlaizg.geofind.views.fragment.LocationFragment;
 import com.martinlaizg.geofind.views.fragment.MainFragment;
-import com.martinlaizg.geofind.views.fragment.MapsFragment;
+import com.martinlaizg.geofind.views.fragment.MapListFragment;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -108,12 +108,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (menuItem.getItemId()) {
             case R.id.menu_users:
                 Toast.makeText(this, "Cargar usuarios", Toast.LENGTH_SHORT).show();
-                fragment = new MapsFragment();
+                fragment = new MapListFragment();
                 fragmentTransaction = true;
                 break;
             case R.id.menu_maps:
                 Toast.makeText(this, "Cargar mapas", Toast.LENGTH_SHORT).show();
-                fragment = new MapsFragment();
+                fragment = new MapListFragment();
                 fragmentTransaction = true;
                 break;
             case R.id.menu_locations:

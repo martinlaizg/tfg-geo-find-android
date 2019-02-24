@@ -1,102 +1,57 @@
 package com.martinlaizg.geofind.data.access.database.repository;
 
 import android.app.Application;
-import android.os.AsyncTask;
 
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
 import com.martinlaizg.geofind.data.access.database.dao.LocationDAO;
 import com.martinlaizg.geofind.data.access.database.entity.Location;
+import com.martinlaizg.geofind.data.access.retrofit.service.LocationService;
 
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
 
 public class LocationRepository {
+
+    private LocationService locationService;
+
     private LocationDAO locationDAO;
     private LiveData<List<Location>> allLocations;
 
     public LocationRepository(Application application) {
         AppDatabase database = AppDatabase.getInstance(application);
         locationDAO = database.locationDAO();
-        allLocations = locationDAO.getAllLocations();
+        locationService = LocationService.getInstance();
     }
 
     public void insert(Location location) {
-        new InsertLocationAsyncTask(locationDAO).execute(location);
+        locationDAO.insert(location);
+        locationService.insert(location);
     }
 
     public void update(Location location) {
-        new UpdateLocationAsyncTask(locationDAO).execute(location);
-
+        locationDAO.update(location);
+        locationService.update(location);
     }
 
     public void delete(Location location) {
-        new DeleteLocationAsyncTask(locationDAO).execute(location);
+        locationDAO.update(location);
+        locationService.update(location);
 
     }
 
     public void deleteAllLocations() {
-        new DeleteAllLocationAsyncTask(locationDAO).execute();
+        locationDAO.deleteAllLocations();
+        locationService.deleteAllLocations();
 
     }
 
     public LiveData<List<Location>> getAllLocations() {
+        LiveData<List<Location>> allLocations = locationDAO.getAllLocations();
+        if (allLocations != null && allLocations.getValue() != null && allLocations.getValue().isEmpty()) {
+            allLocations.getValue().addAll(locationService.getAllLocations());
+        }
         return allLocations;
     }
 
-    private static class InsertLocationAsyncTask extends AsyncTask<Location, Void, Void> {
-        private LocationDAO locationDAO;
-
-        private InsertLocationAsyncTask(LocationDAO locationDAO) {
-            this.locationDAO = locationDAO;
-        }
-
-        @Override
-        protected Void doInBackground(Location... locations) {
-            locationDAO.insert(locations[0]);
-            return null;
-        }
-    }
-
-    private static class UpdateLocationAsyncTask extends AsyncTask<Location, Void, Void> {
-        private LocationDAO locationDAO;
-
-        private UpdateLocationAsyncTask(LocationDAO locationDAO) {
-            this.locationDAO = locationDAO;
-        }
-
-        @Override
-        protected Void doInBackground(Location... locations) {
-            locationDAO.update(locations[0]);
-            return null;
-        }
-    }
-
-    private static class DeleteLocationAsyncTask extends AsyncTask<Location, Void, Void> {
-        private LocationDAO locationDAO;
-
-        private DeleteLocationAsyncTask(LocationDAO locationDAO) {
-            this.locationDAO = locationDAO;
-        }
-
-        @Override
-        protected Void doInBackground(Location... locations) {
-            locationDAO.delete(locations[0]);
-            return null;
-        }
-    }
-
-    private static class DeleteAllLocationAsyncTask extends AsyncTask<Void, Void, Void> {
-        private LocationDAO locationDAO;
-
-        private DeleteAllLocationAsyncTask(LocationDAO locationDAO) {
-            this.locationDAO = locationDAO;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            locationDAO.deleteAllLocations();
-            return null;
-        }
-    }
 }

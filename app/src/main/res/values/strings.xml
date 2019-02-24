@@ -1,23 +1,10 @@
 <resources>
     <string name="app_name">GeoFind</string>
-    <string name="title_activity_maps">Mapa</string>
 
-    <string name="google_maps_API_key">AIzaSyCNKbWcHYUAYBNj_3etkUn5d_tm7ftYNSY</string>
-
-    <string name="title_activity_navigation_main">NavigationMainActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Ajustes</string>
     <string name="name">Name</string>
-    <string name="solicitar_informacion">Solicitar informacion</string>
-    <string name="thermometer">Termometro</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
-    <string name="title_activity_drawer">DrawerActivity</string>
-    <string name="search_title">Busqueda</string>
     <string name="description_user_image">User profile image</string>
     <string name="nav_header_username">username</string>
     <string name="nav_header_name">Nombre completo de usuario</string>
@@ -31,16 +18,6 @@
     <string name="map">Maps</string>
     <string name="users">Usuarios</string>
     <string name="login">Iniciar sesión</string>
-    <string name="pref_title_sync_frequency">ccc</string>
-    <string name="pref_title_system_sync_settings">ddd</string>
-    <string name="pref_title_new_message_notifications">eee</string>
-    <string name="pref_title_ringtone">eeee</string>
-    <string name="pref_title_vibrate">fff</string>
-    <string name="pref_description_social_recommendations">aaa</string>
-    <string name="pref_title_social_recommendations">aaaa</string>
-    <string name="pref_default_display_name">aaaa</string>
-    <string name="pref_title_display_name">aaaaa</string>
-    <string name="pref_title_add_friends_to_messages">aaaa</string>
     <string name="registry">Registrarse</string>
     <string name="create_account">Crear cuenta</string>
     <string name="no_has_account_question">Aún no tienes una cuenta?</string>
@@ -51,15 +28,11 @@
     <string name="default_progress">8/24</string>
     <string name="default_email">martinlaizg@gmail.com</string>
     <string name="default_password">martinlaizg</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="location_description">Imagen de la localización</string>
     <string name="default_location_name">Nombre de la localización</string>
     <string name="default_location_distance">300m</string>
     <string name="map_main_image">Imagen principal del mapa</string>
     <string name="default_map_description">Descripción de ejemplo para el mapa. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam venenatis sagittis nunc nec congue. Suspendisse nec porttitor nunc, id vehicula sem. Cras ornare, nisl vitae interdum dignissim, neque felis ullamcorper ipsum, et venenatis tellus massa nec enim. Praesent a erat augue. Cras semper velit in erat rutrum, vitae facilisis dolor.</string>
-    <string name="title_activity_basic">BasicActivity</string>
     <string name="expandable_icon_description">Expandir/Contraer opciones mapa</string>
     <string name="play_map">Map</string>
     <string name="play_compass">compass</string>
@@ -83,4 +56,8 @@
     <string name="finish">Finalizar</string>
     <string name="required_email">El email es obligatorio</string>
     <string name="required_password">La contraseña es obligatoria</string>
+    <string name="network_error">Error de conexión</string>
+    <string name="user_name">Nombre del usuario</string>
+    <string name="wrong_email_password">Email o contraseña incorrectos</string>
+    <string name="already_logged">Ya estabas logeado</string>
 </resources>
