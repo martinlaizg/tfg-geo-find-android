@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.martinlaizg.geofind.data.access.database.entity.Map;
 import com.martinlaizg.geofind.data.access.database.repository.MapRepository;
+import com.martinlaizg.geofind.views.fragment.MapListFragment;
 
 import java.util.List;
 
@@ -12,6 +13,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 public class MapListViewModel extends AndroidViewModel {
+
+    MapListFragment fragment;
 
     private MapRepository repository;
     private LiveData<List<Map>> allMaps;
@@ -23,11 +26,19 @@ public class MapListViewModel extends AndroidViewModel {
         allMaps = repository.getAllMaps();
     }
 
+
     public LiveData<List<Map>> getAllMaps() {
         return allMaps;
     }
 
     public void refreshMaps() {
-        repository.refreshMaps();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                repository.refreshMaps();
+
+            }
+        }).start();
     }
+
 }

@@ -45,4 +45,5 @@ public class MapRepository {
     public void insert(Map map) {
         mapDAO.insert(map);
     }
+
 }

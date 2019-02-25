@@ -55,6 +55,7 @@ public class MapListFragment extends Fragment {
             @Override
             public void onChanged(List<Map> maps) {
                 adapter.setMaps(maps);
+                swipeRefresh.setRefreshing(false);
             }
         });
 
@@ -69,8 +70,8 @@ public class MapListFragment extends Fragment {
     }
 
     private void loadMaps() {
+
         mapListViewModel.refreshMaps();
-        swipeRefresh.setRefreshing(false);
     }
 
 
