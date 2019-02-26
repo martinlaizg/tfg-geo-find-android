@@ -31,7 +31,11 @@ public interface RestClient {
 
     // Get single map
     @GET("maps/{id}")
-    Call<Map> getSingleMap(@Path("id") String id);
+    Call<Map> getMap(@Path("id") String id);
+
+    // Get locations by map
+    @GET("maps/{id}/locations")
+    Call<List<Location>> getLocationsByMap(@Path("id") String map_id);
 
 
     // Locations requests
@@ -42,8 +46,7 @@ public interface RestClient {
 
     // Get single location
     @GET("locations/{id}")
-    Call<Location> getSingleLocation(@Path("id") String id);
-
+    Call<Location> getLocation(@Path("id") String id);
 
     // User requests
 
@@ -53,4 +56,5 @@ public interface RestClient {
 
     @POST("users")
     Call<List<User>> getUsers(@QueryMap java.util.Map<String, String> params);
+
 }
