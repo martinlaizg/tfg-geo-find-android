@@ -2,7 +2,9 @@ package com.martinlaizg.geofind.views.model;
 
 import android.app.Application;
 
+import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
+import com.martinlaizg.geofind.data.access.database.repository.LocationRepository;
 import com.martinlaizg.geofind.data.access.database.repository.MapRepository;
 
 import java.util.List;
@@ -13,18 +15,22 @@ import androidx.lifecycle.LiveData;
 
 public class MapViewModel extends AndroidViewModel {
 
-    private MapRepository repository;
-    private LiveData<List<Map>> allMaps;
+    private MapRepository mapRepo;
+    private LocationRepository locRepo;
+    private LiveData<Map> map;
 
 
     public MapViewModel(@NonNull Application application) {
         super(application);
-        repository = new MapRepository(application);
-        allMaps = repository.getAllMaps();
+        mapRepo = new MapRepository(application);
+        locRepo = new LocationRepository(application);
     }
 
-    public Map getMap(String id) {
-        return repository.getMap(id);
+    public LiveData<Map> getMap(String map_id) {
+        return mapRepo.getMap(map_id);
     }
 
+    public LiveData<List<Location>> getLocationsByMap(String map_id) {
+        return mapRepo.getLocations(map_id);
+    }
 }

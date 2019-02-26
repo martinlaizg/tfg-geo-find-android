@@ -1,5 +1,6 @@
 package com.martinlaizg.geofind.data.access.database.dao;
 
+import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
 
 import java.util.List;
@@ -31,6 +32,8 @@ public interface MapDAO {
     void deleteAllMaps();
 
     @Query("SELECT * FROM maps WHERE id = :mapId")
-    Map getMap(String mapId);
+    LiveData<Map> getMap(String mapId);
 
+    @Query("SELECT * FROM locations WHERE map_id = :map_id")
+    LiveData<List<Location>> getLocations(String map_id);
 }

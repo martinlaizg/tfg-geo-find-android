@@ -3,7 +3,9 @@ package com.martinlaizg.geofind.data.access.database.repository;
 import android.app.Application;
 
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
+import com.martinlaizg.geofind.data.access.database.dao.LocationDAO;
 import com.martinlaizg.geofind.data.access.database.dao.MapDAO;
+import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
 import com.martinlaizg.geofind.data.access.retrofit.service.MapService;
 
@@ -17,6 +19,8 @@ public class MapRepository {
     private MapService mapService;
     private MapDAO mapDAO;
 
+    private LocationDAO locDAO;
+
 
     private LiveData<List<Map>> allMaps;
 
@@ -24,6 +28,7 @@ public class MapRepository {
         AppDatabase database = AppDatabase.getInstance(application);
         mapDAO = database.mapDAO();
         mapService = MapService.getInstance();
+        locDAO = database.locationDAO();
     }
 
 
@@ -31,7 +36,7 @@ public class MapRepository {
         return mapDAO.getAllMaps();
     }
 
-    public Map getMap(String id) {
+    public LiveData<Map> getMap(String id) {
         return mapDAO.getMap(id);
     }
 
@@ -46,4 +51,21 @@ public class MapRepository {
         mapDAO.insert(map);
     }
 
+
+    public LiveData<List<Location>> getLocations(String map_id) {
+
+        LiveData<List<Location>> locations = mapDAO.getLocations(map_id);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Location> serviceLocations = mapService.getLocations(map_id);
+                for (Location loc : serviceLocations) {
+                    locDAO.insert(loc);
+                }
+            }
+        }).start();
+
+        return locations;
+    }
 }

@@ -14,7 +14,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
-import com.martinlaizg.geofind.views.model.MapListViewModel;
 import com.martinlaizg.geofind.views.model.MapViewModel;
 
 import java.util.List;
@@ -22,6 +21,7 @@ import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,8 +48,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @BindView(R.id.map)
     MapView mapView;
 
-    MapListViewModel mapListViewModel;
-
     private GoogleMap mMap;
     private MapViewModel mapViewModel;
 
@@ -59,16 +57,28 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_google_maps);
         ButterKnife.bind(this);
 
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         mapView.onCreate(savedInstanceState);
         mapView.onResume(); // needed to get the map to display immediately
         mapView.getMapAsync(this);
         String map_id = getIntent().getStringExtra(MAP_ID);
 
         mapViewModel = ViewModelProviders.of(this).get(MapViewModel.class);
-        Map map = mapViewModel.getMap(map_id);
-        setMap(map);
-
-        mapListViewModel = ViewModelProviders.of(this).get(MapListViewModel.class);
+        mapViewModel.getMap(map_id).observe(this, new Observer<Map>() {
+            @Override
+            public void onChanged(Map map) {
+                setMap(map);
+            }
+        });
+        mapViewModel.getLocationsByMap(map_id).observe(this, new Observer<List<Location>>() {
+            @Override
+            public void onChanged(List<Location> locations) {
+                setMapLocation(locations);
+            }
+        });
 
     }
 
@@ -76,29 +86,32 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mapName.setText(map.getName());
         mapLocation.setText(map.getCity());
         mapDescription.setText(map.getDescription());
+
     }
 
     void setMapLocation(List<Location> map_locations) {
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        if (map_locations.size() > 0) {
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
-        for (Location loc : map_locations) {
-            // Get lat and lon
-            Double lat = Double.valueOf(loc.getLat());
-            Double lon = Double.valueOf(loc.getLon());
-            // Create location object
-            LatLng location = new LatLng(lat, lon);
-            // Add marker to de map
-            mMap.addMarker(new MarkerOptions().position(location).title(loc.getName()));
-            // Add location for CameraUpdate
-            builder.include(location);
+            for (Location loc : map_locations) {
+                // Get lat and lon
+                Double lat = Double.valueOf(loc.getLat());
+                Double lon = Double.valueOf(loc.getLon());
+                // Create location object
+                LatLng location = new LatLng(lat, lon);
+                // Add marker to de map
+                mMap.addMarker(new MarkerOptions().position(location).title(loc.getName()));
+                // Add location for CameraUpdate
+                builder.include(location);
+            }
+            LatLngBounds bounds = builder.build();
+
+            int width = getResources().getDisplayMetrics().widthPixels;
+            int padding = (int) (width * 0.10); // offset from edges of the map 10% of screen
+
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+            mMap.moveCamera(cu);
         }
-        LatLngBounds bounds = builder.build();
-
-        int width = getResources().getDisplayMetrics().widthPixels;
-        int padding = (int) (width * 0.10); // offset from edges of the map 10% of screen
-
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-        mMap.animateCamera(cu);
     }
 
     @Override
@@ -108,5 +121,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         // Set padding bottom for show Google logo on map
 //        int radius = (int) getResources().getDimension(R.dimen.map_card_corner_radius);
 //        mMap.setPadding(0, 0, 0, radius);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

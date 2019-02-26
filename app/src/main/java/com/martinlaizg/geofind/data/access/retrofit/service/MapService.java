@@ -2,6 +2,7 @@ package com.martinlaizg.geofind.data.access.retrofit.service;
 
 import android.util.Log;
 
+import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
 import com.martinlaizg.geofind.data.access.retrofit.RestClient;
 import com.martinlaizg.geofind.data.access.retrofit.RetrofitService;
@@ -40,26 +41,14 @@ public class MapService {
     }
 
 
-    public Map getSingle(String id) {
-        // TODO: unimplemented method
-        return null;
+    public List<Location> getLocations(String map_id) {
+        Response<List<Location>> execute = null;
+        try {
+            execute = restClient.getLocationsByMap(map_id).execute();
+            return execute.body();
+        } catch (IOException e) {
+            Log.e(TAG, "getLocationsByMap", e);
+        }
+        return new ArrayList<>();
     }
-
-    public void insert(Map map) {
-        // TODO: unimplemented method
-    }
-
-    public void update(Map map) {
-        // TODO: unimplemented method
-    }
-
-    public void deleteAllMaps() {
-        // TODO: unimplemented method
-    }
-
-    public void delete(Map map) {
-        // TODO: unimplemented method
-    }
-
-
 }

@@ -24,7 +24,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {User.class, Map.class, Location.class}, version = 1, exportSchema = false)
+@Database(entities = {User.class, Map.class, Location.class}, version = 2, exportSchema = false)
 @TypeConverters({DateTypeConverter.class, PlayLevelTypeConverter.class, UserTypeTypeConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 

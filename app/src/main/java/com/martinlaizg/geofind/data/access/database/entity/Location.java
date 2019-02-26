@@ -1,13 +1,24 @@
 package com.martinlaizg.geofind.data.access.database.entity;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.sql.Date;
 import java.util.UUID;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "locations")
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "locations",
+        foreignKeys = @ForeignKey(entity = Map.class,
+                parentColumns = "id",
+                childColumns = "map_id",
+                onDelete = CASCADE),
+        indices = @Index("map_id"))
 public class Location {
 
     @PrimaryKey
@@ -16,23 +27,26 @@ public class Location {
     private String name;
     private String lat;
     private String lon;
+    private String map_id;
     private Date created_at;
     private Date updated_at;
 
-    public Location(String name, String lat, String lon, Date created_at, Date updated_at) {
+    public Location(String name, String lat, String lon, String map_id, Date created_at, Date updated_at) {
         id = UUID.randomUUID().toString();
         this.name = name;
         this.lat = lat;
         this.lon = lon;
+        this.map_id = map_id;
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
 
+    @NotNull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@NotNull String id) {
         this.id = id;
     }
 
@@ -74,5 +88,13 @@ public class Location {
 
     public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public String getMap_id() {
+        return map_id;
+    }
+
+    public void setMap_id(String map_id) {
+        this.map_id = map_id;
     }
 }
