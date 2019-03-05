@@ -2,65 +2,99 @@ package com.martinlaizg.geofind;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class RegistryFragment extends Fragment {
-
+    // Arguments
+    public static final String ARG_EMAIL = "ARG_EMAIL";
+    // Log TAG
+    private static final String TAG = RegistryFragment.class.getSimpleName();
 
     // View elements
     // Inputs
     @BindView(R.id.name_input)
-    public EditText name;
+    public TextInputLayout name_input;
     @BindView(R.id.email_input)
-    public EditText email;
+    public TextInputLayout email_input;
     @BindView(R.id.password_input)
-    public EditText password;
+    public TextInputLayout password_input;
     @BindView(R.id.c_password_input)
-    public EditText c_password;
+    public TextInputLayout c_password_input;
     // Buttons
     @BindView(R.id.btn_registry)
     public Button btn_registr;
 
-    public RegistryFragment() {
-        // Required empty public constructor
-    }
 
+    public RegistryFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_registry, container, false);
-
         ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         btn_registr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 registry();
             }
         });
-        return view;
     }
 
     private void registry() {
         btn_registr.setVisibility(View.GONE);
-
-        final String name = this.name.getText().toString().trim();
-        final String email = this.email.getText().toString().trim();
-        final String password = this.password.getText().toString().trim();
-
+        try {
+            final String name = name_input.getEditText().getText().toString().trim();
+            if (name.isEmpty()) {
+                name_input.setError(getString(R.string.required_name));
+                return;
+            }
+            final String email = email_input.getEditText().getText().toString().trim();
+            if (email.isEmpty()) {
+                email_input.setError(getString(R.string.required_email));
+                return;
+            }
+            final String password = password_input.getEditText().getText().toString().trim();
+            if (password.isEmpty()) {
+                password_input.setError(getString(R.string.required_password));
+                return;
+            }
+            final String c_password = c_password_input.getEditText().getText().toString().trim();
+            if (c_password.isEmpty()) {
+                password_input.setError(getString(R.string.required_verify_password));
+                return;
+            }
+            if (!c_password.equals(password)) {
+                password_input.setError(getString(R.string.no_match_password));
+                return;
+            }
+        } catch (NullPointerException ex) {
+            Log.e(TAG, "registry: ", ex);
+        }
         Toast.makeText(getActivity(), "Registrado correctamente", Toast.LENGTH_LONG).show();
         // TODO: implement registry
+        // TODO: add loading image
     }
 
 }

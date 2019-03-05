@@ -6,5 +6,5 @@
     android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/normal_margin"
     android:layout_marginRight="@dimen/normal_margin"
-    tools:context=".views.fragment.LocationFragment"
+    tools:context=".views.fragment.LocationListFragment"
     tools:listitem="@layout/fragment_location" />

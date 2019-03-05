@@ -19,7 +19,6 @@ import com.martinlaizg.geofind.views.model.MapViewModel;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -31,9 +30,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     // Value to get destination map
     public static final String MAP_ID = "map_id";
     private static final String TAG = MapActivity.class.getSimpleName();
-
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
 
     @BindView(R.id.map_name)
     TextView mapName;
@@ -56,10 +52,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_maps);
         ButterKnife.bind(this);
-
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         mapView.onCreate(savedInstanceState);
         mapView.onResume(); // needed to get the map to display immediately

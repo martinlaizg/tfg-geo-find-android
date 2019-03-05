@@ -11,20 +11,20 @@
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
         <action
-            android:id="@+id/action_mainFragment_to_locationFragment"
-            app:destination="@id/locationFragment" />
+            android:id="@+id/toLocationListFragment"
+            app:destination="@id/location_list_fragment" />
         <action
-            android:id="@+id/action_mainFragment_to_mapListFragment"
-            app:destination="@id/mapListFragment" />
+            android:id="@+id/toMapListFragment"
+            app:destination="@id/map_list_fragment" />
     </fragment>
     <fragment
-        android:id="@+id/locationFragment"
-        android:name="com.martinlaizg.geofind.views.fragment.LocationFragment"
+        android:id="@+id/location_list_fragment"
+        android:name="com.martinlaizg.geofind.views.fragment.LocationListFragment"
         android:label="fragment_location_list"
         tools:layout="@layout/fragment_location_list" />
     <fragment
-        android:id="@+id/mapListFragment"
+        android:id="@+id/map_list_fragment"
         android:name="com.martinlaizg.geofind.views.fragment.MapListFragment"
-        android:label="fragment_maps_list"
+        android:label="toMapListFragment"
         tools:layout="@layout/fragment_maps_list" />
 </navigation>

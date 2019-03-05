@@ -23,9 +23,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class LocationFragment extends Fragment {
+public class LocationListFragment extends Fragment {
 
-    private static final String TAG = LocationFragment.class.getSimpleName();
+    private static final String TAG = LocationListFragment.class.getSimpleName();
 
     @BindView(R.id.location_list)
     RecyclerView recyclerView;

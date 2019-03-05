@@ -68,6 +68,8 @@
     <string name="edit">Editar</string>
     <string name="location_list">Lista de localizaciones</string>
     <string name="add_location">Añadir localización</string>
+    <string name="required_verify_password">Debes de verificar la contraseña</string>
+    <string name="no_match_password">La contraseña no coincide</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

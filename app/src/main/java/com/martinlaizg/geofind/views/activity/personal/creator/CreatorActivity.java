@@ -11,35 +11,25 @@ import com.martinlaizg.geofind.views.model.MapCreatorViewModel;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MapCreatorActivity extends AppCompatActivity {
+public class CreatorActivity extends AppCompatActivity {
 
     public static final String MAP_CREATOR_FRAGMENT = "MAP_CREATOR_FRAGMENT";
     public Map map;
     public List<Location> locations;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
 
     MapCreatorViewModel mapCreatorViewModel;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map_creator);
-        ButterKnife.bind(MapCreatorActivity.this);
+        setContentView(R.layout.activity_creator);
+        ButterKnife.bind(CreatorActivity.this);
 
         mapCreatorViewModel = ViewModelProviders.of(this).get(MapCreatorViewModel.class);
-
-
-        // Toolbar
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
         // Load the main fragment

@@ -14,7 +14,7 @@ import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
 import com.martinlaizg.geofind.data.access.database.entity.User;
-import com.martinlaizg.geofind.views.activity.personal.creator.MapCreatorActivity;
+import com.martinlaizg.geofind.views.activity.personal.creator.CreatorActivity;
 import com.martinlaizg.geofind.views.model.MapCreatorViewModel;
 
 import androidx.fragment.app.Fragment;
@@ -92,7 +92,7 @@ public class CreateMapFragment extends Fragment implements View.OnClickListener 
         map.setDescription(description);
         User user = Preferences.getLoggedUser(getContext());
         map.setCreator_id(user.getId());
-        MapCreatorActivity parentActivity = (MapCreatorActivity) getActivity();
+        CreatorActivity parentActivity = (CreatorActivity) getActivity();
         mapCreatorViewModel.setMap(map);
         if (getFragmentManager() != null) {
             getFragmentManager().popBackStack();

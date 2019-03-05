@@ -53,7 +53,7 @@ public class CreatorMainFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.creator_main_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_map_creator, container, false);
         ButterKnife.bind(this, view);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

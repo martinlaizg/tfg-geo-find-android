@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.database.entity.User;
-import com.martinlaizg.geofind.views.activity.personal.creator.MapCreatorActivity;
+import com.martinlaizg.geofind.views.activity.personal.creator.CreatorActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -47,7 +47,7 @@ public class MyAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(final View v) {
                 final Intent intent = new Intent(getApplicationContext(),
-                        MapCreatorActivity.class);
+                        CreatorActivity.class);
                 startActivity(intent);
             }
         });
