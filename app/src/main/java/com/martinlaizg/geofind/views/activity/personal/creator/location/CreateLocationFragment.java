@@ -1,4 +1,4 @@
-package com.martinlaizg.geofind.views.activity.personal.create.map;
+package com.martinlaizg.geofind.views.activity.personal.creator.location;
 
 
 import android.os.Bundle;
@@ -11,10 +11,14 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.views.activity.personal.create.MapCreatorActivity;
+import com.martinlaizg.geofind.views.activity.personal.creator.CreatorMainFragment;
+import com.martinlaizg.geofind.views.model.MapCreatorViewModel;
+
+import org.jetbrains.annotations.NotNull;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -32,27 +36,26 @@ public class CreateLocationFragment extends Fragment implements View.OnClickList
     @BindView(R.id.new_location_lon_layout)
     TextInputLayout new_location_lon;
 
-    @BindView(R.id.new_location_next)
-    Button next_button;
-    @BindView(R.id.finish_creator)
-    Button finish_button;
+    @BindView(R.id.create_location)
+    Button create_button;
 
+    private MapCreatorViewModel mapCreatorViewModel;
 
     public CreateLocationFragment() {
         // Required empty public constructor
     }
 
-    static CreateLocationFragment newInstance() {
+    public static CreateLocationFragment newInstance() {
         return new CreateLocationFragment();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_locations, container, false);
         ButterKnife.bind(this, view);
-        next_button.setOnClickListener(this);
-        finish_button.setOnClickListener((MapCreatorActivity) getActivity());
+        mapCreatorViewModel = ViewModelProviders.of(getActivity()).get(MapCreatorViewModel.class);
+        create_button.setOnClickListener(this);
         return view;
     }
 
@@ -76,19 +79,19 @@ public class CreateLocationFragment extends Fragment implements View.OnClickList
             return;
         }
 
+
         String name = new_location_name.getEditText().getText().toString();
         String lat = new_location_lat.getEditText().getText().toString();
         String lon = new_location_lon.getEditText().getText().toString();
 
+        mapCreatorViewModel.addLocation(name, lat, lon);
 
-        MapCreatorActivity parentActivity = (MapCreatorActivity) getActivity();
-        Toast.makeText(parentActivity, "Localización creada", Toast.LENGTH_SHORT).show();
-
-        final Fragment fragment = getFragmentManager().findFragmentByTag(MapCreatorActivity.MAP_CREATOR_FRAGMENT);
-        final FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.detach(fragment);
-        ft.attach(fragment);
-        ft.commit();
+        Fragment newFragment = CreatorMainFragment.newInstance();
+        FragmentTransaction ft = null;
+        if (getFragmentManager() != null) {
+            ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.map_creator_frame_layout, newFragment).commit();
+        }
 
     }
 }

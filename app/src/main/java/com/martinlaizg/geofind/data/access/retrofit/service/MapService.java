@@ -6,6 +6,8 @@ import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
 import com.martinlaizg.geofind.data.access.retrofit.RestClient;
 import com.martinlaizg.geofind.data.access.retrofit.RetrofitService;
+import com.martinlaizg.geofind.data.access.retrofit.error.APIError;
+import com.martinlaizg.geofind.data.access.retrofit.error.ErrorUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,5 +52,20 @@ public class MapService {
             Log.e(TAG, "getLocationsByMap", e);
         }
         return new ArrayList<>();
+    }
+
+    public Map create(Map map) {
+        Response<Map> response = null;
+        try {
+            response = restClient.createMap(map).execute();
+            if (response.isSuccessful()) {
+                return response.body();
+            }
+            APIError apiError = ErrorUtils.parseError(response);
+            Log.e(TAG, "createMap: " + apiError.toString());
+        } catch (IOException e) {
+            Log.e(TAG, "createMap: ", e);
+        }
+        return null;
     }
 }

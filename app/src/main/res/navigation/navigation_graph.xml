@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/creatorMainFragment">
+
+    <fragment
+        android:id="@+id/creatorMainFragment"
+        android:name="com.martinlaizg.geofind.views.activity.personal.creator.CreatorMainFragment"
+        android:label="creator_main_fragment"
+        tools:layout="@layout/creator_main_fragment" />
+</navigation>

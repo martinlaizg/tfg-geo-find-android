@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.database.entity.User;
-import com.martinlaizg.geofind.views.activity.personal.create.MapCreatorActivity;
+import com.martinlaizg.geofind.views.activity.personal.creator.MapCreatorActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;

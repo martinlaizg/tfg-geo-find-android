@@ -73,23 +73,28 @@
         <activity
             android:name=".views.activity.MapActivity"
             android:label="@string/title_activity_google_maps"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".views.activity.RegisterActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".views.activity.LoginActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".views.activity.personal.create.MapCreatorActivity"
+            android:name=".views.activity.personal.creator.MapCreatorActivity"
             android:label="@string/create_map"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".views.activity.personal.MyAccountActivity"
             android:label="@string/account_settings"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

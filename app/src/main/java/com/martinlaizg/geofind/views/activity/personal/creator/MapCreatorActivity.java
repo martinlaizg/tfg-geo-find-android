@@ -1,15 +1,14 @@
-package com.martinlaizg.geofind.views.activity.personal.create;
+package com.martinlaizg.geofind.views.activity.personal.creator;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.martinlaizg.geofind.R;
+import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
-import com.martinlaizg.geofind.views.activity.MapActivity;
-import com.martinlaizg.geofind.views.activity.personal.create.map.CreateMapFragment;
 import com.martinlaizg.geofind.views.model.MapCreatorViewModel;
+
+import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,10 +17,11 @@ import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MapCreatorActivity extends AppCompatActivity implements View.OnClickListener {
+public class MapCreatorActivity extends AppCompatActivity {
 
     public static final String MAP_CREATOR_FRAGMENT = "MAP_CREATOR_FRAGMENT";
     public Map map;
+    public List<Location> locations;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -35,28 +35,18 @@ public class MapCreatorActivity extends AppCompatActivity implements View.OnClic
 
         mapCreatorViewModel = ViewModelProviders.of(this).get(MapCreatorViewModel.class);
 
+
         // Toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
-        // Initial fragment
-        final CreateMapFragment fragment = CreateMapFragment.newInstance();
+        // Load the main fragment
+        CreatorMainFragment fragment = CreatorMainFragment.newInstance();
         final FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.map_creator_frame_layout, fragment, MAP_CREATOR_FRAGMENT);
         fragmentTransaction.commit();
-    }
-
-    @Override
-    public void onClick(View v) {
-
-        mapCreatorViewModel.insert(map);
-
-        Intent intent = new Intent(getApplicationContext(), MapActivity.class);
-        intent.putExtra(MapActivity.MAP_ID, map.getId());
-        startActivity(intent);
-
     }
 
     @Override

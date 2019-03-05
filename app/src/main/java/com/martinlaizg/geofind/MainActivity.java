@@ -5,11 +5,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.martinlaizg.geofind.config.Preferences;
+import com.martinlaizg.geofind.data.access.database.entity.User;
 import com.martinlaizg.geofind.views.activity.LoginActivity;
 import com.martinlaizg.geofind.views.activity.personal.MyAccountActivity;
 import com.martinlaizg.geofind.views.fragment.LocationFragment;
@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @BindView(R.id.nav_view)
-    NavigationView navigationView;
+//    @BindView(R.id.nav_view)
+//    NavigationView navigationView;
 
 
     @Override
@@ -66,26 +66,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView.setNavigationItemSelectedListener(this);
-
-        navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Ir a perfil del usuario", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), MyAccountActivity.class));
-            }
-        });
+//        navigationView.setNavigationItemSelectedListener(this);
+//
+//        navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(MainActivity.this, "Ir a perfil del usuario", Toast.LENGTH_SHORT).show();
+//                startActivity(new Intent(getApplicationContext(), MyAccountActivity.class));
+//            }
+//        });
 
     }
 
     private void checkLogin() {
-        SharedPreferences sp = Preferences.getInstance(getApplicationContext());
-        if (!sp.getBoolean(Preferences.LOGGED, false)) {
+        User loggedUser = Preferences.getLoggedUser(getApplicationContext());
+        if (loggedUser == null || loggedUser.getEmail().isEmpty()) {
             Log.i(TAG, "User not logged");
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
+            return;
         }
+
+//        View headerView = navigationView.getHeaderView(0);
+//        TextView name = headerView.findViewById(R.id.drawer_header_name);
+//        TextView username = headerView.findViewById(R.id.drawer_header_username);
+//        name.setText(loggedUser.getName());
+//        username.setText(loggedUser.getUsername());
     }
 
     @Override

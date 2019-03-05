@@ -11,6 +11,12 @@ import retrofit2.Response;
 
 public class ErrorUtils {
 
+    /**
+     * Parse a response to a APIError
+     *
+     * @param response response to parse
+     * @return parsed response
+     */
     public static APIError parseError(Response<?> response) {
         Converter<ResponseBody, APIError> converter = RetrofitService.getRetrofitInstance().responseBodyConverter(APIError.class, new Annotation[0]);
 

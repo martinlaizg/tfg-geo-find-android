@@ -31,6 +31,6 @@ public class MapViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Location>> getLocationsByMap(String map_id) {
-        return mapRepo.getLocations(map_id);
+        return locRepo.getLocationsByMap(map_id);
     }
 }

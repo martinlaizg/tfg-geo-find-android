@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.login_activity);
         ButterKnife.bind(LoginActivity.this);
 
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);

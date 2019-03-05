@@ -23,11 +23,18 @@ public interface RestClient {
         Toast.makeText(context, context.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
     }
 
-    //Maps requests
+    //
+    //
+    //
+    //
+    // Maps requests
 
     // Get maps with optional filter
     @GET("maps")
     Call<List<Map>> getMaps(@QueryMap java.util.Map<String, String> params);
+
+    @POST("maps")
+    Call<Map> createMap(@Body Map map);
 
     // Get single map
     @GET("maps/{id}")
@@ -37,7 +44,14 @@ public interface RestClient {
     @GET("maps/{id}/locations")
     Call<List<Location>> getLocationsByMap(@Path("id") String map_id);
 
+    // Create a location by map
+    @POST("maps/{id}locations")
+    Call<Location> createLocationByMap(@Path("id") String map_id, @Body Location loc);
 
+    //
+    //
+    //
+    //
     // Locations requests
 
     // Get locations
@@ -48,6 +62,14 @@ public interface RestClient {
     @GET("locations/{id}")
     Call<Location> getLocation(@Path("id") String id);
 
+    // Create a location
+    @POST("locations")
+    Call<Location> createLocation(@Body Location loc);
+
+    //
+    //
+    //
+    //
     // User requests
 
     // Login user
@@ -56,5 +78,6 @@ public interface RestClient {
 
     @POST("users")
     Call<List<User>> getUsers(@QueryMap java.util.Map<String, String> params);
+
 
 }

@@ -43,7 +43,6 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     public void setLocations(List<Location> locations) {
         this.locations = locations;
         notifyDataSetChanged();
-
     }
 
     class LocationViewHolder extends RecyclerView.ViewHolder {

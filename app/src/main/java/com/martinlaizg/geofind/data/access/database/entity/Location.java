@@ -8,6 +8,7 @@ import java.util.UUID;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -39,6 +40,11 @@ public class Location {
         this.map_id = map_id;
         this.created_at = created_at;
         this.updated_at = updated_at;
+    }
+
+    @Ignore
+    public Location() {
+        id = UUID.randomUUID().toString();
     }
 
     @NotNull

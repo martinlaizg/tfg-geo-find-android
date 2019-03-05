@@ -3,9 +3,11 @@ package com.martinlaizg.geofind.data.access.database.entity;
 import com.martinlaizg.geofind.data.access.database.entity.enums.PlayLevel;
 
 import java.sql.Date;
+import java.util.UUID;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "maps")
@@ -23,6 +25,24 @@ public class Map {
     private Date created_at;
     private Date updated_at;
     private String creator_id;
+
+    public Map(@NonNull String id, String name, String country, String state, String description, String city, PlayLevel min_level, Date created_at, Date updated_at, String creator_id) {
+        this.id = id;
+        this.name = name;
+        this.country = country;
+        this.state = state;
+        this.description = description;
+        this.city = city;
+        this.min_level = min_level;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+        this.creator_id = creator_id;
+    }
+
+    @Ignore
+    public Map() {
+        id = UUID.randomUUID().toString();
+    }
 
 
     public String getId() {
@@ -104,4 +124,5 @@ public class Map {
     public void setCreator_id(String creator_id) {
         this.creator_id = creator_id;
     }
+
 }

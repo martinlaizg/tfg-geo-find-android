@@ -36,8 +36,7 @@ public class LocationFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_location_list, container, false);
         ButterKnife.bind(this, view);
         locations = new ArrayList<>();

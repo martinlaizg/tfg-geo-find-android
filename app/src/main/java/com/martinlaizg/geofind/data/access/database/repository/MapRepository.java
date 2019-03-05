@@ -7,6 +7,7 @@ import com.martinlaizg.geofind.data.access.database.dao.LocationDAO;
 import com.martinlaizg.geofind.data.access.database.dao.MapDAO;
 import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
+import com.martinlaizg.geofind.data.access.retrofit.service.LocationService;
 import com.martinlaizg.geofind.data.access.retrofit.service.MapService;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class MapRepository {
     private MapService mapService;
     private MapDAO mapDAO;
 
+    private LocationService locService;
     private LocationDAO locDAO;
 
 
@@ -67,5 +69,11 @@ public class MapRepository {
         }).start();
 
         return locations;
+    }
+
+    public Map create(Map map) {
+        Map map1 = mapService.create(map);
+        refreshMaps();
+        return map1;
     }
 }

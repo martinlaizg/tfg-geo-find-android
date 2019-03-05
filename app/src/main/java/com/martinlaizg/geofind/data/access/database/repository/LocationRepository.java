@@ -15,43 +15,41 @@ public class LocationRepository {
 
     private LocationService locationService;
 
-    private LocationDAO locationDAO;
+    private LocationDAO locDAO;
     private LiveData<List<Location>> allLocations;
 
     public LocationRepository(Application application) {
         AppDatabase database = AppDatabase.getInstance(application);
-        locationDAO = database.locationDAO();
+        locDAO = database.locationDAO();
         locationService = LocationService.getInstance();
     }
 
-    public void insert(Location location) {
-        locationDAO.insert(location);
-        locationService.insert(location);
-    }
-
-    public void update(Location location) {
-        locationDAO.update(location);
-        locationService.update(location);
-    }
-
-    public void delete(Location location) {
-        locationDAO.update(location);
-        locationService.update(location);
-
-    }
-
-    public void deleteAllLocations() {
-        locationDAO.deleteAllLocations();
-        locationService.deleteAllLocations();
-
-    }
-
     public LiveData<List<Location>> getAllLocations() {
-        LiveData<List<Location>> allLocations = locationDAO.getAllLocations();
+        LiveData<List<Location>> allLocations = locDAO.getAllLocations();
         if (allLocations != null && allLocations.getValue() != null && allLocations.getValue().isEmpty()) {
             allLocations.getValue().addAll(locationService.getAllLocations());
         }
         return allLocations;
     }
 
+    public void create(List<Location> locations) {
+        for (Location loc : locations) {
+            locationService.create(loc);
+        }
+    }
+
+    public LiveData<List<Location>> getLocationsByMap(String map_id) {
+        LiveData<List<Location>> locations = locDAO.getLocationsByMap(map_id);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (locations != null && locations.getValue() != null) {
+                    for (Location loc : locationService.getAllLocations()) {
+                        locDAO.insert(loc);
+                    }
+                }
+            }
+        }).start();
+        return locations;
+    }
 }

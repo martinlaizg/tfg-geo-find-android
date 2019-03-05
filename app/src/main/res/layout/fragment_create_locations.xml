@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.activity.personal.create.map.CreateMapFragment">
+    tools:context=".views.activity.personal.creator.map.CreateMapFragment">
 
     <TextView
         android:id="@+id/new_location_text"
@@ -45,7 +45,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/new_location_lat" />
+                android:hint="@string/new_location_lat"
+                android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -59,23 +60,19 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/new_location_lon" />
+                android:hint="@string/new_location_lon"
+                android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/new_location_next"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/finish_creator"
-        android:text="@string/next" />
 
     <Button
-        android:id="@+id/finish_creator"
+        android:id="@+id/create_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="@string/finish" />
+        android:layout_margin="@dimen/small_margin"
+        android:text="@string/create_location" />
 
 </RelativeLayout>

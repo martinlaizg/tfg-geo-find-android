@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.activity.personal.create.map.CreateMapFragment">
+    tools:context=".views.activity.personal.creator.map.CreateMapFragment">
 
     <TextView
         android:id="@+id/new_name_text"
@@ -48,19 +48,37 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/new_map_add_image_button"
+        android:id="@+id/add_image_button"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/new_map_description_layout"
         android:layout_alignEnd="@+id/new_map_description_layout"
-        android:layout_marginEnd="@dimen/normal_margin"
+        android:layout_marginTop="@dimen/normal_margin"
         android:text="@string/add_image" />
 
-    <Button
-        android:id="@+id/new_map_next"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="@string/next" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/return_button"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:layout_weight="1"
+            android:text="@string/go_back" />
+
+        <Button
+            android:id="@+id/done_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/small_margin"
+            android:layout_weight="1"
+            android:text="@string/create_map" />
+    </LinearLayout>
 
 </RelativeLayout>

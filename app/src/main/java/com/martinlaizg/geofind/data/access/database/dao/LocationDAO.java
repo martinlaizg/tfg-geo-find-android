@@ -30,4 +30,6 @@ public interface LocationDAO {
     @Query("SELECT * FROM locations")
     LiveData<List<Location>> getAllLocations();
 
+    @Query("SELECT * FROM locations WHERE map_id = :map_id")
+    LiveData<List<Location>> getLocationsByMap(String map_id);
 }

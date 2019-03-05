@@ -60,4 +60,15 @@
     <string name="user_name">Nombre del usuario</string>
     <string name="wrong_email_password">Email o contraseña incorrectos</string>
     <string name="already_logged">Ya estabas logeado</string>
+    <string name="add_one_more">Añadir una más</string>
+    <string name="no_create_map_without_locations">No se puede crear un mapa sin localizaciones</string>
+    <string name="go_back">Volver</string>
+    <string name="default_delete_loc">Borrar localizacion</string>
+    <string name="create_location">Crear localización</string>
+    <string name="edit">Editar</string>
+    <string name="location_list">Lista de localizaciones</string>
+    <string name="add_location">Añadir localización</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
