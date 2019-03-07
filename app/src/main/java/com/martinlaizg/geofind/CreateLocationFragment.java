@@ -1,4 +1,4 @@
-package com.martinlaizg.geofind.views.activity.personal.creator.location;
+package com.martinlaizg.geofind;
 
 
 import android.os.Bundle;
@@ -10,14 +10,11 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
-import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.views.activity.personal.creator.CreatorMainFragment;
 import com.martinlaizg.geofind.views.model.MapCreatorViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -86,12 +83,6 @@ public class CreateLocationFragment extends Fragment implements View.OnClickList
 
         mapCreatorViewModel.addLocation(name, lat, lon);
 
-        Fragment newFragment = CreatorMainFragment.newInstance();
-        FragmentTransaction ft = null;
-        if (getFragmentManager() != null) {
-            ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.map_creator_frame_layout, newFragment).commit();
-        }
-
+        // TODO return to creator
     }
 }

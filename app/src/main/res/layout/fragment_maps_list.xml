@@ -12,6 +12,5 @@
         android:layout_marginStart="@dimen/small_margin"
         android:layout_marginEnd="@dimen/small_margin"
         android:background="@android:color/transparent"
-        tools:context=".views.fragment.MapListFragment"
         tools:listitem="@layout/fragment_maps" />
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

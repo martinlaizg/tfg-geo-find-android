@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.database.entity.User;
-import com.martinlaizg.geofind.views.fragment.LocationListFragment;
 import com.martinlaizg.geofind.views.model.LoginViewModel;
 
 import org.jetbrains.annotations.NotNull;

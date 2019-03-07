@@ -1,21 +1,22 @@
 package com.martinlaizg.geofind.adapter;
 
-import android.content.Context;
-import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
+import com.martinlaizg.geofind.MapFragment;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
-import com.martinlaizg.geofind.views.activity.MapActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +24,7 @@ import butterknife.ButterKnife;
 public class MapsAdapter extends RecyclerView.Adapter<MapsAdapter.MapsViewHolder> {
 
     private List<Map> maps = new ArrayList<>();
+    private NavController navController;
 
     @NonNull
     @Override
@@ -36,7 +38,9 @@ public class MapsAdapter extends RecyclerView.Adapter<MapsAdapter.MapsViewHolder
     public void onBindViewHolder(@NonNull MapsViewHolder holder, final int i) {
         final Map map = maps.get(i);
         holder.mapName.setText(map.getName());
-        holder.id = map.getId();
+        Bundle b = new Bundle();
+        b.putString(MapFragment.MAP_ID, maps.get(i).getId());
+        holder.materialCardView.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toMapFragment, b));
     }
 
     @Override
@@ -58,20 +62,9 @@ public class MapsAdapter extends RecyclerView.Adapter<MapsAdapter.MapsViewHolder
         @BindView(R.id.map_list_item)
         MaterialCardView materialCardView;
 
-        String id;
-
         MapsViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            materialCardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Context context = itemView.getContext();
-                    Intent intent = new Intent(context, MapActivity.class);
-                    intent.putExtra(MapActivity.MAP_ID, id);
-                    context.startActivity(intent);
-                }
-            });
         }
     }
 

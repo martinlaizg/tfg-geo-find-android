@@ -1,6 +1,10 @@
-package com.martinlaizg.geofind.views.activity;
+package com.martinlaizg.geofind;
+
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -11,26 +15,33 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
 import com.martinlaizg.geofind.views.model.MapViewModel;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    // Value to get destination map
-    public static final String MAP_ID = "map_id";
-    private static final String TAG = MapActivity.class.getSimpleName();
+public class MapFragment extends Fragment implements OnMapReadyCallback {
 
+    public static final String MAP_ID = "";
+
+    private static final String TAG = MapFragment.class.getSimpleName();
+
+    // View
     @BindView(R.id.map_name)
     TextView mapName;
     @BindView(R.id.map_location)
@@ -46,17 +57,37 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private MapViewModel mapViewModel;
+    private NavController navController;
+    private String map_id;
+
+    public MapFragment() {
+        // Required empty public constructor
+    }
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_google_maps);
-        ButterKnife.bind(this);
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        Bundle b = getArguments();
+        navController = Navigation.findNavController(getActivity(), R.id.main_fragment_holder);
+        if (b == null || (map_id = b.getString(MAP_ID)) == null) {
+            navController.popBackStack(R.id.map_list, false);
+            return null;
+        }
+        // TODO add backbutton on app toolbar
 
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_map, container, false);
+        ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         mapView.onCreate(savedInstanceState);
         mapView.onResume(); // needed to get the map to display immediately
         mapView.getMapAsync(this);
-        String map_id = getIntent().getStringExtra(MAP_ID);
 
         mapViewModel = ViewModelProviders.of(this).get(MapViewModel.class);
         mapViewModel.getMap(map_id).observe(this, new Observer<Map>() {
@@ -78,10 +109,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mapName.setText(map.getName());
         mapLocation.setText(map.getCity());
         mapDescription.setText(map.getDescription());
-
     }
 
-    void setMapLocation(List<Location> map_locations) {
+    private void setMapLocation(List<Location> map_locations) {
         if (map_locations.size() > 0) {
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
@@ -109,15 +139,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Set padding bottom for show Google logo on map
-//        int radius = (int) getResources().getDimension(R.dimen.map_card_corner_radius);
-//        mMap.setPadding(0, 0, 0, radius);
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
 }

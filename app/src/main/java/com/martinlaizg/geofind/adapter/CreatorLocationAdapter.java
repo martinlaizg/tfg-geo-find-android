@@ -1,4 +1,4 @@
-package com.martinlaizg.geofind.views.activity.personal.creator.location;
+package com.martinlaizg.geofind.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;

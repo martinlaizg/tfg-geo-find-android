@@ -11,8 +11,6 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.database.entity.User;
-import com.martinlaizg.geofind.views.activity.LoginActivity;
-import com.martinlaizg.geofind.views.activity.personal.MyAccountActivity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -35,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @BindView(R.id.drawer_nav_view)
     NavigationView navigationView;
+    private NavController navigation;
 
 
     @Override
@@ -58,14 +57,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    private void setUpNavigation() {
-        navigationView.setNavigationItemSelectedListener(this);
+    @Override
+    public boolean onSupportNavigateUp() {
+        return Navigation.findNavController(this, R.id.main_fragment_holder).navigateUp();
+    }
 
+    private void setUpNavigation() {
+        navigation = Navigation.findNavController(this, R.id.main_fragment_holder);
+        navigationView.setNavigationItemSelectedListener(this);
         navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Ir a perfil del usuario", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), MyAccountActivity.class));
+                navigation.navigate(R.id.toCreateMap);
             }
         });
 
@@ -118,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.menu_settings:
                 Toast.makeText(this, "Ir a ajustes", Toast.LENGTH_SHORT).show();
+                navController.navigate(R.id.toAccount);
                 break;
             case R.id.menu_log_out:
                 Toast.makeText(this, "Cerrar sesión", Toast.LENGTH_SHORT).show();
