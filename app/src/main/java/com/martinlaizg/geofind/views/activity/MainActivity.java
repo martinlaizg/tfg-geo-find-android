@@ -1,4 +1,4 @@
-package com.martinlaizg.geofind;
+package com.martinlaizg.geofind.views.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.database.entity.User;
 
@@ -19,6 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @BindView(R.id.drawer_nav_view)
     NavigationView navigationView;
+
     private NavController navigation;
 
 
@@ -41,8 +44,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(MainActivity.this);
-        setUpNavigation();
         setUpToolbar();
+        setUpNavigation();
         checkLogin();
     }
 
@@ -54,26 +57,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.open, R.string.close);
         drawer_layout.addDrawerListener(toggle);
         toggle.syncState();
-
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        return Navigation.findNavController(this, R.id.main_fragment_holder).navigateUp();
     }
 
     private void setUpNavigation() {
         navigation = Navigation.findNavController(this, R.id.main_fragment_holder);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navigation.navigate(R.id.toCreateMap);
-            }
-        });
-
+        navigationView.getHeaderView(0).setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toAccount));
     }
-
 
     private void checkLogin() {
         User loggedUser = Preferences.getLoggedUser(getApplicationContext());
@@ -93,47 +83,60 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        uncheckMenuItems();
+        menuItem.setChecked(true);
+
+        // If the current destination is not the main, return to there
+        NavDestination currentDestination = navigation.getCurrentDestination();
+        if (currentDestination != null && currentDestination.getId() != R.id.main) {
+            navigation.popBackStack(R.id.main, false);
+        }
+        drawer_layout.closeDrawers();
+        switch (menuItem.getItemId()) {
+            // TODO remove
+//            case R.id.menu_users:
+//                Toast.makeText(this, "Cargar usuarios", Toast.LENGTH_SHORT).show();
+//                break;
+            case R.id.menu_maps:
+                Toast.makeText(this, "Cargar mapas", Toast.LENGTH_SHORT).show();
+                navigation.navigate(R.id.toMapList);
+                break;
+            case R.id.menu_locations:
+                Toast.makeText(this, "Cargar localizaciones", Toast.LENGTH_SHORT).show();
+                navigation.navigate(R.id.toLocationList);
+                break;
+            case R.id.menu_settings:
+                Toast.makeText(this, "Ir a ajustes", Toast.LENGTH_SHORT).show();
+                navigation.navigate(R.id.toAccount);
+                menuItem.setChecked(false);
+                break;
+            case R.id.menu_log_out:
+                Toast.makeText(this, "Cerrar sesión", Toast.LENGTH_SHORT).show();
+                logOut();
+                menuItem.setChecked(false);
+                break;
+        }
+        return true;
+    }
+
+    private void uncheckMenuItems() {
+        for (int i = 0; i < navigationView.getMenu().size(); i++) {
+            navigationView.getMenu().getItem(i).setChecked(false);
+        }
+    }
+
+    private void logOut() {
+        Preferences.setLoggedUser(this, null);
+        checkLogin();
+    }
+
+    @Override
     public void onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        menuItem.setChecked(true);
-
-        drawer_layout.closeDrawers();
-        NavController navController = Navigation.findNavController(this, R.id.main_fragment_holder);
-
-        switch (menuItem.getItemId()) {
-            case R.id.menu_users:
-                Toast.makeText(this, "Cargar usuarios", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.menu_maps:
-                Toast.makeText(this, "Cargar mapas", Toast.LENGTH_SHORT).show();
-                navController.navigate(R.id.toMapListFragment);
-                break;
-            case R.id.menu_locations:
-                Toast.makeText(this, "Cargar localizaciones", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.menu_settings:
-                Toast.makeText(this, "Ir a ajustes", Toast.LENGTH_SHORT).show();
-                navController.navigate(R.id.toAccount);
-                break;
-            case R.id.menu_log_out:
-                Toast.makeText(this, "Cerrar sesión", Toast.LENGTH_SHORT).show();
-                logOut();
-                break;
-        }
-
-        return true;
-    }
-
-    private void logOut() {
-        Preferences.setLoggedUser(this, null);
-        checkLogin();
     }
 }

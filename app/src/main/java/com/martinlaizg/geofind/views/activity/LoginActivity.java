@@ -1,6 +1,8 @@
-package com.martinlaizg.geofind;
+package com.martinlaizg.geofind.views.activity;
 
 import android.os.Bundle;
+
+import com.martinlaizg.geofind.R;
 
 import androidx.appcompat.app.AppCompatActivity;
 

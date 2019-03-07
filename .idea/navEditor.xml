@@ -51,7 +51,38 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="account">
+                  <entry key="main">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-67" />
+                            <option name="y" value="370" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="toAccount">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="toLocationList">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="toMapList">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="navAccount">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -72,7 +103,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="create_location">
+                  <entry key="navCreateLocation">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -84,7 +115,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="create_map">
+                  <entry key="navCreateMap">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -105,7 +136,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="creator">
+                  <entry key="navCreator">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -126,7 +157,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="location_list">
+                  <entry key="navLocationList">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -138,38 +169,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="main">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="-22" />
-                            <option name="y" value="367" />
-                          </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="toAccount">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="toLocationListFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="toMapListFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="map">
+                  <entry key="navMap">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -181,7 +181,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="map_list">
+                  <entry key="navMapList">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -192,7 +192,7 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="toMapFragment">
+                            <entry key="toSingleMap">
                               <value>
                                 <LayoutPositions />
                               </value>

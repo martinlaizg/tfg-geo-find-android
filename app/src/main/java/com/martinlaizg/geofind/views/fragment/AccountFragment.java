@@ -1,4 +1,4 @@
-package com.martinlaizg.geofind;
+package com.martinlaizg.geofind.views.fragment;
 
 
 import android.os.Bundle;
@@ -6,10 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
-import com.martinlaizg.geofind.config.Preferences;
-import com.martinlaizg.geofind.data.access.database.entity.User;
+import com.martinlaizg.geofind.R;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,9 +20,6 @@ import butterknife.ButterKnife;
 public class AccountFragment extends Fragment {
 
     private static final String TAG = AccountFragment.class.getSimpleName();
-
-    @BindView(R.id.account_user_name)
-    TextView user_name;
 
     @BindView(R.id.create_map_button)
     Button create_map_button;
@@ -46,8 +41,6 @@ public class AccountFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        User user = Preferences.getLoggedUser(getActivity());
-        user_name.setText(user.getName());
 
         create_map_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreateMap));
     }

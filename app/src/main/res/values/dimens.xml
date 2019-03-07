@@ -2,15 +2,11 @@
     <dimen name="micro_margin">4dp</dimen>
     <dimen name="small_margin">8dp</dimen>
     <dimen name="normal_margin">16dp</dimen>
-    <dimen name="big_margin">32dp</dimen>
     <dimen name="normal_text">16sp</dimen>
     <dimen name="small_text">16sp</dimen>
     <dimen name="progress_bar">4dp</dimen>
     <dimen name="drawer_header_height">128dp</dimen>
-    <dimen name="normal_button">48dp</dimen>
-    <dimen name="app_bar_layout_height">56dp</dimen>
     <dimen name="map_card_corner_radius">16dp</dimen>
-    <dimen name="map_card_corner_radius_negative">-16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="medium_text">18sp</dimen>
 </resources>

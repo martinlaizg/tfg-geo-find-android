@@ -2,41 +2,64 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_navigation"
     app:startDestination="@id/main">
 
     <fragment
         android:id="@+id/main"
-        android:name="com.martinlaizg.geofind.MainFragment"
+        android:name="com.martinlaizg.geofind.views.fragment.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
         <action
-            android:id="@+id/toLocationListFragment"
-            app:destination="@id/location_list" />
+            android:id="@+id/toLocationList"
+            app:destination="@id/navLocationList" />
         <action
-            android:id="@+id/toMapListFragment"
-            app:destination="@id/map_list" />
+            android:id="@+id/toMapList"
+            app:destination="@id/navMapList" />
         <action
             android:id="@+id/toAccount"
-            app:destination="@id/account" />
+            app:destination="@id/navAccount" />
     </fragment>
     <fragment
-        android:id="@+id/location_list"
-        android:name="com.martinlaizg.geofind.LocationListFragment"
+        android:id="@+id/navAccount"
+        android:name="com.martinlaizg.geofind.views.fragment.AccountFragment"
+        android:label="fragment_account"
+        tools:layout="@layout/fragment_account">
+        <action
+            android:id="@+id/toCreateMap"
+            app:destination="@id/navCreateMap" />
+    </fragment>
+    <fragment
+        android:id="@+id/navCreateLocation"
+        android:name="com.martinlaizg.geofind.views.fragment.creator.CreateLocationFragment"
+        android:label="fragment_create_locations"
+        tools:layout="@layout/fragment_create_locations" />
+    <fragment
+        android:id="@+id/navCreateMap"
+        android:name="com.martinlaizg.geofind.views.fragment.creator.CreateMapFragment"
+        android:label="fragment_create_map"
+        tools:layout="@layout/fragment_create_map">
+        <action
+            android:id="@+id/toCreator"
+            app:destination="@id/navCreator"
+            app:popUpTo="@+id/navAccount" />
+    </fragment>
+    <fragment
+        android:id="@+id/navCreator"
+        android:name="com.martinlaizg.geofind.views.fragment.creator.CreatorFragment"
+        android:label="fragment_creator"
+        tools:layout="@layout/fragment_creator">
+        <action
+            android:id="@+id/toCreateLocation"
+            app:destination="@id/navCreateLocation" />
+    </fragment>
+    <fragment
+        android:id="@+id/navLocationList"
+        android:name="com.martinlaizg.geofind.views.fragment.list.LocationListFragment"
         android:label="fragment_location_list"
         tools:layout="@layout/fragment_location_list" />
     <fragment
-        android:id="@+id/map_list"
-        android:name="com.martinlaizg.geofind.MapListFragment"
-        android:label="toMapListFragment"
-        tools:layout="@layout/fragment_maps_list">
-        <action
-            android:id="@+id/toMapFragment"
-            app:destination="@id/map" />
-    </fragment>
-    <fragment
-        android:id="@+id/map"
-        android:name="com.martinlaizg.geofind.MapFragment"
+        android:id="@+id/navMap"
+        android:name="com.martinlaizg.geofind.views.fragment.MapFragment"
         android:label="fragment_map"
         tools:layout="@layout/fragment_map">
         <argument
@@ -44,36 +67,12 @@
             app:argType="string" />
     </fragment>
     <fragment
-        android:id="@+id/creator"
-        android:name="com.martinlaizg.geofind.CreatorFragment"
-        android:label="fragment_creator"
-        tools:layout="@layout/fragment_creator">
+        android:id="@+id/navMapList"
+        android:name="com.martinlaizg.geofind.views.fragment.list.MapListFragment"
+        android:label="fragment_maps_list"
+        tools:layout="@layout/fragment_maps_list">
         <action
-            android:id="@+id/toCreateLocation"
-            app:destination="@id/create_location"
-            app:popUpTo="@+id/creator" />
-    </fragment>
-    <fragment
-        android:id="@+id/account"
-        android:name="com.martinlaizg.geofind.AccountFragment"
-        android:label="fragment_account"
-        tools:layout="@layout/fragment_account">
-        <action
-            android:id="@+id/toCreateMap"
-            app:destination="@id/create_map" />
-    </fragment>
-    <fragment
-        android:id="@+id/create_location"
-        android:name="com.martinlaizg.geofind.CreateMapFragment"
-        android:label="fragment_create_locations"
-        tools:layout="@layout/fragment_create_locations" />
-    <fragment
-        android:id="@+id/create_map"
-        android:name="com.martinlaizg.geofind.CreateMapFragment"
-        android:label="fragment_create_map"
-        tools:layout="@layout/fragment_create_map">
-        <action
-            android:id="@+id/toCreator"
-            app:destination="@id/creator" />
+            android:id="@+id/toSingleMap"
+            app:destination="@id/navMap" />
     </fragment>
 </navigation>

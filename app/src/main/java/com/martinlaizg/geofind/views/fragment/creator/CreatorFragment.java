@@ -1,4 +1,4 @@
-package com.martinlaizg.geofind;
+package com.martinlaizg.geofind.views.fragment.creator;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.adapter.CreatorLocationAdapter;
 import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
@@ -14,10 +15,13 @@ import com.martinlaizg.geofind.views.model.MapCreatorViewModel;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -42,6 +46,7 @@ public class CreatorFragment extends Fragment {
 
     private MapCreatorViewModel creatorViewModel;
     private CreatorLocationAdapter adapter;
+    private NavController navController;
 
     public CreatorFragment() {
         // Required empty public constructor
@@ -58,15 +63,25 @@ public class CreatorFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(getActivity(), R.id.main_fragment_holder);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new CreatorLocationAdapter();
         recyclerView.setAdapter(adapter);
 
-        add_location_button.setOnClickListener(null);
-        editButton.setOnClickListener(null);
+        add_location_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.navigate(R.id.toCreateLocation);
+            }
+        });
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.popBackStack();
+            }
+        });
 
         creatorViewModel = ViewModelProviders.of(getActivity()).get(MapCreatorViewModel.class);
 

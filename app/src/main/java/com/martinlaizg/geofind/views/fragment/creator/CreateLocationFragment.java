@@ -1,4 +1,4 @@
-package com.martinlaizg.geofind;
+package com.martinlaizg.geofind.views.fragment.creator;
 
 
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.views.model.MapCreatorViewModel;
 
 import org.jetbrains.annotations.NotNull;

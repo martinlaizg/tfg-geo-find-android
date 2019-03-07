@@ -1,4 +1,4 @@
-package com.martinlaizg.geofind;
+package com.martinlaizg.geofind.views.fragment.creator;
 
 
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
 import com.martinlaizg.geofind.data.access.database.entity.User;
@@ -17,6 +18,7 @@ import com.martinlaizg.geofind.views.model.MapCreatorViewModel;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +38,7 @@ public class CreateMapFragment extends Fragment {
     Button add_image_button;
 
     MapCreatorViewModel mapCreatorViewModel;
+    private NavController navController;
 
     public CreateMapFragment() {
         // Required empty public constructor
@@ -48,6 +51,7 @@ public class CreateMapFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_create_map, container, false);
         ButterKnife.bind(this, view);
 
+        navController = Navigation.findNavController(getActivity(), R.id.main_fragment_holder);
         mapCreatorViewModel = ViewModelProviders.of(getActivity()).get(MapCreatorViewModel.class);
 
         doneButton.setOnClickListener(new View.OnClickListener() {
@@ -76,14 +80,14 @@ public class CreateMapFragment extends Fragment {
                 User user = Preferences.getLoggedUser(getContext());
                 map.setCreator_id(user.getId());
                 mapCreatorViewModel.setMap(map);
-                // TODO return to creator
+                navController.navigate(R.id.toCreator);
             }
         });
 
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(getActivity(), R.id.main_fragment_holder).popBackStack()
+                navController.popBackStack();
             }
         });
         return view;

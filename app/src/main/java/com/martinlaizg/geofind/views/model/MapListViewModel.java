@@ -2,9 +2,9 @@ package com.martinlaizg.geofind.views.model;
 
 import android.app.Application;
 
-import com.martinlaizg.geofind.MapListFragment;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
 import com.martinlaizg.geofind.data.access.database.repository.MapRepository;
+import com.martinlaizg.geofind.views.fragment.list.MapListFragment;
 
 import java.util.List;
 

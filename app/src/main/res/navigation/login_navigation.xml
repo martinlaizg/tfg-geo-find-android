@@ -2,12 +2,11 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/login_navigation"
     app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.martinlaizg.geofind.LoginFragment"
+        android:name="com.martinlaizg.geofind.views.fragment.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
         <action
@@ -17,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/registryFragment"
-        android:name="com.martinlaizg.geofind.RegistryFragment"
+        android:name="com.martinlaizg.geofind.views.fragment.RegistryFragment"
         android:label="fragment_registry"
         tools:layout="@layout/fragment_registry">
         <argument

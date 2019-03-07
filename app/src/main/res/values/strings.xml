@@ -21,7 +21,6 @@
     <string name="registry">Registrarse</string>
     <string name="create_account">Crear cuenta</string>
     <string name="no_has_account_question">Aún no tienes una cuenta?</string>
-    <string name="connection_failure">Error de conexión</string>
     <string name="map_image_description">Map image</string>
     <string name="map_name">Map name</string>
     <string name="map_creator">Map creator</string>
@@ -34,12 +33,7 @@
     <string name="map_main_image">Imagen principal del mapa</string>
     <string name="default_map_description">Descripción de ejemplo para el mapa. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam venenatis sagittis nunc nec congue. Suspendisse nec porttitor nunc, id vehicula sem. Cras ornare, nisl vitae interdum dignissim, neque felis ullamcorper ipsum, et venenatis tellus massa nec enim. Praesent a erat augue. Cras semper velit in erat rutrum, vitae facilisis dolor.</string>
     <string name="expandable_icon_description">Expandir/Contraer opciones mapa</string>
-    <string name="play_map">Map</string>
-    <string name="play_compass">compass</string>
-    <string name="play_therm">therm</string>
-    <string name="title_activity_google_maps">Google Maps</string>
     <string name="create_map_text">Crear Mapa</string>
-    <string name="next">Siguiente</string>
     <string name="new_map_name">Nombre</string>
     <string name="new_map_description">Descripción</string>
     <string name="settings">Ajustes</string>
@@ -53,15 +47,12 @@
     <string name="required_lat">Es obligatorio poner la latitud</string>
     <string name="required_lon">Es obligatorio poner la longitud</string>
     <string name="required_description">La descripción es obligatoria</string>
-    <string name="finish">Finalizar</string>
     <string name="required_email">El email es obligatorio</string>
     <string name="required_password">La contraseña es obligatoria</string>
     <string name="network_error">Error de conexión</string>
     <string name="user_name">Nombre del usuario</string>
     <string name="wrong_email_password">Email o contraseña incorrectos</string>
     <string name="already_logged">Ya estabas logeado</string>
-    <string name="add_one_more">Añadir una más</string>
-    <string name="no_create_map_without_locations">No se puede crear un mapa sin localizaciones</string>
     <string name="go_back">Volver</string>
     <string name="default_delete_loc">Borrar localizacion</string>
     <string name="create_location">Crear localización</string>
@@ -72,5 +63,4 @@
     <string name="no_match_password">La contraseña no coincide</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

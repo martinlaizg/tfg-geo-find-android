@@ -2,114 +2,130 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_registry"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/image_register"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/app_logo_description"
+        android:src="@drawable/ic_geo_find_logo_light"
+        android:tint="@color/textColorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Name input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/name_input"
+        style="@style/AppTheme.TextInputLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingLeft="30dp"
-        android:paddingTop="60dp"
-        android:paddingRight="30dp">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="@+id/image_register"
+        app:layout_constraintStart_toStartOf="@+id/image_register"
+        app:layout_constraintTop_toBottomOf="@+id/image_register">
 
-        <ImageView
-            android:id="@+id/image_register"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:contentDescription="@string/app_logo_description"
-            android:src="@drawable/ic_geo_find_logo_light"
-            android:tint="@color/textColorPrimary" />
-
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/image_register"
-            android:orientation="vertical">
+            android:hint="@string/name"
+            android:inputType="textPersonName"
+            android:maxLines="1"
+            android:textColor="@color/textColorPrimary"
+            tools:ignore="Autofill" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Name input -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/name_input"
-                style="@style/AppTheme.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:errorEnabled="true">
+    <!-- Email input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/email_input"
+        style="@style/AppTheme.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="@+id/name_input"
+        app:layout_constraintStart_toStartOf="@+id/name_input"
+        app:layout_constraintTop_toBottomOf="@+id/name_input">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/name"
-                    android:inputType="textPersonName"
-                    android:maxLines="1"
-                    android:textColor="@color/textColorPrimary"
-                    tools:ignore="Autofill" />
-            </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email_input"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:textColor="@color/textColorPrimary"
+            tools:ignore="Autofill" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Email input -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/email_input"
-                style="@style/AppTheme.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:errorEnabled="true">
+    <!-- Password input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/password_input"
+        style="@style/AppTheme.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="@+id/email_input"
+        app:layout_constraintStart_toStartOf="@+id/email_input"
+        app:layout_constraintTop_toBottomOf="@+id/email_input"
+        app:passwordToggleEnabled="true">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/email_input"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:textColor="@color/textColorPrimary"
-                    tools:ignore="Autofill" />
-            </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password_input"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:textColor="@color/textColorPrimary" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Password input -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/password_input"
-                style="@style/AppTheme.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:errorEnabled="true"
-                app:passwordToggleEnabled="true">
+    <!-- Confirm password input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/c_password_input"
+        style="@style/AppTheme.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="@+id/password_input"
+        app:layout_constraintStart_toStartOf="@+id/password_input"
+        app:layout_constraintTop_toBottomOf="@+id/password_input"
+        app:passwordToggleEnabled="true">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/password_input"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:textColor="@color/textColorPrimary" />
-            </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/confirm_password_input"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:textColor="@color/textColorPrimary"
+            tools:ignore="Autofill" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <!-- TODO: cambiar por material button -->
+    <Button
+        android:id="@+id/btn_registry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/registry"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="@+id/c_password_input"
+        app:layout_constraintStart_toStartOf="@+id/c_password_input"
+        app:layout_constraintTop_toBottomOf="@+id/c_password_input" />
 
-            <!-- Confirm password input -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/c_password_input"
-                style="@style/AppTheme.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:errorEnabled="true"
-                app:passwordToggleEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/confirm_password_input"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:textColor="@color/textColorPrimary"
-                    tools:ignore="Autofill" />
-            </com.google.android.material.textfield.TextInputLayout>
-            <!-- TODO: cambiar por material button -->
-            <Button
-                android:id="@+id/btn_registry"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_marginTop="@dimen/small_margin"
-                android:backgroundTint="@color/colorPrimary"
-                android:text="@string/registry"
-                android:textColor="@android:color/white" />
-
-        </LinearLayout>
-    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

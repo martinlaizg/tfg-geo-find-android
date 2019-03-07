@@ -1,10 +1,11 @@
-package com.martinlaizg.geofind;
+package com.martinlaizg.geofind.views.fragment.list;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.adapter.MapsAdapter;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
 import com.martinlaizg.geofind.views.model.MapListViewModel;
