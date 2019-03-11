@@ -26,11 +26,7 @@ public class LocationRepository {
     }
 
     public LiveData<List<Location>> getAllLocations() {
-        LiveData<List<Location>> allLocations = locDAO.getAllLocations();
-        if (allLocations != null && allLocations.getValue() != null && allLocations.getValue().isEmpty()) {
-            allLocations.getValue().addAll(locationService.getAllLocations());
-        }
-        return allLocations;
+        return new MutableLiveData<>();
     }
 
     public void create(List<Location> locations) {
