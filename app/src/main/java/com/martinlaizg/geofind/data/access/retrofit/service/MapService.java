@@ -68,4 +68,19 @@ public class MapService {
         }
         return null;
     }
+
+    public Map getMap(String id) {
+        Response<Map> response = null;
+        try {
+            response = restClient.getMap(id).execute();
+            if (response.isSuccessful()) {
+                return response.body();
+            }
+            APIError apiError = ErrorUtils.parseError(response);
+            Log.e(TAG, "createMap: " + apiError.toString());
+        } catch (IOException e) {
+            Log.e(TAG, "createMap: ", e);
+        }
+        return null;
+    }
 }

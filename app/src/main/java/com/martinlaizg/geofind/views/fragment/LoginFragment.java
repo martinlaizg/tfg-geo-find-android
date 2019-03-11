@@ -17,7 +17,7 @@ import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.database.entity.User;
 import com.martinlaizg.geofind.views.activity.MainActivity;
 import com.martinlaizg.geofind.views.fragment.list.LocationListFragment;
-import com.martinlaizg.geofind.views.model.LoginViewModel;
+import com.martinlaizg.geofind.views.viewmodel.LoginViewModel;
 
 import org.jetbrains.annotations.NotNull;
 

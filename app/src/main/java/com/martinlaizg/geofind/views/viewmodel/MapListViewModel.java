@@ -1,4 +1,4 @@
-package com.martinlaizg.geofind.views.model;
+package com.martinlaizg.geofind.views.viewmodel;
 
 import android.app.Application;
 

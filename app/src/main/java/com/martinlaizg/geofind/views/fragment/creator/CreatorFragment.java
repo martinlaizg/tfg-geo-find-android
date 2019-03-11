@@ -11,7 +11,7 @@ import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.adapter.CreatorLocationAdapter;
 import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
-import com.martinlaizg.geofind.views.model.MapCreatorViewModel;
+import com.martinlaizg.geofind.views.viewmodel.MapCreatorViewModel;
 
 import java.util.List;
 

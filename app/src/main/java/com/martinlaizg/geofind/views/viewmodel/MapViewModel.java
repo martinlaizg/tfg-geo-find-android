@@ -1,4 +1,4 @@
-package com.martinlaizg.geofind.views.model;
+package com.martinlaizg.geofind.views.viewmodel;
 
 import android.app.Application;
 
@@ -11,26 +11,32 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 public class MapViewModel extends AndroidViewModel {
 
+    private MutableLiveData<Map> map;
+    private MutableLiveData<List<Location>> locations;
+
     private MapRepository mapRepo;
     private LocationRepository locRepo;
-    private LiveData<Map> map;
 
 
     public MapViewModel(@NonNull Application application) {
         super(application);
         mapRepo = new MapRepository(application);
         locRepo = new LocationRepository(application);
+        map = new MutableLiveData<>();
+        locations = new MutableLiveData<>();
     }
 
-    public LiveData<Map> getMap(String map_id) {
-        return mapRepo.getMap(map_id);
+    public MutableLiveData<Map> getMap(String map_id) {
+        map = mapRepo.getMap(map_id);
+        return map;
     }
 
-    public LiveData<List<Location>> getLocationsByMap(String map_id) {
-        return locRepo.getLocationsByMap(map_id);
+    public MutableLiveData<List<Location>> getLocations(String map_id) {
+        locations = locRepo.getLocationsByMap(map_id);
+        return locations;
     }
 }

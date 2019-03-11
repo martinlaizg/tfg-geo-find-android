@@ -32,8 +32,8 @@ public interface MapDAO {
     void deleteAllMaps();
 
     @Query("SELECT * FROM maps WHERE id = :mapId")
-    LiveData<Map> getMap(String mapId);
+    Map getMap(String mapId);
 
     @Query("SELECT * FROM locations WHERE map_id = :map_id")
-    LiveData<List<Location>> getLocations(String map_id);
+    List<Location> getLocations(String map_id);
 }

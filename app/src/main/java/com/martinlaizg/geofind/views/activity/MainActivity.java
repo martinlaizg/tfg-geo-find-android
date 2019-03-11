@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setUpNavigation() {
         navigation = Navigation.findNavController(this, R.id.main_fragment_holder);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.getHeaderView(0).setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toAccount));
     }
 
     private void checkLogin() {

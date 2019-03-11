@@ -61,6 +61,7 @@
     <string name="add_location">Añadir localización</string>
     <string name="required_verify_password">Debes de verificar la contraseña</string>
     <string name="no_match_password">La contraseña no coincide</string>
+    <string name="logo_application">Logo de la aplicación</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

@@ -3,16 +3,14 @@ package com.martinlaizg.geofind.data.access.database.repository;
 import android.app.Application;
 
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
-import com.martinlaizg.geofind.data.access.database.dao.LocationDAO;
 import com.martinlaizg.geofind.data.access.database.dao.MapDAO;
-import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
-import com.martinlaizg.geofind.data.access.retrofit.service.LocationService;
 import com.martinlaizg.geofind.data.access.retrofit.service.MapService;
 
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 public class MapRepository {
 
@@ -20,17 +18,12 @@ public class MapRepository {
     private MapService mapService;
     private MapDAO mapDAO;
 
-    private LocationService locService;
-    private LocationDAO locDAO;
-
-
     private LiveData<List<Map>> allMaps;
 
     public MapRepository(Application application) {
         AppDatabase database = AppDatabase.getInstance(application);
         mapDAO = database.mapDAO();
         mapService = MapService.getInstance();
-        locDAO = database.locationDAO();
     }
 
 
@@ -38,8 +31,20 @@ public class MapRepository {
         return mapDAO.getAllMaps();
     }
 
-    public LiveData<Map> getMap(String id) {
-        return mapDAO.getMap(id);
+    public MutableLiveData<Map> getMap(String id) {
+        MutableLiveData<Map> map = new MutableLiveData<>();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Map m = mapDAO.getMap(id);
+                if (m == null) {
+                    m = mapService.getMap(id);
+                }
+                map.postValue(m);
+            }
+
+        }).start();
+        return map;
     }
 
     public void refreshMaps() {
@@ -51,24 +56,6 @@ public class MapRepository {
 
     public void insert(Map map) {
         mapDAO.insert(map);
-    }
-
-
-    public LiveData<List<Location>> getLocations(String map_id) {
-
-        LiveData<List<Location>> locations = mapDAO.getLocations(map_id);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<Location> serviceLocations = mapService.getLocations(map_id);
-                for (Location loc : serviceLocations) {
-                    locDAO.insert(loc);
-                }
-            }
-        }).start();
-
-        return locations;
     }
 
     public Map create(Map map) {

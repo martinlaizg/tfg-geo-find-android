@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.adapter.LocationAdapter;
 import com.martinlaizg.geofind.data.access.database.entity.Location;
-import com.martinlaizg.geofind.views.model.LocationViewModel;
+import com.martinlaizg.geofind.views.viewmodel.LocationViewModel;
 
 import org.jetbrains.annotations.NotNull;
 

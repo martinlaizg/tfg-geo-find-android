@@ -1,45 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linearLayout"
+    style="@style/AppTheme.DrawerHeader"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/drawer_header_height"
-    android:background="@color/colorPrimaryDark"
-    android:clickable="true"
-    android:focusable="true"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:padding="@dimen/normal_margin">
+    android:layout_height="wrap_content">
 
     <ImageView
+        android:id="@+id/imageView"
         android:layout_width="80dp"
-        android:layout_height="fill_parent"
+        android:layout_height="80dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
         android:contentDescription="@string/description_user_image"
-        android:tint="@color/colorPrimary"
-        app:srcCompat="@drawable/ic_user_black" />
+        android:src="@drawable/ic_user_black"
+        android:tint="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+
+    <TextView
+        android:id="@+id/drawer_header_name"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/normal_margin"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/nav_header_name"
+        android:textColor="@color/secondaryTextColor"
+        android:textSize="@dimen/normal_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
 
-        <TextView
-            android:id="@+id/drawer_header_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/nav_header_name"
-            android:textColor="@color/secondaryTextColor"
-            android:textSize="@dimen/normal_text" />
+    <TextView
+        android:id="@+id/drawer_header_username"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/nav_header_username"
+        android:textColor="@color/secondaryTextColor"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/drawer_header_name"
+        app:layout_constraintTop_toBottomOf="@+id/drawer_header_name" />
 
-        <TextView
-            android:id="@+id/drawer_header_username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/micro_margin"
-            android:text="@string/nav_header_username"
-            android:textColor="@color/secondaryTextColor"
-            android:textStyle="bold" />
 
-    </LinearLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

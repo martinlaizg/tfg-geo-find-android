@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -18,7 +19,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
-import com.martinlaizg.geofind.views.model.MapViewModel;
+import com.martinlaizg.geofind.views.viewmodel.MapViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -38,7 +39,7 @@ import butterknife.ButterKnife;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
-    public static final String MAP_ID = "";
+    public static final String MAP_ID = "MAP_ID";
 
     private static final String TAG = MapFragment.class.getSimpleName();
 
@@ -97,22 +98,31 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 setMap(map);
             }
         });
-        mapViewModel.getLocationsByMap(map_id).observe(this, new Observer<List<Location>>() {
+        mapViewModel.getLocations(map_id).observe(this, new Observer<List<Location>>() {
             @Override
             public void onChanged(List<Location> locations) {
                 setMapLocation(locations);
             }
         });
-
     }
 
     private void setMap(Map map) {
-        mapName.setText(map.getName());
-        mapLocation.setText(map.getCity());
-        mapDescription.setText(map.getDescription());
+        if (map != null) {
+            mapName.setText(map.getName());
+            mapLocation.setText(map.getCity());
+            mapDescription.setText(map.getDescription());
+            return;
+        }
+        Toast.makeText(getActivity(), "No se ha podido cargar el mapa", Toast.LENGTH_SHORT).show();
+        navController.popBackStack();
     }
 
     private void setMapLocation(List<Location> map_locations) {
+        if (map_locations == null) {
+            Toast.makeText(getActivity(), "No se han encontrado localizaciones", Toast.LENGTH_SHORT).show();
+            navController.popBackStack();
+            return;
+        }
         if (map_locations.size() > 0) {
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
 

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.adapter.MapsAdapter;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
-import com.martinlaizg.geofind.views.model.MapListViewModel;
+import com.martinlaizg.geofind.views.viewmodel.MapListViewModel;
 
 import java.util.List;
 

@@ -57,4 +57,19 @@ public class LocationService {
             Log.e(TAG, "createLocation: ", e);
         }
     }
+
+    public List<Location> getLocationsByMap(String id) {
+        Response<List<Location>> response = null;
+        try {
+            response = restClient.getLocationsByMap(id).execute();
+            if (response.isSuccessful()) {
+                return response.body();
+            }
+            APIError apiError = ErrorUtils.parseError(response);
+            Log.i(TAG, "getLocationsByMap: " + apiError.message());
+        } catch (IOException ex) {
+            Log.e(TAG, "getLocationsByMap: ", ex);
+        }
+        return new ArrayList<>();
+    }
 }

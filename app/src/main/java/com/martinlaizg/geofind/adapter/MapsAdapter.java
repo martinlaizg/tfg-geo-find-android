@@ -30,7 +30,7 @@ public class MapsAdapter extends RecyclerView.Adapter<MapsAdapter.MapsViewHolder
     @Override
     public MapsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.fragment_maps, viewGroup, false);
+                .inflate(R.layout.fragment_map_item, viewGroup, false);
         return new MapsViewHolder(view);
     }
 
@@ -38,6 +38,8 @@ public class MapsAdapter extends RecyclerView.Adapter<MapsAdapter.MapsViewHolder
     public void onBindViewHolder(@NonNull MapsViewHolder holder, final int i) {
         final Map map = maps.get(i);
         holder.mapName.setText(map.getName());
+        holder.mapCreator.setText(map.getCreator_id());
+        holder.mapDescription.setText(map.getDescription());
         Bundle b = new Bundle();
         b.putString(MapFragment.MAP_ID, maps.get(i).getId());
         holder.materialCardView.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toSingleMap, b));
@@ -59,6 +61,8 @@ public class MapsAdapter extends RecyclerView.Adapter<MapsAdapter.MapsViewHolder
         TextView mapName;
         @BindView(R.id.map_creator)
         TextView mapCreator;
+        @BindView(R.id.map_description)
+        TextView mapDescription;
         @BindView(R.id.map_list_item)
         MaterialCardView materialCardView;
 

@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.views.model.MapCreatorViewModel;
+import com.martinlaizg.geofind.views.viewmodel.MapCreatorViewModel;
 
 import org.jetbrains.annotations.NotNull;
 

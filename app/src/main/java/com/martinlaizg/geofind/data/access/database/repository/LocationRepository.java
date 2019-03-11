@@ -10,6 +10,7 @@ import com.martinlaizg.geofind.data.access.retrofit.service.LocationService;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 public class LocationRepository {
 
@@ -38,18 +39,25 @@ public class LocationRepository {
         }
     }
 
-    public LiveData<List<Location>> getLocationsByMap(String map_id) {
-        LiveData<List<Location>> locations = locDAO.getLocationsByMap(map_id);
+    public MutableLiveData<List<Location>> getLocationsByMap(String map_id) {
+        MutableLiveData<List<Location>> locations = new MutableLiveData<>();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (locations != null && locations.getValue() != null) {
-                    for (Location loc : locationService.getAllLocations()) {
-                        locDAO.insert(loc);
+                List<Location> locs = locDAO.getLocationsByMap(map_id);
+                if (locs == null || locs.isEmpty()) {
+                    locs = locationService.getLocationsByMap(map_id);
+                    if (locs != null && !locs.isEmpty()) {
+                        for (Location l : locs) {
+                            locDAO.insert(l);
+                        }
+                        locs = locDAO.getLocationsByMap(map_id);
                     }
                 }
+                locations.postValue(locs);
             }
         }).start();
+
         return locations;
     }
 }
