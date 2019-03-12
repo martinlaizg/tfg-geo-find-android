@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -36,6 +37,8 @@ public class CreateMapFragment extends Fragment {
     Button returnButton;
     @BindView(R.id.add_image_button)
     Button add_image_button;
+    @BindView(R.id.dificulty_spinner)
+    Spinner dificultySpinner;
 
     MapCreatorViewModel mapCreatorViewModel;
     private NavController navController;
