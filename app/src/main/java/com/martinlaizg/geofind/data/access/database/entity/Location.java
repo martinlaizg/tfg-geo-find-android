@@ -29,6 +29,7 @@ public class Location {
     private String lat;
     private String lon;
     private String map_id;
+    private String description;
     private Date created_at;
     private Date updated_at;
 
@@ -102,5 +103,13 @@ public class Location {
 
     public void setMap_id(String map_id) {
         this.map_id = map_id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

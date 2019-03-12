@@ -93,10 +93,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         drawer_layout.closeDrawers();
         switch (menuItem.getItemId()) {
-            // TODO remove
-//            case R.id.menu_users:
-//                Toast.makeText(this, "Cargar usuarios", Toast.LENGTH_SHORT).show();
-//                break;
             case R.id.menu_maps:
                 Toast.makeText(this, "Cargar mapas", Toast.LENGTH_SHORT).show();
                 navigation.navigate(R.id.toMapList);

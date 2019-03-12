@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.google.android.material.card.MaterialCardView;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
-import com.martinlaizg.geofind.views.fragment.MapFragment;
+import com.martinlaizg.geofind.views.fragment.MapFragmentOld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public class MapsAdapter extends RecyclerView.Adapter<MapsAdapter.MapsViewHolder
         holder.mapCreator.setText(map.getCreator_id());
         holder.mapDescription.setText(map.getDescription());
         Bundle b = new Bundle();
-        b.putString(MapFragment.MAP_ID, maps.get(i).getId());
+        b.putString(MapFragmentOld.MAP_ID, maps.get(i).getId());
         holder.materialCardView.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toSingleMap, b));
     }
 

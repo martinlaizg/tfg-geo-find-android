@@ -69,4 +69,9 @@
         <item>Brújula</item>
         <item>Mapa</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="example_num_locations">30 localizaciones</string>
+    <string name="location_name_description">Nombre de la localización</string>
 </resources>

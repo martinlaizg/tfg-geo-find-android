@@ -59,9 +59,9 @@
         tools:layout="@layout/fragment_location_list" />
     <fragment
         android:id="@+id/navMap"
-        android:name="com.martinlaizg.geofind.views.fragment.MapFragment"
+        android:name="com.martinlaizg.geofind.views.fragment.MapFragmentOld"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_map">
+        tools:layout="@layout/fragment_map_old">
         <argument
             android:name="map_id"
             app:argType="string" />
