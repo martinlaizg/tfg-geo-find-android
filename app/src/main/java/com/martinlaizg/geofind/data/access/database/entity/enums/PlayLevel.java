@@ -9,6 +9,6 @@ public enum PlayLevel {
     @SerializedName("compass")
     COMPASS,
     @SerializedName("any")
-    ANY;
+    ANY
 
 }

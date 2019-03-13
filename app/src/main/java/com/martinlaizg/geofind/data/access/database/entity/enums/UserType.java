@@ -9,7 +9,7 @@ public enum UserType {
     @SerializedName("creator")
     CREATOR,
     @SerializedName("admin")
-    ADMINISTRATOR;
+    ADMINISTRATOR
 
 
 }

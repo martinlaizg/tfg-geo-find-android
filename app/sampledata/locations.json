@@ -1,0 +1,21 @@
+{
+  "comment": "Localizaciones",
+  "data": [
+    {
+      "name": "Localizacion 1",
+      "description": "Descripcion 1"
+    },
+    {
+      "name": "Localizacion 2",
+      "description": "Descripcion 2"
+    },
+    {
+      "name": "Localizacion 3",
+      "description": "Descripcion 3"
+    },
+    {
+      "name": "Localizacion 4",
+      "description": "Descripcion 4"
+    }
+  ]
+}
