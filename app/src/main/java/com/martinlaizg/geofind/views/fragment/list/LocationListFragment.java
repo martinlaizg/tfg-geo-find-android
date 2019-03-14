@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.adapter.LocationAdapter;
+import com.martinlaizg.geofind.adapter.LocationListAdapter;
 import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.views.viewmodel.LocationViewModel;
 
@@ -31,7 +31,7 @@ public class LocationListFragment extends Fragment {
     RecyclerView recyclerView;
 
     private ArrayList<Location> locations;
-    private LocationAdapter adapter;
+    private LocationListAdapter adapter;
     private LocationViewModel locationViewModel;
 
 
@@ -42,7 +42,7 @@ public class LocationListFragment extends Fragment {
         locations = new ArrayList<>();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new LocationAdapter();
+        adapter = new LocationListAdapter();
         recyclerView.setAdapter(adapter);
 
 

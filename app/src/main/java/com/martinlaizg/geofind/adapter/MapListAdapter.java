@@ -4,15 +4,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
-import com.martinlaizg.geofind.views.fragment.MapFragmentOld;
+import com.martinlaizg.geofind.views.fragment.MapFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
@@ -21,7 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MapsAdapter extends RecyclerView.Adapter<MapsAdapter.MapsViewHolder> {
+public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.MapsViewHolder> {
 
     private List<Map> maps = new ArrayList<>();
     private NavController navController;
@@ -38,11 +40,28 @@ public class MapsAdapter extends RecyclerView.Adapter<MapsAdapter.MapsViewHolder
     public void onBindViewHolder(@NonNull MapsViewHolder holder, final int i) {
         final Map map = maps.get(i);
         holder.mapName.setText(map.getName());
-        holder.mapCreator.setText(map.getCreator_id());
+        holder.mapCreator.setText("Creador " + map.getCreator_id() + " TODO"); // Cambiar por valor real
         holder.mapDescription.setText(map.getDescription());
+
+
+        // TODO cambiar por los valores reales
+        Random random = new Random();
+        int allLocations = random.nextInt(30) + 1;
+        int progress = random.nextInt(allLocations + 1);
+        float perc = (float) progress / allLocations;
+        int calc = (int) (perc * 100);
+
+        holder.map_progress_text.setText(progress + "/" + allLocations);
+        holder.map_progress_bar.setProgress(calc);
         Bundle b = new Bundle();
-        b.putString(MapFragmentOld.MAP_ID, maps.get(i).getId());
-        holder.materialCardView.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toSingleMap, b));
+        b.putString(MapFragment.MAP_ID, maps.get(i).getId());
+        holder.materialCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.map_navigation, b);
+
+            }
+        });
     }
 
     @Override
@@ -63,6 +82,10 @@ public class MapsAdapter extends RecyclerView.Adapter<MapsAdapter.MapsViewHolder
         TextView mapCreator;
         @BindView(R.id.map_description)
         TextView mapDescription;
+        @BindView(R.id.map_progress_text)
+        TextView map_progress_text;
+        @BindView(R.id.map_progress_bar)
+        ProgressBar map_progress_bar;
         @BindView(R.id.map_list_item)
         MaterialCardView materialCardView;
 

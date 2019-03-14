@@ -56,4 +56,23 @@ public class LocationRepository {
 
         return locations;
     }
+
+    public MutableLiveData<Location> getLocation(String loc_id) {
+        MutableLiveData<Location> location = new MutableLiveData<>();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Location loc = locDAO.getLocation(loc_id);
+                if (loc == null) {
+                    loc = locationService.getLocation(loc_id);
+                    if (loc != null) {
+                        locDAO.insert(loc);
+                        loc = locDAO.getLocation(loc_id);
+                    }
+                }
+                location.postValue(loc);
+            }
+        }).start();
+        return location;
+    }
 }

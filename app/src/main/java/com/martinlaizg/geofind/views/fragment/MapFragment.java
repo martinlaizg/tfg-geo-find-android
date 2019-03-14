@@ -30,12 +30,15 @@ import butterknife.ButterKnife;
 
 public class MapFragment extends Fragment {
 
+    public static final String MAP_ID = "MAP_ID";
     private static final String TAG = MapFragment.class.getSimpleName();
 
     @BindView(R.id.map_name)
     TextView map_name;
     @BindView(R.id.map_description)
     TextView map_description;
+    @BindView(R.id.map_creator)
+    TextView map_creator;
     @BindView(R.id.map_num_locations)
     TextView map_num_locations;
 
@@ -55,12 +58,17 @@ public class MapFragment extends Fragment {
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.bind(this, view);
+        Bundle b = getArguments();
+        if (b != null) {
+            map_id = b.getString(MAP_ID);
+        }
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new LocationListAdapter();
         recyclerView.setAdapter(adapter);
@@ -76,6 +84,7 @@ public class MapFragment extends Fragment {
             @Override
             public void onChanged(List<Location> locations) {
                 adapter.setLocations(locations);
+                map_num_locations.setText(String.valueOf(locations.size()));
             }
         });
     }
@@ -84,6 +93,7 @@ public class MapFragment extends Fragment {
         if (map != null) {
             map_name.setText(map.getName());
             map_description.setText(map.getDescription());
+            map_creator.setText("Creador " + map.getCreator_id() + " TODO"); // TODO cambiar por valor real
         }
     }
 }

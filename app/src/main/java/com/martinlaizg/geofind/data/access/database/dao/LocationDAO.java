@@ -29,6 +29,9 @@ public interface LocationDAO {
     @Query("SELECT * FROM locations")
     List<Location> getAllLocations();
 
+    @Query("SELECT * FROM locations WHERE id = :loc_id")
+    Location getLocation(String loc_id);
+
     @Query("SELECT * FROM locations WHERE map_id = :map_id")
     List<Location> getLocationsByMap(String map_id);
 }

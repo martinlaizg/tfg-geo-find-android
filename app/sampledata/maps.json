@@ -4,27 +4,37 @@
     {
       "name": "Mapa 1",
       "description": "Descripcion 1",
-      "creator": "Creador 1"
+      "creator": "Creador 1",
+      "progress": "50",
+      "progress_text": "15/30"
     },
     {
       "name": "Mapa 2",
       "description": "Descripcion 2",
-      "creator": "Creador 2"
+      "creator": "Creador 2",
+      "progress": "50",
+      "progress_text": "15/30"
     },
     {
       "name": "Mapa 3",
       "description": "Descripcion 3",
-      "creator": "Creador 3"
+      "creator": "Creador 3",
+      "progress": "50",
+      "progress_text": "15/30"
     },
     {
       "name": "Mapa 4",
       "description": "Descripcion 4",
-      "creator": "Creador 4"
+      "creator": "Creador 4",
+      "progress": "50",
+      "progress_text": "15/30"
     },
     {
       "name": "Mapa 5",
       "description": "Descripcion 5",
-      "creator": "Creador 5"
+      "creator": "Creador 5",
+      "progress": "50",
+      "progress_text": "15/30"
     }
   ]
 }

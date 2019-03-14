@@ -72,4 +72,19 @@ public class LocationService {
         }
         return new ArrayList<>();
     }
+
+    public Location getLocation(String loc_id) {
+        Response<Location> response = null;
+        try {
+            response = restClient.getLocation(loc_id).execute();
+            if (response.isSuccessful()) {
+                return response.body();
+            }
+            APIError apiError = ErrorUtils.parseError(response);
+            Log.i(TAG, "getLocationsByMap: " + apiError.message());
+        } catch (IOException ex) {
+            Log.e(TAG, "getLocationsByMap: ", ex);
+        }
+        return new Location();
+    }
 }

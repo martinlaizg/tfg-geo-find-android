@@ -6,8 +6,6 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="description_user_image">User profile image</string>
-    <string name="nav_header_username">username</string>
-    <string name="nav_header_name">Nombre completo de usuario</string>
     <string name="password_input">Password</string>
     <string name="confirm_password_input">Confirm password</string>
     <string name="email_input">Email</string>
@@ -21,17 +19,11 @@
     <string name="registry">Registrarse</string>
     <string name="create_account">Crear cuenta</string>
     <string name="no_has_account_question">Aún no tienes una cuenta?</string>
-    <string name="map_image_description">Map image</string>
-    <string name="map_name">Map name</string>
-    <string name="map_creator">Map creator</string>
     <string name="default_progress">8/24</string>
     <string name="default_email">martinlaizg@gmail.com</string>
     <string name="default_password">martinlaizg</string>
     <string name="location_description">Imagen de la localización</string>
-    <string name="default_location_name">Nombre de la localización</string>
-    <string name="default_location_distance">300m</string>
     <string name="map_main_image">Imagen principal del mapa</string>
-    <string name="default_map_description">Descripción de ejemplo para el mapa. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam venenatis sagittis nunc nec congue. Suspendisse nec porttitor nunc, id vehicula sem. Cras ornare, nisl vitae interdum dignissim, neque felis ullamcorper ipsum, et venenatis tellus massa nec enim. Praesent a erat augue. Cras semper velit in erat rutrum, vitae facilisis dolor.</string>
     <string name="expandable_icon_description">Expandir/Contraer opciones mapa</string>
     <string name="create_map_text">Crear Mapa</string>
     <string name="new_map_name">Nombre</string>
@@ -74,4 +66,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="example_num_locations">30 localizaciones</string>
     <string name="location_name_description">Nombre de la localización</string>
+    <string name="visited_by_count">"Visitado por: "</string>
+    <string name="space_people">" personas"</string>
 </resources>

@@ -10,6 +10,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 public class LocationViewModel extends AndroidViewModel {
 
@@ -25,5 +26,9 @@ public class LocationViewModel extends AndroidViewModel {
 
     public LiveData<List<Location>> getAllLocations() {
         return allLocations;
+    }
+
+    public MutableLiveData<Location> getLocation(String loc_id) {
+        return locRepo.getLocation(loc_id);
     }
 }

@@ -1,5 +1,6 @@
 package com.martinlaizg.geofind.adapter;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,17 +8,25 @@ import android.widget.TextView;
 
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entity.Location;
+import com.martinlaizg.geofind.views.fragment.LocationFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class LocationListAdapter extends RecyclerView.Adapter<LocationListAdapter.LocationsViewHolder> {
 
-    List<Location> locations;
+    private List<Location> locations;
+
+    public LocationListAdapter() {
+        locations = new ArrayList<>();
+    }
 
     @NonNull
     @Override
@@ -28,8 +37,12 @@ public class LocationListAdapter extends RecyclerView.Adapter<LocationListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull LocationsViewHolder holder, int position) {
-        holder.location_name.setText(locations.get(position).getName());
-        holder.location_description.setText(locations.get(position).getDescription());
+        Location l = locations.get(position);
+        holder.location_name.setText(l.getName());
+        holder.location_description.setText("Descripción pendiente TODO"); // TODO cambiar por valor real
+        Bundle b = new Bundle();
+        b.putString(LocationFragment.LOC_ID, l.getId());
+        holder.location_card.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toLocation, b));
     }
 
     public void setLocations(List<Location> locations) {
@@ -48,6 +61,8 @@ public class LocationListAdapter extends RecyclerView.Adapter<LocationListAdapte
         TextView location_name;
         @BindView(R.id.location_description)
         TextView location_description;
+        @BindView(R.id.location_card)
+        CardView location_card;
 
         LocationsViewHolder(@NonNull View itemView) {
             super(itemView);

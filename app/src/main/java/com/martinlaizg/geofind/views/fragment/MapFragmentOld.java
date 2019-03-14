@@ -33,8 +33,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 @Deprecated
 public class MapFragmentOld extends Fragment implements OnMapReadyCallback {
@@ -44,17 +42,12 @@ public class MapFragmentOld extends Fragment implements OnMapReadyCallback {
     private static final String TAG = MapFragmentOld.class.getSimpleName();
 
     // View
-    @BindView(R.id.map_name)
     TextView mapName;
-    @BindView(R.id.map_location)
     TextView mapLocation;
-    @BindView(R.id.map_description)
     TextView mapDescription;
 
-    @BindView(R.id.map_card_view)
     CardView cardView;
 
-    @BindView(R.id.map)
     MapView mapView;
 
     private GoogleMap mMap;
@@ -76,12 +69,7 @@ public class MapFragmentOld extends Fragment implements OnMapReadyCallback {
             navController.popBackStack(R.id.map_list, false);
             return null;
         }
-        // TODO add backbutton on app toolbar
-
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_map_old, container, false);
-        ButterKnife.bind(this, view);
-        return view;
+        return null;
     }
 
     @Override

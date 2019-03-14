@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.adapter.MapsAdapter;
+import com.martinlaizg.geofind.adapter.MapListAdapter;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
 import com.martinlaizg.geofind.views.viewmodel.MapListViewModel;
 
@@ -35,7 +35,7 @@ public class MapListFragment extends Fragment {
 
     private MapListViewModel mapListViewModel;
 
-    private MapsAdapter adapter;
+    private MapListAdapter adapter;
 
 
     @Nullable
@@ -46,7 +46,7 @@ public class MapListFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new MapsAdapter();
+        adapter = new MapListAdapter();
         recyclerView.setAdapter(adapter);
 
         mapListViewModel = ViewModelProviders.of(this).get(MapListViewModel.class);
