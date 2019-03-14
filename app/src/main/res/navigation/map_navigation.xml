@@ -16,6 +16,16 @@
         <action
             android:id="@+id/toLocation"
             app:destination="@id/locationFragment" />
+        <action
+            android:id="@+id/playMap"
+            app:destination="@id/mapFragment" />
+        <argument
+            android:name="PLAY_MODE"
+            android:defaultValue="0"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_mapFragment_to_playLocationFragment"
+            app:destination="@id/playLocationFragment" />
     </fragment>
     <fragment
         android:id="@+id/locationFragment"
@@ -23,7 +33,16 @@
         android:label="fragment_location"
         tools:layout="@layout/fragment_location">
         <argument
-            android:name="location_id"
+            android:name="LOCATION_ID"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/playLocationFragment"
+        android:name="com.martinlaizg.geofind.PlayLocationFragment"
+        android:label="fragment_play_location"
+        tools:layout="@layout/fragment_play_location">
+        <argument
+            android:name="LOCATION_ID"
             app:argType="string" />
     </fragment>
 </navigation>

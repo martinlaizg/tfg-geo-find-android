@@ -13,7 +13,7 @@
     <string name="log_out">Cerrar sesión</string>
     <string name="account_settings">Ajustes de la cuenta</string>
     <string name="locations">Localizaciones</string>
-    <string name="map">Maps</string>
+    <string name="map">Mapa</string>
     <string name="users">Usuarios</string>
     <string name="login">Iniciar sesión</string>
     <string name="registry">Registrarse</string>
@@ -68,4 +68,6 @@
     <string name="location_name_description">Nombre de la localización</string>
     <string name="visited_by_count">"Visitado por: "</string>
     <string name="space_people">" personas"</string>
+    <string name="therm">Term</string>
+    <string name="compass">Brujula</string>
 </resources>

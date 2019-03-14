@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void setUpToolbar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Drawer
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.open, R.string.close);
@@ -83,8 +82,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        uncheckMenuItems();
-        menuItem.setChecked(true);
 
         // If the current destination is not the main, return to there
         NavDestination currentDestination = navigation.getCurrentDestination();
@@ -104,22 +101,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.menu_settings:
                 Toast.makeText(this, "Ir a ajustes", Toast.LENGTH_SHORT).show();
                 navigation.navigate(R.id.toAccount);
-                menuItem.setChecked(false);
                 break;
             case R.id.menu_log_out:
                 Toast.makeText(this, "Cerrar sesión", Toast.LENGTH_SHORT).show();
                 logOut();
-                menuItem.setChecked(false);
                 break;
         }
         return true;
     }
 
-    private void uncheckMenuItems() {
-        for (int i = 0; i < navigationView.getMenu().size(); i++) {
-            navigationView.getMenu().getItem(i).setChecked(false);
-        }
-    }
 
     private void logOut() {
         Preferences.setLoggedUser(this, null);
@@ -131,7 +121,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START);
         } else {
-            uncheckMenuItems();
             super.onBackPressed();
         }
     }

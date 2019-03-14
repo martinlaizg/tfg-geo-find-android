@@ -64,7 +64,7 @@ public class LocationFragment extends Fragment {
     private void setLocation(Location location) {
         if (location != null) {
             location_name.setText(location.getName());
-            location_description.setText(location.getDescription());
+            location_description.setText("Descripción pendiente TODO"); // TODO cambiar por el valor real
             location_visits.setText("2.594 TODO"); // TODO cambiar por el valor real
             location_image.setImageResource(R.drawable.default_map_image);
         }
