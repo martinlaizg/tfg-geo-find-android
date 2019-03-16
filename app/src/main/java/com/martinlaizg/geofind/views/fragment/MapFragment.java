@@ -90,13 +90,13 @@ public class MapFragment extends Fragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new LocationListAdapter();
+        adapter.setPlayMode(play_mode);
         recyclerView.setAdapter(adapter);
 
         play_map_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putInt(PLAY_MODE, 1);
                 b.putString(MAP_ID, map_id);
                 Navigation.findNavController(v).navigate(R.id.playMap, b);
             }
@@ -105,9 +105,8 @@ public class MapFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putInt(PLAY_MODE, 2);
                 b.putString(MAP_ID, map_id);
-                Navigation.findNavController(v).navigate(R.id.playMap, b);
+                Navigation.findNavController(v).navigate(R.id.playCompass, b);
 
             }
         });
@@ -115,9 +114,8 @@ public class MapFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putInt(PLAY_MODE, 3);
                 b.putString(MAP_ID, map_id);
-                Navigation.findNavController(v).navigate(R.id.playMap, b);
+                Navigation.findNavController(v).navigate(R.id.playTherm, b);
 
             }
         });

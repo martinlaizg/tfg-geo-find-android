@@ -1,5 +1,7 @@
 package com.martinlaizg.geofind.data.access.database.entity;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
@@ -111,5 +113,16 @@ public class Location {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public LatLng getLatLng() {
+        return new LatLng(Double.valueOf(getLat()), Double.valueOf(getLon()));
+    }
+
+    public android.location.Location getAndroidLocation() {
+        android.location.Location l = new android.location.Location(getName());
+        l.setLatitude(Double.valueOf(getLat()));
+        l.setLongitude(Double.valueOf(getLon()));
+        return l;
     }
 }

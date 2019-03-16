@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.views.fragment.LocationFragment;
+import com.martinlaizg.geofind.views.fragment.play.PlayMapFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ import butterknife.ButterKnife;
 public class LocationListAdapter extends RecyclerView.Adapter<LocationListAdapter.LocationsViewHolder> {
 
     private List<Location> locations;
+    private int playMode;
 
     public LocationListAdapter() {
         locations = new ArrayList<>();
@@ -40,9 +42,16 @@ public class LocationListAdapter extends RecyclerView.Adapter<LocationListAdapte
         Location l = locations.get(position);
         holder.location_name.setText(l.getName());
         holder.location_description.setText("Descripción pendiente TODO"); // TODO cambiar por valor real
+
         Bundle b = new Bundle();
-        b.putString(LocationFragment.LOC_ID, l.getId());
-        holder.location_card.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toLocation, b));
+        if (playMode == 0) {
+            b.putString(LocationFragment.LOC_ID, l.getId());
+            holder.location_card.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toLocation, b));
+        } else {
+            b.putString(PlayMapFragment.LOC_ID, l.getId());
+            b.putInt(PlayMapFragment.PLAY_MODE, playMode);
+            holder.location_card.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.playLocation, b));
+        }
     }
 
     public void setLocations(List<Location> locations) {
@@ -53,6 +62,14 @@ public class LocationListAdapter extends RecyclerView.Adapter<LocationListAdapte
     @Override
     public int getItemCount() {
         return locations.size();
+    }
+
+    public int getPlayMode() {
+        return playMode;
+    }
+
+    public void setPlayMode(int playMode) {
+        this.playMode = playMode;
     }
 
     class LocationsViewHolder extends RecyclerView.ViewHolder {

@@ -24,8 +24,14 @@
             android:defaultValue="0"
             app:argType="integer" />
         <action
-            android:id="@+id/action_mapFragment_to_playLocationFragment"
-            app:destination="@id/playLocationFragment" />
+            android:id="@+id/playMap"
+            app:destination="@id/playMapFragment" />
+        <action
+            android:id="@+id/playCompass"
+            app:destination="@+id/playCompassFragment" />
+        <action
+            android:id="@+id/playTherm"
+            app:destination="@id/playThermFragment" />
     </fragment>
     <fragment
         android:id="@+id/locationFragment"
@@ -37,12 +43,22 @@
             app:argType="string" />
     </fragment>
     <fragment
-        android:id="@+id/playLocationFragment"
-        android:name="com.martinlaizg.geofind.PlayLocationFragment"
-        android:label="fragment_play_location"
-        tools:layout="@layout/fragment_play_location">
+        android:id="@+id/playMapFragment"
+        android:name="com.martinlaizg.geofind.views.fragment.play.PlayMapFragment"
+        android:label="fragment_play_map"
+        tools:layout="@layout/fragment_play_map_location">
         <argument
             android:name="LOCATION_ID"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/playCompassFragment"
+        android:name="com.martinlaizg.geofind.views.fragment.play.PlayCompassFragment"
+        android:label="fragment_play_compass"
+        tools:layout="@layout/fragment_play_compass" />
+    <fragment
+        android:id="@+id/playThermFragment"
+        android:name="com.martinlaizg.geofind.views.fragment.play.PlayThermFragment"
+        android:label="fragment_play_therm"
+        tools:layout="@layout/fragment_play_therm" />
 </navigation>
