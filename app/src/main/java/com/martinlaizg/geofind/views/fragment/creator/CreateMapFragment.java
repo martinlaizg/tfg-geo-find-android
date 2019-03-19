@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -80,7 +81,7 @@ public class CreateMapFragment extends Fragment {
                 Map map = new Map();
                 map.setName(name);
                 map.setDescription(description);
-                User user = Preferences.getLoggedUser(getContext());
+                User user = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(getContext()));
                 map.setCreator_id(user.getId());
                 mapCreatorViewModel.setMap(map);
                 navController.navigate(R.id.toCreator);

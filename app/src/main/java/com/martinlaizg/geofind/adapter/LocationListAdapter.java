@@ -8,8 +8,8 @@ import android.widget.TextView;
 
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entity.Location;
+import com.martinlaizg.geofind.data.access.database.entity.enums.PlayLevel;
 import com.martinlaizg.geofind.views.fragment.LocationFragment;
-import com.martinlaizg.geofind.views.fragment.play.PlayMapFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 public class LocationListAdapter extends RecyclerView.Adapter<LocationListAdapter.LocationsViewHolder> {
 
     private List<Location> locations;
-    private int playMode;
+    private PlayLevel playLevel;
 
     public LocationListAdapter() {
         locations = new ArrayList<>();
@@ -44,14 +44,8 @@ public class LocationListAdapter extends RecyclerView.Adapter<LocationListAdapte
         holder.location_description.setText("Descripción pendiente TODO"); // TODO cambiar por valor real
 
         Bundle b = new Bundle();
-        if (playMode == 0) {
-            b.putString(LocationFragment.LOC_ID, l.getId());
-            holder.location_card.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toLocation, b));
-        } else {
-            b.putString(PlayMapFragment.LOC_ID, l.getId());
-            b.putInt(PlayMapFragment.PLAY_MODE, playMode);
-            holder.location_card.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.playLocation, b));
-        }
+        b.putString(LocationFragment.LOC_ID, l.getId());
+        holder.location_card.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.navLocation, b));
     }
 
     public void setLocations(List<Location> locations) {
@@ -64,12 +58,9 @@ public class LocationListAdapter extends RecyclerView.Adapter<LocationListAdapte
         return locations.size();
     }
 
-    public int getPlayMode() {
-        return playMode;
-    }
-
-    public void setPlayMode(int playMode) {
-        this.playMode = playMode;
+    public void setPlayLevel(PlayLevel playLevel) {
+        this.playLevel = playLevel;
+        notifyDataSetChanged();
     }
 
     class LocationsViewHolder extends RecyclerView.ViewHolder {

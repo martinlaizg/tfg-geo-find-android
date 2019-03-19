@@ -70,10 +70,6 @@
                 <data android:scheme="http" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".views.activity.LoginActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

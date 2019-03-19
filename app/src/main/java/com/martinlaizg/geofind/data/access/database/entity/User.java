@@ -1,12 +1,16 @@
 package com.martinlaizg.geofind.data.access.database.entity;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.martinlaizg.geofind.data.access.database.entity.enums.UserType;
+import com.martinlaizg.geofind.utils.DateUtils;
 
 import java.sql.Date;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "users")
@@ -23,6 +27,15 @@ public class User {
     private UserType user_type;
     private Date created_at;
     private Date updated_at;
+
+    public User() {
+    }
+
+    @Ignore
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 
 
     public String getId() {
@@ -95,5 +108,10 @@ public class User {
 
     public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public String toJson() {
+        Gson gson = new GsonBuilder().setDateFormat(DateUtils.DATE_FORMAT).create();
+        return gson.toJson(this);
     }
 }

@@ -58,7 +58,7 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.MapsView
         holder.materialCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.map_navigation, b);
+                Navigation.findNavController(v).navigate(R.id.toMap, b);
 
             }
         });

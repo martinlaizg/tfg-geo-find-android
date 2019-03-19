@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/main"
         android:name="com.martinlaizg.geofind.views.fragment.MainFragment"
-        android:label="fragment_main"
+        android:label="@string/app_name"
         tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/toLocationList"
@@ -16,17 +16,13 @@
             android:id="@+id/toMapList"
             app:destination="@id/navMapList" />
         <action
-            android:id="@+id/toAccount"
-            app:destination="@id/navAccount" />
-    </fragment>
-    <fragment
-        android:id="@+id/navAccount"
-        android:name="com.martinlaizg.geofind.views.fragment.AccountFragment"
-        android:label="fragment_account"
-        tools:layout="@layout/fragment_account">
+            android:id="@+id/toSettings"
+            app:destination="@id/navSettings" />
         <action
-            android:id="@+id/toCreateMap"
-            app:destination="@id/navCreateMap" />
+            android:id="@+id/toLogin"
+            app:destination="@id/navLogin"
+            app:popUpTo="@+id/main"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/navCreateLocation"
@@ -46,7 +42,7 @@
     <fragment
         android:id="@+id/navCreator"
         android:name="com.martinlaizg.geofind.views.fragment.creator.CreatorFragment"
-        android:label="fragment_creator"
+        android:label="@string/map_creator"
         tools:layout="@layout/fragment_creator">
         <action
             android:id="@+id/toCreateLocation"
@@ -55,20 +51,67 @@
     <fragment
         android:id="@+id/navLocationList"
         android:name="com.martinlaizg.geofind.views.fragment.list.LocationListFragment"
-        android:label="fragment_location_list"
-        tools:layout="@layout/fragment_location_list">
-        <action
-            android:id="@+id/toMapActivity"
-            app:destination="@id/map_navigation" />
-    </fragment>
+        android:label="@string/location_list"
+        tools:layout="@layout/fragment_location_list" />
     <fragment
         android:id="@+id/navMapList"
         android:name="com.martinlaizg.geofind.views.fragment.list.MapListFragment"
-        android:label="fragment_maps_list"
+        android:label="@string/map_list"
         tools:layout="@layout/fragment_maps_list">
         <action
-            android:id="@+id/toMapActivity"
-            app:destination="@id/map_navigation" />
+            android:id="@+id/toMap"
+            app:destination="@id/navMap" />
     </fragment>
-    <include app:graph="@navigation/map_navigation" />
+    <fragment
+        android:id="@+id/navMap"
+        android:name="com.martinlaizg.geofind.views.fragment.MapFragment"
+        android:label="@string/map"
+        tools:layout="@layout/fragment_map">
+        <action
+            android:id="@+id/toLocation"
+            app:destination="@id/navLocation" />
+    </fragment>
+    <fragment
+        android:id="@+id/navLocation"
+        android:name="com.martinlaizg.geofind.views.fragment.LocationFragment"
+        android:label="@string/location"
+        tools:layout="@layout/fragment_location" />
+    <fragment
+        android:id="@+id/navLogin"
+        android:name="com.martinlaizg.geofind.views.fragment.LoginFragment"
+        android:label="@string/login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/toRegistry"
+            app:destination="@id/navRegistry"
+            app:enterAnim="@anim/nav_default_enter_anim" />
+        <argument
+            android:name="EMAIL"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="PASSWORD"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/toMainLogged"
+            app:destination="@id/main"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/navLogin"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/navSettings"
+        android:name="com.martinlaizg.geofind.views.fragment.SettingsFragment"
+        android:label="@string/settings"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/toCreator"
+            app:destination="@id/navCreateMap" />
+    </fragment>
+    <fragment
+        android:id="@+id/navRegistry"
+        android:name="com.martinlaizg.geofind.views.fragment.RegistryFragment"
+        android:label="@string/registry"
+        tools:layout="@layout/fragment_registry" />
 </navigation>

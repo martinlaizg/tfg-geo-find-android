@@ -25,7 +25,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -35,7 +34,7 @@ import butterknife.ButterKnife;
 public class MapFragment extends Fragment {
 
     public static final String MAP_ID = "MAP_ID";
-    public static final String PLAY_MODE = "PLAY_MODE";
+    public static final String PLAY_LEVEL = "PLAY_LEVEL";
     private static final String TAG = MapFragment.class.getSimpleName();
 
     @BindView(R.id.map_name)
@@ -63,7 +62,7 @@ public class MapFragment extends Fragment {
     private MapViewModel viewModel;
     private LocationListAdapter adapter;
     private String map_id;
-    private int play_mode;
+    private PlayLevel play_level;
 
 
     public MapFragment() {
@@ -76,10 +75,13 @@ public class MapFragment extends Fragment {
         Bundle b = getArguments();
         if (b != null) {
             map_id = b.getString(MAP_ID);
-            play_mode = b.getInt(PLAY_MODE, 0);
-        }
-        if (play_mode > 0) {
-            play_buttons.setVisibility(View.GONE);
+            int p = b.getInt(PLAY_LEVEL, -1);
+            if (p >= 0) { // play level selected
+                play_level = PlayLevel.values()[p];
+                play_buttons.setVisibility(View.GONE);
+            } else { // play level not selected
+                play_buttons.setVisibility(View.VISIBLE);
+            }
         }
         return view;
     }
@@ -90,33 +92,28 @@ public class MapFragment extends Fragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new LocationListAdapter();
-        adapter.setPlayMode(play_mode);
+        adapter.setPlayLevel(play_level);
         recyclerView.setAdapter(adapter);
 
         play_map_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle b = new Bundle();
-                b.putString(MAP_ID, map_id);
-                Navigation.findNavController(v).navigate(R.id.playMap, b);
+                adapter.setPlayLevel(PlayLevel.ANY);
+                play_buttons.setVisibility(View.GONE);
             }
         });
         play_compass_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle b = new Bundle();
-                b.putString(MAP_ID, map_id);
-                Navigation.findNavController(v).navigate(R.id.playCompass, b);
-
+                adapter.setPlayLevel(PlayLevel.COMPASS);
+                play_buttons.setVisibility(View.GONE);
             }
         });
         play_therm_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle b = new Bundle();
-                b.putString(MAP_ID, map_id);
-                Navigation.findNavController(v).navigate(R.id.playTherm, b);
-
+                adapter.setPlayLevel(PlayLevel.THERMOMETER);
+                play_buttons.setVisibility(View.GONE);
             }
         });
 

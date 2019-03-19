@@ -14,17 +14,13 @@
     <string name="account_settings">Ajustes de la cuenta</string>
     <string name="locations">Localizaciones</string>
     <string name="map">Mapa</string>
-    <string name="users">Usuarios</string>
     <string name="login">Iniciar sesión</string>
     <string name="registry">Registrarse</string>
     <string name="create_account">Crear cuenta</string>
     <string name="no_has_account_question">Aún no tienes una cuenta?</string>
-    <string name="default_progress">8/24</string>
     <string name="default_email">martinlaizg@gmail.com</string>
     <string name="default_password">martinlaizg</string>
-    <string name="location_description">Imagen de la localización</string>
     <string name="map_main_image">Imagen principal del mapa</string>
-    <string name="expandable_icon_description">Expandir/Contraer opciones mapa</string>
     <string name="create_map_text">Crear Mapa</string>
     <string name="new_map_name">Nombre</string>
     <string name="new_map_description">Descripción</string>
@@ -42,7 +38,6 @@
     <string name="required_email">El email es obligatorio</string>
     <string name="required_password">La contraseña es obligatoria</string>
     <string name="network_error">Error de conexión</string>
-    <string name="user_name">Nombre del usuario</string>
     <string name="wrong_email_password">Email o contraseña incorrectos</string>
     <string name="already_logged">Ya estabas logeado</string>
     <string name="go_back">Volver</string>
@@ -53,7 +48,6 @@
     <string name="add_location">Añadir localización</string>
     <string name="required_verify_password">Debes de verificar la contraseña</string>
     <string name="no_match_password">La contraseña no coincide</string>
-    <string name="logo_application">Logo de la aplicación</string>
     <string name="select_min_difficulty">Selecciona la dificultad mínima</string>
 
     <string-array name="dificulties">
@@ -66,9 +60,14 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="example_num_locations">30 localizaciones</string>
     <string name="location_name_description">Nombre de la localización</string>
-    <string name="visited_by_count">"Visitado por: "</string>
-    <string name="space_people">" personas"</string>
     <string name="therm">Term</string>
     <string name="compass">Brujula</string>
-    <string name="compass">Brujula</string>
+    <string name="map_list">Lista de mapas</string>
+    <string name="location">Localización</string>
+    <string name="map_creator">Creador de mapas</string>
+    <string name="developer">Martín Laiz Gómez</string>
+    <string name="app_description">Aplicación desarrollada como Trabajo Final de Grado en la Universidad de Alicante, Grado en Ingeniería Informática.</string>
+    <string name="year">2019</string>
+    <string name="developed_by">Desarrollado por:</string>
+    <string name="logout_pref">Logout Preference</string>
 </resources>
