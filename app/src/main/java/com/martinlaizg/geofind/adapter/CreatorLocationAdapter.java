@@ -51,8 +51,10 @@ public class CreatorLocationAdapter extends RecyclerView.Adapter<CreatorLocation
     }
 
     public void setLocations(List<Location> locs) {
-        locations = locs;
-        notifyDataSetChanged();
+        if (locs != null) {
+            locations = locs;
+            notifyDataSetChanged();
+        }
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

@@ -95,6 +95,9 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+    }
+
+    private void setLocation() {
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         LocationListener locationListener = new LocationListener() {
             @Override
@@ -168,5 +171,7 @@ public class PlayMapFragment extends Fragment implements OnMapReadyCallback {
         }
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
+        mMap.getUiSettings().setScrollGesturesEnabled(false);
+        setLocation();
     }
 }

@@ -9,16 +9,12 @@ import android.widget.TextView;
 
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.adapter.CreatorLocationAdapter;
-import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
 import com.martinlaizg.geofind.views.viewmodel.MapCreatorViewModel;
-
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -39,12 +35,12 @@ public class CreatorFragment extends Fragment {
     @BindView(R.id.add_location_button)
     Button add_location_button;
     @BindView(R.id.edit_button)
-    Button editButton;
+    Button edit_button;
 
     @BindView(R.id.rec_view_loc_list)
     RecyclerView recyclerView;
 
-    private MapCreatorViewModel creatorViewModel;
+    private MapCreatorViewModel viewModel;
     private CreatorLocationAdapter adapter;
     private NavController navController;
 
@@ -70,46 +66,19 @@ public class CreatorFragment extends Fragment {
         adapter = new CreatorLocationAdapter();
         recyclerView.setAdapter(adapter);
 
-        add_location_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navController.navigate(R.id.toCreateLocation);
-            }
-        });
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navController.popBackStack();
-            }
-        });
+        add_location_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreateLocation));
+        edit_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreateMap));
 
-        creatorViewModel = ViewModelProviders.of(getActivity()).get(MapCreatorViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity()).get(MapCreatorViewModel.class);
 
-        if (!creatorViewModel.isMapCreated()) {
-            mapName.setText("Mapa no creado");
-            mapDescription.setText("");
-            // disable done button
+        Map map = viewModel.getCreatedMap();
+        if (!map.getName().isEmpty()) {
+            mapName.setText(map.getName());
+        }
+        if (!map.getDescription().isEmpty()) {
+            mapDescription.setText(map.getDescription());
         }
 
-        creatorViewModel.getCreatedMap().observe(getActivity(), new Observer<Map>() {
-            @Override
-            public void onChanged(Map map) {
-                if (!map.getName().isEmpty()) {
-                    mapName.setText(map.getName());
-                }
-                if (!map.getDescription().isEmpty()) {
-                    mapDescription.setText(map.getDescription());
-                }
-            }
-        });
-
-        creatorViewModel.getCreatedLocations().observe(getActivity(), new Observer<List<Location>>() {
-            @Override
-            public void onChanged(List<Location> locations) {
-                adapter.setLocations(locations);
-            }
-        });
+        adapter.setLocations(viewModel.getCreatedLocations());
     }
-
-
 }

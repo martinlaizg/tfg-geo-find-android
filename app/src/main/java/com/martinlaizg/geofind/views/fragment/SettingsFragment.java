@@ -25,7 +25,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
 
     private void setLogoutPreference() {
-        findPreference(getString(R.string.logout_pref)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        findPreference(getString(R.string.preferences_log_out)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());

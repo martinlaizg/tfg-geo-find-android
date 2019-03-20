@@ -42,6 +42,8 @@ public class Map {
     @Ignore
     public Map() {
         id = UUID.randomUUID().toString();
+        name = "";
+        description = "";
     }
 
 

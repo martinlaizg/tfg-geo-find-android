@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
+import com.martinlaizg.geofind.data.access.database.entity.enums.PlayLevel;
 import com.martinlaizg.geofind.data.access.database.repository.LocationRepository;
 import com.martinlaizg.geofind.data.access.database.repository.MapRepository;
 
@@ -16,8 +17,8 @@ import androidx.lifecycle.MutableLiveData;
 
 public class MapCreatorViewModel extends AndroidViewModel {
 
-    private MutableLiveData<Map> createdMap;
-    private MutableLiveData<List<Location>> createdLocations;
+    private Map createdMap;
+    private List<Location> createdLocations;
 
     private MapRepository mapRepo;
     private LocationRepository locRepo;
@@ -27,27 +28,33 @@ public class MapCreatorViewModel extends AndroidViewModel {
         super(application);
         mapRepo = new MapRepository(application);
         locRepo = new LocationRepository(application);
-
-        createdMap = new MutableLiveData<>();
-        createdLocations = new MutableLiveData<>();
     }
 
 
-    public void createMap() {
+    public MutableLiveData<Map> createMap() {
+        MutableLiveData<Map> m = new MutableLiveData<>();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                mapRepo.create(createdMap.getValue());
-                locRepo.create(createdLocations.getValue());
+                createdMap = mapRepo.create(createdMap);
+                for (int i = 0; i < createdLocations.size(); i++) {
+                    createdLocations.get(i).setMap_id(createdMap.getId());
+                }
+                locRepo.create(createdLocations);
+                m.postValue(createdMap);
             }
         }).start();
+        return m;
     }
 
-    public MutableLiveData<List<Location>> getCreatedLocations() {
+    public List<Location> getCreatedLocations() {
         return createdLocations;
     }
 
-    public MutableLiveData<Map> getCreatedMap() {
+    public Map getCreatedMap() {
+        if (createdMap == null) {
+            createdMap = new Map();
+        }
         return createdMap;
     }
 
@@ -56,22 +63,25 @@ public class MapCreatorViewModel extends AndroidViewModel {
         l.setName(name);
         l.setLat(lat);
         l.setLon(lon);
-
-        List<Location> locs = createdLocations.getValue();
-        if (locs == null) {
-            locs = new ArrayList<>();
+        if (createdLocations == null) {
+            createdLocations = new ArrayList<>();
         }
-        locs.add(l);
-        createdLocations.setValue(locs);
+        createdLocations.add(l);
     }
 
 
     public boolean isMapCreated() {
-        Map m = createdMap.getValue();
+        Map m = createdMap;
         return m != null && !m.getName().isEmpty() && !m.getDescription().isEmpty();
     }
 
-    public void setMap(Map map) {
-        createdMap.setValue(map);
+    public void setMap(String name, String description, String creator_id, PlayLevel pl) {
+        if (createdMap == null) {
+            createdMap = new Map();
+        }
+        createdMap.setName(name);
+        createdMap.setDescription(description);
+        createdMap.setCreator_id(creator_id);
+        createdMap.setMin_level(pl);
     }
 }

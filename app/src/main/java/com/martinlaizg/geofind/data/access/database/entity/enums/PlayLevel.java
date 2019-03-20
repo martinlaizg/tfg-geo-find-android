@@ -11,6 +11,7 @@ public enum PlayLevel {
     THERMOMETER;
 
     public static PlayLevel getPlayLevel(int level) {
-        return values()[level - 1];
+        return values()[level];
     }
+
 }

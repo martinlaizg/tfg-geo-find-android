@@ -4,16 +4,19 @@
     tools:showIn="@layout/fragment_main">
     <group android:checkableBehavior="none">
         <item
-            android:id="@+id/navMapList"
+            android:id="@+id/toMapList"
             android:title="@string/map" />
         <item
-            android:id="@+id/navLocationList"
+            android:id="@+id/toLocationList"
             android:title="@string/locations" />
     </group>
 
     <item android:title="@string/account_settings">
         <menu>
             <group android:checkableBehavior="none">
+                <item
+                    android:id="@+id/toCreator"
+                    android:title="@string/create_map" />
                 <item
                     android:id="@+id/toSettings"
                     android:title="@string/settings" />

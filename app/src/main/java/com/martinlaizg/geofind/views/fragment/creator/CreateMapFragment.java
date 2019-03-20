@@ -6,16 +6,19 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
 import com.martinlaizg.geofind.data.access.database.entity.User;
+import com.martinlaizg.geofind.data.access.database.entity.enums.PlayLevel;
 import com.martinlaizg.geofind.views.viewmodel.MapCreatorViewModel;
+
+import java.util.Objects;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -33,15 +36,13 @@ public class CreateMapFragment extends Fragment {
     TextInputLayout new_map_description;
 
     @BindView(R.id.done_button)
-    Button doneButton;
-    @BindView(R.id.return_button)
-    Button returnButton;
+    MaterialButton doneButton;
     @BindView(R.id.add_image_button)
-    Button add_image_button;
+    MaterialButton add_image_button;
     @BindView(R.id.dificulty_spinner)
     Spinner dificultySpinner;
 
-    MapCreatorViewModel mapCreatorViewModel;
+    MapCreatorViewModel viewModel;
     private NavController navController;
 
     public CreateMapFragment() {
@@ -54,9 +55,7 @@ public class CreateMapFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_create_map, container, false);
         ButterKnife.bind(this, view);
-
-        navController = Navigation.findNavController(getActivity(), R.id.main_fragment_holder);
-        mapCreatorViewModel = ViewModelProviders.of(getActivity()).get(MapCreatorViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity()).get(MapCreatorViewModel.class);
 
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,23 +76,29 @@ public class CreateMapFragment extends Fragment {
 
                 String name = new_map_name.getEditText().getText().toString().trim();
                 String description = new_map_description.getEditText().getText().toString().trim();
+                PlayLevel pl = PlayLevel.getPlayLevel(dificultySpinner.getSelectedItemPosition());
 
-                Map map = new Map();
-                map.setName(name);
-                map.setDescription(description);
                 User user = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(getContext()));
-                map.setCreator_id(user.getId());
-                mapCreatorViewModel.setMap(map);
-                navController.navigate(R.id.toCreator);
+                viewModel.setMap(name, description, user.getId(), pl);
+                Navigation.findNavController(getActivity(), R.id.main_fragment_holder).popBackStack();
             }
         });
 
-        returnButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navController.popBackStack();
-            }
-        });
+        setInputs();
+
         return view;
+    }
+
+    private void setInputs() {
+        Map m = viewModel.getCreatedMap();
+        if (!m.getName().isEmpty()) {
+            Objects.requireNonNull(new_map_name.getEditText()).setText(m.getName());
+        }
+        if (!m.getDescription().isEmpty()) {
+            Objects.requireNonNull(new_map_description.getEditText()).setText(m.getDescription());
+        }
+        if (m.getMin_level() != null) {
+            dificultySpinner.setSelection(m.getMin_level().ordinal());
+        }
     }
 }

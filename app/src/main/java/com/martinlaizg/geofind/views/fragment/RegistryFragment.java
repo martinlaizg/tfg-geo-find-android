@@ -6,9 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
 
@@ -20,24 +20,20 @@ import butterknife.ButterKnife;
 
 
 public class RegistryFragment extends Fragment {
-    // Arguments
+
     public static final String ARG_EMAIL = "ARG_EMAIL";
-    // Log TAG
     private static final String TAG = RegistryFragment.class.getSimpleName();
 
-    // View elements
-    // Inputs
     @BindView(R.id.name_input)
-    public TextInputLayout name_input;
+    TextInputLayout name_input;
     @BindView(R.id.email_input)
-    public TextInputLayout email_input;
+    TextInputLayout email_input;
     @BindView(R.id.password_input)
-    public TextInputLayout password_input;
+    TextInputLayout password_input;
     @BindView(R.id.c_password_input)
-    public TextInputLayout c_password_input;
-    // Buttons
+    TextInputLayout c_password_input;
     @BindView(R.id.btn_registry)
-    public Button btn_registr;
+    MaterialButton btn_registr;
 
 
     public RegistryFragment() {

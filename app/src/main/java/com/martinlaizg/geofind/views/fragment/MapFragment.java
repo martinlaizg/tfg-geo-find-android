@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.material.button.MaterialButton;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.adapter.LocationListAdapter;
 import com.martinlaizg.geofind.data.access.database.entity.Location;
@@ -47,11 +47,11 @@ public class MapFragment extends Fragment {
     TextView map_num_locations;
 
     @BindView(R.id.play_therm_button)
-    Button play_therm_button;
+    MaterialButton play_therm_button;
     @BindView(R.id.play_compass_button)
-    Button play_compass_button;
+    MaterialButton play_compass_button;
     @BindView(R.id.play_map_button)
-    Button play_map_button;
+    MaterialButton play_map_button;
 
 
     @BindView(R.id.location_list)

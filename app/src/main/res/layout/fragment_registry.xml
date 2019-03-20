@@ -110,7 +110,7 @@
             tools:ignore="Autofill" />
     </com.google.android.material.textfield.TextInputLayout>
     <!-- TODO: cambiar por material button -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_registry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

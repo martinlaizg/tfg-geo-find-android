@@ -23,27 +23,28 @@
             app:destination="@id/navLogin"
             app:popUpTo="@+id/main"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/toCreator"
+            app:destination="@id/navCreator" />
     </fragment>
     <fragment
         android:id="@+id/navCreateLocation"
         android:name="com.martinlaizg.geofind.views.fragment.creator.CreateLocationFragment"
-        android:label="fragment_create_locations"
+        android:label="@string/create_location"
         tools:layout="@layout/fragment_create_locations" />
     <fragment
         android:id="@+id/navCreateMap"
         android:name="com.martinlaizg.geofind.views.fragment.creator.CreateMapFragment"
-        android:label="fragment_create_map"
-        tools:layout="@layout/fragment_create_map">
-        <action
-            android:id="@+id/toCreator"
-            app:destination="@id/navCreator"
-            app:popUpTo="@+id/navAccount" />
-    </fragment>
+        android:label="@string/map_creator"
+        tools:layout="@layout/fragment_create_map" />
     <fragment
         android:id="@+id/navCreator"
         android:name="com.martinlaizg.geofind.views.fragment.creator.CreatorFragment"
         android:label="@string/map_creator"
         tools:layout="@layout/fragment_creator">
+        <action
+            android:id="@+id/toCreateMap"
+            app:destination="@id/navCreateMap" />
         <action
             android:id="@+id/toCreateLocation"
             app:destination="@id/navCreateLocation" />
@@ -104,11 +105,7 @@
         android:id="@+id/navSettings"
         android:name="com.martinlaizg.geofind.views.fragment.SettingsFragment"
         android:label="@string/settings"
-        tools:layout="@layout/fragment_settings">
-        <action
-            android:id="@+id/toCreator"
-            app:destination="@id/navCreateMap" />
-    </fragment>
+        tools:layout="@layout/fragment_settings"></fragment>
     <fragment
         android:id="@+id/navRegistry"
         android:name="com.martinlaizg.geofind.views.fragment.RegistryFragment"
