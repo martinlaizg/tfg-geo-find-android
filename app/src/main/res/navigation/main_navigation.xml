@@ -71,6 +71,9 @@
         <action
             android:id="@+id/toLocation"
             app:destination="@id/navLocation" />
+        <action
+            android:id="@+id/toPlayMapOnMap"
+            app:destination="@id/playMapOnMapFragment" />
     </fragment>
     <fragment
         android:id="@+id/navLocation"
@@ -111,4 +114,9 @@
         android:name="com.martinlaizg.geofind.views.fragment.RegistryFragment"
         android:label="@string/registry"
         tools:layout="@layout/fragment_registry" />
+    <fragment
+        android:id="@+id/playMapOnMapFragment"
+        android:name="com.martinlaizg.geofind.views.fragment.play.map.PlayMapOnMapFragment"
+        android:label="Play Map"
+        tools:layout="@layout/fragment_play_map_on_map" />
 </navigation>

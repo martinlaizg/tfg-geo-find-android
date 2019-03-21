@@ -5,7 +5,6 @@ import com.martinlaizg.geofind.data.access.database.entity.Map;
 
 import java.util.List;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -26,7 +25,7 @@ public interface MapDAO {
     void delete(Map map);
 
     @Query("SELECT * FROM maps")
-    LiveData<List<Map>> getAllMaps();
+    List<Map> getAllMaps();
 
     @Query("DELETE FROM maps")
     void deleteAllMaps();

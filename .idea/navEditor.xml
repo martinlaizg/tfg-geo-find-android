@@ -147,8 +147,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="52" />
-                            <option name="y" value="586" />
+                            <option name="x" value="-83" />
+                            <option name="y" value="249" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -203,6 +203,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_navMap_to_playMapOnMapFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="toLocation">
                               <value>
                                 <LayoutPositions />
@@ -253,6 +258,18 @@
                           <Point>
                             <option name="x" value="-392" />
                             <option name="y" value="1181" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="playMapOnMapFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="151" />
+                            <option name="y" value="440" />
                           </Point>
                         </option>
                       </LayoutPositions>

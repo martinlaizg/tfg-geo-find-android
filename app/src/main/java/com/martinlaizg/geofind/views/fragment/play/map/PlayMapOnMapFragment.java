@@ -1,27 +1,22 @@
 package com.martinlaizg.geofind.views.fragment.play;
 
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.martinlaizg.geofind.R;
 
-import androidx.fragment.app.Fragment;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class PlayMapOnMapFragment extends Fragment {
 
 
-public class PlayCompassFragment extends Fragment {
-
-
-    @BindView(R.id.play_compass)
-    ImageView play_compass;
-
-
-    public PlayCompassFragment() {
+    public PlayMapOnMapFragment() {
         // Required empty public constructor
     }
 
@@ -30,10 +25,7 @@ public class PlayCompassFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_play_compass, container, false);
-        ButterKnife.bind(this, view);
-        return view;
+        return inflater.inflate(R.layout.fragment_play_map_on_map, container, false);
     }
-
 
 }

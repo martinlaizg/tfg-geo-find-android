@@ -25,6 +25,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -95,27 +96,11 @@ public class MapFragment extends Fragment {
         adapter.setPlayLevel(play_level);
         recyclerView.setAdapter(adapter);
 
-        play_map_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                adapter.setPlayLevel(PlayLevel.ANY);
-                play_buttons.setVisibility(View.GONE);
-            }
-        });
-        play_compass_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                adapter.setPlayLevel(PlayLevel.COMPASS);
-                play_buttons.setVisibility(View.GONE);
-            }
-        });
-        play_therm_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                adapter.setPlayLevel(PlayLevel.THERMOMETER);
-                play_buttons.setVisibility(View.GONE);
-            }
-        });
+        play_map_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toPlayMapOnMap));
+        // TODO change to the correct navigation
+        play_compass_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toPlayMapOnMap));
+        // TODO change to the correct navigation
+        play_therm_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toPlayMapOnMap));
 
         viewModel = ViewModelProviders.of(getActivity()).get(MapViewModel.class);
         viewModel.getMap(map_id).observe(getActivity(), new Observer<Map>() {

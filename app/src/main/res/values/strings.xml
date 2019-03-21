@@ -65,4 +65,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="no_location_permissions">No hay permiso de acceso a localización</string>
     <string name="map_without_name">Mapa sin nombre</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

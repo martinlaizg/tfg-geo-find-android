@@ -19,7 +19,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -30,13 +29,8 @@ public class MapListFragment extends Fragment {
     @BindView(R.id.map_list)
     RecyclerView recyclerView;
 
-    @BindView(R.id.swipe_refresh)
-    SwipeRefreshLayout swipeRefresh;
-
     private MapListViewModel mapListViewModel;
-
     private MapListAdapter adapter;
-
 
     @Nullable
     @Override
@@ -55,14 +49,6 @@ public class MapListFragment extends Fragment {
             @Override
             public void onChanged(List<Map> maps) {
                 adapter.setMaps(maps);
-                swipeRefresh.setRefreshing(false);
-            }
-        });
-
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                loadMaps();
             }
         });
 
@@ -70,7 +56,6 @@ public class MapListFragment extends Fragment {
     }
 
     private void loadMaps() {
-
         mapListViewModel.refreshMaps();
     }
 

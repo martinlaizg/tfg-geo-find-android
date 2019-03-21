@@ -35,8 +35,16 @@ public class MapViewModel extends AndroidViewModel {
         return map;
     }
 
+    public Map getMap() {
+        return map.getValue();
+    }
+
     public MutableLiveData<List<Location>> getLocations(String map_id) {
         locations = locRepo.getLocationsByMap(map_id);
         return locations;
+    }
+
+    public List<Location> getLocations() {
+        return locations.getValue();
     }
 }

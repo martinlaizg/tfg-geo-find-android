@@ -10,25 +10,23 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 public class MapListViewModel extends AndroidViewModel {
 
     MapListFragment fragment;
 
     private MapRepository repository;
-    private LiveData<List<Map>> allMaps;
 
 
     public MapListViewModel(@NonNull Application application) {
         super(application);
         repository = new MapRepository(application);
-        allMaps = repository.getAllMaps();
     }
 
 
-    public LiveData<List<Map>> getAllMaps() {
-        return allMaps;
+    public MutableLiveData<List<Map>> getAllMaps() {
+        return repository.getAllMaps();
     }
 
     public void refreshMaps() {

@@ -9,16 +9,12 @@ import com.martinlaizg.geofind.data.access.retrofit.service.MapService;
 
 import java.util.List;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 public class MapRepository {
 
-
     private MapService mapService;
     private MapDAO mapDAO;
-
-    private LiveData<List<Map>> allMaps;
 
     public MapRepository(Application application) {
         AppDatabase database = AppDatabase.getInstance(application);
@@ -26,9 +22,28 @@ public class MapRepository {
         mapService = MapService.getInstance();
     }
 
+    public MutableLiveData<List<Map>> getAllMaps() {
+        MutableLiveData<List<Map>> maps = new MutableLiveData<>();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Map> ms = mapDAO.getAllMaps();
+                if (ms == null || ms.isEmpty()) {
+                    ms = mapService.getAllMaps();
+                    if (ms != null) {
+                        insertMaps(ms);
+                    }
+                }
+                maps.postValue(ms);
+            }
+        }).start();
+        return maps;
+    }
 
-    public LiveData<List<Map>> getAllMaps() {
-        return mapDAO.getAllMaps();
+    public void insertMaps(List<Map> ms) {
+        for (Map m : ms) {
+            insertMap(m);
+        }
     }
 
     public MutableLiveData<Map> getMap(String id) {
@@ -54,7 +69,7 @@ public class MapRepository {
         }
     }
 
-    public void insert(Map map) {
+    public void insertMap(Map map) {
         mapDAO.insert(map);
     }
 
