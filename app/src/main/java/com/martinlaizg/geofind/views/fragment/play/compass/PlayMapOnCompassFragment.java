@@ -1,4 +1,4 @@
-package com.martinlaizg.geofind.views.fragment.play;
+package com.martinlaizg.geofind.views.fragment.play.compass;
 
 
 import android.app.Fragment;
