@@ -78,42 +78,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:ellipsize="end"
                 android:maxLines="4"
                 android:minLines="1"
                 android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/map_creator"
                 app:layout_constraintStart_toStartOf="@+id/map_name"
                 app:layout_constraintTop_toBottomOf="@+id/map_creator"
                 tools:text="@sample/maps.json/data/description" />
 
-
-            <ProgressBar
-                android:id="@+id/map_progress_bar"
-                style="@style/AppTheme.ProgressBar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/map_progress_text"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/map_progress_text"
-                app:layout_constraintStart_toStartOf="@+id/map_creator"
-                app:layout_constraintTop_toBottomOf="@+id/map_description"
-                tools:progress="@sample/maps.json/data/progress" />
-
-            <TextView
-                android:id="@+id/map_progress_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#88000000"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/map_progress_bar"
-                app:layout_constraintEnd_toEndOf="@+id/map_creator"
-                app:layout_constraintTop_toTopOf="@+id/map_progress_bar"
-                tools:text="@sample/maps.json/data/progress_text" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

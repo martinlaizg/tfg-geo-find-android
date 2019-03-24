@@ -65,7 +65,7 @@
     </fragment>
     <fragment
         android:id="@+id/navMap"
-        android:name="com.martinlaizg.geofind.views.fragment.MapFragment"
+        android:name="com.martinlaizg.geofind.views.fragment.single.MapFragment"
         android:label="@string/map"
         tools:layout="@layout/fragment_map">
         <action
@@ -77,12 +77,12 @@
     </fragment>
     <fragment
         android:id="@+id/navLocation"
-        android:name="com.martinlaizg.geofind.views.fragment.LocationFragment"
+        android:name="com.martinlaizg.geofind.views.fragment.single.LocationFragment"
         android:label="@string/location"
         tools:layout="@layout/fragment_location" />
     <fragment
         android:id="@+id/navLogin"
-        android:name="com.martinlaizg.geofind.views.fragment.LoginFragment"
+        android:name="com.martinlaizg.geofind.views.fragment.login.LoginFragment"
         android:label="@string/login"
         tools:layout="@layout/fragment_login">
         <action
@@ -106,12 +106,12 @@
     </fragment>
     <fragment
         android:id="@+id/navSettings"
-        android:name="com.martinlaizg.geofind.views.fragment.SettingsFragment"
+        android:name="com.martinlaizg.geofind.views.preferences.SettingsFragment"
         android:label="@string/settings"
         tools:layout="@layout/fragment_settings"></fragment>
     <fragment
         android:id="@+id/navRegistry"
-        android:name="com.martinlaizg.geofind.views.fragment.RegistryFragment"
+        android:name="com.martinlaizg.geofind.views.fragment.login.RegistryFragment"
         android:label="@string/registry"
         tools:layout="@layout/fragment_registry" />
     <fragment

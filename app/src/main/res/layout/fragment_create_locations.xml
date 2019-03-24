@@ -36,8 +36,6 @@
             android:hint="@string/name" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- TODO: sustituir por búsqueda de localizacion -->
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/create_location"
         android:layout_width="match_parent"

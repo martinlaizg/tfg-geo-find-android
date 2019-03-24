@@ -1,4 +1,4 @@
-package com.martinlaizg.geofind.views.fragment;
+package com.martinlaizg.geofind.views.preferences;
 
 
 import android.content.SharedPreferences;

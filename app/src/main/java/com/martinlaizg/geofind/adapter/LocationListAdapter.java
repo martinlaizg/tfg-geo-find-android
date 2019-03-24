@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.data.access.database.entity.enums.PlayLevel;
-import com.martinlaizg.geofind.views.fragment.LocationFragment;
+import com.martinlaizg.geofind.views.fragment.single.LocationFragment;
 
 import java.util.ArrayList;
 import java.util.List;

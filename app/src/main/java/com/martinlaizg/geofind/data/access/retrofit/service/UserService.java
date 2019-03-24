@@ -45,24 +45,6 @@ public class UserService {
 		return new ArrayList<>();
 	}
 
-	public User getSingle(int id) {
-		// TODO: unimplemented method
-		return null;
-	}
-
-	public void insert(User user) {
-		// TODO: unimplemented method
-	}
-
-	public void update(User user) {
-		// TODO: unimplemented method
-	}
-
-	public void deleteAllUsers() {
-		// TODO: unimplemented method
-
-	}
-
 	public User login(User user) {
 		Response<User> response = null;
 		try {

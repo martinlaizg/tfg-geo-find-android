@@ -1,4 +1,4 @@
-package com.martinlaizg.geofind.views.fragment;
+package com.martinlaizg.geofind.views.fragment.single;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
