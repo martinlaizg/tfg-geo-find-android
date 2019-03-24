@@ -4,23 +4,23 @@ import androidx.annotation.NonNull;
 
 public class APIError {
 
-    private int statusCode;
-    private String message;
+	private int statusCode;
+	private String message;
 
-    public APIError() {
-    }
+	public APIError() {
+	}
 
-    public int status() {
-        return statusCode;
-    }
+	public int status() {
+		return statusCode;
+	}
 
-    public String message() {
-        return message;
-    }
+	public String message() {
+		return message;
+	}
 
-    @NonNull
-    @Override
-    public String toString() {
-        return "Status code: " + statusCode + ", message: " + message;
-    }
+	@NonNull
+	@Override
+	public String toString() {
+		return "Status code: " + statusCode + ", message: " + message;
+	}
 }

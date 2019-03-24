@@ -23,40 +23,41 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class LocationListFragment extends Fragment {
+public class LocationListFragment
+		extends Fragment {
 
-    private static final String TAG = LocationListFragment.class.getSimpleName();
+	private static final String TAG = LocationListFragment.class.getSimpleName();
 
-    @BindView(R.id.location_list)
-    RecyclerView recyclerView;
+	@BindView(R.id.location_list)
+	RecyclerView recyclerView;
 
-    private ArrayList<Location> locations;
-    private LocationListAdapter adapter;
-    private LocationViewModel locationViewModel;
-
-
-    @Override
-    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_location_list, container, false);
-        ButterKnife.bind(this, view);
-        locations = new ArrayList<>();
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new LocationListAdapter();
-        recyclerView.setAdapter(adapter);
+	private ArrayList<Location> locations;
+	private LocationListAdapter adapter;
+	private LocationViewModel locationViewModel;
 
 
-        locationViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
+	@Override
+	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.fragment_location_list, container, false);
+		ButterKnife.bind(this, view);
+		locations = new ArrayList<>();
 
-        locationViewModel.getAllLocations().observe(this, new Observer<List<Location>>() {
-            @Override
-            public void onChanged(List<Location> locations) {
-                adapter.setLocations(locations);
-            }
-        });
+		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+		adapter = new LocationListAdapter();
+		recyclerView.setAdapter(adapter);
 
 
-        return view;
-    }
+		locationViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
+
+		locationViewModel.getAllLocations().observe(this, new Observer<List<Location>>() {
+			@Override
+			public void onChanged(List<Location> locations) {
+				adapter.setLocations(locations);
+			}
+		});
+
+
+		return view;
+	}
 
 }

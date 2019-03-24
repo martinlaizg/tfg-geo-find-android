@@ -12,23 +12,24 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-public class LocationViewModel extends AndroidViewModel {
+public class LocationViewModel
+		extends AndroidViewModel {
 
-    private LocationRepository locRepo;
-    private LiveData<List<Location>> allLocations;
+	private LocationRepository locRepo;
+	private LiveData<List<Location>> allLocations;
 
 
-    public LocationViewModel(@NonNull Application application) {
-        super(application);
-        locRepo = new LocationRepository(application);
-        allLocations = locRepo.getAllLocations();
-    }
+	public LocationViewModel(@NonNull Application application) {
+		super(application);
+		locRepo = new LocationRepository(application);
+		allLocations = locRepo.getAllLocations();
+	}
 
-    public LiveData<List<Location>> getAllLocations() {
-        return allLocations;
-    }
+	public LiveData<List<Location>> getAllLocations() {
+		return allLocations;
+	}
 
-    public MutableLiveData<Location> getLocation(String loc_id) {
-        return locRepo.getLocation(loc_id);
-    }
+	public MutableLiveData<Location> getLocation(String loc_id) {
+		return locRepo.getLocation(loc_id);
+	}
 }

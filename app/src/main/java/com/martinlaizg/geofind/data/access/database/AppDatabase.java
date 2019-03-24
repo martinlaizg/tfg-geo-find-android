@@ -26,52 +26,51 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(entities = {User.class, Map.class, Location.class}, version = 1, exportSchema = false)
 @TypeConverters({DateTypeConverter.class, PlayLevelTypeConverter.class, UserTypeTypeConverter.class})
-public abstract class AppDatabase extends RoomDatabase {
+public abstract class AppDatabase
+		extends RoomDatabase {
 
-    private static AppDatabase instance;
-    private static RoomDatabase.Callback roomCallback = new RoomDatabase.Callback() {
-        @Override
-        public void onCreate(@NonNull SupportSQLiteDatabase db) {
-            super.onCreate(db);
-            new PopulateDbAsyncTask(instance).execute();
-        }
-    };
+	private static AppDatabase instance;
+	private static RoomDatabase.Callback roomCallback = new RoomDatabase.Callback() {
+		@Override
+		public void onCreate(@NonNull SupportSQLiteDatabase db) {
+			super.onCreate(db);
+			new PopulateDbAsyncTask(instance).execute();
+		}
+	};
 
-    public static synchronized AppDatabase getInstance(Context context) {
-        if (instance == null) {
-            instance = Room.databaseBuilder(
-                    context.getApplicationContext(),
-                    AppDatabase.class,
-                    "geo_find_database").
-                    fallbackToDestructiveMigration().
-                    build();
-        }
-        return instance;
-    }
+	public static synchronized AppDatabase getInstance(Context context) {
+		if (instance == null) {
+			instance = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "geo_find_database").
+					fallbackToDestructiveMigration().
+					build();
+		}
+		return instance;
+	}
 
-    public abstract UserDAO userDAO();
+	public abstract UserDAO userDAO();
 
-    public abstract MapDAO mapDAO();
+	public abstract MapDAO mapDAO();
 
-    public abstract LocationDAO locationDAO();
+	public abstract LocationDAO locationDAO();
 
-    private static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void> {
-        private UserDAO userDAO;
+	private static class PopulateDbAsyncTask
+			extends AsyncTask<Void, Void, Void> {
+		private UserDAO userDAO;
 
-        private PopulateDbAsyncTask(AppDatabase db) {
-            userDAO = db.userDAO();
-        }
+		private PopulateDbAsyncTask(AppDatabase db) {
+			userDAO = db.userDAO();
+		}
 
-        @Override
-        protected Void doInBackground(Void... voids) {
-            Date date = new Date(Calendar.getInstance().getTime().getTime());
-            User user = new User();
-            user.setEmail("martinlaizg@gmail.com");
-            user.setName("Martin");
-            user.setPassword("martinlaizg");
-            user.setUser_type(UserType.ADMINISTRATOR);
-            userDAO.insert(user);
-            return null;
-        }
-    }
+		@Override
+		protected Void doInBackground(Void... voids) {
+			Date date = new Date(Calendar.getInstance().getTime().getTime());
+			User user = new User();
+			user.setEmail("martinlaizg@gmail.com");
+			user.setName("Martin");
+			user.setPassword("martinlaizg");
+			user.setUser_type(UserType.ADMINISTRATOR);
+			userDAO.insert(user);
+			return null;
+		}
+	}
 }

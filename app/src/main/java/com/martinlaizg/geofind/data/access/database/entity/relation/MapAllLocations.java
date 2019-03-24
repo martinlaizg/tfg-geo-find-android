@@ -9,8 +9,8 @@ import androidx.room.Embedded;
 import androidx.room.Relation;
 
 public class MapAllLocations {
-    @Embedded
-    public Map map;
-    @Relation(parentColumn = "id", entityColumn = "map_id", entity = Location.class)
-    public List<Location> locations;
+	@Embedded
+	public Map map;
+	@Relation(parentColumn = "id", entityColumn = "map_id", entity = Location.class)
+	public List<Location> locations;
 }

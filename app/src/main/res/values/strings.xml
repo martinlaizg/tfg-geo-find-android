@@ -68,4 +68,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="play_map">Jugar mapa</string>
+    <string name="play_location">Jugar localización</string>
+    <string name="navigate">Navegar</string>
 </resources>

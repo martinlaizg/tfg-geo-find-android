@@ -22,42 +22,43 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MapListFragment extends Fragment {
+public class MapListFragment
+		extends Fragment {
 
-    private static final String TAG = MapListFragment.class.getSimpleName();
+	private static final String TAG = MapListFragment.class.getSimpleName();
 
-    @BindView(R.id.map_list)
-    RecyclerView recyclerView;
+	@BindView(R.id.map_list)
+	RecyclerView recyclerView;
 
-    private MapListViewModel mapListViewModel;
-    private MapListAdapter adapter;
+	private MapListViewModel mapListViewModel;
+	private MapListAdapter adapter;
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container,
-                             @Nullable final Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_maps_list, container, false);
-        ButterKnife.bind(this, view);
+	@Nullable
+	@Override
+	public View onCreateView(
+			@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState) {
+		final View view = inflater.inflate(R.layout.fragment_maps_list, container, false);
+		ButterKnife.bind(this, view);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new MapListAdapter();
-        recyclerView.setAdapter(adapter);
+		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+		adapter = new MapListAdapter();
+		recyclerView.setAdapter(adapter);
 
-        mapListViewModel = ViewModelProviders.of(this).get(MapListViewModel.class);
+		mapListViewModel = ViewModelProviders.of(this).get(MapListViewModel.class);
 
-        mapListViewModel.getAllMaps().observe(this, new Observer<List<Map>>() {
-            @Override
-            public void onChanged(List<Map> maps) {
-                adapter.setMaps(maps);
-            }
-        });
+		mapListViewModel.getAllMaps().observe(this, new Observer<List<Map>>() {
+			@Override
+			public void onChanged(List<Map> maps) {
+				adapter.setMaps(maps);
+			}
+		});
 
-        return view;
-    }
+		return view;
+	}
 
-    private void loadMaps() {
-        mapListViewModel.refreshMaps();
-    }
+	private void loadMaps() {
+		mapListViewModel.refreshMaps();
+	}
 
 
 }

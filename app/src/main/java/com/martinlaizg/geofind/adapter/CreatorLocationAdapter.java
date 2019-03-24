@@ -17,56 +17,57 @@ import java.util.List;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-public class CreatorLocationAdapter extends RecyclerView.Adapter<CreatorLocationAdapter.ViewHolder> {
+public class CreatorLocationAdapter
+		extends RecyclerView.Adapter<CreatorLocationAdapter.ViewHolder> {
 
-    private List<Location> locations;
+	private List<Location> locations;
 
-    public CreatorLocationAdapter() {
-        locations = new ArrayList<>();
-    }
+	public CreatorLocationAdapter() {
+		locations = new ArrayList<>();
+	}
 
-    @NotNull
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_createdlocation, parent, false);
-        return new ViewHolder(view);
-    }
+	@NotNull
+	@Override
+	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_createdlocation, parent, false);
+		return new ViewHolder(view);
+	}
 
-    @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.locName.setText(locations.get(position).getName());
-        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                locations.remove(position);
-                notifyDataSetChanged();
-            }
-        });
-    }
+	@Override
+	public void onBindViewHolder(final ViewHolder holder, int position) {
+		holder.locName.setText(locations.get(position).getName());
+		holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				locations.remove(position);
+				notifyDataSetChanged();
+			}
+		});
+	}
 
-    @Override
-    public int getItemCount() {
-        return locations.size();
-    }
+	@Override
+	public int getItemCount() {
+		return locations.size();
+	}
 
-    public void setLocations(List<Location> locs) {
-        if (locs != null) {
-            locations = locs;
-            notifyDataSetChanged();
-        }
-    }
+	public void setLocations(List<Location> locs) {
+		if (locs != null) {
+			locations = locs;
+			notifyDataSetChanged();
+		}
+	}
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+	class ViewHolder
+			extends RecyclerView.ViewHolder {
 
-        TextView locName;
-        ImageButton deleteButton;
+		TextView locName;
+		ImageButton deleteButton;
 
-        ViewHolder(View view) {
-            super(view);
-            locName = view.findViewById(R.id.loc_name);
-            deleteButton = view.findViewById(R.id.delete_loc_bbutton);
-        }
+		ViewHolder(View view) {
+			super(view);
+			locName = view.findViewById(R.id.loc_name);
+			deleteButton = view.findViewById(R.id.delete_loc_bbutton);
+		}
 
-    }
+	}
 }

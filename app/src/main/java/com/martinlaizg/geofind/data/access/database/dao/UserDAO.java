@@ -15,21 +15,21 @@ import androidx.room.Update;
 @Dao
 public interface UserDAO {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(User user);
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	void insert(User user);
 
-    @Update
-    void update(User user);
+	@Update
+	void update(User user);
 
-    @Delete
-    void delete(User user);
+	@Delete
+	void delete(User user);
 
-    @Query("SELECT * FROM users")
-    LiveData<List<User>> getAllUsers();
+	@Query("SELECT * FROM users")
+	LiveData<List<User>> getAllUsers();
 
-    @Query("DELETE FROM users")
-    void deleteAllUsers();
+	@Query("DELETE FROM users")
+	void deleteAllUsers();
 
-    @Query("SELECT * FROM users WHERE email = :email AND password = :password")
-    List<User> getUser(String email, String password);
+	@Query("SELECT * FROM users WHERE email = :email AND password = :password")
+	List<User> getUser(String email, String password);
 }

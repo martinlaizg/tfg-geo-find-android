@@ -7,13 +7,14 @@ import com.martinlaizg.geofind.data.access.database.repository.UserRepository;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
-public class UserViewModel extends AndroidViewModel {
+public class UserViewModel
+		extends AndroidViewModel {
 
-    private UserRepository repository;
+	private UserRepository repository;
 
 
-    public UserViewModel(@NonNull Application application) {
-        super(application);
-        repository = new UserRepository(application);
-    }
+	public UserViewModel(@NonNull Application application) {
+		super(application);
+		repository = new UserRepository(application);
+	}
 }

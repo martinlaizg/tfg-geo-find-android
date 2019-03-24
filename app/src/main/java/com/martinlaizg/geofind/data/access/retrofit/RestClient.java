@@ -19,65 +19,65 @@ import retrofit2.http.QueryMap;
 
 public interface RestClient {
 
-    static void ErrorToast(Context context) {
-        Toast.makeText(context, context.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
-    }
+	static void ErrorToast(Context context) {
+		Toast.makeText(context, context.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+	}
 
-    //
-    //
-    //
-    //
-    // Maps requests
+	//
+	//
+	//
+	//
+	// Maps requests
 
-    // Get maps with optional filter
-    @GET("maps")
-    Call<List<Map>> getMaps(@QueryMap java.util.Map<String, String> params);
+	// Get maps with optional filter
+	@GET("maps")
+	Call<List<Map>> getMaps(@QueryMap java.util.Map<String, String> params);
 
-    @POST("maps")
-    Call<Map> createMap(@Body Map map);
+	@POST("maps")
+	Call<Map> createMap(@Body Map map);
 
-    // Get single map
-    @GET("maps/{id}")
-    Call<Map> getMap(@Path("id") String id);
+	// Get single map
+	@GET("maps/{id}")
+	Call<Map> getMap(@Path("id") String id);
 
-    // Get locations by map
-    @GET("maps/{id}/locations")
-    Call<List<Location>> getLocationsByMap(@Path("id") String map_id);
+	// Get locations by map
+	@GET("maps/{id}/locations")
+	Call<List<Location>> getLocationsByMap(@Path("id") String map_id);
 
-    // Create a location by map
-    @POST("maps/{id}locations")
-    Call<Location> createLocationByMap(@Path("id") String map_id, @Body Location loc);
+	// Create a location by map
+	@POST("maps/{id}locations")
+	Call<Location> createLocationByMap(@Path("id") String map_id, @Body Location loc);
 
-    //
-    //
-    //
-    //
-    // Locations requests
+	//
+	//
+	//
+	//
+	// Locations requests
 
-    // Get locations
-    @GET("locations")
-    Call<List<Location>> getLocations(@QueryMap java.util.Map<String, String> params);
+	// Get locations
+	@GET("locations")
+	Call<List<Location>> getLocations(@QueryMap java.util.Map<String, String> params);
 
-    // Get single location
-    @GET("locations/{id}")
-    Call<Location> getLocation(@Path("id") String id);
+	// Get single location
+	@GET("locations/{id}")
+	Call<Location> getLocation(@Path("id") String id);
 
-    // Create a location
-    @POST("locations")
-    Call<Location> createLocation(@Body Location loc);
+	// Create a location
+	@POST("locations")
+	Call<Location> createLocation(@Body Location loc);
 
-    //
-    //
-    //
-    //
-    // User requests
+	//
+	//
+	//
+	//
+	// User requests
 
-    // Login user
-    @POST("login")
-    Call<User> login(@Body User body);
+	// Login user
+	@POST("login")
+	Call<User> login(@Body User body);
 
-    @POST("users")
-    Call<List<User>> getUsers(@QueryMap java.util.Map<String, String> params);
+	@POST("users")
+	Call<List<User>> getUsers(@QueryMap java.util.Map<String, String> params);
 
 
 }

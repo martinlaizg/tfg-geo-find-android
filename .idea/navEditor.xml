@@ -147,8 +147,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-83" />
-                            <option name="y" value="249" />
+                            <option name="x" value="-81" />
+                            <option name="y" value="276" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -203,12 +203,12 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_navMap_to_playMapOnMapFragment">
+                            <entry key="toLocation">
                               <value>
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="toLocation">
+                            <entry key="toPlayMapOnMap">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -263,14 +263,35 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="playLocationOnMapFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="361" />
+                            <option name="y" value="582" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="playMapOnMapFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="151" />
-                            <option name="y" value="440" />
+                            <option name="x" value="148" />
+                            <option name="y" value="583" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="toPlayLocationOnMap">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

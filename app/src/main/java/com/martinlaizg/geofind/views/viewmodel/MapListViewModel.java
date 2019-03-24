@@ -12,31 +12,32 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-public class MapListViewModel extends AndroidViewModel {
+public class MapListViewModel
+		extends AndroidViewModel {
 
-    MapListFragment fragment;
+	MapListFragment fragment;
 
-    private MapRepository repository;
-
-
-    public MapListViewModel(@NonNull Application application) {
-        super(application);
-        repository = new MapRepository(application);
-    }
+	private MapRepository repository;
 
 
-    public MutableLiveData<List<Map>> getAllMaps() {
-        return repository.getAllMaps();
-    }
+	public MapListViewModel(@NonNull Application application) {
+		super(application);
+		repository = new MapRepository(application);
+	}
 
-    public void refreshMaps() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                repository.refreshMaps();
 
-            }
-        }).start();
-    }
+	public MutableLiveData<List<Map>> getAllMaps() {
+		return repository.getAllMaps();
+	}
+
+	public void refreshMaps() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				repository.refreshMaps();
+
+			}
+		}).start();
+	}
 
 }

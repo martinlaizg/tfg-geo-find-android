@@ -18,69 +18,69 @@ import retrofit2.Response;
 
 public class MapService {
 
-    private static MapService mapService;
-    private static RestClient restClient;
-    private String TAG = MapService.class.getSimpleName();
+	private static MapService mapService;
+	private static RestClient restClient;
+	private String TAG = MapService.class.getSimpleName();
 
-    public static MapService getInstance() {
-        if (restClient == null) {
-            restClient = RetrofitService.getRestClient();
-        }
-        if (mapService == null) {
-            mapService = new MapService();
-        }
-        return mapService;
-    }
+	public static MapService getInstance() {
+		if (restClient == null) {
+			restClient = RetrofitService.getRestClient();
+		}
+		if (mapService == null) {
+			mapService = new MapService();
+		}
+		return mapService;
+	}
 
-    public List<Map> getAllMaps() {
-        try {
-            Response<List<Map>> response = restClient.getMaps(new HashMap<>()).execute();
-            return response.body();
-        } catch (IOException e) {
-            Log.e(TAG, "getAllMaps: ", e);
-        }
-        return new ArrayList<>();
-    }
+	public List<Map> getAllMaps() {
+		try {
+			Response<List<Map>> response = restClient.getMaps(new HashMap<>()).execute();
+			return response.body();
+		} catch (IOException e) {
+			Log.e(TAG, "getAllMaps: ", e);
+		}
+		return new ArrayList<>();
+	}
 
 
-    public List<Location> getLocations(String map_id) {
-        Response<List<Location>> execute = null;
-        try {
-            execute = restClient.getLocationsByMap(map_id).execute();
-            return execute.body();
-        } catch (IOException e) {
-            Log.e(TAG, "getLocationsByMap", e);
-        }
-        return new ArrayList<>();
-    }
+	public List<Location> getLocations(String map_id) {
+		Response<List<Location>> execute = null;
+		try {
+			execute = restClient.getLocationsByMap(map_id).execute();
+			return execute.body();
+		} catch (IOException e) {
+			Log.e(TAG, "getLocationsByMap", e);
+		}
+		return new ArrayList<>();
+	}
 
-    public Map create(Map map) {
-        Response<Map> response = null;
-        try {
-            response = restClient.createMap(map).execute();
-            if (response.isSuccessful()) {
-                return response.body();
-            }
-            APIError apiError = ErrorUtils.parseError(response);
-            Log.e(TAG, "createMap: " + apiError.toString());
-        } catch (IOException e) {
-            Log.e(TAG, "createMap: ", e);
-        }
-        return null;
-    }
+	public Map create(Map map) {
+		Response<Map> response = null;
+		try {
+			response = restClient.createMap(map).execute();
+			if (response.isSuccessful()) {
+				return response.body();
+			}
+			APIError apiError = ErrorUtils.parseError(response);
+			Log.e(TAG, "createMap: " + apiError.toString());
+		} catch (IOException e) {
+			Log.e(TAG, "createMap: ", e);
+		}
+		return null;
+	}
 
-    public Map getMap(String id) {
-        Response<Map> response = null;
-        try {
-            response = restClient.getMap(id).execute();
-            if (response.isSuccessful()) {
-                return response.body();
-            }
-            APIError apiError = ErrorUtils.parseError(response);
-            Log.e(TAG, "createMap: " + apiError.toString());
-        } catch (IOException e) {
-            Log.e(TAG, "createMap: ", e);
-        }
-        return null;
-    }
+	public Map getMap(String id) {
+		Response<Map> response = null;
+		try {
+			response = restClient.getMap(id).execute();
+			if (response.isSuccessful()) {
+				return response.body();
+			}
+			APIError apiError = ErrorUtils.parseError(response);
+			Log.e(TAG, "createMap: " + apiError.toString());
+		} catch (IOException e) {
+			Log.e(TAG, "createMap: ", e);
+		}
+		return null;
+	}
 }

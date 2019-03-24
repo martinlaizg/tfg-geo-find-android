@@ -12,16 +12,17 @@ import org.jetbrains.annotations.NotNull;
 
 import androidx.fragment.app.Fragment;
 
-public class SearchFragment extends Fragment {
+public class SearchFragment
+		extends Fragment {
 
 
-    public SearchFragment() {
-        // Required empty public constructor
-    }
+	public SearchFragment() {
+		// Required empty public constructor
+	}
 
-    @Override
-    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_search, container, false);
-    }
+	@Override
+	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.fragment_search, container, false);
+	}
 
 }

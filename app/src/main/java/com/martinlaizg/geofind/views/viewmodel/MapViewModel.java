@@ -13,38 +13,57 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-public class MapViewModel extends AndroidViewModel {
+public class MapViewModel
+		extends AndroidViewModel {
 
-    private MutableLiveData<Map> map;
-    private MutableLiveData<List<Location>> locations;
+	private MutableLiveData<Map> map;
+	private MutableLiveData<List<Location>> locations;
 
-    private MapRepository mapRepo;
-    private LocationRepository locRepo;
+	private MapRepository mapRepo;
+	private LocationRepository locRepo;
 
 
-    public MapViewModel(@NonNull Application application) {
-        super(application);
-        mapRepo = new MapRepository(application);
-        locRepo = new LocationRepository(application);
-        map = new MutableLiveData<>();
-        locations = new MutableLiveData<>();
-    }
+	public MapViewModel(@NonNull Application application) {
+		super(application);
+		mapRepo = new MapRepository(application);
+		locRepo = new LocationRepository(application);
+		map = new MutableLiveData<>();
+		locations = new MutableLiveData<>();
+	}
 
-    public MutableLiveData<Map> getMap(String map_id) {
-        map = mapRepo.getMap(map_id);
-        return map;
-    }
+	public MutableLiveData<Map> getMap(String map_id) {
+		map = mapRepo.getMap(map_id);
+		return map;
+	}
 
-    public Map getMap() {
-        return map.getValue();
-    }
+	public Map getMap() {
+		return map.getValue();
+	}
 
-    public MutableLiveData<List<Location>> getLocations(String map_id) {
-        locations = locRepo.getLocationsByMap(map_id);
-        return locations;
-    }
+	public MutableLiveData<List<Location>> getLocations(String map_id) {
+		locations = locRepo.getLocationsByMap(map_id);
+		return locations;
+	}
 
-    public List<Location> getLocations() {
-        return locations.getValue();
-    }
+	public List<Location> getLocations() {
+		return locations.getValue();
+	}
+
+	public Location getLocationByName(String name) {
+		for (Location l : locations.getValue()) {
+			if (l.getName().equals(name)) {
+				return l;
+			}
+		}
+		return null;
+	}
+
+	public Location getLocation(String loc_id) {
+		for (Location l : locations.getValue()) {
+			if (l.getId().equals(loc_id)) {
+				return l;
+			}
+		}
+		return null;
+	}
 }

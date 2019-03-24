@@ -9,6 +9,6 @@ import androidx.room.Query;
 
 @Dao
 public interface UserLocationDAO {
-    @Query("SELECT * from maps")
-    List<MapAllLocations> loadUserAndPets();
+	@Query("SELECT * from maps")
+	List<MapAllLocations> loadUserAndPets();
 }

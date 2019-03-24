@@ -21,60 +21,61 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class LocationListAdapter extends RecyclerView.Adapter<LocationListAdapter.LocationsViewHolder> {
+public class LocationListAdapter
+		extends RecyclerView.Adapter<LocationListAdapter.LocationsViewHolder> {
 
-    private List<Location> locations;
-    private PlayLevel playLevel;
+	private List<Location> locations;
+	private PlayLevel playLevel;
 
-    public LocationListAdapter() {
-        locations = new ArrayList<>();
-    }
+	public LocationListAdapter() {
+		locations = new ArrayList<>();
+	}
 
-    @NonNull
-    @Override
-    public LocationsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_location_item, viewGroup, false);
-        return new LocationsViewHolder(view);
-    }
+	@NonNull
+	@Override
+	public LocationsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+		View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_location_item, viewGroup, false);
+		return new LocationsViewHolder(view);
+	}
 
-    @Override
-    public void onBindViewHolder(@NonNull LocationsViewHolder holder, int position) {
-        Location l = locations.get(position);
-        holder.location_name.setText(l.getName());
-        holder.location_description.setText("Descripción pendiente TODO"); // TODO cambiar por valor real
+	@Override
+	public void onBindViewHolder(@NonNull LocationsViewHolder holder, int position) {
+		Location l = locations.get(position);
+		holder.location_name.setText(l.getName());
+		holder.location_description.setText(l.getDescription());
+		Bundle b = new Bundle();
+		b.putString(LocationFragment.LOC_ID, l.getId());
+		holder.location_card.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.navLocation, b));
+	}
 
-        Bundle b = new Bundle();
-        b.putString(LocationFragment.LOC_ID, l.getId());
-        holder.location_card.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.navLocation, b));
-    }
+	public void setLocations(List<Location> locations) {
+		this.locations = locations;
+		notifyDataSetChanged();
+	}
 
-    public void setLocations(List<Location> locations) {
-        this.locations = locations;
-        notifyDataSetChanged();
-    }
+	@Override
+	public int getItemCount() {
+		return locations.size();
+	}
 
-    @Override
-    public int getItemCount() {
-        return locations.size();
-    }
+	public void setPlayLevel(PlayLevel playLevel) {
+		this.playLevel = playLevel;
+		notifyDataSetChanged();
+	}
 
-    public void setPlayLevel(PlayLevel playLevel) {
-        this.playLevel = playLevel;
-        notifyDataSetChanged();
-    }
+	class LocationsViewHolder
+			extends RecyclerView.ViewHolder {
 
-    class LocationsViewHolder extends RecyclerView.ViewHolder {
+		@BindView(R.id.location_name)
+		TextView location_name;
+		@BindView(R.id.location_description)
+		TextView location_description;
+		@BindView(R.id.location_card)
+		CardView location_card;
 
-        @BindView(R.id.location_name)
-        TextView location_name;
-        @BindView(R.id.location_description)
-        TextView location_description;
-        @BindView(R.id.location_card)
-        CardView location_card;
-
-        LocationsViewHolder(@NonNull View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-    }
+		LocationsViewHolder(@NonNull View itemView) {
+			super(itemView);
+			ButterKnife.bind(this, itemView);
+		}
+	}
 }

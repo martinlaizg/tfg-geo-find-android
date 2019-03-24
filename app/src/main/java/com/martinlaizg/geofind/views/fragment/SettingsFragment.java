@@ -13,26 +13,27 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 
-public class SettingsFragment extends PreferenceFragmentCompat {
+public class SettingsFragment
+		extends PreferenceFragmentCompat {
 
 
-    @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        addPreferencesFromResource(R.xml.app_preferences);
-        setLogoutPreference();
+	@Override
+	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+		addPreferencesFromResource(R.xml.app_preferences);
+		setLogoutPreference();
 
-    }
+	}
 
 
-    private void setLogoutPreference() {
-        findPreference(getString(R.string.preferences_log_out)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-                Preferences.logout(sp);
-                Navigation.findNavController(getActivity(), R.id.main_fragment_holder).popBackStack(R.id.main, false);
-                return true;
-            }
-        });
-    }
+	private void setLogoutPreference() {
+		findPreference(getString(R.string.preferences_log_out)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+				Preferences.logout(sp);
+				Navigation.findNavController(getActivity(), R.id.main_fragment_holder).popBackStack(R.id.main, false);
+				return true;
+			}
+		});
+	}
 }

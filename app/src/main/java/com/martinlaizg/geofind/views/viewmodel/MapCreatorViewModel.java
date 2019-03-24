@@ -15,73 +15,74 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-public class MapCreatorViewModel extends AndroidViewModel {
+public class MapCreatorViewModel
+		extends AndroidViewModel {
 
-    private Map createdMap;
-    private List<Location> createdLocations;
+	private Map createdMap;
+	private List<Location> createdLocations;
 
-    private MapRepository mapRepo;
-    private LocationRepository locRepo;
-
-
-    public MapCreatorViewModel(@NonNull Application application) {
-        super(application);
-        mapRepo = new MapRepository(application);
-        locRepo = new LocationRepository(application);
-    }
+	private MapRepository mapRepo;
+	private LocationRepository locRepo;
 
 
-    public MutableLiveData<Map> createMap() {
-        MutableLiveData<Map> m = new MutableLiveData<>();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                createdMap = mapRepo.create(createdMap);
-                for (int i = 0; i < createdLocations.size(); i++) {
-                    createdLocations.get(i).setMap_id(createdMap.getId());
-                }
-                locRepo.create(createdLocations);
-                m.postValue(createdMap);
-            }
-        }).start();
-        return m;
-    }
-
-    public List<Location> getCreatedLocations() {
-        return createdLocations;
-    }
-
-    public Map getCreatedMap() {
-        if (createdMap == null) {
-            createdMap = new Map();
-        }
-        return createdMap;
-    }
-
-    public void addLocation(String name, String lat, String lon) {
-        Location l = new Location();
-        l.setName(name);
-        l.setLat(lat);
-        l.setLon(lon);
-        if (createdLocations == null) {
-            createdLocations = new ArrayList<>();
-        }
-        createdLocations.add(l);
-    }
+	public MapCreatorViewModel(@NonNull Application application) {
+		super(application);
+		mapRepo = new MapRepository(application);
+		locRepo = new LocationRepository(application);
+	}
 
 
-    public boolean isMapCreated() {
-        Map m = createdMap;
-        return m != null && !m.getName().isEmpty() && !m.getDescription().isEmpty();
-    }
+	public MutableLiveData<Map> createMap() {
+		MutableLiveData<Map> m = new MutableLiveData<>();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				createdMap = mapRepo.create(createdMap);
+				for (int i = 0; i < createdLocations.size(); i++) {
+					createdLocations.get(i).setMap_id(createdMap.getId());
+				}
+				locRepo.create(createdLocations);
+				m.postValue(createdMap);
+			}
+		}).start();
+		return m;
+	}
 
-    public void setMap(String name, String description, String creator_id, PlayLevel pl) {
-        if (createdMap == null) {
-            createdMap = new Map();
-        }
-        createdMap.setName(name);
-        createdMap.setDescription(description);
-        createdMap.setCreator_id(creator_id);
-        createdMap.setMin_level(pl);
-    }
+	public List<Location> getCreatedLocations() {
+		return createdLocations;
+	}
+
+	public Map getCreatedMap() {
+		if (createdMap == null) {
+			createdMap = new Map();
+		}
+		return createdMap;
+	}
+
+	public void addLocation(String name, String lat, String lon) {
+		Location l = new Location();
+		l.setName(name);
+		l.setLat(lat);
+		l.setLon(lon);
+		if (createdLocations == null) {
+			createdLocations = new ArrayList<>();
+		}
+		createdLocations.add(l);
+	}
+
+
+	public boolean isMapCreated() {
+		Map m = createdMap;
+		return m != null && !m.getName().isEmpty() && !m.getDescription().isEmpty();
+	}
+
+	public void setMap(String name, String description, String creator_id, PlayLevel pl) {
+		if (createdMap == null) {
+			createdMap = new Map();
+		}
+		createdMap.setName(name);
+		createdMap.setDescription(description);
+		createdMap.setCreator_id(creator_id);
+		createdMap.setMin_level(pl);
+	}
 }

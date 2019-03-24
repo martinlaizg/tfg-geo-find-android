@@ -15,24 +15,24 @@ import androidx.room.Update;
 @Dao
 public interface MapDAO {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Map map);
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	void insert(Map map);
 
-    @Update
-    void update(Map map);
+	@Update
+	void update(Map map);
 
-    @Delete
-    void delete(Map map);
+	@Delete
+	void delete(Map map);
 
-    @Query("SELECT * FROM maps")
-    List<Map> getAllMaps();
+	@Query("SELECT * FROM maps")
+	List<Map> getAllMaps();
 
-    @Query("DELETE FROM maps")
-    void deleteAllMaps();
+	@Query("DELETE FROM maps")
+	void deleteAllMaps();
 
-    @Query("SELECT * FROM maps WHERE id = :mapId")
-    Map getMap(String mapId);
+	@Query("SELECT * FROM maps WHERE id = :mapId")
+	Map getMap(String mapId);
 
-    @Query("SELECT * FROM locations WHERE map_id = :map_id")
-    List<Location> getLocations(String map_id);
+	@Query("SELECT * FROM locations WHERE map_id = :map_id")
+	List<Location> getLocations(String map_id);
 }

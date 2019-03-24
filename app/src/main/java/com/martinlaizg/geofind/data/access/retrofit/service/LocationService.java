@@ -17,74 +17,74 @@ import retrofit2.Response;
 
 public class LocationService {
 
-    private static LocationService locationService;
-    private static RestClient restClient;
-    private String TAG = LocationService.class.getSimpleName();
+	private static LocationService locationService;
+	private static RestClient restClient;
+	private String TAG = LocationService.class.getSimpleName();
 
-    public static LocationService getInstance() {
-        if (restClient == null) {
-            restClient = RetrofitService.getRestClient();
-        }
-        if (locationService == null) {
-            locationService = new LocationService();
-        }
-        return locationService;
-    }
+	public static LocationService getInstance() {
+		if (restClient == null) {
+			restClient = RetrofitService.getRestClient();
+		}
+		if (locationService == null) {
+			locationService = new LocationService();
+		}
+		return locationService;
+	}
 
-    public List<Location> getAllLocations() {
-        Response<List<Location>> response = null;
-        try {
-            response = restClient.getLocations(new HashMap<>()).execute();
-            if (response.isSuccessful()) {
-                return response.body();
-            }
-            APIError apiError = ErrorUtils.parseError(response);
-            Log.i(TAG, "getAllLocations: " + apiError.message());
-        } catch (IOException ex) {
-            Log.e(TAG, "getAllLocations: ", ex);
-        }
-        return new ArrayList<>();
-    }
+	public List<Location> getAllLocations() {
+		Response<List<Location>> response = null;
+		try {
+			response = restClient.getLocations(new HashMap<>()).execute();
+			if (response.isSuccessful()) {
+				return response.body();
+			}
+			APIError apiError = ErrorUtils.parseError(response);
+			Log.i(TAG, "getAllLocations: " + apiError.message());
+		} catch (IOException ex) {
+			Log.e(TAG, "getAllLocations: ", ex);
+		}
+		return new ArrayList<>();
+	}
 
-    public void create(Location loc) {
-        try {
-            Response<Location> response = restClient.createLocation(loc).execute();
-            if (!response.isSuccessful()) {
-                APIError apiError = ErrorUtils.parseError(response);
-                Log.i(TAG, "createLocation: " + apiError.message());
-            }
-        } catch (IOException e) {
-            Log.e(TAG, "createLocation: ", e);
-        }
-    }
+	public void create(Location loc) {
+		try {
+			Response<Location> response = restClient.createLocation(loc).execute();
+			if (!response.isSuccessful()) {
+				APIError apiError = ErrorUtils.parseError(response);
+				Log.i(TAG, "createLocation: " + apiError.message());
+			}
+		} catch (IOException e) {
+			Log.e(TAG, "createLocation: ", e);
+		}
+	}
 
-    public List<Location> getLocationsByMap(String id) {
-        Response<List<Location>> response = null;
-        try {
-            response = restClient.getLocationsByMap(id).execute();
-            if (response.isSuccessful()) {
-                return response.body();
-            }
-            APIError apiError = ErrorUtils.parseError(response);
-            Log.i(TAG, "getLocationsByMap: " + apiError.message());
-        } catch (IOException ex) {
-            Log.e(TAG, "getLocationsByMap: ", ex);
-        }
-        return new ArrayList<>();
-    }
+	public List<Location> getLocationsByMap(String id) {
+		Response<List<Location>> response = null;
+		try {
+			response = restClient.getLocationsByMap(id).execute();
+			if (response.isSuccessful()) {
+				return response.body();
+			}
+			APIError apiError = ErrorUtils.parseError(response);
+			Log.i(TAG, "getLocationsByMap: " + apiError.message());
+		} catch (IOException ex) {
+			Log.e(TAG, "getLocationsByMap: ", ex);
+		}
+		return new ArrayList<>();
+	}
 
-    public Location getLocation(String loc_id) {
-        Response<Location> response = null;
-        try {
-            response = restClient.getLocation(loc_id).execute();
-            if (response.isSuccessful()) {
-                return response.body();
-            }
-            APIError apiError = ErrorUtils.parseError(response);
-            Log.i(TAG, "getLocationsByMap: " + apiError.message());
-        } catch (IOException ex) {
-            Log.e(TAG, "getLocationsByMap: ", ex);
-        }
-        return new Location();
-    }
+	public Location getLocation(String loc_id) {
+		Response<Location> response = null;
+		try {
+			response = restClient.getLocation(loc_id).execute();
+			if (response.isSuccessful()) {
+				return response.body();
+			}
+			APIError apiError = ErrorUtils.parseError(response);
+			Log.i(TAG, "getLocationsByMap: " + apiError.message());
+		} catch (IOException ex) {
+			Log.e(TAG, "getLocationsByMap: ", ex);
+		}
+		return new Location();
+	}
 }
