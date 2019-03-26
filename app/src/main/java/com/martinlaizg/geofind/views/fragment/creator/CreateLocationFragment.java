@@ -42,7 +42,7 @@ public class CreateLocationFragment
 		extends Fragment
 		implements View.OnClickListener, OnMapReadyCallback {
 
-	public static final int CAMERA_UPDATE_ZOOM = 15;
+	private static final int CAMERA_UPDATE_ZOOM = 15;
 	private static final String MAP_NAME = "MAP_NAME";
 	private static final String MAP_DESCRIPTION = "MAP_DESCRIPTION";
 
@@ -115,13 +115,12 @@ public class CreateLocationFragment
 		String name = new_location_name.getEditText().getText().toString().trim();
 		String description = new_location_description.getEditText().getText().toString().trim();
 		viewModel.addLocation(name, description, String.valueOf(marker.getPosition().latitude), String.valueOf(marker.getPosition().longitude));
-		
+
 		Navigation.findNavController(getActivity(), R.id.main_fragment_holder).popBackStack();
 	}
 
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
-		GoogleMap gMap = googleMap;
 
 		LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 		if (getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -130,26 +129,26 @@ public class CreateLocationFragment
 			return;
 		}
 		Location usrLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		gMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+		googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
 			@Override
 			public void onMapLongClick(LatLng latLng) {
 				alert_no_locaiton_text.setVisibility(View.GONE);
 				MarkerOptions m = new MarkerOptions().position(latLng);
-				gMap.clear();
-				gMap.addMarker(m);
+				googleMap.clear();
+				googleMap.addMarker(m);
 				marker = m;
 			}
 		});
-		gMap.setMyLocationEnabled(true);
-		gMap.getUiSettings().setMyLocationButtonEnabled(true);
-		gMap.getUiSettings().setZoomControlsEnabled(true);
-		gMap.getUiSettings().setMapToolbarEnabled(false);
-		gMap.getUiSettings().setTiltGesturesEnabled(false);
-		gMap.getUiSettings().setScrollGesturesEnabledDuringRotateOrZoom(false);
+		googleMap.setMyLocationEnabled(true);
+		googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+		googleMap.getUiSettings().setZoomControlsEnabled(true);
+		googleMap.getUiSettings().setMapToolbarEnabled(false);
+		googleMap.getUiSettings().setTiltGesturesEnabled(false);
+		googleMap.getUiSettings().setScrollGesturesEnabledDuringRotateOrZoom(false);
 
 		LatLng usrLatLng = new LatLng(usrLocation.getLatitude(), usrLocation.getLongitude());
 		CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(usrLatLng, CAMERA_UPDATE_ZOOM);
-		gMap.animateCamera(cameraUpdate);
+		googleMap.animateCamera(cameraUpdate);
 	}
 
 }

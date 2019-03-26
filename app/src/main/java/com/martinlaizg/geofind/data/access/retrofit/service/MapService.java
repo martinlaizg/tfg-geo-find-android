@@ -20,7 +20,7 @@ public class MapService {
 
 	private static MapService mapService;
 	private static RestClient restClient;
-	private String TAG = MapService.class.getSimpleName();
+	private final String TAG = MapService.class.getSimpleName();
 
 	public static MapService getInstance() {
 		if (restClient == null) {

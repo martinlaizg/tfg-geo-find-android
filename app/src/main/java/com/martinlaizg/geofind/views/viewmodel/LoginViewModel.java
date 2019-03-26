@@ -11,7 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 public class LoginViewModel
 		extends AndroidViewModel {
 
-	private UserRepository repository;
+	private final UserRepository repository;
 
 	private String email;
 	private String password;

@@ -35,7 +35,6 @@ public class LocationFragment
 	ImageView location_image;
 
 	private String loc_id;
-	private LocationViewModel viewModel;
 
 	@Nullable
 	@Override
@@ -52,7 +51,7 @@ public class LocationFragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		viewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
+		LocationViewModel viewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
 
 		viewModel.getLocation(loc_id).observe(this, new Observer<Location>() {
 			@Override

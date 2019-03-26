@@ -36,7 +36,7 @@ public class MapFragment
 		extends Fragment {
 
 	public static final String MAP_ID = "MAP_ID";
-	public static final String PLAY_LEVEL = "PLAY_LEVEL";
+	private static final String PLAY_LEVEL = "PLAY_LEVEL";
 	private static final String TAG = MapFragment.class.getSimpleName();
 
 	@BindView(R.id.map_name)
@@ -61,7 +61,6 @@ public class MapFragment
 	@BindView(R.id.play_buttons)
 	ConstraintLayout play_buttons;
 
-	private MapViewModel viewModel;
 	private LocationListAdapter adapter;
 	private String map_id;
 	private PlayLevel play_level;
@@ -103,7 +102,7 @@ public class MapFragment
 		// TODO change to the correct navigation
 		play_therm_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toPlayMapOnMap));
 
-		viewModel = ViewModelProviders.of(getActivity()).get(MapViewModel.class);
+		MapViewModel viewModel = ViewModelProviders.of(getActivity()).get(MapViewModel.class);
 		viewModel.getMap(map_id).observe(getActivity(), new Observer<Map>() {
 			@Override
 			public void onChanged(Map map) {

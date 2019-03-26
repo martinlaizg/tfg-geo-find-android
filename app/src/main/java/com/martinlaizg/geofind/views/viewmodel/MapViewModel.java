@@ -16,11 +16,10 @@ import androidx.lifecycle.MutableLiveData;
 public class MapViewModel
 		extends AndroidViewModel {
 
+	private final MapRepository mapRepo;
+	private final LocationRepository locRepo;
 	private MutableLiveData<Map> map;
 	private MutableLiveData<List<Location>> locations;
-
-	private MapRepository mapRepo;
-	private LocationRepository locRepo;
 
 
 	public MapViewModel(@NonNull Application application) {

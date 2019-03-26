@@ -12,10 +12,6 @@ import com.martinlaizg.geofind.data.access.database.dao.UserDAO;
 import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
 import com.martinlaizg.geofind.data.access.database.entity.User;
-import com.martinlaizg.geofind.data.access.database.entity.enums.UserType;
-
-import java.sql.Date;
-import java.util.Calendar;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -55,7 +51,7 @@ public abstract class AppDatabase
 
 	private static class PopulateDbAsyncTask
 			extends AsyncTask<Void, Void, Void> {
-		private UserDAO userDAO;
+		private final UserDAO userDAO;
 
 		private PopulateDbAsyncTask(AppDatabase db) {
 			userDAO = db.userDAO();
@@ -63,13 +59,13 @@ public abstract class AppDatabase
 
 		@Override
 		protected Void doInBackground(Void... voids) {
-			Date date = new Date(Calendar.getInstance().getTime().getTime());
-			User user = new User();
-			user.setEmail("martinlaizg@gmail.com");
-			user.setName("Martin");
-			user.setPassword("martinlaizg");
-			user.setUser_type(UserType.ADMINISTRATOR);
-			userDAO.insert(user);
+			//			Date date = new Date(Calendar.getInstance().getTime().getTime());
+			//			User user = new User();
+			//			user.setEmail("martinlaizg@gmail.com");
+			//			user.setName("Martin");
+			//			user.setPassword("martinlaizg");
+			//			user.setUser_type(UserType.ADMINISTRATOR);
+			//			userDAO.insert(user);
 			return null;
 		}
 	}

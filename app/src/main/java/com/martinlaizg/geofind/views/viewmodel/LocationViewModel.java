@@ -15,8 +15,8 @@ import androidx.lifecycle.MutableLiveData;
 public class LocationViewModel
 		extends AndroidViewModel {
 
-	private LocationRepository locRepo;
-	private LiveData<List<Location>> allLocations;
+	private final LocationRepository locRepo;
+	private final LiveData<List<Location>> allLocations;
 
 
 	public LocationViewModel(@NonNull Application application) {

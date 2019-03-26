@@ -54,7 +54,6 @@ public class PlayMapOnMapFragment
 	@BindView(R.id.map_view)
 	MapView map_view;
 	private MapViewModel viewModel;
-	private Map map;
 	private GoogleMap gMap;
 
 	@Override
@@ -72,7 +71,7 @@ public class PlayMapOnMapFragment
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		viewModel = ViewModelProviders.of(getActivity()).get(MapViewModel.class);
-		map = viewModel.getMap();
+		Map map = viewModel.getMap();
 		map_name.setText(map.getName());
 		map_description.setText(map.getDescription());
 	}

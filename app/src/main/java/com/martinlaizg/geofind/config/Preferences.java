@@ -11,7 +11,7 @@ public enum Preferences {
 
 	USER("loggedUser");
 
-	String key;
+	final String key;
 
 	Preferences(String key) {
 		this.key = key;
@@ -35,7 +35,7 @@ public enum Preferences {
 	}
 
 
-	public String getKey() {
+	private String getKey() {
 		return key;
 	}
 

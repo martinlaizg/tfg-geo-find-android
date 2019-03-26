@@ -18,11 +18,10 @@ import androidx.lifecycle.MutableLiveData;
 public class MapCreatorViewModel
 		extends AndroidViewModel {
 
+	private final MapRepository mapRepo;
+	private final LocationRepository locRepo;
 	private Map createdMap;
 	private List<Location> createdLocations;
-
-	private MapRepository mapRepo;
-	private LocationRepository locRepo;
 
 
 	public MapCreatorViewModel(@NonNull Application application) {

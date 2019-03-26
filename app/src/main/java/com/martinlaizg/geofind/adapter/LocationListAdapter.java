@@ -25,7 +25,6 @@ public class LocationListAdapter
 		extends RecyclerView.Adapter<LocationListAdapter.LocationsViewHolder> {
 
 	private List<Location> locations;
-	private PlayLevel playLevel;
 
 	public LocationListAdapter() {
 		locations = new ArrayList<>();
@@ -59,7 +58,6 @@ public class LocationListAdapter
 	}
 
 	public void setPlayLevel(PlayLevel playLevel) {
-		this.playLevel = playLevel;
 		notifyDataSetChanged();
 	}
 

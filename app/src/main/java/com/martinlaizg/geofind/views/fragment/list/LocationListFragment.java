@@ -31,23 +31,21 @@ public class LocationListFragment
 	@BindView(R.id.location_list)
 	RecyclerView recyclerView;
 
-	private ArrayList<Location> locations;
 	private LocationListAdapter adapter;
-	private LocationViewModel locationViewModel;
 
 
 	@Override
 	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_location_list, container, false);
 		ButterKnife.bind(this, view);
-		locations = new ArrayList<>();
+		ArrayList<Location> locations = new ArrayList<>();
 
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		adapter = new LocationListAdapter();
 		recyclerView.setAdapter(adapter);
 
 
-		locationViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
+		LocationViewModel locationViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
 
 		locationViewModel.getAllLocations().observe(this, new Observer<List<Location>>() {
 			@Override

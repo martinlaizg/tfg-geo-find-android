@@ -1,6 +1,6 @@
 package com.martinlaizg.geofind.data.access.database;
 
-public class DBNaming {
+class DBNaming {
 
 	// Tables
 	public static String USERS_TABLE = "users";

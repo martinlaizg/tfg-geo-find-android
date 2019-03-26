@@ -19,7 +19,7 @@ public class LocationService {
 
 	private static LocationService locationService;
 	private static RestClient restClient;
-	private String TAG = LocationService.class.getSimpleName();
+	private final String TAG = LocationService.class.getSimpleName();
 
 	public static LocationService getInstance() {
 		if (restClient == null) {

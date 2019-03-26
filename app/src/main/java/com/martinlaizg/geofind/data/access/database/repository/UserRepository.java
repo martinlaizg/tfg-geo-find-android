@@ -12,8 +12,8 @@ import androidx.lifecycle.MutableLiveData;
 public class UserRepository {
 
 	private static final String TAG = UserRepository.class.getSimpleName();
-	private UserDAO userDAO;
-	private UserService userService;
+	private final UserDAO userDAO;
+	private final UserService userService;
 
 	public UserRepository(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);

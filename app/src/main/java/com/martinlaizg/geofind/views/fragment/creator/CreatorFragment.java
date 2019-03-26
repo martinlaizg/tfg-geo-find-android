@@ -47,8 +47,6 @@ public class CreatorFragment
 	RecyclerView recyclerView;
 
 	private MapCreatorViewModel viewModel;
-	private CreatorLocationAdapter adapter;
-	private NavController navController;
 
 	public CreatorFragment() {
 		// Required empty public constructor
@@ -67,9 +65,9 @@ public class CreatorFragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		navController = Navigation.findNavController(getActivity(), R.id.main_fragment_holder);
+		NavController navController = Navigation.findNavController(getActivity(), R.id.main_fragment_holder);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-		adapter = new CreatorLocationAdapter();
+		CreatorLocationAdapter adapter = new CreatorLocationAdapter();
 		recyclerView.setAdapter(adapter);
 
 		add_location_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreateLocation));

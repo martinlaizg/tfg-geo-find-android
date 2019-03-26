@@ -108,7 +108,7 @@
         android:id="@+id/navSettings"
         android:name="com.martinlaizg.geofind.views.preferences.SettingsFragment"
         android:label="@string/settings"
-        tools:layout="@layout/fragment_settings"></fragment>
+        tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/navRegistry"
         android:name="com.martinlaizg.geofind.views.fragment.login.RegistryFragment"

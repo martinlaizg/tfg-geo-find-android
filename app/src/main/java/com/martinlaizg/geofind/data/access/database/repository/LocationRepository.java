@@ -14,9 +14,9 @@ import androidx.lifecycle.MutableLiveData;
 
 public class LocationRepository {
 
-	private LocationService locationService;
+	private final LocationService locationService;
 
-	private LocationDAO locDAO;
+	private final LocationDAO locDAO;
 	private LiveData<List<Location>> allLocations;
 
 	public LocationRepository(Application application) {

@@ -42,7 +42,7 @@ public class CreateMapFragment
 	@BindView(R.id.dificulty_spinner)
 	Spinner dificultySpinner;
 
-	MapCreatorViewModel viewModel;
+	private MapCreatorViewModel viewModel;
 	private NavController navController;
 
 	public CreateMapFragment() {

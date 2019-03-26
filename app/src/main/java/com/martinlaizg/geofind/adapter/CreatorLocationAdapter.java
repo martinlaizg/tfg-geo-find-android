@@ -60,8 +60,8 @@ public class CreatorLocationAdapter
 	class ViewHolder
 			extends RecyclerView.ViewHolder {
 
-		TextView locName;
-		ImageButton deleteButton;
+		final TextView locName;
+		final ImageButton deleteButton;
 
 		ViewHolder(View view) {
 			super(view);

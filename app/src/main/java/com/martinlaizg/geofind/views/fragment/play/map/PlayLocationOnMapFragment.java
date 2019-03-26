@@ -65,7 +65,6 @@ public class PlayLocationOnMapFragment
 
 	private Location location;
 	private GoogleMap gMap;
-	private MapViewModel viewModel;
 
 	@Override
 	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,7 +91,7 @@ public class PlayLocationOnMapFragment
 		if (b != null) {
 			loc_id = b.getString(LOCATION_ID);
 		}
-		viewModel = ViewModelProviders.of(getActivity()).get(MapViewModel.class);
+		MapViewModel viewModel = ViewModelProviders.of(getActivity()).get(MapViewModel.class);
 		location = viewModel.getLocation(loc_id);
 
 		location_name.setText(location.getName());

@@ -13,8 +13,8 @@ import androidx.lifecycle.MutableLiveData;
 
 public class MapRepository {
 
-	private MapService mapService;
-	private MapDAO mapDAO;
+	private final MapService mapService;
+	private final MapDAO mapDAO;
 
 	public MapRepository(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
@@ -40,7 +40,7 @@ public class MapRepository {
 		return maps;
 	}
 
-	public void insertMaps(List<Map> ms) {
+	private void insertMaps(List<Map> ms) {
 		for (Map m : ms) {
 			insertMap(m);
 		}
@@ -69,7 +69,7 @@ public class MapRepository {
 		}
 	}
 
-	public void insertMap(Map map) {
+	private void insertMap(Map map) {
 		mapDAO.insert(map);
 	}
 

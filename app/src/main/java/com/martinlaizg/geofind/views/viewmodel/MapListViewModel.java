@@ -15,9 +15,8 @@ import androidx.lifecycle.MutableLiveData;
 public class MapListViewModel
 		extends AndroidViewModel {
 
+	private final MapRepository repository;
 	MapListFragment fragment;
-
-	private MapRepository repository;
 
 
 	public MapListViewModel(@NonNull Application application) {
