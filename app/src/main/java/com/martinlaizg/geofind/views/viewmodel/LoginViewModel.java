@@ -15,21 +15,41 @@ public class LoginViewModel
 
 	private String email;
 	private String password;
+	private String name;
 
 	public LoginViewModel(Application application) {
 		super(application);
 		repository = new UserRepository(application);
+		name = "";
 		email = "";
 		password = "";
-
 	}
 
 	public MutableLiveData<User> login() {
 		return repository.login(email, password);
 	}
 
+	public MutableLiveData<User> registry() {
+		return repository.registry(name, email, password);
+	}
+
 	public void setLogin(String email, String password) {
+		this.email = email;
+	}
+
+
+	public void setRegistry(String name, String email, String password) {
+		this.name = name;
 		this.email = email;
 		this.password = password;
 	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 }

@@ -66,4 +66,6 @@
     <string name="you_oversized">Te has pasado de tamaño</string>
     <string name="TODO">TODO</string>
     <string name="search_fragment">Fragmento de búsqueda</string>
+    <string name="num_locations">%d localizaciones</string>
+    <string name="num_creator">Creador %s</string>
 </resources>

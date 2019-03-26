@@ -33,4 +33,16 @@ public class UserRepository {
 		}).start();
 		return user;
 	}
+
+	public MutableLiveData<User> registry(String name, String email, String password) {
+		MutableLiveData<User> user = new MutableLiveData<>();
+		new Thread(() -> {
+			User u = userService.registry(new User(name, email, password));
+			if (u != null) {
+				user.postValue(u);
+				userDAO.insert(u);
+			}
+		}).start();
+		return user;
+	}
 }

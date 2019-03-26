@@ -87,17 +87,6 @@ public class LoginFragment
 		}
 	}
 
-	//    private boolean isLogged() {
-	//        User user = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(getContext())));
-	//        if (user != null) { // User already logged
-	//            Toast.makeText(getActivity(), getString(R.string.already_logged), Toast.LENGTH_SHORT).show();
-	//            ((MainActivity) Objects.requireNonNull(getActivity())).disableToolbarAndDrawer(true);
-	//            Navigation.findNavController(getActivity(), R.id.main_fragment_holder).popBackStack(R.id.main, false);
-	//            return true;
-	//        }
-	//        return false;
-	//    }
-
 	@Override
 	public void onClick(View v) {
 		if (TextUtils.isEmpty(Objects.requireNonNull(email_input.getEditText()).getText())) {

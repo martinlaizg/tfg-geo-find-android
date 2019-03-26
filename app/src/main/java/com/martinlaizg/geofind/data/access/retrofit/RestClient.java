@@ -1,9 +1,5 @@
 package com.martinlaizg.geofind.data.access.retrofit;
 
-import android.content.Context;
-import android.widget.Toast;
-
-import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
 import com.martinlaizg.geofind.data.access.database.entity.User;
@@ -18,10 +14,6 @@ import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
 
 public interface RestClient {
-
-	static void ErrorToast(Context context) {
-		Toast.makeText(context, context.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
-	}
 
 	//
 	//
@@ -48,6 +40,7 @@ public interface RestClient {
 	@POST("maps/{id}locations")
 	Call<Location> createLocationByMap(@Path("id") String map_id, @Body Location loc);
 
+
 	//
 	//
 	//
@@ -66,6 +59,7 @@ public interface RestClient {
 	@POST("locations")
 	Call<Location> createLocation(@Body Location loc);
 
+
 	//
 	//
 	//
@@ -79,5 +73,6 @@ public interface RestClient {
 	@POST("users")
 	Call<List<User>> getUsers(@QueryMap java.util.Map<String, String> params);
 
-
+	@POST("registry")
+	Call<User> registry(User user);
 }

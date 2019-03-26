@@ -113,7 +113,7 @@ public class MapFragment
 			@Override
 			public void onChanged(List<Location> locations) {
 				adapter.setLocations(locations);
-				map_num_locations.setText(String.valueOf(locations.size()));
+				map_num_locations.setText(String.format(getString(R.string.num_locations), locations.size()));
 			}
 		});
 	}
@@ -122,7 +122,7 @@ public class MapFragment
 		if (map != null) {
 			map_name.setText(map.getName());
 			map_description.setText(map.getDescription());
-			map_creator.setText("Creador " + map.getCreator_id() + " TODO"); // TODO cambiar por valor real
+			map_creator.setText(String.format(getString(R.string.num_creator), map.getCreator_id())); // TODO cambiar por valor real
 			setPlayLevel(map.getMin_level());
 		}
 	}

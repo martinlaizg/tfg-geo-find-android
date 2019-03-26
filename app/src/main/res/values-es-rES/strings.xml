@@ -53,4 +53,5 @@
     <string name="location_description">Descripción de la localización</string>
     <string name="you_oversized">Te has pasado del tamaño</string>
     <string name="search_fragment">Fragmento de búsqueda</string>
+    <string name="num_locations">%d localizaciones</string>
 </resources>

@@ -37,4 +37,13 @@ public class UserService {
 		return null;
 	}
 
+	public User registry(User user) {
+		try {
+			Response<User> response = restClient.registry(user).execute();
+			return response.body();
+		} catch (IOException e) {
+			Log.e(TAG, "run: login", e);
+		}
+		return null;
+	}
 }
