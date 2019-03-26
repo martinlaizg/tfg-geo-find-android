@@ -12,7 +12,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
-import com.martinlaizg.geofind.data.access.database.entity.User;
 import com.martinlaizg.geofind.views.viewmodel.LoginViewModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +21,6 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
@@ -93,7 +91,7 @@ public class LoginFragment
 	//        User user = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(getContext())));
 	//        if (user != null) { // User already logged
 	//            Toast.makeText(getActivity(), getString(R.string.already_logged), Toast.LENGTH_SHORT).show();
-	//            ((MainActivity) Objects.requireNonNull(getActivity())).setToolbarVisibility(true);
+	//            ((MainActivity) Objects.requireNonNull(getActivity())).disableToolbarAndDrawer(true);
 	//            Navigation.findNavController(getActivity(), R.id.main_fragment_holder).popBackStack(R.id.main, false);
 	//            return true;
 	//        }
@@ -116,19 +114,16 @@ public class LoginFragment
 		String email = email_input.getEditText().getText().toString().trim();
 		String password = password_input.getEditText().getText().toString().trim();
 		viewModel.setLogin(email, password);
-		viewModel.login().observe(this, new Observer<User>() {
-			@Override
-			public void onChanged(User user) {
-				if (user == null) {
-					email_input.setError(getString(R.string.wrong_email_password));
-					password_input.setError(getString(R.string.wrong_email_password));
-					return;
-				}
-				Preferences.setLoggedUser(PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(getContext())), user);
-				login_button.setEnabled(true);
-				loading_spinner.setVisibility(View.GONE);
-				Navigation.findNavController(Objects.requireNonNull(getActivity()), R.id.main_fragment_holder).navigate(R.id.toMainLogged);
+		viewModel.login().observe(this, user -> {
+			if (user == null) {
+				email_input.setError(getString(R.string.wrong_email_password));
+				password_input.setError(getString(R.string.wrong_email_password));
+				return;
 			}
+			Preferences.setLoggedUser(PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(getContext())), user);
+			login_button.setEnabled(true);
+			loading_spinner.setVisibility(View.GONE);
+			Navigation.findNavController(Objects.requireNonNull(getActivity()), R.id.main_fragment_holder).navigate(R.id.toMainLogged);
 		});
 	}
 }

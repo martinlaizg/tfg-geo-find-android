@@ -12,6 +12,10 @@ import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.database.entity.User;
 import com.martinlaizg.geofind.views.activity.MainActivity;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
@@ -25,7 +29,7 @@ public class MainFragment
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		if (!isLogged()) {
 			return null;
 		}
@@ -33,16 +37,16 @@ public class MainFragment
 	}
 
 	private boolean isLogged() {
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(getActivity()));
 		User u = Preferences.getLoggedUser(sp);
 		MainActivity mainActivity = (MainActivity) getActivity();
 		if (u != null && !u.getEmail().isEmpty()) {
 			mainActivity.setDrawerHeader(u.getUsername(), u.getName());
-			mainActivity.setToolbarVisibility(true);
+			mainActivity.disableToolbarAndDrawer(true);
 			return true;
 		}
 		// If user is not logged, go to LoginFragment
-		mainActivity.setToolbarVisibility(false);
+		mainActivity.disableToolbarAndDrawer(false);
 		Navigation.findNavController(getActivity(), R.id.main_fragment_holder).navigate(R.id.toLogin);
 		return false;
 	}

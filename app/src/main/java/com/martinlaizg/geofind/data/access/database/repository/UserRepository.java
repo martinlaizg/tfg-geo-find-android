@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 
 public class UserRepository {
 
+	private static final String TAG = UserRepository.class.getSimpleName();
 	private UserDAO userDAO;
 	private UserService userService;
 
@@ -23,16 +24,11 @@ public class UserRepository {
 
 	public MutableLiveData<User> login(String email, String password) {
 		MutableLiveData<User> user = new MutableLiveData<>();
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				User u = new User(email, password);
-				u = userService.login(u);
-				if (u != null && !u.getEmail().isEmpty()) {
-					userDAO.insert(u);
-					user.postValue(u);
-				}
-
+		new Thread(() -> {
+			User u = userService.login(new User(email, password));
+			if (u != null) {
+				user.postValue(u);
+				userDAO.insert(u);
 			}
 		}).start();
 		return user;
