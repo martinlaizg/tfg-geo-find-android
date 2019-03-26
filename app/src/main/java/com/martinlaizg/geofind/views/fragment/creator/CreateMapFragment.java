@@ -2,7 +2,6 @@ package com.martinlaizg.geofind.views.fragment.creator;
 
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,12 +61,20 @@ public class CreateMapFragment
 			@Override
 			public void onClick(View v) {
 				try {
-					if (TextUtils.isEmpty(new_map_name.getEditText().getText())) {
+					if (Objects.requireNonNull(new_map_name.getEditText()).getText().toString().trim().isEmpty()) {
 						new_map_name.setError(getString(R.string.required_name));
 						return;
 					}
-					if (TextUtils.isEmpty(new_map_description.getEditText().getText())) {
+					if (new_map_name.getEditText().getText().toString().trim().length() > getResources().getInteger(R.integer.max_name_length)) {
+						new_map_name.setError(getString(R.string.you_oversized));
+						return;
+					}
+					if (Objects.requireNonNull(new_map_description.getEditText()).getText().toString().trim().isEmpty()) {
 						new_map_description.setError(getString(R.string.required_description));
+						return;
+					}
+					if (new_map_description.getEditText().getText().toString().trim().length() > getResources().getInteger(R.integer.max_description_length)) {
+						new_map_description.setError(getString(R.string.you_oversized));
 						return;
 					}
 				} catch (NullPointerException ex) {

@@ -4,9 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.adapter.CreatorLocationAdapter;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
@@ -15,6 +16,7 @@ import com.martinlaizg.geofind.views.viewmodel.MapCreatorViewModel;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -25,7 +27,8 @@ import butterknife.ButterKnife;
 
 
 public class CreatorFragment
-		extends Fragment {
+		extends Fragment
+		implements View.OnClickListener {
 
 	// View
 	@BindView(R.id.create_map_name)
@@ -34,9 +37,11 @@ public class CreatorFragment
 	TextView mapDescription;
 
 	@BindView(R.id.add_location_button)
-	Button add_location_button;
+	MaterialButton add_location_button;
+	@BindView(R.id.create_map_button)
+	MaterialButton create_map_button;
 	@BindView(R.id.edit_button)
-	Button edit_button;
+	MaterialButton edit_button;
 
 	@BindView(R.id.rec_view_loc_list)
 	RecyclerView recyclerView;
@@ -69,6 +74,7 @@ public class CreatorFragment
 
 		add_location_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreateLocation));
 		edit_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreateMap));
+		create_map_button.setOnClickListener(this);
 
 		viewModel = ViewModelProviders.of(getActivity()).get(MapCreatorViewModel.class);
 
@@ -81,5 +87,24 @@ public class CreatorFragment
 		}
 
 		adapter.setLocations(viewModel.getCreatedLocations());
+	}
+
+	@Override
+	public void onClick(View v) {
+
+		create_map_button.setEnabled(false);
+
+		if (!viewModel.isValid()) {
+			Toast.makeText(getActivity(), "Algo está mal", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		viewModel.createMap().observe(this, new Observer<Map>() {
+			@Override
+			public void onChanged(Map map) {
+
+				create_map_button.setEnabled(true);
+				// TODO navigate to created map
+			}
+		});
 	}
 }

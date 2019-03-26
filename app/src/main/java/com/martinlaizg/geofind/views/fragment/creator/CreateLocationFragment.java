@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +27,8 @@ import com.martinlaizg.geofind.views.viewmodel.MapCreatorViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -47,6 +48,8 @@ public class CreateLocationFragment
 
 	@BindView(R.id.new_location_name_layout)
 	TextInputLayout new_location_name;
+	@BindView(R.id.new_location_description_layout)
+	TextInputLayout new_location_description;
 	@BindView(R.id.alert_no_locaiton_text)
 	TextView alert_no_locaiton_text;
 
@@ -58,14 +61,6 @@ public class CreateLocationFragment
 
 	private MapCreatorViewModel viewModel;
 	private MarkerOptions marker;
-
-	public CreateLocationFragment() {
-		// Required empty public constructor
-	}
-
-	public static CreateLocationFragment newInstance() {
-		return new CreateLocationFragment();
-	}
 
 	@Override
 	public View onCreateView(
@@ -90,10 +85,24 @@ public class CreateLocationFragment
 	public void onClick(View v) {
 		alert_no_locaiton_text.setVisibility(View.GONE);
 		try {
-			if (TextUtils.isEmpty(new_location_name.getEditText().getText())) {
+			if (Objects.requireNonNull(new_location_name.getEditText()).getText().toString().trim().isEmpty()) {
 				new_location_name.setError(getString(R.string.required_name));
 				return;
 			}
+			if (new_location_name.getEditText().getText().toString().length() > getResources().getInteger(R.integer.max_name_length)) {
+				new_location_name.setError(getString(R.string.you_oversized));
+				return;
+			}
+			new_location_name.setError("");
+			if (Objects.requireNonNull(new_location_description.getEditText()).getText().toString().trim().isEmpty()) {
+				new_location_description.setError(getString(R.string.required_description));
+				return;
+			}
+			if (new_location_description.getEditText().getText().toString().length() > getResources().getInteger(R.integer.max_description_length)) {
+				new_location_description.setError(getString(R.string.you_oversized));
+				return;
+			}
+			new_location_description.setError("");
 			if (marker == null) {
 				alert_no_locaiton_text.setVisibility(View.VISIBLE);
 				return;
@@ -103,18 +112,16 @@ public class CreateLocationFragment
 			return;
 		}
 
-
 		String name = new_location_name.getEditText().getText().toString().trim();
-		viewModel.addLocation(name, String.valueOf(marker.getPosition().latitude), String.valueOf(marker.getPosition().longitude));
-
-
+		String description = new_location_description.getEditText().getText().toString().trim();
+		viewModel.addLocation(name, description, String.valueOf(marker.getPosition().latitude), String.valueOf(marker.getPosition().longitude));
+		
 		Navigation.findNavController(getActivity(), R.id.main_fragment_holder).popBackStack();
 	}
 
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
 		GoogleMap gMap = googleMap;
-
 
 		LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 		if (getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -123,9 +130,9 @@ public class CreateLocationFragment
 			return;
 		}
 		Location usrLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		gMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+		gMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
 			@Override
-			public void onMapClick(LatLng latLng) {
+			public void onMapLongClick(LatLng latLng) {
 				alert_no_locaiton_text.setVisibility(View.GONE);
 				MarkerOptions m = new MarkerOptions().position(latLng);
 				gMap.clear();

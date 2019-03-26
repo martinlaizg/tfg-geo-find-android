@@ -59,9 +59,10 @@ public class MapCreatorViewModel
 		return createdMap;
 	}
 
-	public void addLocation(String name, String lat, String lon) {
+	public void addLocation(String name, String description, String lat, String lon) {
 		Location l = new Location();
 		l.setName(name);
+		l.setDescription(description);
 		l.setLat(lat);
 		l.setLon(lon);
 		if (createdLocations == null) {
@@ -71,11 +72,6 @@ public class MapCreatorViewModel
 	}
 
 
-	public boolean isMapCreated() {
-		Map m = createdMap;
-		return m != null && !m.getName().isEmpty() && !m.getDescription().isEmpty();
-	}
-
 	public void setMap(String name, String description, String creator_id, PlayLevel pl) {
 		if (createdMap == null) {
 			createdMap = new Map();
@@ -84,5 +80,25 @@ public class MapCreatorViewModel
 		createdMap.setDescription(description);
 		createdMap.setCreator_id(creator_id);
 		createdMap.setMin_level(pl);
+	}
+
+	public boolean isValid() {
+		if (!isMapValid(createdMap)) {
+			return false;
+		}
+		for (Location l : createdLocations) {
+			if (!isLocationValid(l)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private boolean isMapValid(Map createdMap) {
+		return !createdMap.getName().isEmpty() && !createdMap.getDescription().isEmpty();
+	}
+
+	private boolean isLocationValid(Location l) {
+		return !l.getName().isEmpty() && !l.getDescription().isEmpty() && !l.getLat().isEmpty() && !l.getLon().isEmpty();
 	}
 }
