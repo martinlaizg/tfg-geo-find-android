@@ -73,6 +73,6 @@ public interface RestClient {
 	@POST("users")
 	Call<List<User>> getUsers(@QueryMap java.util.Map<String, String> params);
 
-	@POST("registry")
-	Call<User> registry(User user);
+	@POST("users")
+	Call<User> registry(@Body User user);
 }
