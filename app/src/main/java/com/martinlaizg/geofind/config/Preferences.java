@@ -1,25 +1,42 @@
 package com.martinlaizg.geofind.config;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 
-public class Preferences {
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.martinlaizg.geofind.data.access.database.entity.User;
+import com.martinlaizg.geofind.utils.DateUtils;
 
-    public static final String LOGGED = "logged";
-    public static final String USER = "loggedUser";
+public enum Preferences {
 
-    private static final String APP_KEY = "MiApp";
-    private String key;
+	USER("loggedUser");
 
-    Preferences(String key) {
-        this.key = key;
-    }
+	final String key;
 
-    public static SharedPreferences getInstance(Context applicationContext) {
-        return applicationContext.getSharedPreferences(APP_KEY, Context.MODE_PRIVATE);
-    }
+	Preferences(String key) {
+		this.key = key;
+	}
 
-    public String getKey() {
-        return key;
-    }
+	public static User getLoggedUser(SharedPreferences sp) {
+		String user_string = sp.getString(USER.getKey(), "");
+
+		Gson gson = new GsonBuilder().setDateFormat(DateUtils.DATE_FORMAT).create();
+		return gson.fromJson(user_string, User.class);
+	}
+
+	public static void setLoggedUser(SharedPreferences sp, User user) {
+		Gson gson = new GsonBuilder().setDateFormat(DateUtils.DATE_FORMAT).create();
+		String stringUser = user.toJson();
+		sp.edit().putString(USER.getKey(), stringUser).apply();
+	}
+
+	public static void logout(SharedPreferences sp) {
+		sp.edit().putString(USER.getKey(), null).apply();
+	}
+
+
+	private String getKey() {
+		return key;
+	}
+
 }

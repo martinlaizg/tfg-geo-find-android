@@ -1,69 +1,73 @@
 <resources>
-    <string name="app_name">GeoFind</string>
-    <string name="title_activity_maps">Mapa</string>
+    <!-- TODO eliminar antes de entrega -->
+    <string name="default_email" translatable="false">martinlaizg@gmail.com</string>
+    <string name="default_password" translatable="false">martinlaizg</string>
 
-    <string name="google_maps_API_key">AIzaSyCNKbWcHYUAYBNj_3etkUn5d_tm7ftYNSY</string>
+    <string name="app_name" translatable="false">GeoFind</string>
+    <string name="preferences_log_out" translatable="false">Logout Preference</string>
+    <string name="developer" translatable="false">Martín Laiz Gómez</string>
+    <string name="this_year" translatable="false">2019</string>
 
-    <string name="title_activity_navigation_main">NavigationMainActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
     <string name="name">Name</string>
-    <string name="solicitar_informacion">Solicitar informacion</string>
-    <string name="thermometer">Termometro</string>
-    <string name="open">Open</string>
-    <string name="close">Close</string>
-    <string name="title_activity_drawer">DrawerActivity</string>
-    <string name="search_title">Busqueda</string>
-    <string name="description_user_image">User profile image</string>
-    <string name="nav_header_username">username</string>
-    <string name="nav_header_name">Nombre completo de usuario</string>
-    <string name="password_input">Password</string>
-    <string name="confirm_password_input">Confirm password</string>
+    <string name="description_user_image">Imagen de perfil del usuario</string>
+    <string name="password_input">Contraseña</string>
+    <string name="confirm_password_input">Confirmar constraseña</string>
     <string name="email_input">Email</string>
-    <string name="app_logo_description">App logo</string>
+    <string name="app_logo_description">Logo de la aplicación</string>
     <string name="log_out">Cerrar sesión</string>
-    <string name="settings">Ajustes</string>
     <string name="account_settings">Ajustes de la cuenta</string>
     <string name="locations">Localizaciones</string>
-    <string name="maps">Maps</string>
-    <string name="users">Usuarios</string>
+    <string name="map">Mapa</string>
     <string name="login">Iniciar sesión</string>
-    <string name="pref_title_sync_frequency">ccc</string>
-    <string name="pref_title_system_sync_settings">ddd</string>
-    <string name="pref_title_new_message_notifications">eee</string>
-    <string name="pref_title_ringtone">eeee</string>
-    <string name="pref_title_vibrate">fff</string>
-    <string name="pref_description_social_recommendations">aaa</string>
-    <string name="pref_title_social_recommendations">aaaa</string>
-    <string name="pref_default_display_name">aaaa</string>
-    <string name="pref_title_display_name">aaaaa</string>
-    <string name="pref_title_add_friends_to_messages">aaaa</string>
     <string name="registry">Registrarse</string>
     <string name="create_account">Crear cuenta</string>
     <string name="no_has_account_question">Aún no tienes una cuenta?</string>
-    <string name="connection_failure">Error de conexión</string>
-    <string name="map_image_description">Map image</string>
-    <string name="map_name">Map name</string>
-    <string name="map_creator">Map creator</string>
-    <string name="default_progress">8/24</string>
-    <string name="default_email">martinlaizg@gmail.com</string>
-    <string name="default_password">martinlaizg</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="location_description">Imagen de la localización</string>
-    <string name="default_location_name">Nombre de la localización</string>
-    <string name="default_location_distance">300m</string>
     <string name="map_main_image">Imagen principal del mapa</string>
-    <string name="default_map_description">Descripción de ejemplo para el mapa. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam venenatis sagittis nunc nec congue. Suspendisse nec porttitor nunc, id vehicula sem. Cras ornare, nisl vitae interdum dignissim, neque felis ullamcorper ipsum, et venenatis tellus massa nec enim. Praesent a erat augue. Cras semper velit in erat rutrum, vitae facilisis dolor.</string>
-    <string name="title_activity_basic">BasicActivity</string>
-    <string name="expandable_icon_description">Expandir/Contraer opciones mapa</string>
-    <string name="play_map">Map</string>
-    <string name="play_compass">compass</string>
-    <string name="play_therm">therm</string>
-    <string name="title_activity_google_maps">Google Maps</string>
+    <string name="new_map_description">Descripción</string>
+    <string name="settings">Ajustes</string>
+    <string name="new_location">Añadir localización</string>
+    <string name="create_map">Crear mapa</string>
+    <string name="add_image">Añadir imagen</string>
+    <string name="required_name">Es obligatorio poner un nombre</string>
+    <string name="required_description">La descripción es obligatoria</string>
+    <string name="required_email">El email es obligatorio</string>
+    <string name="required_password">La contraseña es obligatoria</string>
+    <string name="network_error">Error de conexión</string>
+    <string name="wrong_email_password">Email o contraseña incorrectos</string>
+    <string name="default_delete_loc">Borrar localizacion</string>
+    <string name="create_location">Crear localización</string>
+    <string name="edit">Editar</string>
+    <string name="location_list">Lista de localizaciones</string>
+    <string name="add_location">Añadir localización</string>
+    <string name="required_verify_password">Debes de verificar la contraseña</string>
+    <string name="no_match_password">La contraseña no coincide</string>
+    <string name="select_min_difficulty">Selecciona la dificultad mínima</string>
+    <string-array name="dificulties">
+        <item>Mapa</item>
+        <item>Brújula</item>
+        <item>Termometro</item>
+    </string-array>
+    <string name="location_name_description">Nombre de la localización</string>
+    <string name="therm">Term</string>
+    <string name="compass">Brujula</string>
+    <string name="map_list">Lista de mapas</string>
+    <string name="location">Localización</string>
+    <string name="map_creator">Creador de mapas</string>
+    <string name="app_description">Aplicación desarrollada como Trabajo Final de Grado en la Universidad de Alicante, Grado en Ingeniería Informática.</string>
+    <string name="developed_by">Desarrollado por:</string>
+    <string name="alert_text_no_location_selected">Debes de seleccionar un punto en el mapa</string>
+    <string name="no_location_permissions">No hay permiso de acceso a localización</string>
+    <string name="map_without_name">Mapa sin nombre</string>
+    <string name="play_map">Jugar mapa</string>
+    <string name="play_location">Jugar localización</string>
+    <string name="navigate">Navegar</string>
+    <string name="location_name">Nombre de la localización</string>
+    <string name="location_description">Descripción de la localización</string>
+    <string name="you_oversized">Te has pasado de tamaño</string>
+    <string name="TODO">TODO</string>
+    <string name="search_fragment">Fragmento de búsqueda</string>
+    <string name="num_locations">%d localizaciones</string>
+    <string name="num_creator">Creador %s</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="required_username">El nombre de usuario es obligatorio</string>
 </resources>

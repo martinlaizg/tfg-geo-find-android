@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="@layout/activity_main">
-    <group android:checkableBehavior="single">
+    tools:showIn="@layout/fragment_main">
+    <group android:checkableBehavior="none">
         <item
-            android:id="@+id/menu_users"
-            android:title="@string/users" />
+            android:id="@+id/toMapList"
+            android:title="@string/map" />
         <item
-            android:id="@+id/menu_maps"
-            android:title="@string/maps" />
-        <item
-            android:id="@+id/menu_locations"
+            android:id="@+id/toLocationList"
             android:title="@string/locations" />
     </group>
 
@@ -18,11 +15,11 @@
         <menu>
             <group android:checkableBehavior="none">
                 <item
-                    android:id="@+id/menu_settings"
-                    android:title="@string/settings" />
+                    android:id="@+id/toCreator"
+                    android:title="@string/create_map" />
                 <item
-                    android:id="@+id/menu_log_out"
-                    android:title="@string/log_out" />
+                    android:id="@+id/toSettings"
+                    android:title="@string/settings" />
             </group>
         </menu>
     </item>
