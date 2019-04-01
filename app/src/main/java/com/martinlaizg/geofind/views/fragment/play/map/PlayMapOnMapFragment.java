@@ -79,6 +79,7 @@ public class PlayMapOnMapFragment
 
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
+		// TODO: refactor
 		gMap = googleMap;
 		if (Objects.requireNonNull(getActivity()).checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
 				getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

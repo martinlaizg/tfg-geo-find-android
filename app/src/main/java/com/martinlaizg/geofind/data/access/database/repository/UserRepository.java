@@ -34,13 +34,13 @@ public class UserRepository {
 		return user;
 	}
 
-	public MutableLiveData<User> registry(String name, String email, String password) {
+	public MutableLiveData<User> registry(String name, String username, String email, String password) {
 		MutableLiveData<User> user = new MutableLiveData<>();
 		new Thread(() -> {
-			User u = userService.registry(new User(name, email, password));
+			User u = userService.registry(new User(name, username, email, password));
 			if (u != null) {
 				user.postValue(u);
-				userDAO.insert(u);
+				if (u.getError() == null) userDAO.insert(u);
 			}
 		}).start();
 		return user;

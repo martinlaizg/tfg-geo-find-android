@@ -1,6 +1,7 @@
 package com.martinlaizg.geofind.data.access.database.entity;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.martinlaizg.geofind.data.access.retrofit.error.APIError;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -29,6 +30,9 @@ public class Location {
 	private String description;
 	private Date created_at;
 	private Date updated_at;
+
+	@Ignore
+	private APIError error;
 
 	public Location(String name, String lat, String lon, String map_id, Date created_at, Date updated_at) {
 		id = UUID.randomUUID().toString();
@@ -119,5 +123,13 @@ public class Location {
 		l.setLatitude(Double.valueOf(getLat()));
 		l.setLongitude(Double.valueOf(getLon()));
 		return l;
+	}
+
+	public APIError getError() {
+		return error;
+	}
+
+	public void setError(APIError error) {
+		this.error = error;
 	}
 }

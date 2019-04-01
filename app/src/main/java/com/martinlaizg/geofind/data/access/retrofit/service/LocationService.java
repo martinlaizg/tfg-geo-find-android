@@ -10,6 +10,7 @@ import com.martinlaizg.geofind.data.access.retrofit.error.ErrorUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,7 +40,9 @@ public class LocationService {
 				return response.body();
 			}
 			APIError apiError = ErrorUtils.parseError(response);
-			Log.i(TAG, "getAllLocations: " + apiError.message());
+			Location l = new Location();
+			l.setError(apiError);
+			return Collections.singletonList(l);
 		} catch (IOException ex) {
 			Log.e(TAG, "getAllLocations: ", ex);
 		}
@@ -51,7 +54,6 @@ public class LocationService {
 			Response<Location> response = restClient.createLocation(loc).execute();
 			if (!response.isSuccessful()) {
 				APIError apiError = ErrorUtils.parseError(response);
-				Log.i(TAG, "createLocation: " + apiError.message());
 			}
 		} catch (IOException e) {
 			Log.e(TAG, "createLocation: ", e);
@@ -66,7 +68,6 @@ public class LocationService {
 				return response.body();
 			}
 			APIError apiError = ErrorUtils.parseError(response);
-			Log.i(TAG, "getLocationsByMap: " + apiError.message());
 		} catch (IOException ex) {
 			Log.e(TAG, "getLocationsByMap: ", ex);
 		}
@@ -81,7 +82,6 @@ public class LocationService {
 				return response.body();
 			}
 			APIError apiError = ErrorUtils.parseError(response);
-			Log.i(TAG, "getLocationsByMap: " + apiError.message());
 		} catch (IOException ex) {
 			Log.e(TAG, "getLocationsByMap: ", ex);
 		}

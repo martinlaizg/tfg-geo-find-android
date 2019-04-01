@@ -54,4 +54,6 @@
     <string name="you_oversized">Te has pasado del tamaño</string>
     <string name="search_fragment">Fragmento de búsqueda</string>
     <string name="num_locations">%d localizaciones</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="required_username">El nombre de usuario es obligatorio</string>
 </resources>

@@ -5,6 +5,8 @@ import android.util.Log;
 import com.martinlaizg.geofind.data.access.database.entity.User;
 import com.martinlaizg.geofind.data.access.retrofit.RestClient;
 import com.martinlaizg.geofind.data.access.retrofit.RetrofitService;
+import com.martinlaizg.geofind.data.access.retrofit.error.APIError;
+import com.martinlaizg.geofind.data.access.retrofit.error.ErrorUtils;
 
 import java.io.IOException;
 
@@ -40,7 +42,13 @@ public class UserService {
 	public User registry(User user) {
 		try {
 			Response<User> response = restClient.registry(user).execute();
-			return response.body();
+			if (response.isSuccessful()) {
+				return response.body();
+			}
+			APIError apiError = ErrorUtils.parseError(response);
+			User u = new User();
+			u.setError(apiError);
+			return u;
 		} catch (IOException e) {
 			Log.e(TAG, "run: login", e);
 		}

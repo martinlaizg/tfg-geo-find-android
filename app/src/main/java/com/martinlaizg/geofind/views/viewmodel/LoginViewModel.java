@@ -16,6 +16,7 @@ public class LoginViewModel
 	private String email;
 	private String password;
 	private String name;
+	private String username;
 
 	public LoginViewModel(Application application) {
 		super(application);
@@ -30,16 +31,18 @@ public class LoginViewModel
 	}
 
 	public MutableLiveData<User> registry() {
-		return repository.registry(name, email, password);
+		return repository.registry(name, username, email, password);
 	}
 
 	public void setLogin(String email, String password) {
 		this.email = email;
+		this.password = password;
 	}
 
 
-	public void setRegistry(String name, String email, String password) {
+	public void setRegistry(String name, String username, String email, String password) {
 		this.name = name;
+		this.username = username;
 		this.email = email;
 		this.password = password;
 	}

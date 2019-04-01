@@ -16,6 +16,8 @@ public class UserTypeTypeConverter {
 
 	@TypeConverter
 	public static String fromPlayLevel(UserType userType) {
-		return userType.toString();
+		return userType == null ?
+				"" :
+				userType.toString();
 	}
 }

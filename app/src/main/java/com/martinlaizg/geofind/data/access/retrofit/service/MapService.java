@@ -62,7 +62,8 @@ public class MapService {
 				return response.body();
 			}
 			APIError apiError = ErrorUtils.parseError(response);
-			Log.e(TAG, "createMap: " + apiError.toString());
+			Map m = new Map();
+			m.setError(apiError);
 		} catch (IOException e) {
 			Log.e(TAG, "createMap: ", e);
 		}
@@ -77,7 +78,8 @@ public class MapService {
 				return response.body();
 			}
 			APIError apiError = ErrorUtils.parseError(response);
-			Log.e(TAG, "createMap: " + apiError.toString());
+			Map m = new Map();
+			m.setError(apiError);
 		} catch (IOException e) {
 			Log.e(TAG, "createMap: ", e);
 		}

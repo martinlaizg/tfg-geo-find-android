@@ -4,6 +4,7 @@ package com.martinlaizg.geofind.data.access.database.entity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.martinlaizg.geofind.data.access.database.entity.enums.UserType;
+import com.martinlaizg.geofind.data.access.retrofit.error.APIError;
 import com.martinlaizg.geofind.utils.DateUtils;
 
 import java.sql.Date;
@@ -28,6 +29,9 @@ public class User {
 	private Date created_at;
 	private Date updated_at;
 
+	@Ignore
+	private APIError error;
+
 	public User() {
 	}
 
@@ -38,8 +42,9 @@ public class User {
 	}
 
 	@Ignore
-	public User(String name, String email, String password) {
+	public User(String name, String username, String email, String password) {
 		this.name = name;
+		this.username = username;
 		this.email = email;
 		this.password = password;
 		user_type = UserType.USER;
@@ -117,8 +122,17 @@ public class User {
 		this.updated_at = updated_at;
 	}
 
+
 	public String toJson() {
 		Gson gson = new GsonBuilder().setDateFormat(DateUtils.DATE_FORMAT).create();
 		return gson.toJson(this);
+	}
+
+	public APIError getError() {
+		return error;
+	}
+
+	public void setError(APIError error) {
+		this.error = error;
 	}
 }

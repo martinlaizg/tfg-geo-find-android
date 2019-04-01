@@ -1,26 +1,24 @@
 package com.martinlaizg.geofind.data.access.retrofit.error;
 
-import androidx.annotation.NonNull;
-
 public class APIError {
 
-	private int statusCode;
+	private ErrorType type;
 	private String message;
 
-	public APIError() {
+
+	public ErrorType getType() {
+		return type;
 	}
 
-	public int status() {
-		return statusCode;
+	public void setType(ErrorType type) {
+		this.type = type;
 	}
 
-	public String message() {
+	public String getMessage() {
 		return message;
 	}
 
-	@NonNull
-	@Override
-	public String toString() {
-		return "Status code: " + statusCode + ", message: " + message;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 }

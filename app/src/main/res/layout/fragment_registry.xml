@@ -12,7 +12,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="8dp"
         android:contentDescription="@string/app_logo_description"
         app:layout_constraintBottom_toTopOf="@+id/name_input"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,17 +28,40 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:hint="@string/name"
         app:errorEnabled="true"
-        app:layout_constraintBottom_toTopOf="@+id/email_input"
+        app:layout_constraintBottom_toTopOf="@+id/username_input"
         app:layout_constraintEnd_toEndOf="@+id/image_register"
         app:layout_constraintStart_toStartOf="@+id/image_register">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/name"
             android:inputType="textPersonName"
             android:maxLines="1"
+            android:text="Martin"
+            tools:ignore="Autofill" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/username_input"
+        style="@style/AppTheme.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/username"
+        app:errorEnabled="true"
+        app:layout_constraintBottom_toTopOf="@+id/email_input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:maxLines="1"
+            android:text="martinlaiz"
             tools:ignore="Autofill" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -52,8 +75,8 @@
         android:layout_marginEnd="8dp"
         app:errorEnabled="true"
         app:layout_constraintBottom_toTopOf="@+id/password_input"
-        app:layout_constraintEnd_toEndOf="@+id/name_input"
-        app:layout_constraintStart_toStartOf="@+id/name_input">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -61,6 +84,7 @@
             android:hint="@string/email_input"
             android:inputType="textEmailAddress"
             android:maxLines="1"
+            android:text="martinmartin@gmail.com"
             tools:ignore="Autofill" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -74,8 +98,8 @@
         android:layout_marginEnd="8dp"
         app:errorEnabled="true"
         app:layout_constraintBottom_toTopOf="@+id/c_password_input"
-        app:layout_constraintEnd_toEndOf="@+id/email_input"
-        app:layout_constraintStart_toStartOf="@+id/email_input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -83,7 +107,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/password_input"
             android:inputType="textPassword"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:text="martin" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Confirm password input -->
@@ -97,8 +122,8 @@
         android:layout_marginBottom="16dp"
         app:errorEnabled="true"
         app:layout_constraintBottom_toTopOf="@+id/btn_registry"
-        app:layout_constraintEnd_toEndOf="@+id/password_input"
-        app:layout_constraintStart_toStartOf="@+id/password_input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -107,6 +132,7 @@
             android:hint="@string/confirm_password_input"
             android:inputType="textPassword"
             android:maxLines="1"
+            android:text="martin"
             tools:ignore="Autofill" />
     </com.google.android.material.textfield.TextInputLayout>
 
