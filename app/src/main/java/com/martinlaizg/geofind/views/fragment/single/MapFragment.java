@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.material.button.MaterialButton;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.adapter.LocationListAdapter;
 import com.martinlaizg.geofind.data.access.database.entity.Location;
@@ -21,11 +20,9 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -48,18 +45,8 @@ public class MapFragment
 	@BindView(R.id.map_num_locations)
 	TextView map_num_locations;
 
-	@BindView(R.id.play_therm_button)
-	MaterialButton play_therm_button;
-	@BindView(R.id.play_compass_button)
-	MaterialButton play_compass_button;
-	@BindView(R.id.play_map_button)
-	MaterialButton play_map_button;
-
-
 	@BindView(R.id.location_list)
 	RecyclerView recyclerView;
-	@BindView(R.id.play_buttons)
-	ConstraintLayout play_buttons;
 
 	private LocationListAdapter adapter;
 	private String map_id;
@@ -76,13 +63,6 @@ public class MapFragment
 		Bundle b = getArguments();
 		if (b != null) {
 			map_id = b.getString(MAP_ID);
-			int p = b.getInt(PLAY_LEVEL, -1);
-			if (p >= 0) { // play level selected
-				play_level = PlayLevel.values()[p];
-				play_buttons.setVisibility(View.GONE);
-			} else { // play level not selected
-				play_buttons.setVisibility(View.VISIBLE);
-			}
 		}
 		return view;
 	}
@@ -95,12 +75,6 @@ public class MapFragment
 		adapter = new LocationListAdapter();
 		adapter.setPlayLevel(play_level);
 		recyclerView.setAdapter(adapter);
-
-		play_map_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toPlayMapOnMap));
-		// TODO change to the correct navigation
-		play_compass_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toPlayMapOnMap));
-		// TODO change to the correct navigation
-		play_therm_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toPlayMapOnMap));
 
 		MapViewModel viewModel = ViewModelProviders.of(getActivity()).get(MapViewModel.class);
 		viewModel.getMap(map_id).observe(getActivity(), new Observer<Map>() {
@@ -123,21 +97,6 @@ public class MapFragment
 			map_name.setText(map.getName());
 			map_description.setText(map.getDescription());
 			map_creator.setText(String.format(getString(R.string.num_creator), map.getCreator_id())); // TODO cambiar por valor real
-			setPlayLevel(map.getMin_level());
-		}
-	}
-
-	private void setPlayLevel(PlayLevel min_level) {
-		play_map_button.setEnabled(false);
-		play_compass_button.setEnabled(false);
-		play_therm_button.setEnabled(false);
-		switch (min_level) {
-			case MAP:
-				play_map_button.setEnabled(true);
-			case COMPASS:
-				play_compass_button.setEnabled(true);
-			case THERMOMETER:
-				play_therm_button.setEnabled(true);
 		}
 	}
 }

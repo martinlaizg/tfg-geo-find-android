@@ -70,4 +70,5 @@
     <string name="num_creator">Creador %s</string>
     <string name="username">Nombre de usuario</string>
     <string name="required_username">El nombre de usuario es obligatorio</string>
+    <string name="next">Siguiente</string>
 </resources>

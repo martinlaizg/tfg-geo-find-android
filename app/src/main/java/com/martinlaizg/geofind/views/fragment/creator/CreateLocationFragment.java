@@ -2,6 +2,7 @@ package com.martinlaizg.geofind.views.fragment.creator;
 
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -40,11 +41,12 @@ import butterknife.ButterKnife;
 
 public class CreateLocationFragment
 		extends Fragment
-		implements View.OnClickListener, OnMapReadyCallback {
+		implements View.OnClickListener, OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
 
 	private static final int CAMERA_UPDATE_ZOOM = 15;
 	private static final String MAP_NAME = "MAP_NAME";
 	private static final String MAP_DESCRIPTION = "MAP_DESCRIPTION";
+	private static final int PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION = 1;
 
 	@BindView(R.id.new_location_name_layout)
 	TextInputLayout new_location_name;
@@ -61,6 +63,7 @@ public class CreateLocationFragment
 
 	private MapCreatorViewModel viewModel;
 	private MarkerOptions marker;
+	private GoogleMap gMap;
 
 	@Override
 	public View onCreateView(
@@ -121,34 +124,49 @@ public class CreateLocationFragment
 
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
-
-		LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-		if (getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+		if (Objects.requireNonNull(getActivity()).checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
 				getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION);
 			Toast.makeText(getActivity(), getString(R.string.no_location_permissions), Toast.LENGTH_SHORT).show();
 			return;
 		}
-		Location usrLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-			@Override
-			public void onMapLongClick(LatLng latLng) {
-				alert_no_locaiton_text.setVisibility(View.GONE);
-				MarkerOptions m = new MarkerOptions().position(latLng);
-				googleMap.clear();
-				googleMap.addMarker(m);
-				marker = m;
+		gMap = googleMap;
+		setLocation();
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		if (requestCode == PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION) {
+			if (permissions[0].equals(Manifest.permission.ACCESS_COARSE_LOCATION) && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+					permissions[1].equals(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+				setLocation();
 			}
-		});
-		googleMap.setMyLocationEnabled(true);
-		googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-		googleMap.getUiSettings().setZoomControlsEnabled(true);
-		googleMap.getUiSettings().setMapToolbarEnabled(false);
-		googleMap.getUiSettings().setTiltGesturesEnabled(false);
-		googleMap.getUiSettings().setScrollGesturesEnabledDuringRotateOrZoom(false);
+		}
+	}
+
+	@SuppressLint("MissingPermission")
+	private void setLocation() {
+		LocationManager locationManager = (LocationManager) Objects.requireNonNull(getActivity()).getSystemService(Context.LOCATION_SERVICE);
+		Location usrLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+		gMap.setMyLocationEnabled(true);
+		gMap.setOnMapLongClickListener(this);
+		gMap.getUiSettings().setMyLocationButtonEnabled(true);
+		gMap.getUiSettings().setMapToolbarEnabled(false);
+		gMap.getUiSettings().setTiltGesturesEnabled(false);
 
 		LatLng usrLatLng = new LatLng(usrLocation.getLatitude(), usrLocation.getLongitude());
 		CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(usrLatLng, CAMERA_UPDATE_ZOOM);
-		googleMap.animateCamera(cameraUpdate);
+		gMap.animateCamera(cameraUpdate);
 	}
 
+	@Override
+	public void onMapLongClick(LatLng latLng) {
+		alert_no_locaiton_text.setVisibility(View.GONE);
+		MarkerOptions m = new MarkerOptions().position(latLng);
+		gMap.clear();
+		gMap.addMarker(m);
+		marker = m;
+
+	}
 }

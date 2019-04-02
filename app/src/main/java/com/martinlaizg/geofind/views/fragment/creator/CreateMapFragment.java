@@ -82,13 +82,15 @@ public class CreateMapFragment
 					return;
 				}
 
+				v.clearFocus();
+
 				String name = new_map_name.getEditText().getText().toString().trim();
 				String description = new_map_description.getEditText().getText().toString().trim();
 				PlayLevel pl = PlayLevel.getPlayLevel(dificultySpinner.getSelectedItemPosition());
 
 				User user = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(getContext()));
 				viewModel.setMap(name, description, user.getId(), pl);
-				Navigation.findNavController(getActivity(), R.id.main_fragment_holder).popBackStack();
+				Navigation.findNavController(getActivity(), R.id.main_fragment_holder).navigate(R.id.toCreator);
 			}
 		});
 

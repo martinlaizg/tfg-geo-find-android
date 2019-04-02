@@ -3,9 +3,9 @@ package com.martinlaizg.geofind.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.android.material.button.MaterialButton;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entity.Location;
 
@@ -15,10 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class CreatorLocationAdapter
-		extends RecyclerView.Adapter<CreatorLocationAdapter.ViewHolder> {
+		extends RecyclerView.Adapter<CreatorLocationAdapter.CreatorLocationViewHolder> {
 
 	private List<Location> locations;
 
@@ -28,13 +30,13 @@ public class CreatorLocationAdapter
 
 	@NotNull
 	@Override
-	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+	public CreatorLocationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_createdlocation, parent, false);
-		return new ViewHolder(view);
+		return new CreatorLocationViewHolder(view);
 	}
 
 	@Override
-	public void onBindViewHolder(final ViewHolder holder, int position) {
+	public void onBindViewHolder(final CreatorLocationViewHolder holder, int position) {
 		holder.locName.setText(locations.get(position).getName());
 		holder.deleteButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -57,16 +59,17 @@ public class CreatorLocationAdapter
 		}
 	}
 
-	class ViewHolder
+	class CreatorLocationViewHolder
 			extends RecyclerView.ViewHolder {
 
-		final TextView locName;
-		final ImageButton deleteButton;
+		@BindView(R.id.delete_loc_bbutton)
+		MaterialButton deleteButton;
+		@BindView(R.id.loc_name)
+		TextView locName;
 
-		ViewHolder(View view) {
+		CreatorLocationViewHolder(View view) {
 			super(view);
-			locName = view.findViewById(R.id.loc_name);
-			deleteButton = view.findViewById(R.id.delete_loc_bbutton);
+			ButterKnife.bind(this, view);
 		}
 
 	}

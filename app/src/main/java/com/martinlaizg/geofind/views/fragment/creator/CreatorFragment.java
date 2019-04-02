@@ -71,7 +71,12 @@ public class CreatorFragment
 		recyclerView.setAdapter(adapter);
 
 		add_location_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreateLocation));
-		edit_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreateMap));
+		edit_button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Navigation.findNavController(getActivity(), R.id.main_fragment_holder).popBackStack();
+			}
+		});
 		create_map_button.setOnClickListener(this);
 
 		viewModel = ViewModelProviders.of(getActivity()).get(MapCreatorViewModel.class);
@@ -89,9 +94,7 @@ public class CreatorFragment
 
 	@Override
 	public void onClick(View v) {
-
 		create_map_button.setEnabled(false);
-
 		if (!viewModel.isValid()) {
 			Toast.makeText(getActivity(), "Algo está mal", Toast.LENGTH_SHORT).show();
 			return;

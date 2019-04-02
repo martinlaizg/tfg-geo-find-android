@@ -24,10 +24,6 @@ public class MainFragment
 		extends Fragment {
 
 
-	public MainFragment() {
-		// Required empty public constructor
-	}
-
 	@Override
 	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		if (!isLogged()) {

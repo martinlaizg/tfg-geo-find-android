@@ -33,16 +33,13 @@ public class MapCreatorViewModel
 
 	public MutableLiveData<Map> createMap() {
 		MutableLiveData<Map> m = new MutableLiveData<>();
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				createdMap = mapRepo.create(createdMap);
-				for (int i = 0; i < createdLocations.size(); i++) {
-					createdLocations.get(i).setMap_id(createdMap.getId());
-				}
-				locRepo.create(createdLocations);
-				m.postValue(createdMap);
+		new Thread(() -> {
+			createdMap = mapRepo.create(createdMap);
+			for (int i = 0; i < createdLocations.size(); i++) {
+				createdLocations.get(i).setMap_id(createdMap.getId());
 			}
+			locRepo.create(createdLocations);
+			m.postValue(createdMap);
 		}).start();
 		return m;
 	}
