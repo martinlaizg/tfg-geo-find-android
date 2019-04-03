@@ -45,17 +45,16 @@ public class MapCreatorViewModel
 	}
 
 	public List<Location> getCreatedLocations() {
+		if (createdLocations == null) createdLocations = new ArrayList<>();
 		return createdLocations;
 	}
 
 	public Map getCreatedMap() {
-		if (createdMap == null) {
-			createdMap = new Map();
-		}
+		if (createdMap == null) createdMap = new Map();
 		return createdMap;
 	}
 
-	public void addLocation(String name, String description, String lat, String lon) {
+	public void addLocation(String name, String description, String lat, String lon, int position) {
 		Location l = new Location();
 		l.setName(name);
 		l.setDescription(description);
@@ -64,7 +63,12 @@ public class MapCreatorViewModel
 		if (createdLocations == null) {
 			createdLocations = new ArrayList<>();
 		}
-		createdLocations.add(l);
+		l.setPosition(position);
+		if (position >= createdLocations.size()) {
+			createdLocations.add(l);
+		} else {
+			createdLocations.set(position, l);
+		}
 	}
 
 

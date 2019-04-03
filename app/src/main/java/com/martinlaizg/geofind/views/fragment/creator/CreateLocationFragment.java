@@ -43,9 +43,8 @@ public class CreateLocationFragment
 		extends Fragment
 		implements View.OnClickListener, OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
 
+	public static final String LOC_POSITION = "LOC_POSITION";
 	private static final int CAMERA_UPDATE_ZOOM = 15;
-	private static final String MAP_NAME = "MAP_NAME";
-	private static final String MAP_DESCRIPTION = "MAP_DESCRIPTION";
 	private static final int PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION = 1;
 
 	@BindView(R.id.new_location_name_layout)
@@ -54,22 +53,23 @@ public class CreateLocationFragment
 	TextInputLayout new_location_description;
 	@BindView(R.id.alert_no_locaiton_text)
 	TextView alert_no_locaiton_text;
-
 	@BindView(R.id.create_location)
 	Button create_button;
-
 	@BindView(R.id.new_location_map_view)
 	MapView new_location_map_view;
 
 	private MapCreatorViewModel viewModel;
 	private MarkerOptions marker;
 	private GoogleMap gMap;
+	private boolean isCreate = true;
+	private int position;
 
 	@Override
 	public View onCreateView(
 			@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_create_locations, container, false);
 		ButterKnife.bind(this, view);
+
 		new_location_map_view.onCreate(savedInstanceState);
 		new_location_map_view.onResume();
 		new_location_map_view.getMapAsync(this);
@@ -79,9 +79,22 @@ public class CreateLocationFragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		viewModel = ViewModelProviders.of(getActivity()).get(MapCreatorViewModel.class);
+		viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(MapCreatorViewModel.class);
+		Bundle b = getArguments();
+		if (b != null) {
+			position = b.getInt(LOC_POSITION);
+			com.martinlaizg.geofind.data.access.database.entity.Location l = viewModel.getCreatedLocations().get(position);
+			Objects.requireNonNull(new_location_name.getEditText()).setText(l.getName());
+			Objects.requireNonNull(new_location_description.getEditText()).setText(l.getDescription());
+			onMapLongClick(new LatLng(Float.valueOf(l.getLat()), Float.valueOf(l.getLon())));
+		} else {
+			position = viewModel.getCreatedLocations().size();
+		}
 		create_button.setOnClickListener(this);
-
+		if (marker != null) {
+			isCreate = false;
+			create_button.setText(R.string.update_location);
+		}
 	}
 
 	@Override
@@ -117,20 +130,21 @@ public class CreateLocationFragment
 
 		String name = new_location_name.getEditText().getText().toString().trim();
 		String description = new_location_description.getEditText().getText().toString().trim();
-		viewModel.addLocation(name, description, String.valueOf(marker.getPosition().latitude), String.valueOf(marker.getPosition().longitude));
+
+		viewModel.addLocation(name, description, String.valueOf(marker.getPosition().latitude), String.valueOf(marker.getPosition().longitude), position);
 
 		Navigation.findNavController(getActivity(), R.id.main_fragment_holder).popBackStack();
 	}
 
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
+		gMap = googleMap;
 		if (Objects.requireNonNull(getActivity()).checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
 				getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 			requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION);
 			Toast.makeText(getActivity(), getString(R.string.no_location_permissions), Toast.LENGTH_SHORT).show();
 			return;
 		}
-		gMap = googleMap;
 		setLocation();
 	}
 
@@ -148,24 +162,32 @@ public class CreateLocationFragment
 	private void setLocation() {
 		LocationManager locationManager = (LocationManager) Objects.requireNonNull(getActivity()).getSystemService(Context.LOCATION_SERVICE);
 		Location usrLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-		gMap.setMyLocationEnabled(true);
-		gMap.setOnMapLongClickListener(this);
-		gMap.getUiSettings().setMyLocationButtonEnabled(true);
-		gMap.getUiSettings().setMapToolbarEnabled(false);
-		gMap.getUiSettings().setTiltGesturesEnabled(false);
-
+		if (gMap != null) {
+			gMap.setMyLocationEnabled(true);
+			gMap.setOnMapLongClickListener(this);
+			gMap.getUiSettings().setMyLocationButtonEnabled(true);
+			gMap.getUiSettings().setMapToolbarEnabled(false);
+			gMap.getUiSettings().setTiltGesturesEnabled(false);
+		}
 		LatLng usrLatLng = new LatLng(usrLocation.getLatitude(), usrLocation.getLongitude());
 		CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(usrLatLng, CAMERA_UPDATE_ZOOM);
-		gMap.animateCamera(cameraUpdate);
+		gMap.clear();
+		if (marker != null) {
+			gMap.moveCamera(cameraUpdate);
+			gMap.addMarker(marker);
+		} else {
+			gMap.animateCamera(cameraUpdate);
+		}
 	}
 
 	@Override
 	public void onMapLongClick(LatLng latLng) {
 		alert_no_locaiton_text.setVisibility(View.GONE);
 		MarkerOptions m = new MarkerOptions().position(latLng);
-		gMap.clear();
-		gMap.addMarker(m);
+		if (gMap != null) {
+			gMap.clear();
+			gMap.addMarker(m);
+		}
 		marker = m;
 
 	}

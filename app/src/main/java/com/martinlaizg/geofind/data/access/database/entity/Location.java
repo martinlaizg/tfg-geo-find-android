@@ -28,6 +28,7 @@ public class Location {
 	private String lon;
 	private String map_id;
 	private String description;
+	private Integer position;
 	private Date created_at;
 	private Date updated_at;
 
@@ -131,5 +132,13 @@ public class Location {
 
 	public void setError(APIError error) {
 		this.error = error;
+	}
+
+	public Integer getPosition() {
+		return position;
+	}
+
+	public void setPosition(Integer position) {
+		this.position = position;
 	}
 }

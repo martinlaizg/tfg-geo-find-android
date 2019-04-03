@@ -1,5 +1,6 @@
 package com.martinlaizg.geofind.data.access.database;
 
+@Deprecated
 class DBNaming {
 
 	// Tables

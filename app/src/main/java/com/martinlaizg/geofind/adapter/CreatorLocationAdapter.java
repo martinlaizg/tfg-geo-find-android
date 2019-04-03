@@ -1,19 +1,23 @@
 package com.martinlaizg.geofind.adapter;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entity.Location;
+import com.martinlaizg.geofind.views.fragment.creator.CreateLocationFragment;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +49,9 @@ public class CreatorLocationAdapter
 				notifyDataSetChanged();
 			}
 		});
+		Bundle b = new Bundle();
+		b.putInt(CreateLocationFragment.LOC_POSITION, position);
+		holder.location_card.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreateLocation, b));
 	}
 
 	@Override
@@ -54,6 +61,12 @@ public class CreatorLocationAdapter
 
 	public void setLocations(List<Location> locs) {
 		if (locs != null) {
+			// sort elements
+			locs.sort((o1, o2) -> o1.getPosition() > o2.getPosition() ?
+					1 :
+					o1.getPosition() < o2.getPosition() ?
+							-1 :
+							0);
 			locations = locs;
 			notifyDataSetChanged();
 		}
@@ -62,10 +75,13 @@ public class CreatorLocationAdapter
 	class CreatorLocationViewHolder
 			extends RecyclerView.ViewHolder {
 
+		@BindView(R.id.location_card)
+		MaterialCardView location_card;
 		@BindView(R.id.delete_loc_bbutton)
 		MaterialButton deleteButton;
 		@BindView(R.id.loc_name)
 		TextView locName;
+
 
 		CreatorLocationViewHolder(View view) {
 			super(view);
