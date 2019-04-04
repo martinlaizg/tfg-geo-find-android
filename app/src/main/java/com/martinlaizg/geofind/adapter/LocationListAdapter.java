@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entity.Location;
-import com.martinlaizg.geofind.data.access.database.entity.enums.PlayLevel;
 import com.martinlaizg.geofind.views.fragment.single.LocationFragment;
 
 import java.util.ArrayList;
@@ -57,9 +56,6 @@ public class LocationListAdapter
 		return locations.size();
 	}
 
-	public void setPlayLevel(PlayLevel playLevel) {
-		notifyDataSetChanged();
-	}
 
 	class LocationsViewHolder
 			extends RecyclerView.ViewHolder {

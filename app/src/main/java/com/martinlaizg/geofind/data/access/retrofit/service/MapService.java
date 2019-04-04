@@ -2,7 +2,6 @@ package com.martinlaizg.geofind.data.access.retrofit.service;
 
 import android.util.Log;
 
-import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
 import com.martinlaizg.geofind.data.access.retrofit.RestClient;
 import com.martinlaizg.geofind.data.access.retrofit.RetrofitService;
@@ -42,22 +41,28 @@ public class MapService {
 		return new ArrayList<>();
 	}
 
-
-	public List<Location> getLocations(String map_id) {
-		Response<List<Location>> execute = null;
-		try {
-			execute = restClient.getLocationsByMap(map_id).execute();
-			return execute.body();
-		} catch (IOException e) {
-			Log.e(TAG, "getLocationsByMap", e);
-		}
-		return new ArrayList<>();
-	}
-
 	public Map create(Map map) {
-		Response<Map> response = null;
+		APIError apiError;
+		Response<Map> response;
 		try {
 			response = restClient.createMap(map).execute();
+			if (response.isSuccessful()) {
+				return response.body();
+			} else {
+				apiError = ErrorUtils.parseError(response);
+				Map m = new Map();
+				m.setError(apiError);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public Map getMap(String id) {
+		Response<Map> response;
+		try {
+			response = restClient.getMap(id).execute();
 			if (response.isSuccessful()) {
 				return response.body();
 			}
@@ -70,18 +75,20 @@ public class MapService {
 		return null;
 	}
 
-	public Map getMap(String id) {
-		Response<Map> response = null;
+	public Map update(Map map) {
+		APIError apiError;
+		Response<Map> response;
 		try {
-			response = restClient.getMap(id).execute();
+			response = restClient.update(map.getId(), map).execute();
 			if (response.isSuccessful()) {
 				return response.body();
+			} else {
+				apiError = ErrorUtils.parseError(response);
+				Map m = new Map();
+				m.setError(apiError);
 			}
-			APIError apiError = ErrorUtils.parseError(response);
-			Map m = new Map();
-			m.setError(apiError);
 		} catch (IOException e) {
-			Log.e(TAG, "createMap: ", e);
+			e.printStackTrace();
 		}
 		return null;
 	}

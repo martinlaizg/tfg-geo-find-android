@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="Configuración de usuario">
+    <PreferenceCategory android:title="onfiguración de usuario">
 
         <CheckBoxPreference
             android:defaultValue="false"

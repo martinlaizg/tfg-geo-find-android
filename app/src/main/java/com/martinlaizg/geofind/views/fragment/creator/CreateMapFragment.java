@@ -19,6 +19,8 @@ import com.martinlaizg.geofind.views.viewmodel.MapCreatorViewModel;
 
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
@@ -30,6 +32,8 @@ import butterknife.ButterKnife;
 public class CreateMapFragment
 		extends Fragment {
 
+	public static final String MAP_ID = "MAP_ID";
+
 	@BindView(R.id.new_map_name_layout)
 	TextInputLayout new_map_name;
 	@BindView(R.id.new_map_description_layout)
@@ -39,76 +43,80 @@ public class CreateMapFragment
 	MaterialButton doneButton;
 	@BindView(R.id.add_image_button)
 	MaterialButton add_image_button;
-	@BindView(R.id.dificulty_spinner)
-	Spinner dificultySpinner;
+	@BindView(R.id.difficulty_spinner)
+	Spinner difficultySpinner;
 
 	private MapCreatorViewModel viewModel;
 	private NavController navController;
 
-	public CreateMapFragment() {
-		// Required empty public constructor
-	}
-
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
 		final View view = inflater.inflate(R.layout.fragment_create_map, container, false);
 		ButterKnife.bind(this, view);
 		viewModel = ViewModelProviders.of(getActivity()).get(MapCreatorViewModel.class);
-
-		doneButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				try {
-					if (Objects.requireNonNull(new_map_name.getEditText()).getText().toString().trim().isEmpty()) {
-						new_map_name.setError(getString(R.string.required_name));
-						return;
-					}
-					if (new_map_name.getEditText().getText().toString().trim().length() > getResources().getInteger(R.integer.max_name_length)) {
-						new_map_name.setError(getString(R.string.you_oversized));
-						return;
-					}
-					if (Objects.requireNonNull(new_map_description.getEditText()).getText().toString().trim().isEmpty()) {
-						new_map_description.setError(getString(R.string.required_description));
-						return;
-					}
-					if (new_map_description.getEditText().getText().toString().trim().length() > getResources().getInteger(R.integer.max_description_length)) {
-						new_map_description.setError(getString(R.string.you_oversized));
-						return;
-					}
-				} catch (NullPointerException ex) {
-					Toast.makeText(getContext(), "View incorrecto", Toast.LENGTH_SHORT).show();
-					return;
-				}
-
-				v.clearFocus();
-
-				String name = new_map_name.getEditText().getText().toString().trim();
-				String description = new_map_description.getEditText().getText().toString().trim();
-				PlayLevel pl = PlayLevel.getPlayLevel(dificultySpinner.getSelectedItemPosition());
-
-				User user = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(getContext()));
-				viewModel.setMap(name, description, user.getId(), pl);
-				Navigation.findNavController(getActivity(), R.id.main_fragment_holder).navigate(R.id.toCreator);
+		setInputs(viewModel.getCreatedMap());
+		Bundle b = getArguments();
+		if (b != null) {
+			String map_id = b.getString(MAP_ID);
+			if (map_id != null && !map_id.isEmpty()) {
+				viewModel.getMap(map_id).observe(getActivity(), map -> {
+					viewModel.setMap(map);
+					setInputs(map);
+				});
 			}
-		});
-
-		setInputs();
-
+		}
 		return view;
 	}
 
-	private void setInputs() {
-		Map m = viewModel.getCreatedMap();
-		if (!m.getName().isEmpty()) {
-			Objects.requireNonNull(new_map_name.getEditText()).setText(m.getName());
-		}
-		if (!m.getDescription().isEmpty()) {
-			Objects.requireNonNull(new_map_description.getEditText()).setText(m.getDescription());
-		}
-		if (m.getMin_level() != null) {
-			dificultySpinner.setSelection(m.getMin_level().ordinal());
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		doneButton.setOnClickListener(v -> {
+			try {
+				if (Objects.requireNonNull(new_map_name.getEditText()).getText().toString().trim().isEmpty()) {
+					new_map_name.setError(getString(R.string.required_name));
+					return;
+				}
+				if (new_map_name.getEditText().getText().toString().trim().length() > getResources().getInteger(R.integer.max_name_length)) {
+					new_map_name.setError(getString(R.string.you_oversized));
+					return;
+				}
+				if (Objects.requireNonNull(new_map_description.getEditText()).getText().toString().trim().isEmpty()) {
+					new_map_description.setError(getString(R.string.required_description));
+					return;
+				}
+				if (new_map_description.getEditText().getText().toString().trim().length() > getResources().getInteger(R.integer.max_description_length)) {
+					new_map_description.setError(getString(R.string.you_oversized));
+					return;
+				}
+			} catch (NullPointerException ex) {
+				Toast.makeText(getContext(), "View incorrecto", Toast.LENGTH_SHORT).show();
+				return;
+			}
+
+			v.clearFocus();
+
+			String name = new_map_name.getEditText().getText().toString().trim();
+			String description = new_map_description.getEditText().getText().toString().trim();
+			PlayLevel pl = PlayLevel.getPlayLevel(difficultySpinner.getSelectedItemPosition());
+
+			User user = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(getContext()));
+			viewModel.setMap(name, description, user.getId(), pl);
+			Navigation.findNavController(getActivity(), R.id.main_fragment_holder).navigate(R.id.toCreator);
+		});
+	}
+
+	private void setInputs(Map m) {
+		if (m != null) {
+			if (!m.getName().isEmpty()) {
+				Objects.requireNonNull(new_map_name.getEditText()).setText(m.getName());
+			}
+			if (!m.getDescription().isEmpty()) {
+				Objects.requireNonNull(new_map_description.getEditText()).setText(m.getDescription());
+			}
+			if (m.getMin_level() != null) {
+				difficultySpinner.setSelection(m.getMin_level().ordinal());
+			}
 		}
 	}
 }

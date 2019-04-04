@@ -52,7 +52,7 @@ public class CreateLocationFragment
 	@BindView(R.id.new_location_description_layout)
 	TextInputLayout new_location_description;
 	@BindView(R.id.alert_no_locaiton_text)
-	TextView alert_no_locaiton_text;
+	TextView alert_no_location_text;
 	@BindView(R.id.create_location)
 	Button create_button;
 	@BindView(R.id.new_location_map_view)
@@ -61,7 +61,6 @@ public class CreateLocationFragment
 	private MapCreatorViewModel viewModel;
 	private MarkerOptions marker;
 	private GoogleMap gMap;
-	private boolean isCreate = true;
 	private int position;
 
 	@Override
@@ -91,15 +90,13 @@ public class CreateLocationFragment
 			position = viewModel.getCreatedLocations().size();
 		}
 		create_button.setOnClickListener(this);
-		if (marker != null) {
-			isCreate = false;
-			create_button.setText(R.string.update_location);
-		}
+		if (marker != null) create_button.setText(R.string.update_location);
+
 	}
 
 	@Override
 	public void onClick(View v) {
-		alert_no_locaiton_text.setVisibility(View.GONE);
+		alert_no_location_text.setVisibility(View.GONE);
 		try {
 			if (Objects.requireNonNull(new_location_name.getEditText()).getText().toString().trim().isEmpty()) {
 				new_location_name.setError(getString(R.string.required_name));
@@ -120,7 +117,7 @@ public class CreateLocationFragment
 			}
 			new_location_description.setError("");
 			if (marker == null) {
-				alert_no_locaiton_text.setVisibility(View.VISIBLE);
+				alert_no_location_text.setVisibility(View.VISIBLE);
 				return;
 			}
 		} catch (NullPointerException ex) {
@@ -182,7 +179,7 @@ public class CreateLocationFragment
 
 	@Override
 	public void onMapLongClick(LatLng latLng) {
-		alert_no_locaiton_text.setVisibility(View.GONE);
+		alert_no_location_text.setVisibility(View.GONE);
 		MarkerOptions m = new MarkerOptions().position(latLng);
 		if (gMap != null) {
 			gMap.clear();

@@ -24,40 +24,29 @@ public class MapRepository {
 
 	public MutableLiveData<List<Map>> getAllMaps() {
 		MutableLiveData<List<Map>> maps = new MutableLiveData<>();
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				List<Map> ms = mapDAO.getAllMaps();
-				if (ms == null || ms.isEmpty()) {
-					ms = mapService.getAllMaps();
-					if (ms != null) {
-						insertMaps(ms);
+		new Thread(() -> {
+			List<Map> ms = mapDAO.getAllMaps();
+			if (ms == null || ms.isEmpty()) {
+				ms = mapService.getAllMaps();
+				if (ms != null) {
+					for (Map m : ms) {
+						mapDAO.insert(m);
 					}
 				}
-				maps.postValue(ms);
 			}
+			maps.postValue(ms);
 		}).start();
 		return maps;
 	}
 
-	private void insertMaps(List<Map> ms) {
-		for (Map m : ms) {
-			insertMap(m);
-		}
-	}
-
 	public MutableLiveData<Map> getMap(String id) {
 		MutableLiveData<Map> map = new MutableLiveData<>();
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				Map m = mapDAO.getMap(id);
-				if (m == null) {
-					m = mapService.getMap(id);
-				}
-				map.postValue(m);
+		new Thread(() -> {
+			Map m = mapDAO.getMap(id);
+			if (m == null) {
+				m = mapService.getMap(id);
 			}
-
+			map.postValue(m);
 		}).start();
 		return map;
 	}
@@ -69,13 +58,15 @@ public class MapRepository {
 		}
 	}
 
-	private void insertMap(Map map) {
-		mapDAO.insert(map);
+	public Map create(Map map) {
+		map = mapService.create(map);
+		if (map != null) mapDAO.insert(map);
+		return map;
 	}
 
-	public Map create(Map map) {
-		Map map1 = mapService.create(map);
-		refreshMaps();
-		return map1;
+	public Map update(Map map) {
+		map = mapService.update(map);
+		if (map != null) mapDAO.update(map);
+		return map;
 	}
 }

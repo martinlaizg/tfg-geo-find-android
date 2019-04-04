@@ -11,12 +11,13 @@ import com.google.android.material.button.MaterialButton;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.adapter.CreatorLocationAdapter;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
+import com.martinlaizg.geofind.data.access.retrofit.error.APIError;
+import com.martinlaizg.geofind.views.fragment.single.MapFragment;
 import com.martinlaizg.geofind.views.viewmodel.MapCreatorViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -48,11 +49,6 @@ public class CreatorFragment
 
 	private MapCreatorViewModel viewModel;
 
-	public CreatorFragment() {
-		// Required empty public constructor
-	}
-
-
 	@Override
 	public View onCreateView(
 			LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,17 +67,15 @@ public class CreatorFragment
 		recyclerView.setAdapter(adapter);
 
 		add_location_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreateLocation));
-		edit_button.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Navigation.findNavController(getActivity(), R.id.main_fragment_holder).popBackStack();
-			}
-		});
+		edit_button.setOnClickListener(v -> Navigation.findNavController(getActivity(), R.id.main_fragment_holder).popBackStack());
 		create_map_button.setOnClickListener(this);
 
 		viewModel = ViewModelProviders.of(getActivity()).get(MapCreatorViewModel.class);
 
 		Map map = viewModel.getCreatedMap();
+		if (!map.getId().isEmpty()) {
+			create_map_button.setText(R.string.update_map);
+		}
 		if (!map.getName().isEmpty()) {
 			mapName.setText(map.getName());
 		}
@@ -95,16 +89,20 @@ public class CreatorFragment
 	@Override
 	public void onClick(View v) {
 		create_map_button.setEnabled(false);
-		if (!viewModel.isValid()) {
-			Toast.makeText(getActivity(), "Algo está mal", Toast.LENGTH_SHORT).show();
-			return;
-		}
-		viewModel.createMap().observe(this, new Observer<Map>() {
-			@Override
-			public void onChanged(Map map) {
-
-				create_map_button.setEnabled(true);
-				// TODO navigate to created map
+		viewModel.createMap().observe(this, map -> {
+			create_map_button.setEnabled(true);
+			if (map != null) {
+				APIError err = map.getError();
+				if (err == null) {
+					viewModel.clear();
+					Toast.makeText(getActivity(), "Mapa creado", Toast.LENGTH_SHORT).show();
+					Bundle b = new Bundle();
+					b.putString(MapFragment.MAP_ID, map.getId());
+					Navigation.findNavController(getActivity(), R.id.main_fragment_holder).navigate(R.id.toNewMap, b);
+				} else {
+					// TODO manage error
+					Toast.makeText(getActivity(), err.getMessage(), Toast.LENGTH_SHORT).show();
+				}
 			}
 		});
 	}

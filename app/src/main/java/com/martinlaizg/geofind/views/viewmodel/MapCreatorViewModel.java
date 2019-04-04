@@ -34,11 +34,19 @@ public class MapCreatorViewModel
 	public MutableLiveData<Map> createMap() {
 		MutableLiveData<Map> m = new MutableLiveData<>();
 		new Thread(() -> {
-			createdMap = mapRepo.create(createdMap);
-			for (int i = 0; i < createdLocations.size(); i++) {
-				createdLocations.get(i).setMap_id(createdMap.getId());
+			if (createdMap.getId().isEmpty()) { // Create map
+				createdMap = mapRepo.create(createdMap);
+				// TODO implement create locations
+				//				if (!createdLocations.isEmpty()) {
+				//					for (int i = 0; i < createdLocations.size(); i++) {
+				//						createdLocations.get(i).setMap_id(createdMap.getId());
+				//					}
+				//					locRepo.create(createdLocations);
+				//				}
+			} else { // Update map
+				// TODO implement update locations
+				createdMap = mapRepo.update(createdMap);
 			}
-			locRepo.create(createdLocations);
 			m.postValue(createdMap);
 		}).start();
 		return m;
@@ -82,23 +90,16 @@ public class MapCreatorViewModel
 		createdMap.setMin_level(pl);
 	}
 
-	public boolean isValid() {
-		if (!isMapValid(createdMap)) {
-			return false;
-		}
-		for (Location l : createdLocations) {
-			if (!isLocationValid(l)) {
-				return false;
-			}
-		}
-		return true;
+	public MutableLiveData<Map> getMap(String map_id) {
+		return mapRepo.getMap(map_id);
 	}
 
-	private boolean isMapValid(Map createdMap) {
-		return !createdMap.getName().isEmpty() && !createdMap.getDescription().isEmpty();
+	public void clear() {
+		createdMap = null;
+		createdLocations = null;
 	}
 
-	private boolean isLocationValid(Location l) {
-		return !l.getName().isEmpty() && !l.getDescription().isEmpty() && !l.getLat().isEmpty() && !l.getLon().isEmpty();
+	public void setMap(Map map) {
+		createdMap = map;
 	}
 }

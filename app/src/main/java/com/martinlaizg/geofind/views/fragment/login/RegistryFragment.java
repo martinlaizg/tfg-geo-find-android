@@ -46,7 +46,7 @@ public class RegistryFragment
 	@BindView(R.id.btn_registry)
 	MaterialButton btn_registr;
 
-	LoginViewModel viewModel;
+	private LoginViewModel viewModel;
 
 	@Override
 	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

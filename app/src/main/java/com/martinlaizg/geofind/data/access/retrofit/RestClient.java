@@ -10,6 +10,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
 
@@ -36,9 +37,9 @@ public interface RestClient {
 	@GET("maps/{id}/locations")
 	Call<List<Location>> getLocationsByMap(@Path("id") String map_id);
 
-	// Create a location by map
-	@POST("maps/{id}locations")
-	Call<Location> createLocationByMap(@Path("id") String map_id, @Body Location loc);
+	// Update map
+	@PUT("maps/{id}")
+	Call<Map> update(@Path("id") String id, @Body Map m);
 
 
 	//

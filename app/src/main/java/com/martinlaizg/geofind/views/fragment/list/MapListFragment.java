@@ -8,15 +8,11 @@ import android.view.ViewGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.adapter.MapListAdapter;
-import com.martinlaizg.geofind.data.access.database.entity.Map;
 import com.martinlaizg.geofind.views.viewmodel.MapListViewModel;
-
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,7 +31,7 @@ public class MapListFragment
 	@BindView(R.id.create_map_button)
 	FloatingActionButton create_map_button;
 
-	private MapListViewModel mapListViewModel;
+	private MapListViewModel viewModel;
 	private MapListAdapter adapter;
 
 	@Nullable
@@ -49,14 +45,9 @@ public class MapListFragment
 		adapter = new MapListAdapter();
 		recyclerView.setAdapter(adapter);
 
-		mapListViewModel = ViewModelProviders.of(this).get(MapListViewModel.class);
+		viewModel = ViewModelProviders.of(this).get(MapListViewModel.class);
 
-		mapListViewModel.getAllMaps().observe(this, new Observer<List<Map>>() {
-			@Override
-			public void onChanged(List<Map> maps) {
-				adapter.setMaps(maps);
-			}
-		});
+		viewModel.getAllMaps().observe(this, maps -> adapter.setMaps(maps));
 
 		create_map_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreateMap));
 

@@ -6,7 +6,6 @@
     <string name="add_image">Add image</string>
     <string name="add_location">Add location</string>
     <string name="app_logo_description">App logo</string>
-    <string name="compass">Compass</string>
     <string name="confirm_password_input">Confirm password</string>
     <string name="create_account">Create account</string>
     <string name="create_location">Create location</string>
@@ -19,14 +18,12 @@
     <string name="location">Location</string>
     <string name="location_list">Location list</string>
     <string name="location_name_description">Location name</string>
-    <string name="locations">Locations</string>
     <string name="log_out">Log out</string>
     <string name="login">Log in</string>
     <string name="map">Map</string>
     <string name="map_creator">Map creator</string>
     <string name="map_list">Map list</string>
     <string name="map_main_image">Main map image</string>
-    <string name="network_error">Connection error</string>
     <string name="new_location">Add location</string>
     <string name="password_input">Password</string>
     <string name="registry">Registry</string>
@@ -40,7 +37,6 @@
     <string name="required_verify_password">You should verify the password</string>
     <string name="no_match_password">The password not match</string>
     <string name="select_min_difficulty">Select minimum difficulty</string>
-    <string name="therm">Therm</string>
     <string name="app_description">Application developed as a Final Project Degree at the University of Alicante, Degree in Computer Engineering.</string>
     <string name="TODO">TODO</string>
     <string name="alert_text_no_location_selected">Yout should select a map point</string>
@@ -54,4 +50,11 @@
     <string name="you_oversized">You oversized</string>
     <string name="search_fragment">Fragmento de búsqueda</string>
     <string name="num_locations">%d locations</string>
+    <string name="num_creator">Creator %s</string>
+    <string name="username">Username</string>
+    <string name="required_username">The username is required</string>
+    <string name="next">Next</string>
+    <string name="update_location">Update location</string>
+    <string name="no_locations">Theres no locations</string>
+    <string name="update_map">Update map</string>
 </resources>
