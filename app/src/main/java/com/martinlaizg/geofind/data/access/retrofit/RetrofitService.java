@@ -6,8 +6,8 @@ import com.google.gson.GsonBuilder;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitService {
-	private static final String BASE_URL = "https://geo-find-martinlaizg.herokuapp.com/api/";
-	//	private static final String BASE_URL = "http://192.168.1.39:8000/api/";
+	//	private static final String BASE_URL = "https://geo-find-martinlaizg.herokuapp.com/api/";
+	private static final String BASE_URL = "http://192.168.1.182:8000/api/";
 	private static retrofit2.Retrofit retrofit;
 
 	/**

@@ -58,5 +58,4 @@ public class MainActivity
 		NavigationUI.setupWithNavController(toolbar, navController, drawer_layout);
 		NavigationUI.setupWithNavController(navigationView, navController);
 	}
-
 }

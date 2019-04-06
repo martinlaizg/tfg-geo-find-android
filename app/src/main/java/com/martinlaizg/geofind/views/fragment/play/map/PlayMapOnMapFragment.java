@@ -35,7 +35,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -133,6 +132,5 @@ public class PlayMapOnMapFragment
 		}
 		Bundle b = new Bundle();
 		b.putString(PlayLocationOnMapFragment.LOCATION_ID, l.getId());
-		Navigation.findNavController(getActivity(), R.id.main_fragment_holder).navigate(R.id.toPlayLocationOnMap, b);
 	}
 }

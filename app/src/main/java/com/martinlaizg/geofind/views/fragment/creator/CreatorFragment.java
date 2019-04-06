@@ -67,11 +67,13 @@ public class CreatorFragment
 		recyclerView.setAdapter(adapter);
 
 		add_location_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreateLocation));
-		edit_button.setOnClickListener(v -> Navigation.findNavController(getActivity(), R.id.main_fragment_holder).popBackStack());
+		edit_button.setOnClickListener(v -> {
+			viewModel.setEdit(true);
+			Navigation.findNavController(getActivity(), R.id.main_fragment_holder).popBackStack();
+		});
 		create_map_button.setOnClickListener(this);
 
 		viewModel = ViewModelProviders.of(getActivity()).get(MapCreatorViewModel.class);
-
 		Map map = viewModel.getCreatedMap();
 		if (!map.getId().isEmpty()) {
 			create_map_button.setText(R.string.update_map);

@@ -22,12 +22,14 @@ public class MapCreatorViewModel
 	private final LocationRepository locRepo;
 	private Map createdMap;
 	private List<Location> createdLocations;
+	private boolean edit;
 
 
 	public MapCreatorViewModel(@NonNull Application application) {
 		super(application);
 		mapRepo = new MapRepository(application);
 		locRepo = new LocationRepository(application);
+		edit = false;
 	}
 
 
@@ -57,9 +59,17 @@ public class MapCreatorViewModel
 		return createdLocations;
 	}
 
+	public void setCreatedLocations(List<Location> createdLocations) {
+		this.createdLocations = createdLocations;
+	}
+
 	public Map getCreatedMap() {
 		if (createdMap == null) createdMap = new Map();
 		return createdMap;
+	}
+
+	public void setCreatedMap(Map createdMap) {
+		this.createdMap = createdMap;
 	}
 
 	public void addLocation(String name, String description, String lat, String lon, int position) {
@@ -79,8 +89,7 @@ public class MapCreatorViewModel
 		}
 	}
 
-
-	public void setMap(String name, String description, String creator_id, PlayLevel pl) {
+	public void setCreatedMap(String name, String description, String creator_id, PlayLevel pl) {
 		if (createdMap == null) {
 			createdMap = new Map();
 		}
@@ -94,12 +103,20 @@ public class MapCreatorViewModel
 		return mapRepo.getMap(map_id);
 	}
 
+	public MutableLiveData<List<Location>> getLocations(String map_id) {
+		return locRepo.getLocationsByMap(map_id);
+	}
+
 	public void clear() {
 		createdMap = null;
 		createdLocations = null;
 	}
 
-	public void setMap(Map map) {
-		createdMap = map;
+	public boolean isEdit() {
+		return edit;
+	}
+
+	public void setEdit(boolean edit) {
+		this.edit = edit;
 	}
 }

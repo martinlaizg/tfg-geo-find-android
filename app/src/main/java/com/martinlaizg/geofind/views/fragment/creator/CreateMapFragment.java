@@ -54,23 +54,34 @@ public class CreateMapFragment
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.fragment_create_map, container, false);
 		ButterKnife.bind(this, view);
-		viewModel = ViewModelProviders.of(getActivity()).get(MapCreatorViewModel.class);
-		setInputs(viewModel.getCreatedMap());
-		Bundle b = getArguments();
-		if (b != null) {
-			String map_id = b.getString(MAP_ID);
-			if (map_id != null && !map_id.isEmpty()) {
-				viewModel.getMap(map_id).observe(getActivity(), map -> {
-					viewModel.setMap(map);
-					setInputs(map);
-				});
-			}
-		}
 		return view;
 	}
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		viewModel = ViewModelProviders.of(getActivity()).get(MapCreatorViewModel.class);
+		if (!viewModel.isEdit()) { // we need to retrieve de map
+			viewModel.clear();
+			Bundle b = getArguments();
+			if (b != null) {
+				String map_id = b.getString(MAP_ID);
+				if (map_id != null) {
+					viewModel.getMap(map_id).observe(getActivity(), map -> {
+						viewModel.setCreatedMap(map);
+						setInputs();
+					});
+					viewModel.getLocations(map_id).observe(getActivity(), locations -> {
+						viewModel.setCreatedLocations(locations);
+						setInputs();
+					});
+				}
+			} else {
+				viewModel.setCreatedMap(new Map());
+			}
+
+		}
+		setInputs();
+		viewModel.setEdit(false);
 		doneButton.setOnClickListener(v -> {
 			try {
 				if (Objects.requireNonNull(new_map_name.getEditText()).getText().toString().trim().isEmpty()) {
@@ -94,19 +105,18 @@ public class CreateMapFragment
 				return;
 			}
 
-			v.clearFocus();
-
 			String name = new_map_name.getEditText().getText().toString().trim();
 			String description = new_map_description.getEditText().getText().toString().trim();
 			PlayLevel pl = PlayLevel.getPlayLevel(difficultySpinner.getSelectedItemPosition());
 
 			User user = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(getContext()));
-			viewModel.setMap(name, description, user.getId(), pl);
+			viewModel.setCreatedMap(name, description, user.getId(), pl);
 			Navigation.findNavController(getActivity(), R.id.main_fragment_holder).navigate(R.id.toCreator);
 		});
 	}
 
-	private void setInputs(Map m) {
+	private void setInputs() {
+		Map m = viewModel.getCreatedMap();
 		if (m != null) {
 			if (!m.getName().isEmpty()) {
 				Objects.requireNonNull(new_map_name.getEditText()).setText(m.getName());

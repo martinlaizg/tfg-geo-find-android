@@ -3,7 +3,6 @@ package com.martinlaizg.geofind.views.fragment.creator;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -15,7 +14,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -28,6 +26,7 @@ import com.martinlaizg.geofind.views.viewmodel.MapCreatorViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -37,6 +36,8 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.content.Context.LOCATION_SERVICE;
 
 
 public class CreateLocationFragment
@@ -157,24 +158,41 @@ public class CreateLocationFragment
 
 	@SuppressLint("MissingPermission")
 	private void setLocation() {
-		LocationManager locationManager = (LocationManager) Objects.requireNonNull(getActivity()).getSystemService(Context.LOCATION_SERVICE);
-		Location usrLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		Location usrLocation = getLastKnownLocation();
 		if (gMap != null) {
 			gMap.setMyLocationEnabled(true);
 			gMap.setOnMapLongClickListener(this);
 			gMap.getUiSettings().setMyLocationButtonEnabled(true);
 			gMap.getUiSettings().setMapToolbarEnabled(false);
 			gMap.getUiSettings().setTiltGesturesEnabled(false);
+
+			LatLng usrLatLng = new LatLng(usrLocation.getLatitude(), usrLocation.getLongitude());
+			gMap.clear();
+			if (marker != null) {
+				gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), CAMERA_UPDATE_ZOOM));
+				gMap.addMarker(marker);
+			} else {
+				gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(usrLatLng, CAMERA_UPDATE_ZOOM));
+			}
 		}
-		LatLng usrLatLng = new LatLng(usrLocation.getLatitude(), usrLocation.getLongitude());
-		CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(usrLatLng, CAMERA_UPDATE_ZOOM);
-		gMap.clear();
-		if (marker != null) {
-			gMap.moveCamera(cameraUpdate);
-			gMap.addMarker(marker);
-		} else {
-			gMap.animateCamera(cameraUpdate);
+	}
+
+	@SuppressLint("MissingPermission")
+	private Location getLastKnownLocation() {
+		LocationManager locationManager = (LocationManager) Objects.requireNonNull(getActivity()).getSystemService(LOCATION_SERVICE);
+		List<String> providers = locationManager.getProviders(true);
+		Location bestLocation = null;
+		for (String provider : providers) {
+			Location l = locationManager.getLastKnownLocation(provider);
+			if (l == null) {
+				continue;
+			}
+			if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+				// Found best last known location: %s", l);
+				bestLocation = l;
+			}
 		}
+		return bestLocation;
 	}
 
 	@Override
