@@ -35,7 +35,11 @@ public class LocationRepository {
 	}
 
 	public List<Location> updateMapLocations(String id, List<Location> locations) throws APIException {
-		return locationService.updateMapLocations(id, locations);
+		locations = locationService.updateMapLocations(id, locations);
+		if (locations != null) {
+			locations.forEach(locDAO::update);
+		}
+		return locations;
 	}
 
 	public List<Location> getLocationsByMap(String map_id) throws APIException {

@@ -106,8 +106,14 @@ public class MapCreatorViewModel
 		this.createdMap = createdMap;
 	}
 
-	public void addLocation(String name, String description, String lat, String lon, int position) {
-		Location l = new Location();
+	public void setLocation(String name, String description, String lat, String lon, int position) {
+		Location l;
+		try {
+			l = createdLocations.get(position);
+		} catch(IndexOutOfBoundsException e){
+			l = new Location();
+		}
+
 		l.setName(name);
 		l.setDescription(description);
 		l.setLat(lat);
@@ -116,11 +122,7 @@ public class MapCreatorViewModel
 			createdLocations = new ArrayList<>();
 		}
 		l.setPosition(position);
-		if (position >= createdLocations.size()) {
-			createdLocations.add(l);
-		} else {
-			createdLocations.set(position, l);
-		}
+		createdLocations.set(position, l);
 	}
 
 	public void setCreatedMap(String name, String description, String creator_id, PlayLevel pl) {

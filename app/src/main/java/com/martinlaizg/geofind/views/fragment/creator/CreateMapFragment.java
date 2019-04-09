@@ -23,14 +23,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class CreateMapFragment
-		extends Fragment {
+		extends Fragment
+		implements View.OnClickListener {
 
 	public static final String MAP_ID = "MAP_ID";
 
@@ -47,7 +47,6 @@ public class CreateMapFragment
 	Spinner difficultySpinner;
 
 	private MapCreatorViewModel viewModel;
-	private NavController navController;
 
 
 	@Override
@@ -78,41 +77,10 @@ public class CreateMapFragment
 			} else {
 				viewModel.setCreatedMap(new Map());
 			}
-
 		}
 		setInputs();
 		viewModel.setEdit(false);
-		doneButton.setOnClickListener(v -> {
-			try {
-				if (Objects.requireNonNull(new_map_name.getEditText()).getText().toString().trim().isEmpty()) {
-					new_map_name.setError(getString(R.string.required_name));
-					return;
-				}
-				if (new_map_name.getEditText().getText().toString().trim().length() > getResources().getInteger(R.integer.max_name_length)) {
-					new_map_name.setError(getString(R.string.you_oversized));
-					return;
-				}
-				if (Objects.requireNonNull(new_map_description.getEditText()).getText().toString().trim().isEmpty()) {
-					new_map_description.setError(getString(R.string.required_description));
-					return;
-				}
-				if (new_map_description.getEditText().getText().toString().trim().length() > getResources().getInteger(R.integer.max_description_length)) {
-					new_map_description.setError(getString(R.string.you_oversized));
-					return;
-				}
-			} catch (NullPointerException ex) {
-				Toast.makeText(getContext(), "View incorrecto", Toast.LENGTH_SHORT).show();
-				return;
-			}
-
-			String name = new_map_name.getEditText().getText().toString().trim();
-			String description = new_map_description.getEditText().getText().toString().trim();
-			PlayLevel pl = PlayLevel.getPlayLevel(difficultySpinner.getSelectedItemPosition());
-
-			User user = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(getContext()));
-			viewModel.setCreatedMap(name, description, user.getId(), pl);
-			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).navigate(R.id.toCreator);
-		});
+		doneButton.setOnClickListener(this);
 	}
 
 	private void setInputs() {
@@ -128,5 +96,39 @@ public class CreateMapFragment
 				difficultySpinner.setSelection(m.getMin_level().ordinal());
 			}
 		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		try {
+			if (Objects.requireNonNull(new_map_name.getEditText()).getText().toString().trim().isEmpty()) {
+				new_map_name.setError(getString(R.string.required_name));
+				return;
+			}
+			if (new_map_name.getEditText().getText().toString().trim().length() > getResources().getInteger(R.integer.max_name_length)) {
+				new_map_name.setError(getString(R.string.you_oversized));
+				return;
+			}
+			if (Objects.requireNonNull(new_map_description.getEditText()).getText().toString().trim().isEmpty()) {
+				new_map_description.setError(getString(R.string.required_description));
+				return;
+			}
+			if (new_map_description.getEditText().getText().toString().trim().length() > getResources().getInteger(R.integer.max_description_length)) {
+				new_map_description.setError(getString(R.string.you_oversized));
+				return;
+			}
+		} catch (NullPointerException ex) {
+			Toast.makeText(getContext(), "View incorrecto", Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		String name = new_map_name.getEditText().getText().toString().trim();
+		String description = new_map_description.getEditText().getText().toString().trim();
+		PlayLevel pl = PlayLevel.getPlayLevel(difficultySpinner.getSelectedItemPosition());
+
+		User user = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(requireContext()));
+		viewModel.setCreatedMap(name, description, user.getId(), pl);
+		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).navigate(R.id.toCreator);
+
 	}
 }

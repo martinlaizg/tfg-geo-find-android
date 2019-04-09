@@ -19,7 +19,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,9 +49,7 @@ public class CreatorFragment
 	private MapCreatorViewModel viewModel;
 
 	@Override
-	public View onCreateView(
-			LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_creator, container, false);
 		ButterKnife.bind(this, view);
 		return view;
@@ -61,12 +58,15 @@ public class CreatorFragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		NavController navController = Navigation.findNavController(requireActivity(), R.id.main_fragment_holder);
 		recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		CreatorLocationAdapter adapter = new CreatorLocationAdapter();
 		recyclerView.setAdapter(adapter);
 
-		add_location_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreateLocation));
+		add_location_button.setOnClickListener(v -> {
+			Bundle b = new Bundle();
+			b.putInt(CreateLocationFragment.LOC_POSITION, viewModel.getCreatedLocations().size());
+			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).navigate(R.id.toCreateLocation, b);
+		});
 		edit_button.setOnClickListener(v -> {
 			viewModel.setEdit(true);
 			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();

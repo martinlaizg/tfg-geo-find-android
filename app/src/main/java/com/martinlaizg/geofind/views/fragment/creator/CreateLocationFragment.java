@@ -82,13 +82,13 @@ public class CreateLocationFragment
 		viewModel = ViewModelProviders.of(requireActivity()).get(MapCreatorViewModel.class);
 		Bundle b = getArguments();
 		if (b != null) {
-			position = b.getInt(LOC_POSITION);
-			com.martinlaizg.geofind.data.access.database.entity.Location l = viewModel.getCreatedLocations().get(position);
-			Objects.requireNonNull(new_location_name.getEditText()).setText(l.getName());
-			Objects.requireNonNull(new_location_description.getEditText()).setText(l.getDescription());
-			onMapLongClick(new LatLng(Float.valueOf(l.getLat()), Float.valueOf(l.getLon())));
-		} else {
-			position = viewModel.getCreatedLocations().size();
+			position = b.getInt(LOC_POSITION, viewModel.getCreatedLocations().size());
+			if (position <= viewModel.getCreatedLocations().size()) {
+				com.martinlaizg.geofind.data.access.database.entity.Location l = viewModel.getCreatedLocations().get(position);
+				Objects.requireNonNull(new_location_name.getEditText()).setText(l.getName());
+				Objects.requireNonNull(new_location_description.getEditText()).setText(l.getDescription());
+				onMapLongClick(new LatLng(Float.valueOf(l.getLat()), Float.valueOf(l.getLon())));
+			}
 		}
 		create_button.setOnClickListener(this);
 		if (marker != null) create_button.setText(R.string.update_location);
@@ -129,7 +129,7 @@ public class CreateLocationFragment
 		String name = new_location_name.getEditText().getText().toString().trim();
 		String description = new_location_description.getEditText().getText().toString().trim();
 
-		viewModel.addLocation(name, description, String.valueOf(marker.getPosition().latitude), String.valueOf(marker.getPosition().longitude), position);
+		viewModel.setLocation(name, description, String.valueOf(marker.getPosition().latitude), String.valueOf(marker.getPosition().longitude), position);
 
 		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
 	}
