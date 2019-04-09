@@ -10,8 +10,8 @@ import android.widget.Toast;
 import com.google.android.material.button.MaterialButton;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.adapter.CreatorLocationAdapter;
+import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
-import com.martinlaizg.geofind.data.access.retrofit.error.APIError;
 import com.martinlaizg.geofind.views.fragment.single.MapFragment;
 import com.martinlaizg.geofind.views.viewmodel.MapCreatorViewModel;
 
@@ -61,19 +61,19 @@ public class CreatorFragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		NavController navController = Navigation.findNavController(getActivity(), R.id.main_fragment_holder);
-		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+		NavController navController = Navigation.findNavController(requireActivity(), R.id.main_fragment_holder);
+		recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		CreatorLocationAdapter adapter = new CreatorLocationAdapter();
 		recyclerView.setAdapter(adapter);
 
 		add_location_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreateLocation));
 		edit_button.setOnClickListener(v -> {
 			viewModel.setEdit(true);
-			Navigation.findNavController(getActivity(), R.id.main_fragment_holder).popBackStack();
+			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
 		});
 		create_map_button.setOnClickListener(this);
 
-		viewModel = ViewModelProviders.of(getActivity()).get(MapCreatorViewModel.class);
+		viewModel = ViewModelProviders.of(requireActivity()).get(MapCreatorViewModel.class);
 		Map map = viewModel.getCreatedMap();
 		if (!map.getId().isEmpty()) {
 			create_map_button.setText(R.string.update_map);
@@ -93,19 +93,19 @@ public class CreatorFragment
 		create_map_button.setEnabled(false);
 		viewModel.createMap().observe(this, map -> {
 			create_map_button.setEnabled(true);
-			if (map != null) {
-				APIError err = map.getError();
-				if (err == null) {
-					viewModel.clear();
-					Toast.makeText(getActivity(), "Mapa creado", Toast.LENGTH_SHORT).show();
-					Bundle b = new Bundle();
-					b.putString(MapFragment.MAP_ID, map.getId());
-					Navigation.findNavController(getActivity(), R.id.main_fragment_holder).navigate(R.id.toNewMap, b);
-				} else {
-					// TODO manage error
-					Toast.makeText(getActivity(), err.getMessage(), Toast.LENGTH_SHORT).show();
-				}
+			if (map == null) {
+				// TODO manage error
+				APIException err = viewModel.getError();
+				Toast.makeText(requireActivity(), err.getType().getMessage(), Toast.LENGTH_LONG).show();
+				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack(R.id.navMapList, false);
+				viewModel.clear();
+				return;
 			}
+			viewModel.clear();
+			Toast.makeText(requireActivity(), R.string.map_created, Toast.LENGTH_SHORT).show();
+			Bundle b = new Bundle();
+			b.putString(MapFragment.MAP_ID, map.getId());
+			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).navigate(R.id.toNewMap, b);
 		});
 	}
 }

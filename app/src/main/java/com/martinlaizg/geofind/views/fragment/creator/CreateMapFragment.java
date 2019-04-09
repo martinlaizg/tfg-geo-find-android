@@ -14,7 +14,7 @@ import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
 import com.martinlaizg.geofind.data.access.database.entity.User;
-import com.martinlaizg.geofind.data.access.database.entity.enums.PlayLevel;
+import com.martinlaizg.geofind.data.enums.PlayLevel;
 import com.martinlaizg.geofind.views.viewmodel.MapCreatorViewModel;
 
 import java.util.Objects;
@@ -59,18 +59,18 @@ public class CreateMapFragment
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		viewModel = ViewModelProviders.of(getActivity()).get(MapCreatorViewModel.class);
+		viewModel = ViewModelProviders.of(requireActivity()).get(MapCreatorViewModel.class);
 		if (!viewModel.isEdit()) { // we need to retrieve de map
 			viewModel.clear();
 			Bundle b = getArguments();
 			if (b != null) {
 				String map_id = b.getString(MAP_ID);
 				if (map_id != null) {
-					viewModel.getMap(map_id).observe(getActivity(), map -> {
+					viewModel.getMap(map_id).observe(requireActivity(), map -> {
 						viewModel.setCreatedMap(map);
 						setInputs();
 					});
-					viewModel.getLocations(map_id).observe(getActivity(), locations -> {
+					viewModel.getLocations(map_id).observe(requireActivity(), locations -> {
 						viewModel.setCreatedLocations(locations);
 						setInputs();
 					});
@@ -111,7 +111,7 @@ public class CreateMapFragment
 
 			User user = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(getContext()));
 			viewModel.setCreatedMap(name, description, user.getId(), pl);
-			Navigation.findNavController(getActivity(), R.id.main_fragment_holder).navigate(R.id.toCreator);
+			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).navigate(R.id.toCreator);
 		});
 	}
 

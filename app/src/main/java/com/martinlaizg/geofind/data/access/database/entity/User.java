@@ -3,13 +3,13 @@ package com.martinlaizg.geofind.data.access.database.entity;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.martinlaizg.geofind.data.access.database.entity.enums.UserType;
-import com.martinlaizg.geofind.data.access.retrofit.error.APIError;
+import com.martinlaizg.geofind.data.enums.UserType;
 import com.martinlaizg.geofind.utils.DateUtils;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -18,44 +18,41 @@ import androidx.room.PrimaryKey;
 public class User {
 
 	@PrimaryKey
-	@NonNull
-	private String id;
+	@NotNull
+	private final String id;
 	private String email;
 	private String username;
 	private String name;
 	private String password;
-	private Date bdate;
 	private UserType user_type;
 	private Date created_at;
 	private Date updated_at;
 
-	@Ignore
-	private APIError error;
-
-	public User() {
-	}
-
-	@Ignore
-	public User(String email, String password) {
+	public User(@NotNull String id, String email, String username, String name, String password, UserType user_type, Date created_at, Date updated_at) {
+		this.id = id;
 		this.email = email;
-		this.password = password;
-	}
-
-	@Ignore
-	public User(String name, String username, String email, String password) {
-		this.name = name;
 		this.username = username;
-		this.email = email;
+		this.name = name;
 		this.password = password;
+		this.user_type = user_type;
+		this.created_at = created_at;
+		this.updated_at = updated_at;
+	}
+
+
+	@Ignore
+	public User() {
+		id = "";
+		name = "";
+		username = "";
+		email = "";
+		password = "";
 		user_type = UserType.USER;
 	}
 
+	@NotNull
 	public String getId() {
 		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getEmail() {
@@ -90,14 +87,6 @@ public class User {
 		this.password = password;
 	}
 
-	public Date getBdate() {
-		return bdate;
-	}
-
-	public void setBdate(Date bdate) {
-		this.bdate = bdate;
-	}
-
 	public UserType getUser_type() {
 		return user_type;
 	}
@@ -128,11 +117,4 @@ public class User {
 		return gson.toJson(this);
 	}
 
-	public APIError getError() {
-		return error;
-	}
-
-	public void setError(APIError error) {
-		this.error = error;
-	}
 }

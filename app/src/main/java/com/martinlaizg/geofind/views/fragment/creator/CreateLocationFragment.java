@@ -79,7 +79,7 @@ public class CreateLocationFragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(MapCreatorViewModel.class);
+		viewModel = ViewModelProviders.of(requireActivity()).get(MapCreatorViewModel.class);
 		Bundle b = getArguments();
 		if (b != null) {
 			position = b.getInt(LOC_POSITION);
@@ -131,16 +131,16 @@ public class CreateLocationFragment
 
 		viewModel.addLocation(name, description, String.valueOf(marker.getPosition().latitude), String.valueOf(marker.getPosition().longitude), position);
 
-		Navigation.findNavController(getActivity(), R.id.main_fragment_holder).popBackStack();
+		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
 	}
 
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
 		gMap = googleMap;
-		if (Objects.requireNonNull(getActivity()).checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-				getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+		if (requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+				requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 			requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION);
-			Toast.makeText(getActivity(), getString(R.string.no_location_permissions), Toast.LENGTH_SHORT).show();
+			Toast.makeText(requireActivity(), getString(R.string.no_location_permissions), Toast.LENGTH_SHORT).show();
 			return;
 		}
 		setLocation();
@@ -179,7 +179,7 @@ public class CreateLocationFragment
 
 	@SuppressLint("MissingPermission")
 	private Location getLastKnownLocation() {
-		LocationManager locationManager = (LocationManager) Objects.requireNonNull(getActivity()).getSystemService(LOCATION_SERVICE);
+		LocationManager locationManager = (LocationManager) requireActivity().getSystemService(LOCATION_SERVICE);
 		List<String> providers = locationManager.getProviders(true);
 		Location bestLocation = null;
 		for (String provider : providers) {

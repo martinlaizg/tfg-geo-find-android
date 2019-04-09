@@ -41,7 +41,7 @@ public class MapListFragment
 		final View view = inflater.inflate(R.layout.fragment_maps_list, container, false);
 		ButterKnife.bind(this, view);
 
-		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+		recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		adapter = new MapListAdapter();
 		recyclerView.setAdapter(adapter);
 

@@ -1,6 +1,6 @@
 package com.martinlaizg.geofind.data.access.database.converter;
 
-import com.martinlaizg.geofind.data.access.database.entity.enums.PlayLevel;
+import com.martinlaizg.geofind.data.enums.PlayLevel;
 
 import androidx.room.TypeConverter;
 

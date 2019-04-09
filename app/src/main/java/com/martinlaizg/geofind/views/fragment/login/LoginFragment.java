@@ -112,7 +112,7 @@ public class LoginFragment
 			Preferences.setLoggedUser(PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(getContext())), user);
 			login_button.setEnabled(true);
 			loading_spinner.setVisibility(View.GONE);
-			Navigation.findNavController(Objects.requireNonNull(getActivity()), R.id.main_fragment_holder).popBackStack();
+			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
 		});
 	}
 }

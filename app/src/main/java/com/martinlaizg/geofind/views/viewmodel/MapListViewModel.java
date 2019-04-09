@@ -2,9 +2,9 @@ package com.martinlaizg.geofind.views.viewmodel;
 
 import android.app.Application;
 
+import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
-import com.martinlaizg.geofind.data.access.database.repository.MapRepository;
-import com.martinlaizg.geofind.views.fragment.list.MapListFragment;
+import com.martinlaizg.geofind.data.repository.MapRepository;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class MapListViewModel
 		extends AndroidViewModel {
 
 	private final MapRepository repository;
-	MapListFragment fragment;
+	private APIException error;
 
 
 	public MapListViewModel(@NonNull Application application) {
@@ -26,17 +26,24 @@ public class MapListViewModel
 
 
 	public MutableLiveData<List<Map>> getAllMaps() {
-		return repository.getAllMaps();
-	}
-
-	public void refreshMaps() {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				repository.refreshMaps();
-
+		MutableLiveData<List<Map>> maps = new MutableLiveData<>();
+		new Thread(() -> {
+			try {
+				maps.postValue(repository.getAllMaps());
+			} catch (APIException e) {
+				maps.postValue(null);
+				setError(e);
 			}
 		}).start();
+		return maps;
 	}
 
+
+	public APIException getError() {
+		return error;
+	}
+
+	public void setError(APIException error) {
+		this.error = error;
+	}
 }

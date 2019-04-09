@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,8 +27,8 @@ import com.martinlaizg.geofind.views.viewmodel.MapViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -69,8 +68,8 @@ public class PlayMapOnMapFragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		viewModel = ViewModelProviders.of(getActivity()).get(MapViewModel.class);
-		Map map = viewModel.getMap();
+		viewModel = ViewModelProviders.of(requireActivity()).get(MapViewModel.class);
+		Map map = new Map();
 		map_name.setText(map.getName());
 		map_description.setText(map.getDescription());
 	}
@@ -79,8 +78,8 @@ public class PlayMapOnMapFragment
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
 		gMap = googleMap;
-		if (Objects.requireNonNull(getActivity()).checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-				getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+		if (requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+				requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 			requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION);
 			return;
 		}
@@ -100,7 +99,7 @@ public class PlayMapOnMapFragment
 
 	@SuppressLint("MissingPermission")
 	private void setLocations() {
-		List<Location> locs = viewModel.getLocations();
+		List<Location> locs = new ArrayList<>();
 		LatLngBounds.Builder builder = new LatLngBounds.Builder();
 		for (Location l : locs) { // Add the locations to the builder
 			MarkerOptions m = new MarkerOptions().position(l.getLatLng()).title(l.getName());
@@ -108,7 +107,7 @@ public class PlayMapOnMapFragment
 			builder.include(m.getPosition());
 		}
 
-		LocationManager locationManager = (LocationManager) Objects.requireNonNull(getActivity()).getSystemService(Context.LOCATION_SERVICE);
+		LocationManager locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
 		android.location.Location usrLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		builder.include(new LatLng(usrLocation.getLatitude(), usrLocation.getLongitude())); // Add the user location to the builder
 		gMap.setMyLocationEnabled(true);
@@ -125,11 +124,7 @@ public class PlayMapOnMapFragment
 	@Override
 	public void onInfoWindowClick(Marker marker) {
 		String name = marker.getTitle();
-		Location l = viewModel.getLocationByName(name);
-		if (l == null) {
-			Log.e(TAG, "onInfoWindowClick: location no exist", null);
-			return;
-		}
+		Location l = new Location();
 		Bundle b = new Bundle();
 		b.putString(PlayLocationOnMapFragment.LOCATION_ID, l.getId());
 	}

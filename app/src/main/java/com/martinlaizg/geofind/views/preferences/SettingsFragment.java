@@ -31,7 +31,7 @@ public class SettingsFragment
 			public boolean onPreferenceClick(Preference preference) {
 				SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
 				Preferences.logout(sp);
-				Navigation.findNavController(getActivity(), R.id.main_fragment_holder).popBackStack();
+				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
 				return true;
 			}
 		});

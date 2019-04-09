@@ -2,11 +2,12 @@ package com.martinlaizg.geofind.views.viewmodel;
 
 import android.app.Application;
 
+import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
-import com.martinlaizg.geofind.data.access.database.entity.enums.PlayLevel;
-import com.martinlaizg.geofind.data.access.database.repository.LocationRepository;
-import com.martinlaizg.geofind.data.access.database.repository.MapRepository;
+import com.martinlaizg.geofind.data.enums.PlayLevel;
+import com.martinlaizg.geofind.data.repository.LocationRepository;
+import com.martinlaizg.geofind.data.repository.MapRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class MapCreatorViewModel
 	private Map createdMap;
 	private List<Location> createdLocations;
 	private boolean edit;
+	private APIException error;
 
 
 	public MapCreatorViewModel(@NonNull Application application) {
@@ -36,18 +38,50 @@ public class MapCreatorViewModel
 	public MutableLiveData<Map> createMap() {
 		MutableLiveData<Map> m = new MutableLiveData<>();
 		new Thread(() -> {
+			// TODO manage errors
+			// TODO create map and location on the same request
 			if (createdMap.getId().isEmpty()) { // Create map
-				createdMap = mapRepo.create(createdMap);
-				// TODO implement create locations
-				//				if (!createdLocations.isEmpty()) {
-				//					for (int i = 0; i < createdLocations.size(); i++) {
-				//						createdLocations.get(i).setMap_id(createdMap.getId());
-				//					}
-				//					locRepo.create(createdLocations);
-				//				}
+				try {
+					createdMap = mapRepo.create(createdMap);
+					if (!createdLocations.isEmpty()) {  // there are locations
+						try {
+							locRepo.createMapLocations(createdMap.getId(), createdLocations);
+						} catch (APIException e) {  // fails create location
+							if (!createdMap.getId().isEmpty()) { // is needed remove de created map
+								mapRepo.remove(createdMap);
+							}
+							setError(e);
+							m.postValue(null);
+						}
+					}
+				} catch (APIException e) {  // fails create map
+					setError(e);
+					m.postValue(null);
+					return;
+				}
+
 			} else { // Update map
-				// TODO implement update locations
-				createdMap = mapRepo.update(createdMap);
+				try {
+					Map updatedMap = mapRepo.update(createdMap);
+					if (!createdLocations.isEmpty()) {  // there are locations
+						try {
+							locRepo.updateMapLocations(createdMap.getId(), createdLocations);
+							createdMap = updatedMap;
+						} catch (APIException e) {  // fails create location
+							if (!updatedMap.getId().isEmpty()) { // is needed revert the changes
+								mapRepo.update(updatedMap);
+							}
+							setError(e);
+							m.postValue(null);
+						}
+					} else {
+						createdMap = updatedMap;
+					}
+				} catch (APIException e) {  // fails create map
+					setError(e);
+					m.postValue(null);
+					return;
+				}
 			}
 			m.postValue(createdMap);
 		}).start();
@@ -100,11 +134,29 @@ public class MapCreatorViewModel
 	}
 
 	public MutableLiveData<Map> getMap(String map_id) {
-		return mapRepo.getMap(map_id);
+		MutableLiveData<Map> m = new MutableLiveData<>();
+		new Thread(() -> {
+			try {
+				m.postValue(mapRepo.getMap(map_id));
+			} catch (APIException e) {
+				setError(e);
+				m.postValue(null);
+			}
+		}).start();
+		return m;
 	}
 
 	public MutableLiveData<List<Location>> getLocations(String map_id) {
-		return locRepo.getLocationsByMap(map_id);
+		MutableLiveData<List<Location>> locs = new MutableLiveData<>();
+		new Thread(() -> {
+			try {
+				locs.postValue(locRepo.getLocationsByMap(map_id));
+			} catch (APIException e) {
+				setError(e);
+				locs.postValue(null);
+			}
+		}).start();
+		return locs;
 	}
 
 	public void clear() {
@@ -118,5 +170,13 @@ public class MapCreatorViewModel
 
 	public void setEdit(boolean edit) {
 		this.edit = edit;
+	}
+
+	public APIException getError() {
+		return error;
+	}
+
+	public void setError(APIException error) {
+		this.error = error;
 	}
 }

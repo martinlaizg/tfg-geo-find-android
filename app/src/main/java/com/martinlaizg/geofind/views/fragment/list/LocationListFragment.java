@@ -40,7 +40,7 @@ public class LocationListFragment
 		ButterKnife.bind(this, view);
 		ArrayList<Location> locations = new ArrayList<>();
 
-		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+		recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		adapter = new LocationListAdapter();
 		recyclerView.setAdapter(adapter);
 

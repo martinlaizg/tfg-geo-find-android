@@ -11,12 +11,10 @@ import android.widget.Toast;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.data.access.retrofit.error.APIError;
+import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.views.viewmodel.LoginViewModel;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -58,7 +56,7 @@ public class RegistryFragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(LoginViewModel.class);
+		viewModel = ViewModelProviders.of(requireActivity()).get(LoginViewModel.class);
 		String email = viewModel.getEmail();
 		if (email != null && !email.isEmpty()) {
 			email_input.getEditText().setText(email);
@@ -112,17 +110,13 @@ public class RegistryFragment
 		viewModel.registry().observe(this, (user) -> {
 			btn_registr.setEnabled(true);
 			if (user == null) {
-				Toast.makeText(getActivity(), "Algo ha ido mal", Toast.LENGTH_SHORT).show();
+				APIException error = viewModel.getError();
+				Toast.makeText(requireActivity(), "Algo ha ido mal", Toast.LENGTH_SHORT).show();
 				return;
 			}
-			APIError error = user.getError();
-			if (error != null) {
-				// TODO: manage API error
-				Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
-			} else {
-				Toast.makeText(getActivity(), "Registrado correctamente", Toast.LENGTH_LONG).show();
-				Navigation.findNavController(getActivity(), R.id.main_fragment_holder).popBackStack();
-			}
+			Toast.makeText(requireActivity(), "Registrado correctamente", Toast.LENGTH_LONG).show();
+			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
+
 		});
 		// TODO: add loading image
 	}

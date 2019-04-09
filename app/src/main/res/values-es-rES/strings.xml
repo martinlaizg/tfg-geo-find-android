@@ -57,4 +57,10 @@
     <string name="update_location">Actualizar localización</string>
     <string name="no_locations">No hay localizaciones</string>
     <string name="update_map">Actualizar mapa</string>
+    <string name="other_error">Otro error</string>
+    <string name="id_error">Error de ID</string>
+    <string name="parse_error">Error de parse</string>
+    <string name="network_error">Error de conexión</string>
+    <string name="email_error">Error de email</string>
+    <string name="map_created">Mapa creado</string>
 </resources>

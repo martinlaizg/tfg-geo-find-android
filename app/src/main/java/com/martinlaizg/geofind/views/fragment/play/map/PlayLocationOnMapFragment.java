@@ -30,7 +30,6 @@ import com.martinlaizg.geofind.views.viewmodel.MapViewModel;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,6 +38,7 @@ import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@Deprecated
 public class PlayLocationOnMapFragment
 		extends Fragment
 		implements OnMapReadyCallback, LocationListener {
@@ -78,7 +78,7 @@ public class PlayLocationOnMapFragment
 			public void onClick(View v) {
 				String uri = String.format(Locale.ENGLISH, "google.navigation:q=%f,%f", Float.valueOf(location.getLat()), Float.valueOf(location.getLon()));
 				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-				getActivity().startActivity(intent);
+				requireActivity().startActivity(intent);
 			}
 		});
 		return view;
@@ -91,8 +91,7 @@ public class PlayLocationOnMapFragment
 		if (b != null) {
 			loc_id = b.getString(LOCATION_ID);
 		}
-		MapViewModel viewModel = ViewModelProviders.of(getActivity()).get(MapViewModel.class);
-		location = viewModel.getLocation(loc_id);
+		MapViewModel viewModel = ViewModelProviders.of(requireActivity()).get(MapViewModel.class);
 
 		location_name.setText(location.getName());
 		location_description.setText(location.getDescription());
@@ -101,22 +100,22 @@ public class PlayLocationOnMapFragment
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
 		gMap = googleMap;
-		if (Objects.requireNonNull(getActivity()).checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-				getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+		if (requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+				requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 			requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION);
 		}
 		gMap.setMyLocationEnabled(true);
-		LocationManager locationManager = (LocationManager) Objects.requireNonNull(getActivity()).getSystemService(Context.LOCATION_SERVICE);
+		LocationManager locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
 		updateLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
 	}
 
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-		if (Objects.requireNonNull(getActivity()).checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-				getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+		if (requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+				requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 			requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION);
 		}
-		LocationManager locationManager = (LocationManager) Objects.requireNonNull(getActivity()).getSystemService(Context.LOCATION_SERVICE);
+		LocationManager locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_MS_LOC_UPDATE, MIN_METERS_LOC_UPDATE, this);
 		updateLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
 	}

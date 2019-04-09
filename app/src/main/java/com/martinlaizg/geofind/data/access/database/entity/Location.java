@@ -1,12 +1,8 @@
 package com.martinlaizg.geofind.data.access.database.entity;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.martinlaizg.geofind.data.access.retrofit.error.APIError;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
-import java.util.UUID;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
@@ -22,7 +18,7 @@ public class Location {
 
 	@PrimaryKey
 	@NonNull
-	private String id;
+	private final String id;
 	private String name;
 	private String lat;
 	private String lon;
@@ -32,11 +28,8 @@ public class Location {
 	private Date created_at;
 	private Date updated_at;
 
-	@Ignore
-	private APIError error;
-
-	public Location(String name, String lat, String lon, String map_id, Date created_at, Date updated_at) {
-		id = UUID.randomUUID().toString();
+	public Location(@NonNull String id, String name, String lat, String lon, String map_id, Date created_at, Date updated_at) {
+		this.id = id;
 		this.name = name;
 		this.lat = lat;
 		this.lon = lon;
@@ -47,16 +40,12 @@ public class Location {
 
 	@Ignore
 	public Location() {
-		id = UUID.randomUUID().toString();
+		id = "";
 	}
 
-	@NotNull
+	@NonNull
 	public String getId() {
 		return id;
-	}
-
-	public void setId(@NotNull String id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -117,21 +106,6 @@ public class Location {
 
 	public LatLng getLatLng() {
 		return new LatLng(Double.valueOf(getLat()), Double.valueOf(getLon()));
-	}
-
-	public android.location.Location getAndroidLocation() {
-		android.location.Location l = new android.location.Location(getName());
-		l.setLatitude(Double.valueOf(getLat()));
-		l.setLongitude(Double.valueOf(getLon()));
-		return l;
-	}
-
-	public APIError getError() {
-		return error;
-	}
-
-	public void setError(APIError error) {
-		this.error = error;
 	}
 
 	public Integer getPosition() {

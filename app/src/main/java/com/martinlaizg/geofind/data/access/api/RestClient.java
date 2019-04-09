@@ -1,4 +1,4 @@
-package com.martinlaizg.geofind.data.access.retrofit;
+package com.martinlaizg.geofind.data.access.api;
 
 import com.martinlaizg.geofind.data.access.database.entity.Location;
 import com.martinlaizg.geofind.data.access.database.entity.Map;
@@ -20,7 +20,7 @@ public interface RestClient {
 	//
 	//
 	//
-	// Maps requests
+	// Tours
 
 	// Get maps with optional filter
 	@GET("maps")
@@ -33,13 +33,29 @@ public interface RestClient {
 	@GET("maps/{id}")
 	Call<Map> getMap(@Path("id") String id);
 
-	// Get locations by map
-	@GET("maps/{id}/locations")
-	Call<List<Location>> getLocationsByMap(@Path("id") String map_id);
-
 	// Update map
 	@PUT("maps/{id}")
 	Call<Map> update(@Path("id") String id, @Body Map m);
+
+	// Get map locations
+	@GET("maps/{id}/locations")
+	Call<List<Location>> getMapLocations(@Path("id") String map_id);
+
+	// Create map locations
+	@POST("maps/{id}/locations")
+	Call<List<Location>> createMapLocations(@Path("id") String map_id, @Body List<Location> locations);
+
+	// Create map locations
+	@PUT("maps/{id}/locations")
+	Call<List<Location>> updateMapLocations(@Path("id") String map_id, @Body List<Location> locations);
+
+	// Get map location
+	@GET("maps/{map_id}/locations/{loc_id}")
+	Call<List<Location>> getMapLocation(@Path("map_id") String map_id, @Path("loc_id") String loc_id);
+
+	// Update map location
+	@PUT("maps/{map_id}/locations/{loc_id}")
+	Call<List<Location>> updateMapLocation(@Path("map_id") String map_id, @Path("loc_id") String loc_id, @Body Location location);
 
 
 	//
@@ -52,13 +68,9 @@ public interface RestClient {
 	@GET("locations")
 	Call<List<Location>> getLocations(@QueryMap java.util.Map<String, String> params);
 
-	// Get single location
-	@GET("locations/{id}")
-	Call<Location> getLocation(@Path("id") String id);
-
-	// Create a location
-	@POST("locations")
-	Call<Location> createLocation(@Body Location loc);
+	// Get location
+	@GET("locations/{loc_id}")
+	Call<Location> getLocation(@Path("loc_id") String loc_id);
 
 
 	//
@@ -71,9 +83,15 @@ public interface RestClient {
 	@POST("login")
 	Call<User> login(@Body User body);
 
-	@POST("users")
-	Call<List<User>> getUsers(@QueryMap java.util.Map<String, String> params);
+	// Get all users
+	@GET("users")
+	Call<List<User>> getUsers();
 
+	// Create a user
 	@POST("users")
 	Call<User> registry(@Body User user);
+
+	// Get single user
+	@GET("users/{usr_id}")
+	Call<User> getUser(@Path("usr_id") String usr_id);
 }

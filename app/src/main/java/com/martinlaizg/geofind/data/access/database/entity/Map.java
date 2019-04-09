@@ -1,7 +1,6 @@
 package com.martinlaizg.geofind.data.access.database.entity;
 
-import com.martinlaizg.geofind.data.access.database.entity.enums.PlayLevel;
-import com.martinlaizg.geofind.data.access.retrofit.error.APIError;
+import com.martinlaizg.geofind.data.enums.PlayLevel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -25,8 +24,6 @@ public class Map {
 	private Date updated_at;
 	private String creator_id;
 
-	@Ignore
-	private APIError error;
 
 	public Map(@NotNull String id, String name, String description, PlayLevel min_level, Date created_at, Date updated_at, String creator_id) {
 		this.id = id;
@@ -90,12 +87,4 @@ public class Map {
 		return updated_at;
 	}
 
-
-	public APIError getError() {
-		return error;
-	}
-
-	public void setError(APIError error) {
-		this.error = error;
-	}
 }

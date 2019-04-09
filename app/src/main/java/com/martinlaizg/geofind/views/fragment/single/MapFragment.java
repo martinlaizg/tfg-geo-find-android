@@ -73,19 +73,19 @@ public class MapFragment
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		location_list.setLayoutManager(new LinearLayoutManager(getActivity()));
+		location_list.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		adapter = new LocationListAdapter();
 		location_list.setAdapter(adapter);
 		location_list.setVisibility(View.GONE);
 
-		MapViewModel viewModel = ViewModelProviders.of(getActivity()).get(MapViewModel.class);
-		viewModel.getMap(map_id).observe(getActivity(), new Observer<Map>() {
+		MapViewModel viewModel = ViewModelProviders.of(requireActivity()).get(MapViewModel.class);
+		viewModel.getMap(map_id).observe(requireActivity(), new Observer<Map>() {
 			@Override
 			public void onChanged(Map map) {
 				setMap(map);
 			}
 		});
-		viewModel.getLocations(map_id).observe(getActivity(), new Observer<List<Location>>() {
+		viewModel.getLocations(map_id).observe(requireActivity(), new Observer<List<Location>>() {
 			@Override
 			public void onChanged(List<Location> locations) {
 				if (locations != null && !locations.isEmpty()) {
@@ -95,7 +95,7 @@ public class MapFragment
 				}
 			}
 		});
-		sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		sp = PreferenceManager.getDefaultSharedPreferences(requireActivity());
 	}
 
 	private void setMap(Map map) {

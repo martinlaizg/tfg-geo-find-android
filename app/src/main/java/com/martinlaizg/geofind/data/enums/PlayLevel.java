@@ -1,4 +1,4 @@
-package com.martinlaizg.geofind.data.access.database.entity.enums;
+package com.martinlaizg.geofind.data.enums;
 
 import com.google.gson.annotations.SerializedName;
 
