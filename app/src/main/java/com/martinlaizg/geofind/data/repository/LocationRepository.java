@@ -6,7 +6,7 @@ import com.martinlaizg.geofind.data.access.api.service.LocationService;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
 import com.martinlaizg.geofind.data.access.database.dao.LocationDAO;
-import com.martinlaizg.geofind.data.access.database.entity.Location;
+import com.martinlaizg.geofind.data.access.database.entities.PlaceEntity;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class LocationRepository {
 	private final LocationService locationService;
 
 	private final LocationDAO locDAO;
-	private LiveData<List<Location>> allLocations;
+	private LiveData<List<PlaceEntity>> allLocations;
 
 	public LocationRepository(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
@@ -26,38 +26,38 @@ public class LocationRepository {
 		locationService = LocationService.getInstance();
 	}
 
-	public LiveData<List<Location>> getAllLocations() {
+	public LiveData<List<PlaceEntity>> getAllLocations() {
 		return new MutableLiveData<>();
 	}
 
-	public List<Location> createMapLocations(String id, List<Location> locations) throws APIException {
-		return locationService.createMapLocations(id, locations);
+	public List<PlaceEntity> createMapLocations(String id, List<PlaceEntity> locationEntities) throws APIException {
+		return locationService.createMapLocations(id, locationEntities);
 	}
 
-	public List<Location> updateMapLocations(String id, List<Location> locations) throws APIException {
-		locations = locationService.updateMapLocations(id, locations);
-		if (locations != null) {
-			locations.forEach(locDAO::update);
+	public List<PlaceEntity> updateMapLocations(String id, List<PlaceEntity> locationEntities) throws APIException {
+		locationEntities = locationService.updateMapLocations(id, locationEntities);
+		if (locationEntities != null) {
+			locationEntities.forEach(locDAO::update);
 		}
-		return locations;
+		return locationEntities;
 	}
 
-	public List<Location> getLocationsByMap(String map_id) throws APIException {
-		List<Location> locs = locDAO.getLocationsByMap(map_id);
+	public List<PlaceEntity> getLocationsByMap(String map_id) throws APIException {
+		List<PlaceEntity> locs = locDAO.getPlacesByTour(map_id);
 		if (locs == null || locs.isEmpty()) {
 			locs = locationService.getLocationsByMap(map_id);
 			if (locs != null && !locs.isEmpty()) {
-				for (Location l : locs) {
+				for (PlaceEntity l : locs) {
 					locDAO.insert(l);
 				}
-				locs = locDAO.getLocationsByMap(map_id);
+				locs = locDAO.getPlacesByTour(map_id);
 			}
 		}
 		return locs;
 	}
 
-	public Location getLocation(String loc_id) throws APIException {
-		Location loc = locDAO.getLocation(loc_id);
+	public PlaceEntity getLocation(String loc_id) throws APIException {
+		PlaceEntity loc = locDAO.getLocation(loc_id);
 		if (loc == null) {
 			loc = locationService.getLocation(loc_id);
 			if (loc != null) {

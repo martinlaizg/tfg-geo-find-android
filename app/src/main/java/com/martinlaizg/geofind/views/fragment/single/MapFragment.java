@@ -12,9 +12,9 @@ import com.google.android.material.button.MaterialButton;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.adapter.LocationListAdapter;
 import com.martinlaizg.geofind.config.Preferences;
-import com.martinlaizg.geofind.data.access.database.entity.Location;
-import com.martinlaizg.geofind.data.access.database.entity.Map;
-import com.martinlaizg.geofind.data.access.database.entity.User;
+import com.martinlaizg.geofind.data.access.database.entities.PlaceEntity;
+import com.martinlaizg.geofind.data.access.database.entities.TourEntity;
+import com.martinlaizg.geofind.data.access.database.entities.UserEntity;
 import com.martinlaizg.geofind.views.fragment.creator.CreateMapFragment;
 import com.martinlaizg.geofind.views.viewmodel.MapViewModel;
 
@@ -79,34 +79,34 @@ public class MapFragment
 		location_list.setVisibility(View.GONE);
 
 		MapViewModel viewModel = ViewModelProviders.of(requireActivity()).get(MapViewModel.class);
-		viewModel.getMap(map_id).observe(requireActivity(), new Observer<Map>() {
+		viewModel.getMap(map_id).observe(requireActivity(), new Observer<TourEntity>() {
 			@Override
-			public void onChanged(Map map) {
-				setMap(map);
+			public void onChanged(TourEntity tourEntity) {
+				setMap(tourEntity);
 			}
 		});
-		viewModel.getLocations(map_id).observe(requireActivity(), new Observer<List<Location>>() {
+		viewModel.getLocations(map_id).observe(requireActivity(), new Observer<List<PlaceEntity>>() {
 			@Override
-			public void onChanged(List<Location> locations) {
-				if (locations != null && !locations.isEmpty()) {
+			public void onChanged(List<PlaceEntity> locationEntities) {
+				if (locationEntities != null && !locationEntities.isEmpty()) {
 					location_list.setVisibility(View.VISIBLE);
-					adapter.setLocations(locations);
-					map_num_locations.setText(String.format(getString(R.string.num_locations), locations.size()));
+					adapter.setLocationEntities(locationEntities);
+					map_num_locations.setText(String.format(getString(R.string.num_locations), locationEntities.size()));
 				}
 			}
 		});
 		sp = PreferenceManager.getDefaultSharedPreferences(requireActivity());
 	}
 
-	private void setMap(Map map) {
-		if (map != null) {
-			map_name.setText(map.getName());
-			map_description.setText(map.getDescription());
-			map_creator.setText(String.format(getString(R.string.num_creator), map.getCreator_id())); // TODO cambiar por valor real
-			User u = Preferences.getLoggedUser(sp);
-			if (u != null && u.getId().equals(map.getCreator_id())) {
+	private void setMap(TourEntity tourEntity) {
+		if (tourEntity != null) {
+			map_name.setText(tourEntity.getName());
+			map_description.setText(tourEntity.getDescription());
+			map_creator.setText(String.format(getString(R.string.num_creator), tourEntity.getCreator_id())); // TODO cambiar por valor real
+			UserEntity u = Preferences.getLoggedUser(sp);
+			if (u != null && u.getId().equals(tourEntity.getCreator_id())) {
 				Bundle b = new Bundle();
-				b.putString(CreateMapFragment.MAP_ID, map.getId());
+				b.putString(CreateMapFragment.MAP_ID, tourEntity.getId());
 				edit_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toEditMap, b));
 				edit_button.setVisibility(View.VISIBLE);
 			}

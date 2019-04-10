@@ -1,4 +1,4 @@
-package com.martinlaizg.geofind.data.access.database.entity;
+package com.martinlaizg.geofind.data.access.database.entities;
 
 
 import com.google.gson.Gson;
@@ -15,11 +15,11 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "users")
-public class User {
+public class UserEntity {
 
 	@PrimaryKey
 	@NotNull
-	private final String id;
+	private final Integer id;
 	private String email;
 	private String username;
 	private String name;
@@ -28,7 +28,7 @@ public class User {
 	private Date created_at;
 	private Date updated_at;
 
-	public User(@NotNull String id, String email, String username, String name, String password, UserType user_type, Date created_at, Date updated_at) {
+	public UserEntity(@NotNull Integer id, String email, String username, String name, String password, UserType user_type, Date created_at, Date updated_at) {
 		this.id = id;
 		this.email = email;
 		this.username = username;
@@ -41,8 +41,8 @@ public class User {
 
 
 	@Ignore
-	public User() {
-		id = "";
+	public UserEntity() {
+		id = 0;
 		name = "";
 		username = "";
 		email = "";
@@ -51,7 +51,7 @@ public class User {
 	}
 
 	@NotNull
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 

@@ -24,7 +24,7 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@sample/locations.json/data/name" />
+        tools:text="@sample/placeEntities.json/data/name" />
 
     <TextView
         android:id="@+id/location_description"
@@ -37,7 +37,7 @@
         android:maxLines="6"
         app:layout_constraintStart_toStartOf="@+id/location_name"
         app:layout_constraintTop_toBottomOf="@+id/location_name"
-        tools:text="@sample/locations.json/data/description" />
+        tools:text="@sample/placeEntities.json/data/description" />
 
     <ImageView
         android:id="@+id/location_image"
@@ -64,7 +64,7 @@
         android:gravity="center_vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/location_description"
-        tools:text="@sample/locations.json/data/visits" />
+        tools:text="@sample/placeEntities.json/data/visits" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

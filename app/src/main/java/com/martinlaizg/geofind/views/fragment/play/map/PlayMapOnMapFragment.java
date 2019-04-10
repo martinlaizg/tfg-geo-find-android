@@ -21,8 +21,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.data.access.database.entity.Location;
-import com.martinlaizg.geofind.data.access.database.entity.Map;
+import com.martinlaizg.geofind.data.access.database.entities.PlaceEntity;
+import com.martinlaizg.geofind.data.access.database.entities.TourEntity;
 import com.martinlaizg.geofind.views.viewmodel.MapViewModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -69,9 +69,9 @@ public class PlayMapOnMapFragment
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		viewModel = ViewModelProviders.of(requireActivity()).get(MapViewModel.class);
-		Map map = new Map();
-		map_name.setText(map.getName());
-		map_description.setText(map.getDescription());
+		TourEntity tourEntity = new TourEntity();
+		map_name.setText(tourEntity.getName());
+		map_description.setText(tourEntity.getDescription());
 	}
 
 
@@ -99,10 +99,10 @@ public class PlayMapOnMapFragment
 
 	@SuppressLint("MissingPermission")
 	private void setLocations() {
-		List<Location> locs = new ArrayList<>();
+		List<PlaceEntity> locs = new ArrayList<>();
 		LatLngBounds.Builder builder = new LatLngBounds.Builder();
-		for (Location l : locs) { // Add the locations to the builder
-			MarkerOptions m = new MarkerOptions().position(l.getLatLng()).title(l.getName());
+		for (PlaceEntity l : locs) { // Add the locationEntities to the builder
+			MarkerOptions m = new MarkerOptions().position(l.getPosition()).title(l.getName());
 			gMap.addMarker(m);
 			builder.include(m.getPosition());
 		}
@@ -124,8 +124,8 @@ public class PlayMapOnMapFragment
 	@Override
 	public void onInfoWindowClick(Marker marker) {
 		String name = marker.getTitle();
-		Location l = new Location();
+		PlaceEntity l = new PlaceEntity();
 		Bundle b = new Bundle();
-		b.putString(PlayLocationOnMapFragment.LOCATION_ID, l.getId());
+		b.putInt(PlayLocationOnMapFragment.LOCATION_ID, l.getId());
 	}
 }

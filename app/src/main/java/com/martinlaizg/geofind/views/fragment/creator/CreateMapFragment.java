@@ -12,8 +12,8 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
-import com.martinlaizg.geofind.data.access.database.entity.Map;
-import com.martinlaizg.geofind.data.access.database.entity.User;
+import com.martinlaizg.geofind.data.access.database.entities.TourEntity;
+import com.martinlaizg.geofind.data.access.database.entities.UserEntity;
 import com.martinlaizg.geofind.data.enums.PlayLevel;
 import com.martinlaizg.geofind.views.viewmodel.MapCreatorViewModel;
 
@@ -59,23 +59,23 @@ public class CreateMapFragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		viewModel = ViewModelProviders.of(requireActivity()).get(MapCreatorViewModel.class);
-		if (!viewModel.isEdit()) { // we need to retrieve de map
+		if (!viewModel.isEdit()) { // we need to retrieve de tourEntity
 			viewModel.clear();
 			Bundle b = getArguments();
 			if (b != null) {
 				String map_id = b.getString(MAP_ID);
 				if (map_id != null) {
 					viewModel.getMap(map_id).observe(requireActivity(), map -> {
-						viewModel.setCreatedMap(map);
+						viewModel.setCreatedTourEntity(map);
 						setInputs();
 					});
 					viewModel.getLocations(map_id).observe(requireActivity(), locations -> {
-						viewModel.setCreatedLocations(locations);
+						viewModel.setCreatedLocationEntities(locations);
 						setInputs();
 					});
 				}
 			} else {
-				viewModel.setCreatedMap(new Map());
+				viewModel.setCreatedTourEntity(new TourEntity());
 			}
 		}
 		setInputs();
@@ -84,7 +84,7 @@ public class CreateMapFragment
 	}
 
 	private void setInputs() {
-		Map m = viewModel.getCreatedMap();
+		TourEntity m = viewModel.getCreatedTourEntity();
 		if (m != null) {
 			if (!m.getName().isEmpty()) {
 				Objects.requireNonNull(new_map_name.getEditText()).setText(m.getName());
@@ -126,8 +126,8 @@ public class CreateMapFragment
 		String description = new_map_description.getEditText().getText().toString().trim();
 		PlayLevel pl = PlayLevel.getPlayLevel(difficultySpinner.getSelectedItemPosition());
 
-		User user = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(requireContext()));
-		viewModel.setCreatedMap(name, description, user.getId(), pl);
+		UserEntity userEntity = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(requireContext()));
+		viewModel.setCreatedMap(name, description, userEntity.getId(), pl);
 		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).navigate(R.id.toCreator);
 
 	}

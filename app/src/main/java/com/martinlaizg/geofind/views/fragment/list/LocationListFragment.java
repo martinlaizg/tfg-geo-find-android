@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.adapter.LocationListAdapter;
-import com.martinlaizg.geofind.data.access.database.entity.Location;
+import com.martinlaizg.geofind.data.access.database.entities.PlaceEntity;
 import com.martinlaizg.geofind.views.viewmodel.LocationViewModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +38,7 @@ public class LocationListFragment
 	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_location_list, container, false);
 		ButterKnife.bind(this, view);
-		ArrayList<Location> locations = new ArrayList<>();
+		ArrayList<PlaceEntity> locationEntities = new ArrayList<>();
 
 		recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		adapter = new LocationListAdapter();
@@ -47,10 +47,10 @@ public class LocationListFragment
 
 		LocationViewModel locationViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
 
-		locationViewModel.getAllLocations().observe(this, new Observer<List<Location>>() {
+		locationViewModel.getAllLocations().observe(this, new Observer<List<PlaceEntity>>() {
 			@Override
-			public void onChanged(List<Location> locations) {
-				adapter.setLocations(locations);
+			public void onChanged(List<PlaceEntity> locationEntities) {
+				adapter.setLocationEntities(locationEntities);
 			}
 		});
 

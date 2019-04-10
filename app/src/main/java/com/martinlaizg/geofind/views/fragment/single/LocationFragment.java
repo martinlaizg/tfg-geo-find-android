@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.data.access.database.entity.Location;
+import com.martinlaizg.geofind.data.access.database.entities.PlaceEntity;
 import com.martinlaizg.geofind.views.viewmodel.LocationViewModel;
 
 import androidx.annotation.NonNull;
@@ -53,18 +53,18 @@ public class LocationFragment
 		super.onViewCreated(view, savedInstanceState);
 		LocationViewModel viewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
 
-		viewModel.getLocation(loc_id).observe(this, new Observer<Location>() {
+		viewModel.getLocation(loc_id).observe(this, new Observer<PlaceEntity>() {
 			@Override
-			public void onChanged(Location location) {
-				setLocation(location);
+			public void onChanged(PlaceEntity placeEntity) {
+				setLocation(placeEntity);
 			}
 		});
 	}
 
-	private void setLocation(Location location) {
-		if (location != null) {
-			location_name.setText(location.getName());
-			location_description.setText(location.getDescription()); // TODO cambiar por el valor real
+	private void setLocation(PlaceEntity placeEntity) {
+		if (placeEntity != null) {
+			location_name.setText(placeEntity.getName());
+			location_description.setText(placeEntity.getDescription()); // TODO cambiar por el valor real
 			location_visits.setText("2.594 TODO"); // TODO cambiar por el valor real
 			location_image.setImageResource(R.drawable.default_map_image);
 		}

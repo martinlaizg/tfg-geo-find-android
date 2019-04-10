@@ -7,7 +7,7 @@ import com.martinlaizg.geofind.data.access.api.RetrofitInstance;
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.error.ErrorUtils;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
-import com.martinlaizg.geofind.data.access.database.entity.Map;
+import com.martinlaizg.geofind.data.access.database.entities.TourEntity;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -31,8 +31,8 @@ public class MapService {
 		return mapService;
 	}
 
-	public List<Map> getAllMaps() throws APIException {
-		Response<List<Map>> response;
+	public List<TourEntity> getAllMaps() throws APIException {
+		Response<List<TourEntity>> response;
 		APIException apiException;
 		try {
 			response = restClient.getMaps(new HashMap<>()).execute();
@@ -48,11 +48,11 @@ public class MapService {
 		throw apiException;
 	}
 
-	public Map create(Map map) throws APIException {
-		Response<Map> response;
+	public TourEntity create(TourEntity tourEntity) throws APIException {
+		Response<TourEntity> response;
 		APIException apiException;
 		try {
-			response = restClient.createMap(map).execute();
+			response = restClient.createMap(tourEntity).execute();
 			if (response.isSuccessful()) {
 				return response.body();
 			}
@@ -65,8 +65,8 @@ public class MapService {
 		throw apiException;
 	}
 
-	public Map getMap(String id) throws APIException {
-		Response<Map> response;
+	public TourEntity getMap(String id) throws APIException {
+		Response<TourEntity> response;
 		APIException apiException;
 		try {
 			response = restClient.getMap(id).execute();
@@ -76,16 +76,16 @@ public class MapService {
 			apiException = ErrorUtils.parseError(response);
 		} catch (IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
-			Log.e(TAG, "getMap: ", e);
+			Log.e(TAG, "getTourEntity: ", e);
 		}
 		throw apiException;
 	}
 
-	public Map update(Map map) throws APIException {
-		Response<Map> response;
+	public TourEntity update(TourEntity tourEntity) throws APIException {
+		Response<TourEntity> response;
 		APIException apiException;
 		try {
-			response = restClient.update(map.getId(), map).execute();
+			response = restClient.update(tourEntity.getId(), tourEntity).execute();
 			if (response.isSuccessful()) {
 				return response.body();
 			}

@@ -3,7 +3,7 @@ package com.martinlaizg.geofind.views.viewmodel;
 import android.app.Application;
 
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
-import com.martinlaizg.geofind.data.access.database.entity.Map;
+import com.martinlaizg.geofind.data.access.database.entities.TourEntity;
 import com.martinlaizg.geofind.data.repository.MapRepository;
 
 import java.util.List;
@@ -25,8 +25,8 @@ public class MapListViewModel
 	}
 
 
-	public MutableLiveData<List<Map>> getAllMaps() {
-		MutableLiveData<List<Map>> maps = new MutableLiveData<>();
+	public MutableLiveData<List<TourEntity>> getAllMaps() {
+		MutableLiveData<List<TourEntity>> maps = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
 				maps.postValue(repository.getAllMaps());

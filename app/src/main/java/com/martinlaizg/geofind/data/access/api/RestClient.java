@@ -1,8 +1,8 @@
 package com.martinlaizg.geofind.data.access.api;
 
-import com.martinlaizg.geofind.data.access.database.entity.Location;
-import com.martinlaizg.geofind.data.access.database.entity.Map;
-import com.martinlaizg.geofind.data.access.database.entity.User;
+import com.martinlaizg.geofind.data.access.database.entities.PlaceEntity;
+import com.martinlaizg.geofind.data.access.database.entities.TourEntity;
+import com.martinlaizg.geofind.data.access.database.entities.UserEntity;
 
 import java.util.List;
 
@@ -24,38 +24,38 @@ public interface RestClient {
 
 	// Get maps with optional filter
 	@GET("maps")
-	Call<List<Map>> getMaps(@QueryMap java.util.Map<String, String> params);
+	Call<List<TourEntity>> getMaps(@QueryMap java.util.Map<String, String> params);
 
 	@POST("maps")
-	Call<Map> createMap(@Body Map map);
+	Call<TourEntity> createMap(@Body TourEntity tourEntity);
 
-	// Get single map
+	// Get single tourEntity
 	@GET("maps/{id}")
-	Call<Map> getMap(@Path("id") String id);
+	Call<TourEntity> getMap(@Path("id") String id);
 
-	// Update map
+	// Update tourEntity
 	@PUT("maps/{id}")
-	Call<Map> update(@Path("id") String id, @Body Map m);
+	Call<TourEntity> update(@Path("id") String id, @Body TourEntity m);
 
-	// Get map locations
-	@GET("maps/{id}/locations")
-	Call<List<Location>> getMapLocations(@Path("id") String map_id);
+	// Get tourEntity locationEntities
+	@GET("maps/{id}/locationEntities")
+	Call<List<PlaceEntity>> getMapLocations(@Path("id") String map_id);
 
-	// Create map locations
-	@POST("maps/{id}/locations")
-	Call<List<Location>> createMapLocations(@Path("id") String map_id, @Body List<Location> locations);
+	// Create tourEntity locationEntities
+	@POST("maps/{id}/locationEntities")
+	Call<List<PlaceEntity>> createMapLocations(@Path("id") String map_id, @Body List<PlaceEntity> locationEntities);
 
-	// Create map locations
-	@PUT("maps/{id}/locations")
-	Call<List<Location>> updateMapLocations(@Path("id") String map_id, @Body List<Location> locations);
+	// Create tourEntity locationEntities
+	@PUT("maps/{id}/locationEntities")
+	Call<List<PlaceEntity>> updateMapLocations(@Path("id") String map_id, @Body List<PlaceEntity> locationEntities);
 
-	// Get map location
-	@GET("maps/{map_id}/locations/{loc_id}")
-	Call<List<Location>> getMapLocation(@Path("map_id") String map_id, @Path("loc_id") String loc_id);
+	// Get tourEntity location
+	@GET("maps/{map_id}/locationEntities/{loc_id}")
+	Call<List<PlaceEntity>> getMapLocation(@Path("map_id") String map_id, @Path("loc_id") String loc_id);
 
-	// Update map location
-	@PUT("maps/{map_id}/locations/{loc_id}")
-	Call<List<Location>> updateMapLocation(@Path("map_id") String map_id, @Path("loc_id") String loc_id, @Body Location location);
+	// Update tourEntity placeEntity
+	@PUT("maps/{map_id}/locationEntities/{loc_id}")
+	Call<List<PlaceEntity>> updateMapLocation(@Path("map_id") String map_id, @Path("loc_id") String loc_id, @Body PlaceEntity placeEntity);
 
 
 	//
@@ -64,34 +64,34 @@ public interface RestClient {
 	//
 	// Locations requests
 
-	// Get locations
-	@GET("locations")
-	Call<List<Location>> getLocations(@QueryMap java.util.Map<String, String> params);
+	// Get locationEntities
+	@GET("locationEntities")
+	Call<List<PlaceEntity>> getLocations(@QueryMap java.util.Map<String, String> params);
 
 	// Get location
-	@GET("locations/{loc_id}")
-	Call<Location> getLocation(@Path("loc_id") String loc_id);
+	@GET("locationEntities/{loc_id}")
+	Call<PlaceEntity> getLocation(@Path("loc_id") String loc_id);
 
 
 	//
 	//
 	//
 	//
-	// User requests
+	// UserEntity requests
 
 	// Login user
 	@POST("login")
-	Call<User> login(@Body User body);
+	Call<UserEntity> login(@Body UserEntity body);
 
 	// Get all users
 	@GET("users")
-	Call<List<User>> getUsers();
+	Call<List<UserEntity>> getUsers();
 
-	// Create a user
+	// Create a userEntity
 	@POST("users")
-	Call<User> registry(@Body User user);
+	Call<UserEntity> registry(@Body UserEntity userEntity);
 
 	// Get single user
 	@GET("users/{usr_id}")
-	Call<User> getUser(@Path("usr_id") String usr_id);
+	Call<UserEntity> getUser(@Path("usr_id") String usr_id);
 }

@@ -3,7 +3,7 @@ package com.martinlaizg.geofind.data.enums;
 import com.google.gson.annotations.SerializedName;
 
 public enum PlayLevel {
-	@SerializedName("map") MAP,
+	@SerializedName("tourEntity") MAP,
 	@SerializedName("compass") COMPASS,
 	@SerializedName("therm") THERMOMETER;
 

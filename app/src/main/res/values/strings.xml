@@ -16,7 +16,7 @@
     <string name="app_logo_description">Logo de la aplicación</string>
     <string name="log_out">Cerrar sesión</string>
     <string name="account_settings">Ajustes de la cuenta</string>
-    <string name="map">Mapa</string>
+    <string name="tourEntity">Mapa</string>
     <string name="login">Iniciar sesión</string>
     <string name="registry">Registrarse</string>
     <string name="create_account">Crear cuenta</string>
@@ -47,7 +47,7 @@
     </string-array>
     <string name="location_name_description">Nombre de la localización</string>
     <string name="map_list">Lista de mapas</string>
-    <string name="location">Localización</string>
+    <string name="placeEntity">Localización</string>
     <string name="map_creator">Creador de mapas</string>
     <string name="app_description">Aplicación desarrollada como Trabajo Final de Grado en la Universidad de Alicante, Grado en Ingeniería Informática.</string>
     <string name="developed_by">Desarrollado por:</string>

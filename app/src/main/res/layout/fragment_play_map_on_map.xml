@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.fragment.play.map.PlayMapOnMapFragment">
+    tools:context=".views.fragment.play.tourEntity.PlayMapOnMapFragment">
 
     <TextView
         android:id="@+id/map_name"
@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@sample/maps.json/data/name" />
+        tools:text="@sample/mapEntities.json/data/name" />
 
     <TextView
         android:id="@+id/map_description"
@@ -31,9 +31,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/map_name"
-        tools:text="@sample/maps.json/data/description" />
+        tools:text="@sample/mapEntities.json/data/description" />
 
-    <com.google.android.gms.maps.MapView
+    <com.google.android.gms.mapEntities.MapView
         android:id="@+id/map_view"
         android:layout_width="0dp"
         android:layout_height="0dp"

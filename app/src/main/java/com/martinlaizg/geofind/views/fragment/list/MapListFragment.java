@@ -46,7 +46,7 @@ public class MapListFragment
 		recyclerView.setAdapter(adapter);
 
 		viewModel = ViewModelProviders.of(this).get(MapListViewModel.class);
-		viewModel.getAllMaps().observe(this, maps -> adapter.setMaps(maps));
+		viewModel.getAllMaps().observe(this, maps -> adapter.setMapEntities(maps));
 		create_map_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreateMap));
 
 		return view;

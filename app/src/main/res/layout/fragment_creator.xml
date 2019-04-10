@@ -41,7 +41,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/create_map_description"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="@sample/maps.json/data/name" />
+                tools:text="@sample/mapEntities.json/data/name" />
 
             <TextView
                 android:id="@+id/create_map_description"
@@ -57,7 +57,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edit_button"
-                tools:text="@sample/maps.json/data/description" />
+                tools:text="@sample/mapEntities.json/data/description" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/edit_button"

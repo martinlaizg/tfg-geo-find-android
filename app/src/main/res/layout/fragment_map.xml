@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toStartOf="@+id/edit_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@sample/maps.json/data/name" />
+        tools:text="@sample/mapEntities.json/data/name" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/edit_button"
@@ -43,7 +43,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/map_name"
         app:layout_constraintTop_toBottomOf="@+id/map_name"
-        tools:text="@sample/maps.json/data/description" />
+        tools:text="@sample/mapEntities.json/data/description" />
 
     <TextView
         android:id="@+id/map_creator"
@@ -57,7 +57,7 @@
         android:maxLines="1"
         app:layout_constraintStart_toStartOf="@+id/map_name"
         app:layout_constraintTop_toBottomOf="@+id/map_description"
-        tools:text="@sample/maps.json/data/creator" />
+        tools:text="@sample/mapEntities.json/data/creator" />
 
     <TextView
         android:id="@+id/map_num_locations"
@@ -74,7 +74,7 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/map_creator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/map_creator"
-        tools:text="@sample/maps.json/data/num_locations" />
+        tools:text="@sample/mapEntities.json/data/num_locations" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/location_list"

@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.data.access.database.entity.Location;
+import com.martinlaizg.geofind.data.access.database.entities.PlaceEntity;
 import com.martinlaizg.geofind.views.fragment.creator.CreateLocationFragment;
 
 import org.jetbrains.annotations.NotNull;
@@ -26,10 +26,10 @@ import butterknife.ButterKnife;
 public class CreatorLocationAdapter
 		extends RecyclerView.Adapter<CreatorLocationAdapter.CreatorLocationViewHolder> {
 
-	private List<Location> locations;
+	private List<PlaceEntity> locationEntities;
 
 	public CreatorLocationAdapter() {
-		locations = new ArrayList<>();
+		locationEntities = new ArrayList<>();
 	}
 
 	@NotNull
@@ -41,11 +41,11 @@ public class CreatorLocationAdapter
 
 	@Override
 	public void onBindViewHolder(final CreatorLocationViewHolder holder, int position) {
-		holder.locName.setText(locations.get(position).getName());
+		holder.locName.setText(locationEntities.get(position).getName());
 		holder.deleteButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				locations.remove(position);
+				locationEntities.remove(position);
 				notifyDataSetChanged();
 			}
 		});
@@ -56,18 +56,18 @@ public class CreatorLocationAdapter
 
 	@Override
 	public int getItemCount() {
-		return locations.size();
+		return locationEntities.size();
 	}
 
-	public void setLocations(List<Location> locs) {
+	public void setLocationEntities(List<PlaceEntity> locs) {
 		if (locs != null) {
 			// sort elements
-			locs.sort((o1, o2) -> o1.getPosition() > o2.getPosition() ?
+			locs.sort((o1, o2) -> o1.getOrder() > o2.getOrder() ?
 					1 :
-					o1.getPosition() < o2.getPosition() ?
+					o1.getOrder() < o2.getOrder() ?
 							-1 :
 							0);
-			locations = locs;
+			locationEntities = locs;
 			notifyDataSetChanged();
 		}
 	}

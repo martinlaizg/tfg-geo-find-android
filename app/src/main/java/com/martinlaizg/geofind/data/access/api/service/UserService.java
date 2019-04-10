@@ -7,7 +7,7 @@ import com.martinlaizg.geofind.data.access.api.RetrofitInstance;
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.error.ErrorUtils;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
-import com.martinlaizg.geofind.data.access.database.entity.User;
+import com.martinlaizg.geofind.data.access.database.entities.UserEntity;
 
 import java.io.IOException;
 
@@ -29,11 +29,11 @@ public class UserService {
 		return userService;
 	}
 
-	public User login(User user) throws APIException {
-		Response<User> response;
+	public UserEntity login(UserEntity userEntity) throws APIException {
+		Response<UserEntity> response;
 		APIException apiException;
 		try {
-			response = restClient.login(user).execute();
+			response = restClient.login(userEntity).execute();
 			if (response.isSuccessful()) {
 				return response.body();
 			}
@@ -45,11 +45,11 @@ public class UserService {
 		throw apiException;
 	}
 
-	public User registry(User user) throws APIException {
-		Response<User> response;
+	public UserEntity registry(UserEntity userEntity) throws APIException {
+		Response<UserEntity> response;
 		APIException apiException;
 		try {
-			response = restClient.registry(user).execute();
+			response = restClient.registry(userEntity).execute();
 			if (response.isSuccessful()) {
 				return response.body();
 			}

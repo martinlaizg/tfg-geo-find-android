@@ -3,8 +3,8 @@ package com.martinlaizg.geofind.views.viewmodel;
 import android.app.Application;
 
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
-import com.martinlaizg.geofind.data.access.database.entity.Location;
-import com.martinlaizg.geofind.data.access.database.entity.Map;
+import com.martinlaizg.geofind.data.access.database.entities.PlaceEntity;
+import com.martinlaizg.geofind.data.access.database.entities.TourEntity;
 import com.martinlaizg.geofind.data.repository.LocationRepository;
 import com.martinlaizg.geofind.data.repository.MapRepository;
 
@@ -28,8 +28,8 @@ public class MapViewModel
 		locRepo = new LocationRepository(application);
 	}
 
-	public MutableLiveData<Map> getMap(String map_id) {
-		MutableLiveData<Map> m = new MutableLiveData<>();
+	public MutableLiveData<TourEntity> getMap(String map_id) {
+		MutableLiveData<TourEntity> m = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
 				m.postValue(mapRepo.getMap(map_id));
@@ -41,8 +41,8 @@ public class MapViewModel
 		return m;
 	}
 
-	public MutableLiveData<List<Location>> getLocations(String map_id) {
-		MutableLiveData<List<Location>> locs = new MutableLiveData<>();
+	public MutableLiveData<List<PlaceEntity>> getLocations(String map_id) {
+		MutableLiveData<List<PlaceEntity>> locs = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
 				locs.postValue(locRepo.getLocationsByMap(map_id));

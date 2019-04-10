@@ -52,7 +52,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/map_image"
-                tools:text="@sample/maps.json/data/name" />
+                tools:text="@sample/mapEntities.json/data/name" />
 
             <TextView
                 android:id="@+id/map_creator"
@@ -69,7 +69,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/map_name"
                 app:layout_constraintStart_toStartOf="@+id/map_name"
                 app:layout_constraintTop_toBottomOf="@+id/map_name"
-                tools:text="@sample/maps.json/data/creator" />
+                tools:text="@sample/mapEntities.json/data/creator" />
 
 
             <TextView
@@ -87,7 +87,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/map_creator"
                 app:layout_constraintStart_toStartOf="@+id/map_name"
                 app:layout_constraintTop_toBottomOf="@+id/map_creator"
-                tools:text="@sample/maps.json/data/description" />
+                tools:text="@sample/mapEntities.json/data/description" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

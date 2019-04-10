@@ -1,12 +1,8 @@
 package com.martinlaizg.geofind.data.access.database.dao;
 
-import com.martinlaizg.geofind.data.access.database.entity.Location;
-import com.martinlaizg.geofind.data.access.database.entity.Map;
-
-import java.util.List;
+import com.martinlaizg.geofind.data.access.database.entities.TourEntity;
 
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -16,23 +12,12 @@ import androidx.room.Update;
 public interface MapDAO {
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	void insert(Map map);
+	void insert(TourEntity tourEntity);
 
 	@Update
-	void update(Map map);
+	void update(TourEntity tourEntity);
 
-	@Delete
-	void delete(Map map);
+	@Query("SELECT * FROM tours WHERE id = :tour_id")
+	TourEntity getMap(String tour_id);
 
-	@Query("SELECT * FROM maps")
-	List<Map> getAllMaps();
-
-	@Query("DELETE FROM maps")
-	void deleteAllMaps();
-
-	@Query("SELECT * FROM maps WHERE id = :mapId")
-	Map getMap(String mapId);
-
-	@Query("SELECT * FROM locations WHERE map_id = :map_id")
-	List<Location> getLocations(String map_id);
 }

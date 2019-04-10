@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
+import com.martinlaizg.geofind.data.access.database.entities.PlaceEntity;
 import com.martinlaizg.geofind.views.viewmodel.MapCreatorViewModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -82,9 +83,9 @@ public class CreateLocationFragment
 		viewModel = ViewModelProviders.of(requireActivity()).get(MapCreatorViewModel.class);
 		Bundle b = getArguments();
 		if (b != null) {
-			position = b.getInt(LOC_POSITION, viewModel.getCreatedLocations().size());
-			if (position <= viewModel.getCreatedLocations().size()) {
-				com.martinlaizg.geofind.data.access.database.entity.Location l = viewModel.getCreatedLocations().get(position);
+			position = b.getInt(LOC_POSITION, viewModel.getCreatedLocationEntities().size());
+			if (position < viewModel.getCreatedLocationEntities().size()) {
+				PlaceEntity l = viewModel.getCreatedLocationEntities().get(position);
 				Objects.requireNonNull(new_location_name.getEditText()).setText(l.getName());
 				Objects.requireNonNull(new_location_description.getEditText()).setText(l.getDescription());
 				onMapLongClick(new LatLng(Float.valueOf(l.getLat()), Float.valueOf(l.getLon())));

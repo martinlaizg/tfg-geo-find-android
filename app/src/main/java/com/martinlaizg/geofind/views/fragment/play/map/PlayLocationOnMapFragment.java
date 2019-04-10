@@ -24,7 +24,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.button.MaterialButton;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.data.access.database.entity.Location;
+import com.martinlaizg.geofind.data.access.database.entities.PlaceEntity;
 import com.martinlaizg.geofind.views.viewmodel.MapViewModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -46,9 +46,9 @@ public class PlayLocationOnMapFragment
 	static final String LOCATION_ID = "LOCATION_ID";
 	private static final String TAG = PlayLocationOnMapFragment.class.getSimpleName();
 	private static final int PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION = 1;
-	// Minimum time (ms) between location updates
+	// Minimum time (ms) between placeEntity updates
 	private static final long MIN_MS_LOC_UPDATE = 500;
-	// Minimum distance (meters) between location updates
+	// Minimum distance (meters) between placeEntity updates
 	private static final float MIN_METERS_LOC_UPDATE = 1;
 	// Padding (px) between markers and border in location_map_view
 	private static final int MAP_PADDING = 100;
@@ -63,7 +63,7 @@ public class PlayLocationOnMapFragment
 	@BindView(R.id.location_map_view)
 	MapView location_map_view;
 
-	private Location location;
+	private PlaceEntity placeEntity;
 	private GoogleMap gMap;
 
 	@Override
@@ -76,7 +76,7 @@ public class PlayLocationOnMapFragment
 		navigate_button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String uri = String.format(Locale.ENGLISH, "google.navigation:q=%f,%f", Float.valueOf(location.getLat()), Float.valueOf(location.getLon()));
+				String uri = String.format(Locale.ENGLISH, "google.navigation:q=%f,%f", Float.valueOf(placeEntity.getLat()), Float.valueOf(placeEntity.getLon()));
 				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
 				requireActivity().startActivity(intent);
 			}
@@ -93,8 +93,8 @@ public class PlayLocationOnMapFragment
 		}
 		MapViewModel viewModel = ViewModelProviders.of(requireActivity()).get(MapViewModel.class);
 
-		location_name.setText(location.getName());
-		location_description.setText(location.getDescription());
+		location_name.setText(placeEntity.getName());
+		location_description.setText(placeEntity.getDescription());
 	}
 
 	@Override
@@ -121,15 +121,15 @@ public class PlayLocationOnMapFragment
 	}
 
 	private void updateLocation(android.location.Location usrLocation) {
-		Log.i(TAG, "Location updated");
+		Log.i(TAG, "PlaceEntity updated");
 		LatLngBounds.Builder builder = new LatLngBounds.Builder();
-		builder.include(location.getLatLng());
+		builder.include(placeEntity.getPosition());
 		builder.include(new LatLng(usrLocation.getLatitude(), usrLocation.getLongitude()));
 		LatLngBounds bounds = builder.build();
 		CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, MAP_PADDING);
 
 		if (gMap == null) return;
-		gMap.addMarker(new MarkerOptions().position(location.getLatLng()));
+		gMap.addMarker(new MarkerOptions().position(placeEntity.getPosition()));
 		gMap.getUiSettings().setMyLocationButtonEnabled(false);
 		gMap.getUiSettings().setMapToolbarEnabled(false);
 		gMap.moveCamera(cu);

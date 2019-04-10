@@ -3,7 +3,7 @@ package com.martinlaizg.geofind.views.viewmodel;
 import android.app.Application;
 
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
-import com.martinlaizg.geofind.data.access.database.entity.User;
+import com.martinlaizg.geofind.data.access.database.entities.UserEntity;
 import com.martinlaizg.geofind.data.repository.UserRepository;
 
 import androidx.lifecycle.AndroidViewModel;
@@ -14,21 +14,21 @@ public class LoginViewModel
 
 	private final UserRepository repository;
 
-	private User user;
+	private UserEntity userEntity;
 	private APIException error;
 
 	public LoginViewModel(Application application) {
 		super(application);
 		repository = new UserRepository(application);
-		user = new User();
+		userEntity = new UserEntity();
 	}
 
-	public MutableLiveData<User> login() {
-		MutableLiveData<User> u = new MutableLiveData<>();
+	public MutableLiveData<UserEntity> login() {
+		MutableLiveData<UserEntity> u = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
-				user = repository.login(user);
-				u.postValue(user);
+				userEntity = repository.login(userEntity);
+				u.postValue(userEntity);
 			} catch (APIException e) {
 				setError(e);
 				u.postValue(null);
@@ -37,13 +37,13 @@ public class LoginViewModel
 		return u;
 	}
 
-	public MutableLiveData<User> registry() {
+	public MutableLiveData<UserEntity> registry() {
 
-		MutableLiveData<User> u = new MutableLiveData<>();
+		MutableLiveData<UserEntity> u = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
-				user = repository.registry(user);
-				u.postValue(user);
+				userEntity = repository.registry(userEntity);
+				u.postValue(userEntity);
 			} catch (APIException e) {
 				setError(e);
 				u.postValue(null);
@@ -53,24 +53,24 @@ public class LoginViewModel
 	}
 
 	public void setLogin(String email, String password) {
-		user.setEmail(email);
-		user.setPassword(password);
+		userEntity.setEmail(email);
+		userEntity.setPassword(password);
 	}
 
 
 	public void setRegistry(String name, String username, String email, String password) {
-		user.setName(name);
-		user.setUsername(username);
-		user.setEmail(email);
-		user.setPassword(password);
+		userEntity.setName(name);
+		userEntity.setUsername(username);
+		userEntity.setEmail(email);
+		userEntity.setPassword(password);
 	}
 
 	public String getEmail() {
-		return user.getEmail();
+		return userEntity.getEmail();
 	}
 
 	public void setEmail(String email) {
-		user.setEmail(email);
+		userEntity.setEmail(email);
 	}
 
 	public APIException getError() {

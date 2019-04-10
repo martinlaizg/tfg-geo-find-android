@@ -3,8 +3,8 @@ package com.martinlaizg.geofind.views.viewmodel;
 import android.app.Application;
 
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
-import com.martinlaizg.geofind.data.access.database.entity.Location;
-import com.martinlaizg.geofind.data.access.database.entity.Map;
+import com.martinlaizg.geofind.data.access.database.entities.PlaceEntity;
+import com.martinlaizg.geofind.data.access.database.entities.TourEntity;
 import com.martinlaizg.geofind.data.enums.PlayLevel;
 import com.martinlaizg.geofind.data.repository.LocationRepository;
 import com.martinlaizg.geofind.data.repository.MapRepository;
@@ -21,8 +21,8 @@ public class MapCreatorViewModel
 
 	private final MapRepository mapRepo;
 	private final LocationRepository locRepo;
-	private Map createdMap;
-	private List<Location> createdLocations;
+	private TourEntity createdTourEntity;
+	private List<PlaceEntity> createdLocationEntities;
 	private boolean edit;
 	private APIException error;
 
@@ -35,108 +35,107 @@ public class MapCreatorViewModel
 	}
 
 
-	public MutableLiveData<Map> createMap() {
-		MutableLiveData<Map> m = new MutableLiveData<>();
+	public MutableLiveData<TourEntity> createMap() {
+		MutableLiveData<TourEntity> m = new MutableLiveData<>();
 		new Thread(() -> {
 			// TODO manage errors
-			// TODO create map and location on the same request
-			if (createdMap.getId().isEmpty()) { // Create map
+			// TODO create tourEntity and location on the same request
+			if (createdTourEntity.getId().isEmpty()) { // Create tourEntity
 				try {
-					createdMap = mapRepo.create(createdMap);
-					if (!createdLocations.isEmpty()) {  // there are locations
+					createdTourEntity = mapRepo.create(createdTourEntity);
+					if (!createdLocationEntities.isEmpty()) {  // there are locationEntities
 						try {
-							locRepo.createMapLocations(createdMap.getId(), createdLocations);
+							locRepo.createMapLocations(createdTourEntity.getId(), createdLocationEntities);
 						} catch (APIException e) {  // fails create location
-							if (!createdMap.getId().isEmpty()) { // is needed remove de created map
-								mapRepo.remove(createdMap);
+							if (!createdTourEntity.getId().isEmpty()) { // is needed remove de created tourEntity
+								//								mapRepo.remove(createdTourEntity);
 							}
 							setError(e);
 							m.postValue(null);
 						}
 					}
-				} catch (APIException e) {  // fails create map
+				} catch (APIException e) {  // fails create tourEntity
 					setError(e);
 					m.postValue(null);
 					return;
 				}
 
-			} else { // Update map
+			} else { // Update tourEntity
 				try {
-					Map updatedMap = mapRepo.update(createdMap);
-					if (!createdLocations.isEmpty()) {  // there are locations
+					TourEntity updatedTourEntity = mapRepo.update(createdTourEntity);
+					if (!createdLocationEntities.isEmpty()) {  // there are locationEntities
 						try {
-							locRepo.updateMapLocations(createdMap.getId(), createdLocations);
-							createdMap = updatedMap;
+							locRepo.updateMapLocations(createdTourEntity.getId(), createdLocationEntities);
+							createdTourEntity = updatedTourEntity;
 						} catch (APIException e) {  // fails create location
-							if (!updatedMap.getId().isEmpty()) { // is needed revert the changes
-								mapRepo.update(updatedMap);
+							if (!updatedTourEntity.getId().isEmpty()) { // is needed revert the changes
+								mapRepo.update(updatedTourEntity);
 							}
 							setError(e);
 							m.postValue(null);
 						}
 					} else {
-						createdMap = updatedMap;
+						createdTourEntity = updatedTourEntity;
 					}
-				} catch (APIException e) {  // fails create map
+				} catch (APIException e) {  // fails create tourEntity
 					setError(e);
 					m.postValue(null);
 					return;
 				}
 			}
-			m.postValue(createdMap);
+			m.postValue(createdTourEntity);
 		}).start();
 		return m;
 	}
 
-	public List<Location> getCreatedLocations() {
-		if (createdLocations == null) createdLocations = new ArrayList<>();
-		return createdLocations;
+	public List<PlaceEntity> getCreatedLocationEntities() {
+		if (createdLocationEntities == null) createdLocationEntities = new ArrayList<>();
+		return createdLocationEntities;
 	}
 
-	public void setCreatedLocations(List<Location> createdLocations) {
-		this.createdLocations = createdLocations;
+	public void setCreatedLocationEntities(List<PlaceEntity> createdLocationEntities) {
+		this.createdLocationEntities = createdLocationEntities;
 	}
 
-	public Map getCreatedMap() {
-		if (createdMap == null) createdMap = new Map();
-		return createdMap;
+	public TourEntity getCreatedTourEntity() {
+		if (createdTourEntity == null) createdTourEntity = new TourEntity();
+		return createdTourEntity;
 	}
 
-	public void setCreatedMap(Map createdMap) {
-		this.createdMap = createdMap;
+	public void setCreatedTourEntity(TourEntity createdTourEntity) {
+		this.createdTourEntity = createdTourEntity;
 	}
 
-	public void setLocation(String name, String description, String lat, String lon, int position) {
-		Location l;
-		try {
-			l = createdLocations.get(position);
-		} catch(IndexOutOfBoundsException e){
-			l = new Location();
-		}
-
+	public void setLocation(String name, String description, Float lat, Float lon, int position) {
+		PlaceEntity l = new PlaceEntity();
 		l.setName(name);
 		l.setDescription(description);
 		l.setLat(lat);
 		l.setLon(lon);
-		if (createdLocations == null) {
-			createdLocations = new ArrayList<>();
+		l.setOrder(position);
+		if (createdLocationEntities == null) {
+			createdLocationEntities = new ArrayList<>();
 		}
-		l.setPosition(position);
-		createdLocations.set(position, l);
+
+		if (position < createdLocationEntities.size()) {
+			createdLocationEntities.set(position, l);
+		} else {
+			createdLocationEntities.add(l);
+		}
 	}
 
-	public void setCreatedMap(String name, String description, String creator_id, PlayLevel pl) {
-		if (createdMap == null) {
-			createdMap = new Map();
+	public void setCreatedMap(String name, String description, Integer creator_id, PlayLevel pl) {
+		if (createdTourEntity == null) {
+			createdTourEntity = new TourEntity();
 		}
-		createdMap.setName(name);
-		createdMap.setDescription(description);
-		createdMap.setCreator_id(creator_id);
-		createdMap.setMin_level(pl);
+		createdTourEntity.setName(name);
+		createdTourEntity.setDescription(description);
+		createdTourEntity.setCreator_id(creator_id);
+		createdTourEntity.setMin_level(pl);
 	}
 
-	public MutableLiveData<Map> getMap(String map_id) {
-		MutableLiveData<Map> m = new MutableLiveData<>();
+	public MutableLiveData<TourEntity> getMap(String map_id) {
+		MutableLiveData<TourEntity> m = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
 				m.postValue(mapRepo.getMap(map_id));
@@ -148,8 +147,8 @@ public class MapCreatorViewModel
 		return m;
 	}
 
-	public MutableLiveData<List<Location>> getLocations(String map_id) {
-		MutableLiveData<List<Location>> locs = new MutableLiveData<>();
+	public MutableLiveData<List<PlaceEntity>> getLocations(String map_id) {
+		MutableLiveData<List<PlaceEntity>> locs = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
 				locs.postValue(locRepo.getLocationsByMap(map_id));
@@ -162,8 +161,8 @@ public class MapCreatorViewModel
 	}
 
 	public void clear() {
-		createdMap = null;
-		createdLocations = null;
+		createdTourEntity = null;
+		createdLocationEntities = null;
 	}
 
 	public boolean isEdit() {

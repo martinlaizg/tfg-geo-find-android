@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.data.access.database.entity.Map;
+import com.martinlaizg.geofind.data.access.database.entities.TourEntity;
 import com.martinlaizg.geofind.views.fragment.single.MapFragment;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 public class MapListAdapter
 		extends RecyclerView.Adapter<MapListAdapter.MapsViewHolder> {
 
-	private List<Map> maps = new ArrayList<>();
+	private List<TourEntity> mapEntities = new ArrayList<>();
 	private NavController navController;
 
 	@NonNull
@@ -36,13 +36,13 @@ public class MapListAdapter
 
 	@Override
 	public void onBindViewHolder(@NonNull MapsViewHolder holder, final int i) {
-		final Map map = maps.get(i);
-		holder.mapName.setText(map.getName());
-		holder.mapCreator.setText("Creador " + map.getCreator_id() + " TODO"); // Cambiar por valor real
-		holder.mapDescription.setText(map.getDescription());
+		final TourEntity tourEntity = mapEntities.get(i);
+		holder.mapName.setText(tourEntity.getName());
+		holder.mapCreator.setText("Creador " + tourEntity.getCreator_id() + " TODO"); // Cambiar por valor real
+		holder.mapDescription.setText(tourEntity.getDescription());
 
 		Bundle b = new Bundle();
-		b.putString(MapFragment.MAP_ID, maps.get(i).getId());
+		b.putString(MapFragment.MAP_ID, mapEntities.get(i).getId());
 		holder.materialCardView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -53,11 +53,11 @@ public class MapListAdapter
 
 	@Override
 	public int getItemCount() {
-		return maps.size();
+		return mapEntities.size();
 	}
 
-	public void setMaps(List<Map> maps) {
-		this.maps = maps;
+	public void setMapEntities(List<TourEntity> mapEntities) {
+		this.mapEntities = mapEntities;
 		notifyDataSetChanged();
 	}
 

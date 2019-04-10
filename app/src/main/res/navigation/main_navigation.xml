@@ -66,7 +66,7 @@
     <fragment
         android:id="@+id/navMap"
         android:name="com.martinlaizg.geofind.views.fragment.single.MapFragment"
-        android:label="@string/map"
+        android:label="@string/tourEntity"
         tools:layout="@layout/fragment_map">
         <action
             android:id="@+id/toLocation"
@@ -78,7 +78,7 @@
     <fragment
         android:id="@+id/navLocation"
         android:name="com.martinlaizg.geofind.views.fragment.single.LocationFragment"
-        android:label="@string/location"
+        android:label="@string/placeEntity"
         tools:layout="@layout/fragment_location" />
     <fragment
         android:id="@+id/navLogin"

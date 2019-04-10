@@ -3,7 +3,7 @@ package com.martinlaizg.geofind.views.viewmodel;
 import android.app.Application;
 
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
-import com.martinlaizg.geofind.data.access.database.entity.Location;
+import com.martinlaizg.geofind.data.access.database.entities.PlaceEntity;
 import com.martinlaizg.geofind.data.repository.LocationRepository;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public class LocationViewModel
 		extends AndroidViewModel {
 
 	private final LocationRepository locRepo;
-	private final LiveData<List<Location>> allLocations;
+	private final LiveData<List<PlaceEntity>> allLocations;
 	private APIException error;
 
 
@@ -27,12 +27,12 @@ public class LocationViewModel
 		allLocations = locRepo.getAllLocations();
 	}
 
-	public LiveData<List<Location>> getAllLocations() {
+	public LiveData<List<PlaceEntity>> getAllLocations() {
 		return allLocations;
 	}
 
-	public MutableLiveData<Location> getLocation(String loc_id) {
-		MutableLiveData<Location> l = new MutableLiveData<>();
+	public MutableLiveData<PlaceEntity> getLocation(String loc_id) {
+		MutableLiveData<PlaceEntity> l = new MutableLiveData<>();
 
 		new Thread(() -> {
 			try {

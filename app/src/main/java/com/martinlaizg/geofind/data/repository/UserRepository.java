@@ -6,7 +6,7 @@ import com.martinlaizg.geofind.data.access.api.service.UserService;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
 import com.martinlaizg.geofind.data.access.database.dao.UserDAO;
-import com.martinlaizg.geofind.data.access.database.entity.User;
+import com.martinlaizg.geofind.data.access.database.entities.UserEntity;
 
 public class UserRepository {
 
@@ -21,7 +21,7 @@ public class UserRepository {
 	}
 
 
-	public User login(User u) throws APIException {
+	public UserEntity login(UserEntity u) throws APIException {
 		u = userService.login(u);
 		if (u != null) {
 			userDAO.insert(u);
@@ -29,7 +29,7 @@ public class UserRepository {
 		return u;
 	}
 
-	public User registry(User u) throws APIException {
+	public UserEntity registry(UserEntity u) throws APIException {
 		u = userService.registry(u);
 		if (u != null) {
 			userDAO.insert(u);

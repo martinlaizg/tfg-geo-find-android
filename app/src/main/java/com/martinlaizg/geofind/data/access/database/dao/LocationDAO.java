@@ -1,11 +1,10 @@
 package com.martinlaizg.geofind.data.access.database.dao;
 
-import com.martinlaizg.geofind.data.access.database.entity.Location;
+import com.martinlaizg.geofind.data.access.database.entities.PlaceEntity;
 
 import java.util.List;
 
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -15,23 +14,14 @@ import androidx.room.Update;
 public interface LocationDAO {
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	void insert(Location location);
+	void insert(PlaceEntity placeEntity);
 
 	@Update
-	void update(Location location);
+	void update(PlaceEntity placeEntity);
 
-	@Delete
-	void delete(Location location);
+	@Query("SELECT * FROM places WHERE id = :place_id")
+	PlaceEntity getLocation(String place_id);
 
-	@Query("DELETE FROM locations")
-	void deleteAllLocations();
-
-	@Query("SELECT * FROM locations")
-	List<Location> getAllLocations();
-
-	@Query("SELECT * FROM locations WHERE id = :loc_id")
-	Location getLocation(String loc_id);
-
-	@Query("SELECT * FROM locations WHERE map_id = :map_id ORDER BY position")
-	List<Location> getLocationsByMap(String map_id);
+	@Query("SELECT * FROM places WHERE tour_id = :tour_id ORDER BY `order`")
+	List<PlaceEntity> getPlacesByTour(String tour_id);
 }

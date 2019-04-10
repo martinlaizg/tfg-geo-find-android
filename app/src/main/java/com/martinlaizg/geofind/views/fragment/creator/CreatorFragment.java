@@ -11,7 +11,7 @@ import com.google.android.material.button.MaterialButton;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.adapter.CreatorLocationAdapter;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
-import com.martinlaizg.geofind.data.access.database.entity.Map;
+import com.martinlaizg.geofind.data.access.database.entities.TourEntity;
 import com.martinlaizg.geofind.views.fragment.single.MapFragment;
 import com.martinlaizg.geofind.views.viewmodel.MapCreatorViewModel;
 
@@ -64,7 +64,7 @@ public class CreatorFragment
 
 		add_location_button.setOnClickListener(v -> {
 			Bundle b = new Bundle();
-			b.putInt(CreateLocationFragment.LOC_POSITION, viewModel.getCreatedLocations().size());
+			b.putInt(CreateLocationFragment.LOC_POSITION, viewModel.getCreatedLocationEntities().size());
 			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).navigate(R.id.toCreateLocation, b);
 		});
 		edit_button.setOnClickListener(v -> {
@@ -74,18 +74,18 @@ public class CreatorFragment
 		create_map_button.setOnClickListener(this);
 
 		viewModel = ViewModelProviders.of(requireActivity()).get(MapCreatorViewModel.class);
-		Map map = viewModel.getCreatedMap();
-		if (!map.getId().isEmpty()) {
+		TourEntity tourEntity = viewModel.getCreatedTourEntity();
+		if (!tourEntity.getId().isEmpty()) {
 			create_map_button.setText(R.string.update_map);
 		}
-		if (!map.getName().isEmpty()) {
-			mapName.setText(map.getName());
+		if (!tourEntity.getName().isEmpty()) {
+			mapName.setText(tourEntity.getName());
 		}
-		if (!map.getDescription().isEmpty()) {
-			mapDescription.setText(map.getDescription());
+		if (!tourEntity.getDescription().isEmpty()) {
+			mapDescription.setText(tourEntity.getDescription());
 		}
 
-		adapter.setLocations(viewModel.getCreatedLocations());
+		adapter.setLocationEntities(viewModel.getCreatedLocationEntities());
 	}
 
 	@Override
