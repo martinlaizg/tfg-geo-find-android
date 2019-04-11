@@ -1,46 +1,45 @@
 package com.martinlaizg.geofind.data.access.database.entities.relations;
 
-import com.martinlaizg.geofind.data.access.database.entities.PlaceEntity;
-import com.martinlaizg.geofind.data.access.database.entities.TourEntity;
-import com.martinlaizg.geofind.data.access.database.entities.UserEntity;
+import com.martinlaizg.geofind.data.access.database.entities.Place;
+import com.martinlaizg.geofind.data.access.database.entities.Tour;
 
 import java.util.List;
 
 import androidx.room.Embedded;
 import androidx.room.Relation;
 
-public class MapUserLocation {
+public class TourCreatorPlaces {
 
 	@Embedded
-	private TourEntity tour;
+	private Tour tour;
 
-	@Embedded(prefix = "c_")
-	private UserEntity creator;
+	private String username;
 
-	@Relation(parentColumn = "id", entityColumn = "tour_id", entity = PlaceEntity.class)
-	private List<PlaceEntity> locationEntities;
+	@Relation(parentColumn = "id", entityColumn = "tour_id")
+	private List<Place> places;
 
-	public TourEntity getTour() {
+	public Tour getTour() {
 		return tour;
 	}
 
-	public void setTour(TourEntity tour) {
+	public void setTour(Tour tour) {
 		this.tour = tour;
 	}
 
-	public UserEntity getCreator() {
-		return creator;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setCreator(UserEntity creator) {
-		this.creator = creator;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public List<PlaceEntity> getLocationEntities() {
-		return locationEntities;
+	public List<Place> getPlaces() {
+		return places;
 	}
 
-	public void setLocationEntities(List<PlaceEntity> locationEntities) {
-		this.locationEntities = locationEntities;
+	public void setPlaces(List<Place> places) {
+		this.places = places;
 	}
+
 }
