@@ -8,14 +8,13 @@ import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.data.access.database.entities.TourEntity;
-import com.martinlaizg.geofind.views.fragment.single.MapFragment;
+import com.martinlaizg.geofind.data.access.database.entities.Tour;
+import com.martinlaizg.geofind.views.fragment.single.TourFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -24,8 +23,7 @@ import butterknife.ButterKnife;
 public class MapListAdapter
 		extends RecyclerView.Adapter<MapListAdapter.MapsViewHolder> {
 
-	private List<TourEntity> mapEntities = new ArrayList<>();
-	private NavController navController;
+	private List<Tour> mapEntities = new ArrayList<>();
 
 	@NonNull
 	@Override
@@ -36,19 +34,14 @@ public class MapListAdapter
 
 	@Override
 	public void onBindViewHolder(@NonNull MapsViewHolder holder, final int i) {
-		final TourEntity tourEntity = mapEntities.get(i);
-		holder.mapName.setText(tourEntity.getName());
-		holder.mapCreator.setText("Creador " + tourEntity.getCreator_id() + " TODO"); // Cambiar por valor real
-		holder.mapDescription.setText(tourEntity.getDescription());
+		final Tour tour = mapEntities.get(i);
+		holder.mapName.setText(tour.getName());
+		holder.mapCreator.setText(tour.getCreator().getUsername());
+		holder.mapDescription.setText(tour.getDescription());
 
 		Bundle b = new Bundle();
-		b.putString(MapFragment.MAP_ID, mapEntities.get(i).getId());
-		holder.materialCardView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Navigation.findNavController(v).navigate(R.id.toMap, b);
-			}
-		});
+		b.putInt(TourFragment.TOUR_ID, mapEntities.get(i).getId());
+		holder.materialCardView.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.toTour, b));
 	}
 
 	@Override
@@ -56,7 +49,7 @@ public class MapListAdapter
 		return mapEntities.size();
 	}
 
-	public void setMapEntities(List<TourEntity> mapEntities) {
+	public void setMapEntities(List<Tour> mapEntities) {
 		this.mapEntities = mapEntities;
 		notifyDataSetChanged();
 	}

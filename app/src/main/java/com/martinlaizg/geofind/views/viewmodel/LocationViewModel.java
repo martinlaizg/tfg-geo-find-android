@@ -2,56 +2,25 @@ package com.martinlaizg.geofind.views.viewmodel;
 
 import android.app.Application;
 
-import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
-import com.martinlaizg.geofind.data.access.database.entities.PlaceEntity;
-import com.martinlaizg.geofind.data.repository.LocationRepository;
+import com.martinlaizg.geofind.data.access.database.entities.Place;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 public class LocationViewModel
 		extends AndroidViewModel {
 
-	private final LocationRepository locRepo;
-	private final LiveData<List<PlaceEntity>> allLocations;
-	private APIException error;
-
 
 	public LocationViewModel(@NonNull Application application) {
 		super(application);
-		locRepo = new LocationRepository(application);
-		allLocations = locRepo.getAllLocations();
 	}
 
-	public LiveData<List<PlaceEntity>> getAllLocations() {
-		return allLocations;
-	}
 
-	public MutableLiveData<PlaceEntity> getLocation(String loc_id) {
-		MutableLiveData<PlaceEntity> l = new MutableLiveData<>();
-
-		new Thread(() -> {
-			try {
-				l.postValue(locRepo.getLocation(loc_id));
-			} catch (APIException e) {
-				setError(e);
-				l.postValue(null);
-			}
-
-		}).start();
-
-		return l;
-	}
-
-	public APIException getError() {
-		return error;
-	}
-
-	public void setError(APIException error) {
-		this.error = error;
+	public MutableLiveData<List<Place>> getAllLocations() {
+		// TODO
+		return new MutableLiveData<>();
 	}
 }

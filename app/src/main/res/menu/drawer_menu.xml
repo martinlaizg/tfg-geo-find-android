@@ -5,7 +5,7 @@
     <group android:checkableBehavior="none">
         <item
             android:id="@+id/toMapList"
-            android:title="@string/tourEntity" />
+            android:title="@string/tour" />
     </group>
 
     <item android:title="@string/account_settings">

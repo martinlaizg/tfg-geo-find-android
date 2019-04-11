@@ -11,11 +11,15 @@ public class PlayLevelTypeConverter {
 	public static PlayLevel toPlayLevel(String playLevelString) {
 		return playLevelString == null ?
 				null :
-				PlayLevel.valueOf(playLevelString);
+				playLevelString.isEmpty() ?
+						PlayLevel.MAP :
+						PlayLevel.valueOf(playLevelString);
 	}
 
 	@TypeConverter
 	public static String fromPlayLevel(PlayLevel playLevel) {
-		return playLevel.toString();
+		return playLevel == null ?
+				"" :
+				playLevel.toString();
 	}
 }

@@ -47,7 +47,7 @@ public class MapListFragment
 
 		viewModel = ViewModelProviders.of(this).get(MapListViewModel.class);
 		viewModel.getAllMaps().observe(this, maps -> adapter.setMapEntities(maps));
-		create_map_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreateMap));
+		create_map_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreator));
 
 		return view;
 	}

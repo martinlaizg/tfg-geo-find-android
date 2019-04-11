@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.fragment.play.tourEntity.PlayLocationOnMapFragment">
+    tools:context=".views.fragment.play.tour.PlayLocationOnMapFragment">
 
     <com.google.android.gms.mapEntities.MapView
         android:id="@+id/location_map_view"

@@ -33,7 +33,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/imageView"
-        tools:text="@sample/userEntity.json/data/name" />
+        tools:text="@sample/user.json/data/name" />
 
     <TextView
         android:id="@+id/drawer_header_username"
@@ -47,7 +47,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/drawer_header_name"
         app:layout_constraintTop_toBottomOf="@+id/drawer_header_name"
-        tools:text="@sample/userEntity.json/data/username" />
+        tools:text="@sample/user.json/data/username" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

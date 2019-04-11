@@ -8,7 +8,7 @@
     <string name="app_logo_description">Logo de la aplicación</string>
     <string name="log_out">Cerrar sesión</string>
     <string name="account_settings">Ajustes de la cuenta</string>
-    <string name="tourEntity">Mapa</string>
+    <string name="tour">Mapa</string>
     <string name="login">Iniciar sesión</string>
     <string name="registry">Registrarse</string>
     <string name="create_account">Crear cuenta</string>
@@ -26,7 +26,7 @@
     <string name="wrong_email_password">Email o contraseña incorrectos</string>
     <string name="default_delete_loc">Borrar localizacion</string>
     <string name="create_location">Crear localización</string>
-    <string name="edit">Editar</string>
+    <string name="loaded">Editar</string>
     <string name="location_list">Lista de localizaciones</string>
     <string name="add_location">Añadir localización</string>
     <string name="required_verify_password">Debes de verificar la contraseña</string>
@@ -34,7 +34,7 @@
     <string name="select_min_difficulty">Selecciona la dificultad mínima</string>
     <string name="location_name_description">Nombre de la localización</string>
     <string name="map_list">Lista de mapas</string>
-    <string name="placeEntity">Localización</string>
+    <string name="place">Localización</string>
     <string name="map_creator">Creador de mapas</string>
     <string name="app_description">Aplicación desarrollada como Trabajo Final de Grado en la Universidad de Alicante, Grado en Ingeniería Informática.</string>
     <string name="developed_by">Desarrollado por:</string>
@@ -56,11 +56,11 @@
     <string name="next">Siguiente</string>
     <string name="update_location">Actualizar localización</string>
     <string name="no_locations">No hay localizaciones</string>
-    <string name="update_map">Actualizar mapa</string>
+    <string name="update_tour">Actualizar mapa</string>
     <string name="other_error">Otro error</string>
     <string name="id_error">Error de ID</string>
     <string name="parse_error">Error de parse</string>
     <string name="network_error">Error de conexión</string>
     <string name="email_error">Error de email</string>
-    <string name="map_created">Mapa creado</string>
+    <string name="tour_created">Mapa creado</string>
 </resources>

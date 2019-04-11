@@ -21,8 +21,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.data.access.database.entities.PlaceEntity;
-import com.martinlaizg.geofind.data.access.database.entities.TourEntity;
+import com.martinlaizg.geofind.data.access.database.entities.Place;
+import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.views.viewmodel.MapViewModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -69,9 +69,9 @@ public class PlayMapOnMapFragment
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		viewModel = ViewModelProviders.of(requireActivity()).get(MapViewModel.class);
-		TourEntity tourEntity = new TourEntity();
-		map_name.setText(tourEntity.getName());
-		map_description.setText(tourEntity.getDescription());
+		Tour tour = new Tour();
+		map_name.setText(tour.getName());
+		map_description.setText(tour.getDescription());
 	}
 
 
@@ -99,9 +99,9 @@ public class PlayMapOnMapFragment
 
 	@SuppressLint("MissingPermission")
 	private void setLocations() {
-		List<PlaceEntity> locs = new ArrayList<>();
+		List<Place> locs = new ArrayList<>();
 		LatLngBounds.Builder builder = new LatLngBounds.Builder();
-		for (PlaceEntity l : locs) { // Add the locationEntities to the builder
+		for (Place l : locs) { // Add the locationEntities to the builder
 			MarkerOptions m = new MarkerOptions().position(l.getPosition()).title(l.getName());
 			gMap.addMarker(m);
 			builder.include(m.getPosition());
@@ -124,7 +124,7 @@ public class PlayMapOnMapFragment
 	@Override
 	public void onInfoWindowClick(Marker marker) {
 		String name = marker.getTitle();
-		PlaceEntity l = new PlaceEntity();
+		Place l = new Place();
 		Bundle b = new Bundle();
 		b.putInt(PlayLocationOnMapFragment.LOCATION_ID, l.getId());
 	}

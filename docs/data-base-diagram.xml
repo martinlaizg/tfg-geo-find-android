@@ -92,7 +92,7 @@
         </mxCell>
         <mxCell
             style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#e0e0e0;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;swimlaneFillColor=#ffffff;align=center;fontSize=14;"
-            id="51" parent="1" value="tourEntity" vertex="1">
+            id="51" parent="1" value="tour" vertex="1">
             <mxGeometry as="geometry" height="144" width="150" x="560" y="40" />
         </mxCell>
         <mxCell
@@ -152,7 +152,7 @@
         </mxCell>
         <mxCell
             style="shape=partialRectangle;top=0;left=0;right=0;bottom=0;align=left;verticalAlign=middle;fillColor=none;spacingLeft=60;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;dropTarget=0;fontStyle=5;fontSize=12;"
-            id="90" parent="89" value="user_id" vertex="1">
+            id="90" parent="89" value="creator_id" vertex="1">
             <mxGeometry as="geometry" height="30" width="160" y="26" />
         </mxCell>
         <mxCell
@@ -324,7 +324,7 @@
         </mxCell>
         <mxCell
             style="shape=partialRectangle;top=0;left=0;right=0;bottom=0;align=left;verticalAlign=middle;fillColor=none;spacingLeft=60;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;dropTarget=0;fontStyle=5;fontSize=12;"
-            id="135" parent="134" value="user_id" vertex="1">
+            id="135" parent="134" value="creator_id" vertex="1">
             <mxGeometry as="geometry" height="30" width="160" y="26" />
         </mxCell>
         <mxCell

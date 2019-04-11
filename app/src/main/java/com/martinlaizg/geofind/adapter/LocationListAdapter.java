@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.data.access.database.entities.PlaceEntity;
+import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.views.fragment.single.LocationFragment;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 public class LocationListAdapter
 		extends RecyclerView.Adapter<LocationListAdapter.LocationsViewHolder> {
 
-	private List<PlaceEntity> locationEntities;
+	private List<Place> locationEntities;
 
 	public LocationListAdapter() {
 		locationEntities = new ArrayList<>();
@@ -38,15 +38,15 @@ public class LocationListAdapter
 
 	@Override
 	public void onBindViewHolder(@NonNull LocationsViewHolder holder, int position) {
-		PlaceEntity l = locationEntities.get(position);
+		Place l = locationEntities.get(position);
 		holder.location_name.setText(l.getName());
 		holder.location_description.setText(l.getDescription());
 		Bundle b = new Bundle();
-		b.putString(LocationFragment.LOC_ID, l.getId());
-		holder.location_card.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.navLocation, b));
+		b.putInt(LocationFragment.PLACE_ID, l.getId());
+		holder.location_card.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.navPlace, b));
 	}
 
-	public void setLocationEntities(List<PlaceEntity> locationEntities) {
+	public void setLocationEntities(List<Place> locationEntities) {
 		this.locationEntities = locationEntities;
 		notifyDataSetChanged();
 	}
@@ -64,7 +64,7 @@ public class LocationListAdapter
 		TextView location_name;
 		@BindView(R.id.location_description)
 		TextView location_description;
-		@BindView(R.id.location_card)
+		@BindView(R.id.place_card)
 		CardView location_card;
 
 		LocationsViewHolder(@NonNull View itemView) {

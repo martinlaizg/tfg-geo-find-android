@@ -12,10 +12,12 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
-import com.martinlaizg.geofind.data.access.database.entities.TourEntity;
-import com.martinlaizg.geofind.data.access.database.entities.UserEntity;
+import com.martinlaizg.geofind.data.access.database.entities.Tour;
+import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.data.enums.PlayLevel;
-import com.martinlaizg.geofind.views.viewmodel.MapCreatorViewModel;
+import com.martinlaizg.geofind.views.viewmodel.CreatorViewModel;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -28,11 +30,9 @@ import androidx.preference.PreferenceManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CreateMapFragment
+public class CreateTourFragment
 		extends Fragment
 		implements View.OnClickListener {
-
-	public static final String MAP_ID = "MAP_ID";
 
 	@BindView(R.id.new_map_name_layout)
 	TextInputLayout new_map_name;
@@ -40,51 +40,26 @@ public class CreateMapFragment
 	TextInputLayout new_map_description;
 
 	@BindView(R.id.done_button)
-	MaterialButton doneButton;
+	MaterialButton done_button;
 	@BindView(R.id.add_image_button)
 	MaterialButton add_image_button;
 	@BindView(R.id.difficulty_spinner)
 	Spinner difficultySpinner;
 
-	private MapCreatorViewModel viewModel;
+	private CreatorViewModel viewModel;
 
 
 	@Override
-	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-		final View view = inflater.inflate(R.layout.fragment_create_map, container, false);
+	public View onCreateView(@NotNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+		final View view = inflater.inflate(R.layout.fragment_tour_map, container, false);
 		ButterKnife.bind(this, view);
 		return view;
 	}
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		viewModel = ViewModelProviders.of(requireActivity()).get(MapCreatorViewModel.class);
-		if (!viewModel.isEdit()) { // we need to retrieve de tourEntity
-			viewModel.clear();
-			Bundle b = getArguments();
-			if (b != null) {
-				String map_id = b.getString(MAP_ID);
-				if (map_id != null) {
-					viewModel.getMap(map_id).observe(requireActivity(), map -> {
-						viewModel.setCreatedTourEntity(map);
-						setInputs();
-					});
-					viewModel.getLocations(map_id).observe(requireActivity(), locations -> {
-						viewModel.setCreatedLocationEntities(locations);
-						setInputs();
-					});
-				}
-			} else {
-				viewModel.setCreatedTourEntity(new TourEntity());
-			}
-		}
-		setInputs();
-		viewModel.setEdit(false);
-		doneButton.setOnClickListener(this);
-	}
-
-	private void setInputs() {
-		TourEntity m = viewModel.getCreatedTourEntity();
+		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel.class);
+		Tour m = viewModel.getTour();
 		if (m != null) {
 			if (!m.getName().isEmpty()) {
 				Objects.requireNonNull(new_map_name.getEditText()).setText(m.getName());
@@ -96,19 +71,24 @@ public class CreateMapFragment
 				difficultySpinner.setSelection(m.getMin_level().ordinal());
 			}
 		}
+		viewModel.setLoaded(false);
+		done_button.setOnClickListener(this);
 	}
 
 	@Override
 	public void onClick(View v) {
 		try {
+			new_map_name.setError("");
 			if (Objects.requireNonNull(new_map_name.getEditText()).getText().toString().trim().isEmpty()) {
 				new_map_name.setError(getString(R.string.required_name));
 				return;
 			}
+			new_map_name.setError("");
 			if (new_map_name.getEditText().getText().toString().trim().length() > getResources().getInteger(R.integer.max_name_length)) {
 				new_map_name.setError(getString(R.string.you_oversized));
 				return;
 			}
+			new_map_description.setError("");
 			if (Objects.requireNonNull(new_map_description.getEditText()).getText().toString().trim().isEmpty()) {
 				new_map_description.setError(getString(R.string.required_description));
 				return;
@@ -126,8 +106,10 @@ public class CreateMapFragment
 		String description = new_map_description.getEditText().getText().toString().trim();
 		PlayLevel pl = PlayLevel.getPlayLevel(difficultySpinner.getSelectedItemPosition());
 
-		UserEntity userEntity = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(requireContext()));
-		viewModel.setCreatedMap(name, description, userEntity.getId(), pl);
+		User user = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(requireContext()));
+		viewModel.setCreatedMap(name, description, user.getId(), pl);
+		// flag control
+		viewModel.setLoaded(true);
 		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).navigate(R.id.toCreator);
 
 	}

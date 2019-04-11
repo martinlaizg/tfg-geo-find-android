@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/location_card"
+        android:id="@+id/place_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -23,21 +23,21 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/loc_name"
+                android:id="@+id/place_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
                 android:textAppearance="?attr/textAppearanceListItem"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/delete_loc_bbutton"
+                app:layout_constraintEnd_toStartOf="@id/place_delete_button"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@sample/placeEntities.json/data/name" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/delete_loc_bbutton"
+                android:id="@+id/place_delete_button"
                 android:layout_width="56dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"

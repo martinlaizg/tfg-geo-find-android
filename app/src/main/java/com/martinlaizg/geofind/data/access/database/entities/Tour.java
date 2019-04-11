@@ -7,29 +7,28 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.Date;
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "tours")//, foreignKeys = @ForeignKey(entity = UserEntity.class, parentColumns = "id", childColumns = "creator_id", onDelete = ForeignKey.CASCADE))
-public class TourEntity {
+@Entity(tableName = "tours")//, foreignKeys = @ForeignKey(entity = User.class, parentColumns = "id", childColumns = "creator_id", onDelete = ForeignKey.CASCADE))
+public class Tour {
 
 	@PrimaryKey
-	@NonNull
-	private final String id;
+	private final Integer id;
 	private String name;
 	private String description;
 	private PlayLevel min_level;
 	private Date created_at;
 	private Date updated_at;
 	private Integer creator_id;
-	@Ignore
-	private List<PlaceEntity> placeEntities;
-	@Ignore
-	private UserEntity creator;
 
-	public TourEntity(@NotNull String id, String name, String description, PlayLevel min_level, Date created_at, Date updated_at, Integer creator_id) {
+	@Ignore
+	private List<Place> places;
+	@Ignore
+	private User creator;
+
+	public Tour(Integer id, String name, String description, PlayLevel min_level, Date created_at, Date updated_at, Integer creator_id) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -40,14 +39,12 @@ public class TourEntity {
 	}
 
 	@Ignore
-	public TourEntity() {
-		id = "";
-		name = "";
-		description = "";
+	public Tour() {
+		id = 0;
 	}
 
 	@NotNull
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -87,23 +84,35 @@ public class TourEntity {
 		return created_at;
 	}
 
+	public void setCreated_at(Date created_at) {
+		this.created_at = created_at;
+	}
+
 	public Date getUpdated_at() {
 		return updated_at;
 	}
 
-	public List<PlaceEntity> getPlaceEntities() {
-		return placeEntities;
+	public void setUpdated_at(Date updated_at) {
+		this.updated_at = updated_at;
 	}
 
-	public void setPlaceEntities(List<PlaceEntity> placeEntities) {
-		this.placeEntities = placeEntities;
+
+	//-------------------------
+
+
+	public List<Place> getPlaces() {
+		return places;
 	}
 
-	public UserEntity getCreator() {
+	public void setPlaces(List<Place> places) {
+		this.places = places;
+	}
+
+	public User getCreator() {
 		return creator;
 	}
 
-	public void setCreator(UserEntity creator) {
+	public void setCreator(User creator) {
 		this.creator = creator;
 	}
 }

@@ -7,7 +7,7 @@ import com.martinlaizg.geofind.data.access.api.RetrofitInstance;
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.error.ErrorUtils;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
-import com.martinlaizg.geofind.data.access.database.entities.TourEntity;
+import com.martinlaizg.geofind.data.access.database.entities.Tour;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -31,8 +31,8 @@ public class MapService {
 		return mapService;
 	}
 
-	public List<TourEntity> getAllMaps() throws APIException {
-		Response<List<TourEntity>> response;
+	public List<Tour> getAllMaps() throws APIException {
+		Response<List<Tour>> response;
 		APIException apiException;
 		try {
 			response = restClient.getMaps(new HashMap<>()).execute();
@@ -48,11 +48,11 @@ public class MapService {
 		throw apiException;
 	}
 
-	public TourEntity create(TourEntity tourEntity) throws APIException {
-		Response<TourEntity> response;
+	public Tour create(Tour tour) throws APIException {
+		Response<Tour> response;
 		APIException apiException;
 		try {
-			response = restClient.createMap(tourEntity).execute();
+			response = restClient.createMap(tour).execute();
 			if (response.isSuccessful()) {
 				return response.body();
 			}
@@ -65,8 +65,8 @@ public class MapService {
 		throw apiException;
 	}
 
-	public TourEntity getMap(String id) throws APIException {
-		Response<TourEntity> response;
+	public Tour getMap(Integer id) throws APIException {
+		Response<Tour> response;
 		APIException apiException;
 		try {
 			response = restClient.getMap(id).execute();
@@ -76,13 +76,13 @@ public class MapService {
 			apiException = ErrorUtils.parseError(response);
 		} catch (IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
-			Log.e(TAG, "getTourEntity: ", e);
+			Log.e(TAG, "getTour: ", e);
 		}
 		throw apiException;
 	}
 
-	public TourEntity update(TourEntity tourEntity) throws APIException {
-		Response<TourEntity> response;
+	public Tour update(Tour tourEntity) throws APIException {
+		Response<Tour> response;
 		APIException apiException;
 		try {
 			response = restClient.update(tourEntity.getId(), tourEntity).execute();

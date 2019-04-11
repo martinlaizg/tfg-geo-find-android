@@ -12,20 +12,16 @@ import com.google.android.material.button.MaterialButton;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.adapter.LocationListAdapter;
 import com.martinlaizg.geofind.config.Preferences;
-import com.martinlaizg.geofind.data.access.database.entities.PlaceEntity;
-import com.martinlaizg.geofind.data.access.database.entities.TourEntity;
-import com.martinlaizg.geofind.data.access.database.entities.UserEntity;
-import com.martinlaizg.geofind.views.fragment.creator.CreateMapFragment;
+import com.martinlaizg.geofind.data.access.database.entities.Tour;
+import com.martinlaizg.geofind.data.access.database.entities.User;
+import com.martinlaizg.geofind.views.fragment.creator.CreatorFragment;
 import com.martinlaizg.geofind.views.viewmodel.MapViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
@@ -35,11 +31,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class MapFragment
+public class TourFragment
 		extends Fragment {
 
-	public static final String MAP_ID = "MAP_ID";
-	private static final String TAG = MapFragment.class.getSimpleName();
+	public static final String TOUR_ID = "TOUR_ID";
+	private static final String TAG = TourFragment.class.getSimpleName();
 
 	@BindView(R.id.map_name)
 	TextView map_name;
@@ -56,7 +52,7 @@ public class MapFragment
 
 	private SharedPreferences sp;
 	private LocationListAdapter adapter;
-	private String map_id;
+	private Integer map_id;
 
 	@Override
 	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,7 +60,7 @@ public class MapFragment
 		ButterKnife.bind(this, view);
 		Bundle b = getArguments();
 		if (b != null) {
-			map_id = b.getString(MAP_ID);
+			map_id = b.getInt(TOUR_ID);
 		}
 		return view;
 	}
@@ -79,35 +75,27 @@ public class MapFragment
 		location_list.setVisibility(View.GONE);
 
 		MapViewModel viewModel = ViewModelProviders.of(requireActivity()).get(MapViewModel.class);
-		viewModel.getMap(map_id).observe(requireActivity(), new Observer<TourEntity>() {
-			@Override
-			public void onChanged(TourEntity tourEntity) {
-				setMap(tourEntity);
-			}
-		});
-		viewModel.getLocations(map_id).observe(requireActivity(), new Observer<List<PlaceEntity>>() {
-			@Override
-			public void onChanged(List<PlaceEntity> locationEntities) {
-				if (locationEntities != null && !locationEntities.isEmpty()) {
-					location_list.setVisibility(View.VISIBLE);
-					adapter.setLocationEntities(locationEntities);
-					map_num_locations.setText(String.format(getString(R.string.num_locations), locationEntities.size()));
-				}
+		viewModel.getMap(map_id).observe(requireActivity(), this::setMap);
+		viewModel.getLocations(map_id).observe(requireActivity(), locationEntities -> {
+			if (locationEntities != null && !locationEntities.isEmpty()) {
+				location_list.setVisibility(View.VISIBLE);
+				adapter.setLocationEntities(locationEntities);
+				map_num_locations.setText(String.format(getString(R.string.num_locations), locationEntities.size()));
 			}
 		});
 		sp = PreferenceManager.getDefaultSharedPreferences(requireActivity());
 	}
 
-	private void setMap(TourEntity tourEntity) {
-		if (tourEntity != null) {
-			map_name.setText(tourEntity.getName());
-			map_description.setText(tourEntity.getDescription());
-			map_creator.setText(String.format(getString(R.string.num_creator), tourEntity.getCreator_id())); // TODO cambiar por valor real
-			UserEntity u = Preferences.getLoggedUser(sp);
-			if (u != null && u.getId().equals(tourEntity.getCreator_id())) {
+	private void setMap(Tour tour) {
+		if (tour != null) {
+			map_name.setText(tour.getName());
+			map_description.setText(tour.getDescription());
+			map_creator.setText(String.format(getString(R.string.num_creator), tour.getCreator_id().toString())); // TODO cambiar por valor real
+			User u = Preferences.getLoggedUser(sp);
+			if (u != null && u.getId().equals(tour.getCreator_id())) {
 				Bundle b = new Bundle();
-				b.putString(CreateMapFragment.MAP_ID, tourEntity.getId());
-				edit_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toEditMap, b));
+				b.putInt(CreatorFragment.TOUR_ID, tour.getId());
+				edit_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toEditTour, b));
 				edit_button.setVisibility(View.VISIBLE);
 			}
 		}

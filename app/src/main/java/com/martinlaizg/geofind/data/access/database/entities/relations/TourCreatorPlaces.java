@@ -9,7 +9,7 @@ import java.util.List;
 import androidx.room.Embedded;
 import androidx.room.Relation;
 
-public class MapUsernameLocations {
+public class MapUserLocation {
 
 	@Embedded
 	private TourEntity tour;

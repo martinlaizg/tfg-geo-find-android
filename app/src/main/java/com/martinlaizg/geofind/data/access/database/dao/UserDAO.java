@@ -1,6 +1,6 @@
 package com.martinlaizg.geofind.data.access.database.dao;
 
-import com.martinlaizg.geofind.data.access.database.entities.UserEntity;
+import com.martinlaizg.geofind.data.access.database.entities.User;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -11,9 +11,9 @@ import androidx.room.Update;
 public interface UserDAO {
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	void insert(UserEntity userEntity);
+	void insert(User user);
 
 	@Update
-	void update(UserEntity userEntity);
+	void update(User user);
 
 }

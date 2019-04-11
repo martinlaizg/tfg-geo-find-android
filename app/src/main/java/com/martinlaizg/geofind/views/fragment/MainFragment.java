@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
-import com.martinlaizg.geofind.data.access.database.entities.UserEntity;
+import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.views.activity.MainActivity;
 
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +32,7 @@ public class MainFragment
 
 	private boolean isLogged() {
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireActivity());
-		UserEntity u = Preferences.getLoggedUser(sp);
+		User u = Preferences.getLoggedUser(sp);
 		MainActivity mainActivity = (MainActivity) requireActivity();
 		if (u != null && !u.getEmail().isEmpty()) {
 			mainActivity.setDrawerHeader(u.getUsername(), u.getName());

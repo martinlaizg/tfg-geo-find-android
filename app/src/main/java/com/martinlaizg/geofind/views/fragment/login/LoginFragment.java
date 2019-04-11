@@ -2,7 +2,6 @@ package com.martinlaizg.geofind.views.fragment.login;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,8 +32,6 @@ public class LoginFragment
 		implements View.OnClickListener {
 
 	private static final String TAG = LoginFragment.class.getSimpleName();
-	private static final String EMAIL = "EMAIL";
-	private static final String PASSWORD = "PASSWORD";
 
 	@BindView(R.id.email_input)
 	TextInputLayout email_input;
@@ -63,28 +60,9 @@ public class LoginFragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		checkArguments();
 		viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
 		login_button.setOnClickListener(this);
 		registry_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toRegistry));
-	}
-
-	private void checkArguments() {
-		Bundle b = getArguments();
-		if (b != null) {
-			try {
-				String email = b.getString(EMAIL);
-				if (email != null && !email.isEmpty()) {
-					Objects.requireNonNull(email_input.getEditText()).setText(email);
-				}
-				String password = b.getString(PASSWORD);
-				if (password != null && !password.isEmpty()) {
-					Objects.requireNonNull(password_input.getEditText()).setText(password);
-				}
-			} catch (NullPointerException ex) {
-				Log.e(TAG, "checkArguments", ex);
-			}
-		}
 	}
 
 	@Override

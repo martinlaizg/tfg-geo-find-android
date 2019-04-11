@@ -22,8 +22,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.data.access.database.entities.PlaceEntity;
-import com.martinlaizg.geofind.views.viewmodel.MapCreatorViewModel;
+import com.martinlaizg.geofind.data.access.database.entities.Place;
+import com.martinlaizg.geofind.views.viewmodel.CreatorViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -41,11 +41,11 @@ import butterknife.ButterKnife;
 import static android.content.Context.LOCATION_SERVICE;
 
 
-public class CreateLocationFragment
+public class CreatePlaceFragment
 		extends Fragment
 		implements View.OnClickListener, OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
 
-	public static final String LOC_POSITION = "LOC_POSITION";
+	public static final String PLACE_POSITION = "PLACE_POSITION";
 	private static final int CAMERA_UPDATE_ZOOM = 15;
 	private static final int PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION = 1;
 
@@ -60,15 +60,14 @@ public class CreateLocationFragment
 	@BindView(R.id.new_location_map_view)
 	MapView new_location_map_view;
 
-	private MapCreatorViewModel viewModel;
+	private CreatorViewModel viewModel;
 	private MarkerOptions marker;
 	private GoogleMap gMap;
 	private int position;
 
 	@Override
-	public View onCreateView(
-			@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_create_locations, container, false);
+	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.fragment_create_place, container, false);
 		ButterKnife.bind(this, view);
 
 		new_location_map_view.onCreate(savedInstanceState);
@@ -80,15 +79,15 @@ public class CreateLocationFragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		viewModel = ViewModelProviders.of(requireActivity()).get(MapCreatorViewModel.class);
+		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel.class);
 		Bundle b = getArguments();
 		if (b != null) {
-			position = b.getInt(LOC_POSITION, viewModel.getCreatedLocationEntities().size());
-			if (position < viewModel.getCreatedLocationEntities().size()) {
-				PlaceEntity l = viewModel.getCreatedLocationEntities().get(position);
+			position = b.getInt(PLACE_POSITION, viewModel.getPlaces().size());
+			if (position < viewModel.getPlaces().size()) {
+				Place l = viewModel.getPlaces().get(position);
 				Objects.requireNonNull(new_location_name.getEditText()).setText(l.getName());
 				Objects.requireNonNull(new_location_description.getEditText()).setText(l.getDescription());
-				onMapLongClick(new LatLng(Float.valueOf(l.getLat()), Float.valueOf(l.getLon())));
+				onMapLongClick(l.getPosition());
 			}
 		}
 		create_button.setOnClickListener(this);
@@ -130,7 +129,7 @@ public class CreateLocationFragment
 		String name = new_location_name.getEditText().getText().toString().trim();
 		String description = new_location_description.getEditText().getText().toString().trim();
 
-		viewModel.setLocation(name, description, String.valueOf(marker.getPosition().latitude), String.valueOf(marker.getPosition().longitude), position);
+		viewModel.setLocation(name, description, marker.getPosition(), position);
 
 		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
 	}

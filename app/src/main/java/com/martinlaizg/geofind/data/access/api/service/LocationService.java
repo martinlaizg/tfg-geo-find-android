@@ -7,7 +7,7 @@ import com.martinlaizg.geofind.data.access.api.RetrofitInstance;
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.error.ErrorUtils;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
-import com.martinlaizg.geofind.data.access.database.entities.PlaceEntity;
+import com.martinlaizg.geofind.data.access.database.entities.Place;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -31,8 +31,8 @@ public class LocationService {
 		return locationService;
 	}
 
-	public List<PlaceEntity> getAllLocations() throws APIException {
-		Response<List<PlaceEntity>> response;
+	public List<Place> getAllLocations() throws APIException {
+		Response<List<Place>> response;
 		APIException apiException;
 		try {
 			response = restClient.getLocations(new HashMap<>()).execute();
@@ -47,8 +47,8 @@ public class LocationService {
 		throw apiException;
 	}
 
-	public List<PlaceEntity> createMapLocations(String id, List<PlaceEntity> locationEntities) throws APIException {
-		Response<List<PlaceEntity>> response;
+	public List<Place> createMapLocations(Integer id, List<Place> locationEntities) throws APIException {
+		Response<List<Place>> response;
 		APIException apiException;
 		try {
 			response = restClient.createMapLocations(id, locationEntities).execute();
@@ -63,8 +63,8 @@ public class LocationService {
 		throw apiException;
 	}
 
-	public List<PlaceEntity> updateMapLocations(String id, List<PlaceEntity> locationEntities) throws APIException {
-		Response<List<PlaceEntity>> response;
+	public List<Place> updateMapLocations(Integer id, List<Place> locationEntities) throws APIException {
+		Response<List<Place>> response;
 		APIException apiException;
 		try {
 			response = restClient.updateMapLocations(id, locationEntities).execute();
@@ -79,8 +79,8 @@ public class LocationService {
 		throw apiException;
 	}
 
-	public List<PlaceEntity> getLocationsByMap(String id) throws APIException {
-		Response<List<PlaceEntity>> response;
+	public List<Place> getLocationsByMap(Integer id) throws APIException {
+		Response<List<Place>> response;
 		APIException apiException;
 		try {
 			response = restClient.getMapLocations(id).execute();
@@ -95,8 +95,8 @@ public class LocationService {
 		throw apiException;
 	}
 
-	public PlaceEntity getLocation(String loc_id) throws APIException {
-		Response<PlaceEntity> response;
+	public Place getLocation(Integer loc_id) throws APIException {
+		Response<Place> response;
 		APIException apiException;
 		try {
 			response = restClient.getLocation(loc_id).execute();
@@ -106,7 +106,7 @@ public class LocationService {
 			apiException = ErrorUtils.parseError(response);
 		} catch (IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
-			Log.e(TAG, "getLocation: ", e);
+			Log.e(TAG, "getPlace: ", e);
 		}
 		throw apiException;
 	}

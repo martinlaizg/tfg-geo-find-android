@@ -10,9 +10,9 @@ import com.martinlaizg.geofind.data.access.database.dao.LocationDAO;
 import com.martinlaizg.geofind.data.access.database.dao.MapDAO;
 import com.martinlaizg.geofind.data.access.database.dao.UserDAO;
 import com.martinlaizg.geofind.data.access.database.dao.relations.MapLocationsDAO;
-import com.martinlaizg.geofind.data.access.database.entities.PlaceEntity;
-import com.martinlaizg.geofind.data.access.database.entities.TourEntity;
-import com.martinlaizg.geofind.data.access.database.entities.UserEntity;
+import com.martinlaizg.geofind.data.access.database.entities.Place;
+import com.martinlaizg.geofind.data.access.database.entities.Tour;
+import com.martinlaizg.geofind.data.access.database.entities.User;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -21,7 +21,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {UserEntity.class, TourEntity.class, PlaceEntity.class}, version = 1, exportSchema = false)
+@Database(entities = {User.class, Tour.class, Place.class}, version = 1, exportSchema = false)
 @TypeConverters({DateTypeConverter.class, PlayLevelTypeConverter.class, UserTypeTypeConverter.class})
 public abstract class AppDatabase
 		extends RoomDatabase {
@@ -63,7 +63,7 @@ public abstract class AppDatabase
 		@Override
 		protected Void doInBackground(Void... voids) {
 			//			Date date = new Date(Calendar.getInstance().getTime().getTime());
-			//			UserEntity user = new UserEntity();
+			//			User user = new User();
 			//			user.setEmail("martinlaizg@gmail.com");
 			//			user.setName("Martin");
 			//			user.setPassword("martinlaizg");

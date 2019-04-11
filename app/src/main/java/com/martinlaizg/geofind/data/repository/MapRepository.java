@@ -7,10 +7,12 @@ import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
 import com.martinlaizg.geofind.data.access.database.dao.LocationDAO;
 import com.martinlaizg.geofind.data.access.database.dao.MapDAO;
+import com.martinlaizg.geofind.data.access.database.dao.UserDAO;
 import com.martinlaizg.geofind.data.access.database.dao.relations.MapLocationsDAO;
-import com.martinlaizg.geofind.data.access.database.entities.PlaceEntity;
-import com.martinlaizg.geofind.data.access.database.entities.TourEntity;
-import com.martinlaizg.geofind.data.access.database.entities.relations.MapUsernameLocations;
+import com.martinlaizg.geofind.data.access.database.entities.Place;
+import com.martinlaizg.geofind.data.access.database.entities.Tour;
+import com.martinlaizg.geofind.data.access.database.entities.User;
+import com.martinlaizg.geofind.data.access.database.entities.relations.TourCreatorPlaces;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,53 +23,62 @@ public class MapRepository {
 	private final MapDAO mapDAO;
 	private final MapLocationsDAO mapLocsDAO;
 	private final LocationDAO locDAO;
+	private final UserDAO userDAO;
 
 	public MapRepository(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
 		mapDAO = database.mapDAO();
 		locDAO = database.locationDAO();
+		userDAO = database.userDAO();
 		mapLocsDAO = database.mapLocsDAO();
 		mapService = MapService.getInstance();
 	}
 
-	public List<TourEntity> getAllMaps() throws APIException {
-		List<MapUsernameLocations> mls = mapLocsDAO.getMapWithLocations();
-		List<TourEntity> ms = new ArrayList<>();
-		for (MapUsernameLocations ml : mls) {
-			TourEntity m = ml.getTour();
-			m.setPlaceEntities(ml.getLocationEntities());
-
+	public List<Tour> getAllMaps() throws APIException {
+		List<TourCreatorPlaces> mls = mapLocsDAO.getTourCreatorPlaces();
+		List<Tour> ts = new ArrayList<>();
+		for (TourCreatorPlaces ml : mls) {
+			Tour t = ml.getTour();
+			User u = new User();
+			u.setUsername(ml.getUsername());
+			t.setCreator(u);
+			ts.add(t);
 		}
 
-		if (ms == null || ms.isEmpty()) {
-			ms = mapService.getAllMaps();
-			if (ms != null) {
-				for (TourEntity m : ms) {
-					mapDAO.insert(m);
-					for (PlaceEntity l : m.getPlaceEntities()) {
+		if (ts.isEmpty()) {
+			ts = mapService.getAllMaps();
+			if (ts != null) {
+				for (Tour t : ts) {
+					mapDAO.insert(t);
+					userDAO.insert(t.getCreator());
+					for (Place l : t.getPlaces()) {
 						locDAO.insert(l);
 					}
 				}
 			}
 		}
-		return ms;
+		return ts;
 	}
 
-	public TourEntity getMap(String id) throws APIException {
-		TourEntity m = mapDAO.getMap(id);
+	public Tour getMap(Integer id) throws APIException {
+		Tour m = parseEntityToTour(mapDAO.getMap(id));
 		if (m == null) {
 			m = mapService.getMap(id);
 		}
 		return m;
 	}
 
-	public TourEntity create(TourEntity tourEntity) throws APIException {
+	private Tour parseEntityToTour(Tour tour) {
+		return (Tour) tour;
+	}
+
+	public Tour create(Tour tourEntity) throws APIException {
 		tourEntity = mapService.create(tourEntity);
 		if (tourEntity != null) mapDAO.insert(tourEntity);
 		return tourEntity;
 	}
 
-	public TourEntity update(TourEntity tourEntity) throws APIException {
+	public Tour update(Tour tourEntity) throws APIException {
 		tourEntity = mapService.update(tourEntity);
 		if (tourEntity != null) mapDAO.update(tourEntity);
 		return tourEntity;

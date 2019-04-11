@@ -10,15 +10,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "users")
-public class UserEntity {
+@Entity(tableName = "users")//, indices = {@Index("user_id")})
+public class User {
 
 	@PrimaryKey
-	@NotNull
+	@ColumnInfo(name = "user_id")
 	private final Integer id;
 	private String email;
 	private String username;
@@ -28,7 +29,7 @@ public class UserEntity {
 	private Date created_at;
 	private Date updated_at;
 
-	public UserEntity(@NotNull Integer id, String email, String username, String name, String password, UserType user_type, Date created_at, Date updated_at) {
+	public User(Integer id, String email, String username, String name, String password, UserType user_type, Date created_at, Date updated_at) {
 		this.id = id;
 		this.email = email;
 		this.username = username;
@@ -39,15 +40,9 @@ public class UserEntity {
 		this.updated_at = updated_at;
 	}
 
-
 	@Ignore
-	public UserEntity() {
+	public User() {
 		id = 0;
-		name = "";
-		username = "";
-		email = "";
-		password = "";
-		user_type = UserType.USER;
 	}
 
 	@NotNull
@@ -110,7 +105,6 @@ public class UserEntity {
 	public void setUpdated_at(Date updated_at) {
 		this.updated_at = updated_at;
 	}
-
 
 	public String toJson() {
 		Gson gson = new GsonBuilder().setDateFormat(DateUtils.DATE_FORMAT).create();
