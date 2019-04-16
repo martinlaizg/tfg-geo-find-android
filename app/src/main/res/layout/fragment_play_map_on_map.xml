@@ -7,7 +7,7 @@
     tools:context=".views.fragment.play.tour.PlayMapOnMapFragment">
 
     <TextView
-        android:id="@+id/map_name"
+        android:id="@+id/tour_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -20,7 +20,7 @@
         tools:text="@sample/mapEntities.json/data/name" />
 
     <TextView
-        android:id="@+id/map_description"
+        android:id="@+id/tour_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -30,7 +30,7 @@
         android:minLines="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/map_name"
+        app:layout_constraintTop_toBottomOf="@+id/tour_name"
         tools:text="@sample/mapEntities.json/data/description" />
 
     <com.google.android.gms.mapEntities.MapView
@@ -44,6 +44,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/map_description" />
+        app:layout_constraintTop_toBottomOf="@+id/tour_description" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

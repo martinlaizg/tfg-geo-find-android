@@ -140,7 +140,7 @@ public class CreatorViewModel
 		MutableLiveData<Tour> m = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
-				m.postValue(mapRepo.getMap(map_id));
+				m.postValue(mapRepo.getTour(map_id));
 			} catch (APIException e) {
 				setError(e);
 				m.postValue(null);

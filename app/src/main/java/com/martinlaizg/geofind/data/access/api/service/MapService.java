@@ -43,7 +43,7 @@ public class MapService {
 
 		} catch (IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
-			Log.e(TAG, "getAllMaps: ", e);
+			Log.e(TAG, "getTours: ", e);
 		}
 		throw apiException;
 	}

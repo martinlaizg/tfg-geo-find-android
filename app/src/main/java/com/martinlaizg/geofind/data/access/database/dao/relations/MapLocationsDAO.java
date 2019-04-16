@@ -14,4 +14,8 @@ public interface MapLocationsDAO {
 	@Transaction
 	@Query("SELECT t.*, username FROM tours as t LEFT JOIN users AS u ON u.user_id = t.creator_id;")
 	List<TourCreatorPlaces> getTourCreatorPlaces();
+
+	@Transaction
+	@Query("SELECT t.*, username FROM tours as t LEFT JOIN users AS u ON u.user_id = t.creator_id WHERE t.id = :tour_id;")
+	TourCreatorPlaces getMap(Integer tour_id);
 }

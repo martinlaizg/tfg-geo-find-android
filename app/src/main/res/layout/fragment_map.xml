@@ -7,22 +7,24 @@
     tools:context=".views.fragment.single.TourFragment">
 
     <TextView
-        android:id="@+id/map_name"
+        android:id="@+id/tour_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:textSize="24sp"
         app:layout_constraintEnd_toStartOf="@+id/edit_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@sample/mapEntities.json/data/name" />
+        tools:text="@sample/tours.json/data/name" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/edit_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginEnd="8dp"
         android:text="@string/loaded"
         android:visibility="gone"
@@ -31,36 +33,36 @@
         tools:visibility="visible" />
 
     <TextView
-        android:id="@+id/map_description"
+        android:id="@+id/tour_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:ellipsize="end"
         android:maxLines="5"
         android:minLines="1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/map_name"
-        app:layout_constraintTop_toBottomOf="@+id/map_name"
-        tools:text="@sample/mapEntities.json/data/description" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_button"
+        tools:text="@sample/tours.json/data/description" />
 
     <TextView
-        android:id="@+id/map_creator"
+        android:id="@+id/tour_creator"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:drawableStart="@drawable/ic_user_black"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxWidth="300dp"
         android:maxLines="1"
-        app:layout_constraintStart_toStartOf="@+id/map_name"
-        app:layout_constraintTop_toBottomOf="@+id/map_description"
-        tools:text="@sample/mapEntities.json/data/creator" />
+        app:layout_constraintStart_toStartOf="@+id/tour_name"
+        app:layout_constraintTop_toBottomOf="@+id/tour_description"
+        tools:text="@sample/tours.json/data/creator" />
 
     <TextView
-        android:id="@+id/map_num_locations"
+        android:id="@+id/tour_num_locations"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -71,38 +73,40 @@
         android:maxLines="1"
         android:minWidth="90dp"
         android:minLines="1"
-        app:layout_constraintBaseline_toBaselineOf="@+id/map_creator"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tour_creator"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/map_creator"
-        tools:text="@sample/mapEntities.json/data/num_locations" />
+        app:layout_constraintStart_toEndOf="@+id/tour_creator"
+        tools:text="@sample/tours.json/data/num_places" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/location_list"
+        android:id="@+id/places_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/empty_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/map_creator"
+        app:layout_constraintTop_toBottomOf="@+id/tour_creator"
         app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/fragment_location_item"
         tools:visibility="visible" />
 
     <TextView
+        android:id="@+id/empty_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/no_locations"
         android:textAlignment="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/location_list" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -49,7 +49,7 @@ public class MapListAdapter
 		return mapEntities.size();
 	}
 
-	public void setMapEntities(List<Tour> mapEntities) {
+	public void setTours(List<Tour> mapEntities) {
 		this.mapEntities = mapEntities;
 		notifyDataSetChanged();
 	}
@@ -57,11 +57,11 @@ public class MapListAdapter
 	class MapsViewHolder
 			extends RecyclerView.ViewHolder {
 
-		@BindView(R.id.map_name)
+		@BindView(R.id.tour_name)
 		TextView mapName;
-		@BindView(R.id.map_creator)
+		@BindView(R.id.tour_creator)
 		TextView mapCreator;
-		@BindView(R.id.map_description)
+		@BindView(R.id.tour_description)
 		TextView mapDescription;
 		@BindView(R.id.map_list_item)
 		MaterialCardView materialCardView;

@@ -2,6 +2,7 @@ package com.martinlaizg.geofind.data.access.database.entities.relations;
 
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
+import com.martinlaizg.geofind.data.access.database.entities.User;
 
 import java.util.List;
 
@@ -42,4 +43,9 @@ public class TourCreatorPlaces {
 		this.places = places;
 	}
 
+	public User getCreator() {
+		User u = new User();
+		u.setUsername(getUsername());
+		return u;
+	}
 }

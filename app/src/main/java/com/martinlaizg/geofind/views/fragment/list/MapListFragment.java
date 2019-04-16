@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.adapter.MapListAdapter;
+import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.views.viewmodel.MapListViewModel;
 
 import androidx.annotation.NonNull;
@@ -46,7 +48,14 @@ public class MapListFragment
 		recyclerView.setAdapter(adapter);
 
 		viewModel = ViewModelProviders.of(this).get(MapListViewModel.class);
-		viewModel.getAllMaps().observe(this, maps -> adapter.setMapEntities(maps));
+		viewModel.getTours().observe(this, tours -> {
+			if (tours != null) {
+				adapter.setTours(tours);
+			} else {
+				APIException error = viewModel.getError();
+				Toast.makeText(requireActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+			}
+		});
 		create_map_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreator));
 
 		return view;

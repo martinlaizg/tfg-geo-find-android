@@ -25,17 +25,17 @@ public class MapListViewModel
 	}
 
 
-	public MutableLiveData<List<Tour>> getAllMaps() {
-		MutableLiveData<List<Tour>> maps = new MutableLiveData<>();
+	public MutableLiveData<List<Tour>> getTours() {
+		MutableLiveData<List<Tour>> tours = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
-				maps.postValue(repository.getAllMaps());
+				tours.postValue(repository.getAllMaps());
 			} catch (APIException e) {
-				maps.postValue(null);
 				setError(e);
+				tours.postValue(null);
 			}
 		}).start();
-		return maps;
+		return tours;
 	}
 
 

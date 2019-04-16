@@ -7,7 +7,7 @@
       "creator": "Creador 1",
       "progress": "50",
       "progress_text": "15/30",
-      "num_locations": "30 localizaciones"
+      "num_places": "30 localizaciones"
     },
     {
       "name": "Mapa 2",
@@ -15,7 +15,7 @@
       "creator": "Creador 2",
       "progress": "50",
       "progress_text": "15/30",
-      "num_locations": "30 localizaciones"
+      "num_places": "30 localizaciones"
     },
     {
       "name": "Mapa 3",
@@ -23,7 +23,7 @@
       "creator": "Creador 3",
       "progress": "50",
       "progress_text": "15/30",
-      "num_locations": "30 localizaciones"
+      "num_places": "30 localizaciones"
     },
     {
       "name": "Mapa 4",
@@ -31,7 +31,7 @@
       "creator": "Creador 4",
       "progress": "50",
       "progress_text": "15/30",
-      "num_locations": "30 localizaciones"
+      "num_places": "30 localizaciones"
     },
     {
       "name": "Mapa 5",
@@ -39,7 +39,7 @@
       "creator": "Creador 5",
       "progress": "50",
       "progress_text": "15/30",
-      "num_locations": "30 localizaciones"
+      "num_places": "30 localizaciones"
     }
   ]
 }

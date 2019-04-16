@@ -39,7 +39,7 @@
                 app:srcCompat="@drawable/default_map_image" />
 
             <TextView
-                android:id="@+id/map_name"
+                android:id="@+id/tour_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -55,25 +55,25 @@
                 tools:text="@sample/mapEntities.json/data/name" />
 
             <TextView
-                android:id="@+id/map_creator"
+                android:id="@+id/tour_creator"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/map_name"
-                android:layout_alignStart="@+id/map_name"
+                android:layout_below="@+id/tour_name"
+                android:layout_alignStart="@+id/tour_name"
                 android:layout_marginTop="4dp"
                 android:drawableStart="@drawable/ic_user_black"
                 android:drawablePadding="4dp"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="@+id/map_name"
-                app:layout_constraintStart_toStartOf="@+id/map_name"
-                app:layout_constraintTop_toBottomOf="@+id/map_name"
+                app:layout_constraintEnd_toEndOf="@+id/tour_name"
+                app:layout_constraintStart_toStartOf="@+id/tour_name"
+                app:layout_constraintTop_toBottomOf="@+id/tour_name"
                 tools:text="@sample/mapEntities.json/data/creator" />
 
 
             <TextView
-                android:id="@+id/map_description"
+                android:id="@+id/tour_description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -84,9 +84,9 @@
                 android:minLines="1"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/map_creator"
-                app:layout_constraintStart_toStartOf="@+id/map_name"
-                app:layout_constraintTop_toBottomOf="@+id/map_creator"
+                app:layout_constraintEnd_toEndOf="@+id/tour_creator"
+                app:layout_constraintStart_toStartOf="@+id/tour_name"
+                app:layout_constraintTop_toBottomOf="@+id/tour_creator"
                 tools:text="@sample/mapEntities.json/data/description" />
 
 

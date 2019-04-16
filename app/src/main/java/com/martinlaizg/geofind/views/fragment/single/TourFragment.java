@@ -37,22 +37,25 @@ public class TourFragment
 	public static final String TOUR_ID = "TOUR_ID";
 	private static final String TAG = TourFragment.class.getSimpleName();
 
-	@BindView(R.id.map_name)
-	TextView map_name;
-	@BindView(R.id.map_description)
-	TextView map_description;
-	@BindView(R.id.map_creator)
-	TextView map_creator;
-	@BindView(R.id.map_num_locations)
-	TextView map_num_locations;
+	@BindView(R.id.tour_name)
+	TextView tour_name;
+	@BindView(R.id.tour_description)
+	TextView tour_description;
+	@BindView(R.id.tour_creator)
+	TextView tour_creator;
+	@BindView(R.id.tour_num_locations)
+	TextView tour_num_locations;
 	@BindView(R.id.edit_button)
 	MaterialButton edit_button;
-	@BindView(R.id.location_list)
-	RecyclerView location_list;
+	@BindView(R.id.places_list)
+	RecyclerView places_list;
+
+	@BindView(R.id.empty_text)
+	TextView empty_text;
 
 	private SharedPreferences sp;
 	private LocationListAdapter adapter;
-	private Integer map_id;
+	private Integer tour_id;
 
 	@Override
 	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,7 +63,7 @@ public class TourFragment
 		ButterKnife.bind(this, view);
 		Bundle b = getArguments();
 		if (b != null) {
-			map_id = b.getInt(TOUR_ID);
+			tour_id = b.getInt(TOUR_ID);
 		}
 		return view;
 	}
@@ -69,18 +72,18 @@ public class TourFragment
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		location_list.setLayoutManager(new LinearLayoutManager(requireActivity()));
+		places_list.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		adapter = new LocationListAdapter();
-		location_list.setAdapter(adapter);
-		location_list.setVisibility(View.GONE);
+		places_list.setAdapter(adapter);
+		places_list.setVisibility(View.GONE);
 
 		MapViewModel viewModel = ViewModelProviders.of(requireActivity()).get(MapViewModel.class);
-		viewModel.getMap(map_id).observe(requireActivity(), this::setMap);
-		viewModel.getLocations(map_id).observe(requireActivity(), locationEntities -> {
+		viewModel.getMap(tour_id).observe(requireActivity(), this::setMap);
+		viewModel.getLocations(tour_id).observe(requireActivity(), locationEntities -> {
 			if (locationEntities != null && !locationEntities.isEmpty()) {
-				location_list.setVisibility(View.VISIBLE);
+				places_list.setVisibility(View.VISIBLE);
 				adapter.setLocationEntities(locationEntities);
-				map_num_locations.setText(String.format(getString(R.string.num_locations), locationEntities.size()));
+				tour_num_locations.setText(String.format(getString(R.string.num_locations), locationEntities.size()));
 			}
 		});
 		sp = PreferenceManager.getDefaultSharedPreferences(requireActivity());
@@ -88,9 +91,12 @@ public class TourFragment
 
 	private void setMap(Tour tour) {
 		if (tour != null) {
-			map_name.setText(tour.getName());
-			map_description.setText(tour.getDescription());
-			map_creator.setText(String.format(getString(R.string.num_creator), tour.getCreator_id().toString())); // TODO cambiar por valor real
+			tour_name.setText(tour.getName());
+			tour_description.setText(tour.getDescription());
+			tour_creator.setText(tour.getCreator().getUsername());
+			if (!tour.getPlaces().isEmpty()) {
+				empty_text.setVisibility(View.VISIBLE);
+			}
 			User u = Preferences.getLoggedUser(sp);
 			if (u != null && u.getId().equals(tour.getCreator_id())) {
 				Bundle b = new Bundle();

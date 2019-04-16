@@ -44,9 +44,9 @@ public class PlayMapOnMapFragment
 	private static final int MAP_PADDING = 80;
 	private static final int PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION = 1;
 	private static final String TAG = PlayMapOnMapFragment.class.getSimpleName();
-	@BindView(R.id.map_name)
+	@BindView(R.id.tour_name)
 	TextView map_name;
-	@BindView(R.id.map_description)
+	@BindView(R.id.tour_description)
 	TextView map_description;
 
 	@BindView(R.id.map_view)

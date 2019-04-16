@@ -28,7 +28,7 @@ public class LocationListFragment
 
 	private static final String TAG = LocationListFragment.class.getSimpleName();
 
-	@BindView(R.id.location_list)
+	@BindView(R.id.places_list)
 	RecyclerView recyclerView;
 
 	private LocationListAdapter adapter;

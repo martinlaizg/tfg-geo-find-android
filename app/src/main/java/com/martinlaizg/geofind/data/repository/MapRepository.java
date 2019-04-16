@@ -60,16 +60,17 @@ public class MapRepository {
 		return ts;
 	}
 
-	public Tour getMap(Integer id) throws APIException {
-		Tour m = parseEntityToTour(mapDAO.getMap(id));
-		if (m == null) {
-			m = mapService.getMap(id);
+	public Tour getTour(Integer id) throws APIException {
+		TourCreatorPlaces tcp = mapLocsDAO.getMap(id);
+		Tour t;
+		if (tcp == null) {
+			t = mapService.getMap(id);
+		} else {
+			t = tcp.getTour();
+			t.setCreator(tcp.getCreator());
+			t.setPlaces(tcp.getPlaces());
 		}
-		return m;
-	}
-
-	private Tour parseEntityToTour(Tour tour) {
-		return (Tour) tour;
+		return t;
 	}
 
 	public Tour create(Tour tourEntity) throws APIException {
