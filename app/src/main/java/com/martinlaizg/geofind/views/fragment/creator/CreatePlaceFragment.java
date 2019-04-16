@@ -80,9 +80,11 @@ public class CreatePlaceFragment
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel.class);
+		viewModel.setLoad(false);
 		Bundle b = getArguments();
 		if (b != null) {
 			position = b.getInt(PLACE_POSITION, viewModel.getPlaces().size());
+
 			if (position < viewModel.getPlaces().size()) {
 				Place l = viewModel.getPlaces().get(position);
 				Objects.requireNonNull(new_location_name.getEditText()).setText(l.getName());
@@ -130,7 +132,6 @@ public class CreatePlaceFragment
 		String description = new_location_description.getEditText().getText().toString().trim();
 
 		viewModel.setLocation(name, description, marker.getPosition(), position);
-
 		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
 	}
 

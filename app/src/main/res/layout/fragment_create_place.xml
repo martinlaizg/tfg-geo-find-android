@@ -67,7 +67,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <com.google.android.gms.mapEntities.MapView
+    <com.google.android.gms.maps.MapView
         android:id="@+id/new_location_map_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -109,7 +109,7 @@
         app:layout_constraintEnd_toStartOf="@+id/button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/button"
-        tools:text="@sample/placeEntities.json/data/image" />
+        tools:text="@sample/places.json/data/image" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button"

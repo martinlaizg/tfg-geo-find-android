@@ -41,6 +41,8 @@ public class Tour {
 	@Ignore
 	public Tour() {
 		id = 0;
+		name = "";
+		description = "";
 	}
 
 	@NotNull

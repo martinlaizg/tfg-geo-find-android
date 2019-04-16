@@ -71,7 +71,6 @@ public class CreateTourFragment
 				difficultySpinner.setSelection(m.getMin_level().ordinal());
 			}
 		}
-		viewModel.setLoaded(false);
 		done_button.setOnClickListener(this);
 	}
 
@@ -108,9 +107,7 @@ public class CreateTourFragment
 
 		User user = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(requireContext()));
 		viewModel.setCreatedMap(name, description, user.getId(), pl);
-		// flag control
-		viewModel.setLoaded(true);
-		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).navigate(R.id.toCreator);
+		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
 
 	}
 }

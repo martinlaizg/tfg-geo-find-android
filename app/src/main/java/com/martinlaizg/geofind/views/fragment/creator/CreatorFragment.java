@@ -46,8 +46,8 @@ public class CreatorFragment
 	@BindView(R.id.edit_button)
 	MaterialButton edit_button;
 
-	@BindView(R.id.places_rv)
-	RecyclerView places_rv;
+	@BindView(R.id.places_list)
+	RecyclerView places_list;
 
 	private CreatorViewModel viewModel;
 
@@ -62,13 +62,15 @@ public class CreatorFragment
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel.class);
 		CreatorPlacesAdapter adapter = new CreatorPlacesAdapter();
-		places_rv.setLayoutManager(new LinearLayoutManager(requireActivity()));
-		places_rv.setAdapter(adapter);
+		places_list.setLayoutManager(new LinearLayoutManager(requireActivity()));
+		places_list.setAdapter(adapter);
 
-		// flag control
-		if (!viewModel.isLoaded()) {
-			try {
-				viewModel.loadTour(getArguments()).observe(this, tour -> {
+		// Load tour
+		Bundle b = getArguments();
+		if (b != null) {
+			Integer tour_id = b.getInt(TOUR_ID);
+			viewModel.loadTour(tour_id).observe(this, tour -> {
+				if (tour != null) {
 					adapter.setPlaces(tour.getPlaces());
 					if (tour.getId() != 0) {
 						create_tour_button.setText(R.string.update_tour);
@@ -79,27 +81,19 @@ public class CreatorFragment
 					if (!tour.getDescription().isEmpty()) {
 						tour_description.setText(tour.getDescription());
 					}
-				});
-			} catch (APIException e) {
-				viewModel.clear();
-				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
-				return;
-			}
-			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).navigate(R.id.toCreateTour);
-			return;
+				}
+			});
 		}
-		// disable flag
-		viewModel.setLoaded(false);
-
 		// set buttons
 		add_place_button.setOnClickListener(v -> {
-			Bundle b = new Bundle();
-			b.putInt(CreatePlaceFragment.PLACE_POSITION, viewModel.getPlaces().size());
-			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).navigate(R.id.toCreatePlace, b);
+			Bundle r = new Bundle();
+			r.putInt(CreatePlaceFragment.PLACE_POSITION, viewModel.getPlaces().size());
+			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).navigate(R.id.toCreatePlace, r);
 		});
-		edit_button.setOnClickListener(v -> Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack());
+		edit_button.setOnClickListener(v -> Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).navigate(R.id.toCreateTour));
 		create_tour_button.setOnClickListener(this);
 	}
+
 
 	@Override
 	public void onClick(View v) {
@@ -111,10 +105,8 @@ public class CreatorFragment
 				APIException err = viewModel.getError();
 				Toast.makeText(requireActivity(), err.getType().getMessage(), Toast.LENGTH_LONG).show();
 				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack(R.id.navTourList, false);
-				viewModel.clear();
 				return;
 			}
-			viewModel.clear();
 			Toast.makeText(requireActivity(), R.string.tour_created, Toast.LENGTH_SHORT).show();
 			Bundle b = new Bundle();
 			b.putInt(TourFragment.TOUR_ID, tour.getId());

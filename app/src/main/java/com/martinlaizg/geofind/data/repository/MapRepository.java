@@ -73,15 +73,15 @@ public class MapRepository {
 		return t;
 	}
 
-	public Tour create(Tour tourEntity) throws APIException {
-		tourEntity = mapService.create(tourEntity);
-		if (tourEntity != null) mapDAO.insert(tourEntity);
-		return tourEntity;
+	public Tour create(Tour tour) throws APIException {
+		tour = mapService.create(tour);
+		if (tour != null) mapDAO.insert(tour);
+		return tour;
 	}
 
-	public Tour update(Tour tourEntity) throws APIException {
-		tourEntity = mapService.update(tourEntity);
-		if (tourEntity != null) mapDAO.update(tourEntity);
-		return tourEntity;
+	public Tour update(Tour tour) throws APIException {
+		tour = mapService.update(tour);
+		if (tour != null) mapDAO.update(tour);
+		return tour;
 	}
 }

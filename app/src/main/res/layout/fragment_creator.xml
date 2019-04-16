@@ -84,7 +84,7 @@
         app:layout_constraintTop_toBottomOf="@+id/card" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/places_rv"
+        android:id="@+id/places_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_above="@+id/add_place_button"
@@ -96,7 +96,7 @@
         tools:listitem="@layout/fragment_editable_place" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/add_location_button"
+        android:id="@+id/add_place_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
