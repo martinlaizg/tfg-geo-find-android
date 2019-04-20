@@ -51,7 +51,7 @@ public class CreateTourFragment
 
 	@Override
 	public View onCreateView(@NotNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-		final View view = inflater.inflate(R.layout.fragment_tour_map, container, false);
+		final View view = inflater.inflate(R.layout.fragment_create_tour, container, false);
 		ButterKnife.bind(this, view);
 		return view;
 	}
@@ -85,7 +85,7 @@ public class CreateTourFragment
 			}
 			new_map_name.setError("");
 			if (new_map_name.getEditText().getText().toString().trim().length() > getResources().getInteger(R.integer.max_name_length)) {
-				new_map_name.setError(getString(R.string.you_oversized));
+				new_map_name.setError(getString(R.string.text_too_long));
 				return;
 			}
 			new_map_description.setError("");
@@ -94,7 +94,7 @@ public class CreateTourFragment
 				return;
 			}
 			if (new_map_description.getEditText().getText().toString().trim().length() > getResources().getInteger(R.integer.max_description_length)) {
-				new_map_description.setError(getString(R.string.you_oversized));
+				new_map_description.setError(getString(R.string.text_too_long));
 				return;
 			}
 		} catch (NullPointerException ex) {

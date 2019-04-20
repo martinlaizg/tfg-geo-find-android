@@ -93,7 +93,7 @@ public class CreatePlaceFragment
 			}
 		}
 		create_button.setOnClickListener(this);
-		if (marker != null) create_button.setText(R.string.update_location);
+		if (marker != null) create_button.setText(R.string.update_place);
 
 	}
 
@@ -106,7 +106,7 @@ public class CreatePlaceFragment
 				return;
 			}
 			if (new_location_name.getEditText().getText().toString().length() > getResources().getInteger(R.integer.max_name_length)) {
-				new_location_name.setError(getString(R.string.you_oversized));
+				new_location_name.setError(getString(R.string.text_too_long));
 				return;
 			}
 			if (!viewModel.checkPlaceName(new_location_name.getEditText().getText().toString())) {
@@ -119,7 +119,7 @@ public class CreatePlaceFragment
 				return;
 			}
 			if (new_location_description.getEditText().getText().toString().length() > getResources().getInteger(R.integer.max_description_length)) {
-				new_location_description.setError(getString(R.string.you_oversized));
+				new_location_description.setError(getString(R.string.text_too_long));
 				return;
 			}
 			new_location_description.setError("");
@@ -145,7 +145,7 @@ public class CreatePlaceFragment
 		if (requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
 				requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 			requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION);
-			Toast.makeText(requireActivity(), getString(R.string.no_location_permissions), Toast.LENGTH_SHORT).show();
+			Toast.makeText(requireActivity(), getString(R.string.rejected_location_access), Toast.LENGTH_SHORT).show();
 			return;
 		}
 		setLocation();

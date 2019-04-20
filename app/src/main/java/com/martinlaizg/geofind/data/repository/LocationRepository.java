@@ -5,7 +5,7 @@ import android.app.Application;
 import com.martinlaizg.geofind.data.access.api.service.LocationService;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
-import com.martinlaizg.geofind.data.access.database.dao.LocationDAO;
+import com.martinlaizg.geofind.data.access.database.dao.PlaceDAO;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public class LocationRepository {
 
 	private final LocationService locationService;
 
-	private final LocationDAO locDAO;
+	private final PlaceDAO locDAO;
 	private LiveData<List<Place>> allLocations;
 
 	public LocationRepository(Application application) {
@@ -57,12 +57,12 @@ public class LocationRepository {
 	}
 
 	public Place getLocation(Integer place_id) throws APIException {
-		Place place = locDAO.getLocation(place_id);
+		Place place = locDAO.getPlace(place_id);
 		if (place == null) {
 			place = locationService.getLocation(place_id);
 			if (place != null) {
 				locDAO.insert(place);
-				place = locDAO.getLocation(place_id);
+				place = locDAO.getPlace(place_id);
 			}
 		}
 		return place;

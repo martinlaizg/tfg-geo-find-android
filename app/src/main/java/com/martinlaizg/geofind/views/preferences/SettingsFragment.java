@@ -26,14 +26,11 @@ public class SettingsFragment
 
 
 	private void setLogoutPreference() {
-		findPreference(getString(R.string.preferences_log_out)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-				Preferences.logout(sp);
-				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
-				return true;
-			}
+		findPreference(getString(R.string.log_out)).setOnPreferenceClickListener(preference -> {
+			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
+			Preferences.logout(sp);
+			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
+			return true;
 		});
 	}
 }

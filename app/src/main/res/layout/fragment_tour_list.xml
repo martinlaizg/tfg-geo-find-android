@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/fragment_map_item" />
+        tools:listitem="@layout/fragment_tour_item" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/create_map_button"

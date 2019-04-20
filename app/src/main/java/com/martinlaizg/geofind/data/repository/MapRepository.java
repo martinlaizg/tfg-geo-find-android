@@ -5,8 +5,8 @@ import android.app.Application;
 import com.martinlaizg.geofind.data.access.api.service.MapService;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
-import com.martinlaizg.geofind.data.access.database.dao.LocationDAO;
-import com.martinlaizg.geofind.data.access.database.dao.MapDAO;
+import com.martinlaizg.geofind.data.access.database.dao.PlaceDAO;
+import com.martinlaizg.geofind.data.access.database.dao.TourDAO;
 import com.martinlaizg.geofind.data.access.database.dao.UserDAO;
 import com.martinlaizg.geofind.data.access.database.dao.relations.MapLocationsDAO;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
@@ -20,14 +20,14 @@ import java.util.List;
 public class MapRepository {
 
 	private final MapService mapService;
-	private final MapDAO mapDAO;
+	private final TourDAO tourDAO;
 	private final MapLocationsDAO mapLocsDAO;
-	private final LocationDAO locDAO;
+	private final PlaceDAO locDAO;
 	private final UserDAO userDAO;
 
 	public MapRepository(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
-		mapDAO = database.mapDAO();
+		tourDAO = database.mapDAO();
 		locDAO = database.locationDAO();
 		userDAO = database.userDAO();
 		mapLocsDAO = database.mapLocsDAO();
@@ -49,7 +49,7 @@ public class MapRepository {
 			ts = mapService.getAllMaps();
 			if (ts != null) {
 				for (Tour t : ts) {
-					mapDAO.insert(t);
+					tourDAO.insert(t);
 					userDAO.insert(t.getCreator());
 					for (Place l : t.getPlaces()) {
 						locDAO.insert(l);
@@ -75,14 +75,14 @@ public class MapRepository {
 
 	public Tour create(Tour tour) throws APIException {
 		tour = mapService.create(tour);
-		if (tour != null) mapDAO.insert(tour);
+		if (tour != null) tourDAO.insert(tour);
 		return tour;
 	}
 
 	public Tour update(Tour tour) throws APIException {
 		tour = mapService.update(tour);
 		if (tour != null) {
-			mapDAO.update(tour);
+			tourDAO.update(tour);
 			if (tour.getPlaces() != null) {
 				locDAO.removeTourPlaces(tour.getId());
 				for (Place p : tour.getPlaces()) locDAO.insert(p);

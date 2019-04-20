@@ -95,7 +95,7 @@ public class RegistryFragment
 				return;
 			}
 			if (!c_password.equals(password)) {
-				password_input.setError(getString(R.string.no_match_password));
+				password_input.setError(getString(R.string.password_does_not_match));
 				return;
 			}
 		} catch (NullPointerException ex) {

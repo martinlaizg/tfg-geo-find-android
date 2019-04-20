@@ -13,7 +13,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
-        android:contentDescription="@string/description_user_image"
+        android:contentDescription="@string/user_image"
         android:src="@drawable/ic_user_black"
         android:tint="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"

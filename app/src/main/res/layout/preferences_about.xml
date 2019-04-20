@@ -37,8 +37,9 @@
         android:id="@+id/app_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
         android:layout_marginEnd="32dp"
-        android:text="@string/app_description"
+        android:text="@string/app_about_description"
         android:textColor="@color/light_black"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,8 +47,10 @@
         app:layout_constraintTop_toBottomOf="@+id/app_developed" />
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="8dp"
         android:text="@string/this_year"
@@ -62,7 +65,8 @@
         android:id="@+id/app_developed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/developed_by"
+        android:layout_marginTop="2dp"
+        android:text="@string/about"
         android:textColor="@color/light_black"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@+id/app_name"

@@ -6,8 +6,8 @@ import android.os.AsyncTask;
 import com.martinlaizg.geofind.data.access.database.converter.DateTypeConverter;
 import com.martinlaizg.geofind.data.access.database.converter.PlayLevelTypeConverter;
 import com.martinlaizg.geofind.data.access.database.converter.UserTypeTypeConverter;
-import com.martinlaizg.geofind.data.access.database.dao.LocationDAO;
-import com.martinlaizg.geofind.data.access.database.dao.MapDAO;
+import com.martinlaizg.geofind.data.access.database.dao.PlaceDAO;
+import com.martinlaizg.geofind.data.access.database.dao.TourDAO;
 import com.martinlaizg.geofind.data.access.database.dao.UserDAO;
 import com.martinlaizg.geofind.data.access.database.dao.relations.MapLocationsDAO;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
@@ -46,9 +46,9 @@ public abstract class AppDatabase
 
 	public abstract UserDAO userDAO();
 
-	public abstract MapDAO mapDAO();
+	public abstract TourDAO mapDAO();
 
-	public abstract LocationDAO locationDAO();
+	public abstract PlaceDAO locationDAO();
 
 	public abstract MapLocationsDAO mapLocsDAO();
 

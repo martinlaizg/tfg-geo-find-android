@@ -22,7 +22,7 @@
     <fragment
         android:id="@+id/navCreatePlace"
         android:name="com.martinlaizg.geofind.views.fragment.creator.CreatePlaceFragment"
-        android:label="@string/create_location"
+        android:label="@string/create_place"
         tools:layout="@layout/fragment_create_place">
         <argument
             android:name="PLACE_POSITION"
@@ -32,8 +32,8 @@
     <fragment
         android:id="@+id/navCreateTour"
         android:name="com.martinlaizg.geofind.views.fragment.creator.CreateTourFragment"
-        android:label="@string/map_creator"
-        tools:layout="@layout/fragment_tour_map">
+        android:label="@string/tour_creator"
+        tools:layout="@layout/fragment_create_tour">
         <argument
             android:name="TOUR_ID"
             android:defaultValue="0"
@@ -42,7 +42,7 @@
     <fragment
         android:id="@+id/navCreator"
         android:name="com.martinlaizg.geofind.views.fragment.creator.CreatorFragment"
-        android:label="@string/map_creator"
+        android:label="@string/tour_creator"
         tools:layout="@layout/fragment_creator">
         <action
             android:id="@+id/toCreatePlace"
@@ -62,8 +62,8 @@
     <fragment
         android:id="@+id/navTourList"
         android:name="com.martinlaizg.geofind.views.fragment.list.MapListFragment"
-        android:label="@string/map_list"
-        tools:layout="@layout/fragment_maps_list">
+        android:label="@string/tour_list"
+        tools:layout="@layout/fragment_tour_list">
         <action
             android:id="@+id/toCreator"
             app:destination="@id/navCreator" />
@@ -75,7 +75,7 @@
         android:id="@+id/navTour"
         android:name="com.martinlaizg.geofind.views.fragment.single.TourFragment"
         android:label="@string/tour"
-        tools:layout="@layout/fragment_map">
+        tools:layout="@layout/fragment_tour">
         <action
             android:id="@+id/toLocation"
             app:destination="@id/navPlace" />
@@ -91,7 +91,7 @@
         android:id="@+id/navPlace"
         android:name="com.martinlaizg.geofind.views.fragment.single.LocationFragment"
         android:label="@string/place"
-        tools:layout="@layout/fragment_location">
+        tools:layout="@layout/fragment_place">
         <argument
             android:name="PLACE_ID"
             android:defaultValue="0"

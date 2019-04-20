@@ -36,7 +36,7 @@ public class LocationListFragment
 
 	@Override
 	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_location_list, container, false);
+		View view = inflater.inflate(R.layout.fragment_place_list, container, false);
 		ButterKnife.bind(this, view);
 		ArrayList<Place> locationEntities = new ArrayList<>();
 

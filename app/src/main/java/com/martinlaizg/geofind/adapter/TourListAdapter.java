@@ -20,53 +20,53 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MapListAdapter
-		extends RecyclerView.Adapter<MapListAdapter.MapsViewHolder> {
+public class TourListAdapter
+		extends RecyclerView.Adapter<TourListAdapter.ToursViewHolder> {
 
-	private List<Tour> mapEntities = new ArrayList<>();
+	private List<Tour> tours = new ArrayList<>();
 
 	@NonNull
 	@Override
-	public MapsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-		View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_map_item, viewGroup, false);
-		return new MapsViewHolder(view);
+	public ToursViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+		View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_tour_item, viewGroup, false);
+		return new ToursViewHolder(view);
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull MapsViewHolder holder, final int i) {
-		final Tour tour = mapEntities.get(i);
-		holder.mapName.setText(tour.getName());
-		holder.mapCreator.setText(tour.getCreator().getUsername());
-		holder.mapDescription.setText(tour.getDescription());
+	public void onBindViewHolder(@NonNull ToursViewHolder holder, final int i) {
+		final Tour tour = tours.get(i);
+		holder.tourName.setText(tour.getName());
+		holder.tourCreator.setText(tour.getCreator().getUsername());
+		holder.tourDescription.setText(tour.getDescription());
 
 		Bundle b = new Bundle();
-		b.putInt(TourFragment.TOUR_ID, mapEntities.get(i).getId());
+		b.putInt(TourFragment.TOUR_ID, tours.get(i).getId());
 		holder.materialCardView.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.toTour, b));
 	}
 
 	@Override
 	public int getItemCount() {
-		return mapEntities.size();
+		return tours.size();
 	}
 
-	public void setTours(List<Tour> mapEntities) {
-		this.mapEntities = mapEntities;
+	public void setTours(List<Tour> tours) {
+		this.tours = tours;
 		notifyDataSetChanged();
 	}
 
-	class MapsViewHolder
+	class ToursViewHolder
 			extends RecyclerView.ViewHolder {
 
 		@BindView(R.id.tour_name)
-		TextView mapName;
+		TextView tourName;
 		@BindView(R.id.tour_creator)
-		TextView mapCreator;
+		TextView tourCreator;
 		@BindView(R.id.tour_description)
-		TextView mapDescription;
-		@BindView(R.id.map_list_item)
+		TextView tourDescription;
+		@BindView(R.id.tour_card)
 		MaterialCardView materialCardView;
 
-		MapsViewHolder(@NonNull View itemView) {
+		ToursViewHolder(@NonNull View itemView) {
 			super(itemView);
 			ButterKnife.bind(this, itemView);
 		}

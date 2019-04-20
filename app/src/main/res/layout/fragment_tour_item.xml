@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/map_list_item"
+        android:id="@+id/tour_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -30,7 +30,7 @@
                 android:id="@+id/map_image"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
-                android:contentDescription="@string/map_main_image"
+                android:contentDescription="@string/tour_main_image"
                 android:focusable="true"
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"

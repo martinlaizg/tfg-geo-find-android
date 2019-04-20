@@ -18,5 +18,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="3"
-        tools:listitem="@layout/fragment_location_item" />
+        tools:listitem="@layout/fragment_place_item" />
 </androidx.constraintlayout.widget.ConstraintLayout>

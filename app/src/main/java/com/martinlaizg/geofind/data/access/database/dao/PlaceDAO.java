@@ -11,7 +11,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 @Dao
-public interface LocationDAO {
+public interface PlaceDAO {
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	void insert(Place place);
@@ -20,7 +20,7 @@ public interface LocationDAO {
 	void update(Place place);
 
 	@Query("SELECT * FROM places WHERE tour_id = :place_id")
-	Place getLocation(Integer place_id);
+	Place getPlace(Integer place_id);
 
 	@Query("SELECT * FROM places WHERE tour_id = :tour_id ORDER BY `order`")
 	List<Place> getPlacesByTour(Integer tour_id);

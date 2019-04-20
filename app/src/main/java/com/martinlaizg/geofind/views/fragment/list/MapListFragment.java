@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.adapter.MapListAdapter;
+import com.martinlaizg.geofind.adapter.TourListAdapter;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.views.viewmodel.MapListViewModel;
 
@@ -34,17 +34,17 @@ public class MapListFragment
 	FloatingActionButton create_map_button;
 
 	private MapListViewModel viewModel;
-	private MapListAdapter adapter;
+	private TourListAdapter adapter;
 
 	@Nullable
 	@Override
 	public View onCreateView(
 			@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState) {
-		final View view = inflater.inflate(R.layout.fragment_maps_list, container, false);
+		final View view = inflater.inflate(R.layout.fragment_tour_list, container, false);
 		ButterKnife.bind(this, view);
 
 		recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-		adapter = new MapListAdapter();
+		adapter = new TourListAdapter();
 		recyclerView.setAdapter(adapter);
 
 		viewModel = ViewModelProviders.of(this).get(MapListViewModel.class);

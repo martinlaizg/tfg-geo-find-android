@@ -5,35 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/new_location_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/new_location"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/new_location_name_layout"
         style="@style/AppTheme.TextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:hint="@string/location_name"
+        android:hint="@string/name"
         app:counterEnabled="true"
         app:counterMaxLength="50"
         app:errorEnabled="true"
         app:hintEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_location_text">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -49,7 +36,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:hint="@string/location_description"
+        android:hint="@string/description"
         app:counterEnabled="true"
         app:counterMaxLength="@integer/max_description_length"
         app:errorEnabled="true"
@@ -88,28 +75,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/alert_text_no_location_selected"
+        android:text="@string/alert_text_no_place_selected"
         android:textColor="@android:color/holo_red_light"
         android:textSize="12sp"
         android:textStyle="bold"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="@string/alert_text_no_location_selected"
-        tools:visibility="visible" />
-
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="16dp"
-        android:textAlignment="textEnd"
-        app:layout_constraintBottom_toBottomOf="@+id/button"
-        app:layout_constraintEnd_toStartOf="@+id/button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button"
-        tools:text="@sample/places.json/data/image" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button"
@@ -118,6 +91,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="@string/add_image"
+        android:visibility="gone"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/create_location"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -129,7 +103,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/create_location"
+        android:text="@string/create_place"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -39,7 +39,7 @@ public class LocationFragment
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_location, container, false);
+		View view = inflater.inflate(R.layout.fragment_place, container, false);
 		ButterKnife.bind(this, view);
 		Bundle b = getArguments();
 		if (b != null) {

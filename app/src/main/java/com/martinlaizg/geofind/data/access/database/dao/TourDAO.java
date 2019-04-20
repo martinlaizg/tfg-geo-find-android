@@ -9,15 +9,12 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 @Dao
-public interface MapDAO {
+public interface TourDAO {
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	void insert(Tour tour);
 
 	@Update
 	void update(Tour tour);
-
-	@Query("SELECT * FROM tours WHERE id = :tour_id")
-	Tour getMap(Integer tour_id);
 
 }

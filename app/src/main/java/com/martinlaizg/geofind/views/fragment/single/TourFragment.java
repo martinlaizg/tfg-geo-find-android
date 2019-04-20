@@ -59,7 +59,7 @@ public class TourFragment
 
 	@Override
 	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_map, container, false);
+		View view = inflater.inflate(R.layout.fragment_tour, container, false);
 		ButterKnife.bind(this, view);
 		Bundle b = getArguments();
 		if (b != null) {
@@ -83,7 +83,7 @@ public class TourFragment
 			if (locationEntities != null && !locationEntities.isEmpty()) {
 				places_list.setVisibility(View.VISIBLE);
 				adapter.setLocationEntities(locationEntities);
-				tour_num_locations.setText(String.format(getString(R.string.num_locations), locationEntities.size()));
+				tour_num_locations.setText(String.format(getString(R.string.num_places), locationEntities.size()));
 			}
 		});
 		sp = PreferenceManager.getDefaultSharedPreferences(requireActivity());

@@ -57,15 +57,6 @@
     <string name="username">Username</string>
     <string name="wrong_email_password">Wrong email or password</string>
     <string name="text_too_long">Text too long</string>
-    <string name="app_name" translatable="false">GeoFind</string>
-    <string name="TODO" translatable="false">TODO</string>
-    <string name="developer" translatable="false">martinlaizg</string>
-    <string name="this_year" translatable="false">2019</string>
     <string name="rejected_location_access">Refused permission to location</string>
     <string name="app_about_description">App desarrollada cómo Trabajo de Final de Grado para el grado en Ingeniería Informática de la Universidad de Alicante</string>
-    <string-array name="dificulties">
-        <item>Mapa</item>
-        <item>Brújula</item>
-        <item>Termometro</item>
-    </string-array>
 </resources>

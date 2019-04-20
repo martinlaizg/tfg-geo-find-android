@@ -32,7 +32,7 @@ public class LocationListAdapter
 	@NonNull
 	@Override
 	public LocationsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-		View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_location_item, viewGroup, false);
+		View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_place_item, viewGroup, false);
 		return new LocationsViewHolder(view);
 	}
 
