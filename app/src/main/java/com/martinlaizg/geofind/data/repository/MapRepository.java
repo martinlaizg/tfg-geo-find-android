@@ -81,7 +81,13 @@ public class MapRepository {
 
 	public Tour update(Tour tour) throws APIException {
 		tour = mapService.update(tour);
-		if (tour != null) mapDAO.update(tour);
+		if (tour != null) {
+			mapDAO.update(tour);
+			if (tour.getPlaces() != null) {
+				locDAO.removeTourPlaces(tour.getId());
+				for (Place p : tour.getPlaces()) locDAO.insert(p);
+			}
+		}
 		return tour;
 	}
 }

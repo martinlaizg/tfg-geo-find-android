@@ -60,6 +60,7 @@ public class CreateTourFragment
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel.class);
 		Tour m = viewModel.getTour();
+		viewModel.setLoad(false);
 		if (m != null) {
 			if (!m.getName().isEmpty()) {
 				Objects.requireNonNull(new_map_name.getEditText()).setText(m.getName());

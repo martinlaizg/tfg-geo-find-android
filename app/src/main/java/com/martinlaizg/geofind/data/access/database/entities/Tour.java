@@ -5,6 +5,7 @@ import com.martinlaizg.geofind.data.enums.PlayLevel;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.room.Entity;
@@ -43,6 +44,7 @@ public class Tour {
 		id = 0;
 		name = "";
 		description = "";
+		places = new ArrayList<>();
 	}
 
 	@NotNull
@@ -116,5 +118,14 @@ public class Tour {
 
 	public void setCreator(User creator) {
 		this.creator = creator;
+	}
+
+	public boolean isValid() {
+		for (Place p : getPlaces()) {
+			if (!p.isValid()) return false;
+		}
+		return getName() != null && !getName().isEmpty() && //
+				getDescription() != null && !getDescription().isEmpty() && //
+				getMin_level() != null;
 	}
 }

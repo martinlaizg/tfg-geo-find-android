@@ -24,4 +24,7 @@ public interface LocationDAO {
 
 	@Query("SELECT * FROM places WHERE tour_id = :tour_id ORDER BY `order`")
 	List<Place> getPlacesByTour(Integer tour_id);
+
+	@Query("DELETE FROM places WHERE tour_id = :tour_id")
+	void removeTourPlaces(Integer tour_id);
 }

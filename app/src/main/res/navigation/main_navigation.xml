@@ -54,6 +54,10 @@
         <action
             android:id="@+id/toCreateTour"
             app:destination="@id/navCreateTour" />
+        <argument
+            android:name="TOUR_ID"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/navTourList"

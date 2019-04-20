@@ -115,4 +115,7 @@ public class Place {
 	}
 
 
+	boolean isValid() {
+		return getName() != null && !getName().isEmpty() && getDescription() != null && !getDescription().isEmpty() && getLat() != null && getLon() != null;
+	}
 }

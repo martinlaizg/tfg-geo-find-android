@@ -94,7 +94,7 @@ public class TourFragment
 			tour_name.setText(tour.getName());
 			tour_description.setText(tour.getDescription());
 			tour_creator.setText(tour.getCreator().getUsername());
-			if (!tour.getPlaces().isEmpty()) {
+			if (tour.getPlaces().isEmpty()) {
 				empty_text.setVisibility(View.VISIBLE);
 			}
 			User u = Preferences.getLoggedUser(sp);

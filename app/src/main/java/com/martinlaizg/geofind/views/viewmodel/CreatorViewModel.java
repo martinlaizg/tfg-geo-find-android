@@ -3,6 +3,7 @@ package com.martinlaizg.geofind.views.viewmodel;
 import android.app.Application;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
@@ -38,6 +39,11 @@ public class CreatorViewModel
 	public MutableLiveData<Tour> createTour() {
 		MutableLiveData<Tour> m = new MutableLiveData<>();
 		new Thread(() -> {
+			if (!tour.isValid()) {
+				setError(new APIException(ErrorType.OTHER, "Faltan datos"));
+				m.postValue(null);
+				return;
+			}
 			load = true;
 			if (tour.getId() == 0) { // Create tour
 				try {
@@ -77,7 +83,6 @@ public class CreatorViewModel
 		p.setDescription(description);
 		p.setPosition(position);
 		p.setOrder(order);
-		load = false;
 	}
 
 	public void setCreatedMap(String name, String description, Integer creator_id, PlayLevel pl) {
@@ -85,30 +90,29 @@ public class CreatorViewModel
 		tour.setDescription(description);
 		tour.setCreator_id(creator_id);
 		tour.setMin_level(pl);
-		load = false;
 	}
 
 	public MutableLiveData<Tour> loadTour(Integer tour_id) {
-		MutableLiveData<Tour> tour = new MutableLiveData<>();
+		MutableLiveData<Tour> t = new MutableLiveData<>();
 		new Thread(() -> {
 			if (load) {
-				this.tour = null;
+				tour = new Tour();
 				try {
-					this.tour = mapRepo.getTour(tour_id);
+					tour = mapRepo.getTour(tour_id);
 				} catch (APIException e) {
 					setError(e);
+					tour = null;
 				}
 			}
 			load = true;
-			tour.postValue(this.tour);
+			t.postValue(tour);
 		}).start();
-		return tour;
+		return t;
 	}
 
 	// ============================================
 
 	public Tour getTour() {
-		load = false;
 		return tour;
 	}
 
@@ -127,4 +131,5 @@ public class CreatorViewModel
 	public void setLoad(boolean load) {
 		this.load = load;
 	}
+
 }
