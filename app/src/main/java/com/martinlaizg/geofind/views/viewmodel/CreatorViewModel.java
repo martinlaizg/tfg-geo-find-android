@@ -86,6 +86,7 @@ public class CreatorViewModel
 	}
 
 	public void setCreatedMap(String name, String description, Integer creator_id, PlayLevel pl) {
+		if(tour == null) tour = new Tour();
 		tour.setName(name);
 		tour.setDescription(description);
 		tour.setCreator_id(creator_id);
@@ -97,11 +98,13 @@ public class CreatorViewModel
 		new Thread(() -> {
 			if (load) {
 				tour = new Tour();
-				try {
-					tour = mapRepo.getTour(tour_id);
-				} catch (APIException e) {
-					setError(e);
-					tour = null;
+				if(tour_id>0) {
+					try {
+						tour = mapRepo.getTour(tour_id);
+					} catch (APIException e) {
+						setError(e);
+						tour = null;
+					}
 				}
 			}
 			load = true;
@@ -132,4 +135,10 @@ public class CreatorViewModel
 		this.load = load;
 	}
 
+	public boolean checkPlaceName(String newName) {
+		for(Place p : getPlaces()){
+			if(p.getName().equals(newName)) return false;
+		}
+		return true;
+	}
 }
