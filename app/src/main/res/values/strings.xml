@@ -76,4 +76,5 @@
     <string name="network_error">Error de conexión</string>
     <string name="email_error">Error de email</string>
     <string name="tour_created">Mapa creado</string>
+    <string name="repeated_name">Nombre repetido</string>
 </resources>

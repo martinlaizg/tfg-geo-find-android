@@ -109,6 +109,10 @@ public class CreatePlaceFragment
 				new_location_name.setError(getString(R.string.you_oversized));
 				return;
 			}
+			if (!viewModel.checkPlaceName(new_location_name.getEditText().getText().toString())) {
+				new_location_name.setError(getString(R.string.repeated_name));
+				return;
+			}
 			new_location_name.setError("");
 			if (Objects.requireNonNull(new_location_description.getEditText()).getText().toString().trim().isEmpty()) {
 				new_location_description.setError(getString(R.string.required_description));
