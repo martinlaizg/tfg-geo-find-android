@@ -14,6 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,10 +36,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -53,9 +54,9 @@ public class PlayLocationOnMapFragment
 	// Padding (px) between markers and border in location_map_view
 	private static final int MAP_PADDING = 100;
 
-	@BindView(R.id.location_name)
+	@BindView(R.id.place_name)
 	TextView location_name;
-	@BindView(R.id.location_description)
+	@BindView(R.id.place_description)
 	TextView location_description;
 	@BindView(R.id.navigate_button)
 	MaterialButton navigate_button;

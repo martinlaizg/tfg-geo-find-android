@@ -48,11 +48,11 @@
                 android:layout_marginEnd="16dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textSize="24sp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/map_image"
-                tools:text="@sample/mapEntities.json/data/name" />
+                tools:text="@sample/tours.json/data/name" />
 
             <TextView
                 android:id="@+id/tour_creator"
@@ -65,11 +65,12 @@
                 android:drawablePadding="4dp"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
-                android:textSize="18sp"
+                android:maxLines="1"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 app:layout_constraintEnd_toEndOf="@+id/tour_name"
                 app:layout_constraintStart_toStartOf="@+id/tour_name"
                 app:layout_constraintTop_toBottomOf="@+id/tour_name"
-                tools:text="@sample/mapEntities.json/data/creator" />
+                tools:text="@sample/tours.json/data/creator" />
 
 
             <TextView
@@ -82,12 +83,12 @@
                 android:ellipsize="end"
                 android:maxLines="4"
                 android:minLines="1"
-                android:textSize="14sp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/tour_creator"
                 app:layout_constraintStart_toStartOf="@+id/tour_name"
                 app:layout_constraintTop_toBottomOf="@+id/tour_creator"
-                tools:text="@sample/mapEntities.json/data/description" />
+                tools:text="@sample/tours.json/data/description" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

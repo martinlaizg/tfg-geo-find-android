@@ -2,9 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="@layout/fragment_main">
-    <group android:checkableBehavior="none">
+    <group android:checkableBehavior="single">
         <item
-            android:id="@+id/toTourList"
+            android:id="@+id/navMain"
+            android:title="@string/home" />
+        <item
+            android:id="@+id/navTourList"
             android:title="@string/tour" />
     </group>
 

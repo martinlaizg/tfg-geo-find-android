@@ -6,6 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.views.fragment.single.LocationFragment;
@@ -13,10 +18,6 @@ import com.martinlaizg.geofind.views.fragment.single.LocationFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -60,9 +61,9 @@ public class LocationListAdapter
 	class LocationsViewHolder
 			extends RecyclerView.ViewHolder {
 
-		@BindView(R.id.location_name)
+		@BindView(R.id.place_name)
 		TextView location_name;
-		@BindView(R.id.location_description)
+		@BindView(R.id.place_description)
 		TextView location_description;
 		@BindView(R.id.place_card)
 		CardView location_card;

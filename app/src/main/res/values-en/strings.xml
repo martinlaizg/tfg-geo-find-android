@@ -59,4 +59,5 @@
     <string name="text_too_long">Text too long</string>
     <string name="rejected_location_access">Refused permission to location</string>
     <string name="app_about_description">App desarrollada cómo Trabajo de Final de Grado para el grado en Ingeniería Informática de la Universidad de Alicante</string>
+    <string name="home">Home</string>
 </resources>

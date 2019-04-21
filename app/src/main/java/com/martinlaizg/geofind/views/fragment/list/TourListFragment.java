@@ -6,12 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.adapter.TourListAdapter;
-import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
-import com.martinlaizg.geofind.views.viewmodel.MapListViewModel;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -19,13 +13,20 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.martinlaizg.geofind.R;
+import com.martinlaizg.geofind.adapter.TourListAdapter;
+import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
+import com.martinlaizg.geofind.views.viewmodel.MapListViewModel;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MapListFragment
+public class TourListFragment
 		extends Fragment {
 
-	private static final String TAG = MapListFragment.class.getSimpleName();
+	private static final String TAG = TourListFragment.class.getSimpleName();
 
 	@BindView(R.id.map_list)
 	RecyclerView recyclerView;

@@ -7,14 +7,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.data.access.database.entities.Place;
-import com.martinlaizg.geofind.views.viewmodel.MapViewModel;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+
+import com.martinlaizg.geofind.R;
+import com.martinlaizg.geofind.data.access.database.entities.Place;
+import com.martinlaizg.geofind.views.viewmodel.MapViewModel;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -23,17 +24,14 @@ public class LocationFragment
 
 	public static final String PLACE_ID = "PLACE_ID";
 
-	@BindView(R.id.location_name)
+	@BindView(R.id.place_name)
 	TextView location_name;
-	@BindView(R.id.location_description)
+	@BindView(R.id.place_description)
 	TextView location_description;
-	@BindView(R.id.location_visits)
-	TextView location_visits;
-	@BindView(R.id.location_image)
+	@BindView(R.id.place_image)
 	ImageView location_image;
 
 
-	MapViewModel viewModel;
 	private int place_id;
 
 	@Nullable
@@ -51,7 +49,7 @@ public class LocationFragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		viewModel = ViewModelProviders.of(this).get(MapViewModel.class);
+		MapViewModel viewModel = ViewModelProviders.of(this).get(MapViewModel.class);
 
 		viewModel.getPlace(place_id).observe(this, this::setPlace);
 	}
@@ -60,7 +58,6 @@ public class LocationFragment
 		if (place != null) {
 			location_name.setText(place.getName());
 			location_description.setText(place.getDescription()); // TODO cambiar por el valor real
-			location_visits.setText("2.594 TODO"); // TODO cambiar por el valor real
 			location_image.setImageResource(R.drawable.default_map_image);
 		}
 	}
