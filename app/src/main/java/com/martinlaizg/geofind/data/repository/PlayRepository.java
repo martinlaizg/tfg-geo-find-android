@@ -2,26 +2,21 @@ package com.martinlaizg.geofind.data.repository;
 
 import android.app.Application;
 
-import androidx.lifecycle.LiveData;
-
-import com.martinlaizg.geofind.data.access.api.service.LocationService;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
-import com.martinlaizg.geofind.data.access.database.dao.PlaceDAO;
-import com.martinlaizg.geofind.data.access.database.entities.Place;
+import com.martinlaizg.geofind.data.access.database.dao.PlayDAO;
+import com.martinlaizg.geofind.data.access.database.entities.Play;
 
-import java.util.List;
+public class PlayRepository {
 
-public class PlaceRepository {
+	private final PlayDAO playDAO;
 
-	private final LocationService locationService;
-
-	private final PlaceDAO locDAO;
-	private LiveData<List<Place>> allLocations;
-
-	public PlaceRepository(Application application) {
+	public PlayRepository(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
-		locDAO = database.locationDAO();
-		locationService = LocationService.getInstance();
+		playDAO = database.playDAO();
+		//		locationService = LocationService.getInstance();
 	}
 
+	public Play getPlay(int tour_id, int user_id) {
+		return playDAO.getPlay(tour_id, user_id);
+	}
 }

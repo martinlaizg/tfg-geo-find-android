@@ -17,7 +17,7 @@ import com.martinlaizg.geofind.data.access.database.entities.relations.TourCreat
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapRepository {
+public class TourRepository {
 
 	private final MapService mapService;
 	private final TourDAO tourDAO;
@@ -25,7 +25,7 @@ public class MapRepository {
 	private final PlaceDAO locDAO;
 	private final UserDAO userDAO;
 
-	public MapRepository(Application application) {
+	public TourRepository(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
 		tourDAO = database.mapDAO();
 		locDAO = database.locationDAO();
