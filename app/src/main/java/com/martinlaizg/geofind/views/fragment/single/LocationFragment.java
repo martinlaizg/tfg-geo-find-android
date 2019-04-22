@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
-import com.martinlaizg.geofind.views.viewmodel.MapViewModel;
+import com.martinlaizg.geofind.views.viewmodel.TourViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,15 +49,15 @@ public class LocationFragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		MapViewModel viewModel = ViewModelProviders.of(this).get(MapViewModel.class);
+		TourViewModel viewModel = ViewModelProviders.of(this).get(TourViewModel.class);
 
-		viewModel.getPlace(place_id).observe(this, this::setPlace);
+		viewModel.loadPlace(place_id).observe(this, this::setPlace);
 	}
 
 	private void setPlace(Place place) {
 		if (place != null) {
 			location_name.setText(place.getName());
-			location_description.setText(place.getDescription()); // TODO cambiar por el valor real
+			location_description.setText(place.getDescription());
 			location_image.setImageResource(R.drawable.default_map_image);
 		}
 	}

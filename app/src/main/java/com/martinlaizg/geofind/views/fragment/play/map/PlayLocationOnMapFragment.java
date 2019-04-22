@@ -30,7 +30,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.button.MaterialButton;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
-import com.martinlaizg.geofind.views.viewmodel.MapViewModel;
+import com.martinlaizg.geofind.views.viewmodel.TourViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -92,7 +92,7 @@ public class PlayLocationOnMapFragment
 		if (b != null) {
 			loc_id = b.getString(LOCATION_ID);
 		}
-		MapViewModel viewModel = ViewModelProviders.of(requireActivity()).get(MapViewModel.class);
+		TourViewModel viewModel = ViewModelProviders.of(requireActivity()).get(TourViewModel.class);
 
 		location_name.setText(place.getName());
 		location_description.setText(place.getDescription());

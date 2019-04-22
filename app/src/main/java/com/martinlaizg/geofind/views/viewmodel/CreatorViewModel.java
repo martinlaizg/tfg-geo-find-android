@@ -2,26 +2,26 @@ package com.martinlaizg.geofind.views.viewmodel;
 
 import android.app.Application;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.enums.PlayLevel;
-import com.martinlaizg.geofind.data.repository.LocationRepository;
-import com.martinlaizg.geofind.data.repository.MapRepository;
+import com.martinlaizg.geofind.data.repository.PlaceRepository;
+import com.martinlaizg.geofind.data.repository.TourRepository;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.MutableLiveData;
 
 public class CreatorViewModel
 		extends AndroidViewModel {
 
-	private final MapRepository mapRepo;
-	private final LocationRepository locRepo;
+	private final TourRepository mapRepo;
+	private final PlaceRepository locRepo;
 	private Tour tour;
 	private APIException error;
 	private boolean load;
@@ -29,8 +29,8 @@ public class CreatorViewModel
 
 	public CreatorViewModel(@NonNull Application application) {
 		super(application);
-		mapRepo = new MapRepository(application);
-		locRepo = new LocationRepository(application);
+		mapRepo = new TourRepository(application);
+		locRepo = new PlaceRepository(application);
 		load = true;
 	}
 
@@ -86,7 +86,7 @@ public class CreatorViewModel
 	}
 
 	public void setCreatedMap(String name, String description, Integer creator_id, PlayLevel pl) {
-		if(tour == null) tour = new Tour();
+		if (tour == null) tour = new Tour();
 		tour.setName(name);
 		tour.setDescription(description);
 		tour.setCreator_id(creator_id);
@@ -98,7 +98,7 @@ public class CreatorViewModel
 		new Thread(() -> {
 			if (load) {
 				tour = new Tour();
-				if(tour_id>0) {
+				if (tour_id > 0) {
 					try {
 						tour = mapRepo.getTour(tour_id);
 					} catch (APIException e) {
@@ -136,8 +136,8 @@ public class CreatorViewModel
 	}
 
 	public boolean checkPlaceName(String newName) {
-		for(Place p : getPlaces()){
-			if(p.getName().equals(newName)) return false;
+		for (Place p : getPlaces()) {
+			if (p.getName().equals(newName)) return false;
 		}
 		return true;
 	}

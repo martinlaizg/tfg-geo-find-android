@@ -108,6 +108,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/toPlayTour"
+            app:destination="@id/navPlayTour" />
     </fragment>
     <fragment
         android:id="@+id/navPlace"
@@ -172,4 +175,9 @@
         app:launchSingleTop="true"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right" />
+    <fragment
+        android:id="@+id/navPlayTour"
+        android:name="com.martinlaizg.geofind.PlayTourFragment"
+        android:label="fragment_play_tour"
+        tools:layout="@layout/fragment_play_tour" />
 </navigation>

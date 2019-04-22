@@ -1,14 +1,14 @@
 package com.martinlaizg.geofind.data.access.database.entities;
 
-import com.google.android.gms.maps.model.LatLng;
-
-import java.sql.Date;
-
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "places")//, foreignKeys = @ForeignKey(entity = Tour.class, parentColumns = "id", childColumns = "tour_id", onDelete = CASCADE), indices = @Index("tour_id"))
+import com.google.android.gms.maps.model.LatLng;
+
+import java.sql.Date;
+
+@Entity(tableName = "places")
 public class Place {
 
 	@PrimaryKey

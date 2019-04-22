@@ -102,7 +102,6 @@ public class CreatorFragment
 		viewModel.createTour().observe(this, tour -> {
 			create_tour_button.setEnabled(true);
 			if (tour == null) {
-				// TODO manage error
 				APIException err = viewModel.getError();
 				Toast.makeText(requireActivity(), err.getType().getMessage(), Toast.LENGTH_LONG).show();
 				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack(R.id.navTourList, false);

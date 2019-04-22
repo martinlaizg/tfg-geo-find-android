@@ -2,26 +2,26 @@ package com.martinlaizg.geofind.views.viewmodel;
 
 import android.app.Application;
 
-import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
-import com.martinlaizg.geofind.data.access.database.entities.Tour;
-import com.martinlaizg.geofind.data.repository.MapRepository;
-
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
+import com.martinlaizg.geofind.data.access.database.entities.Tour;
+import com.martinlaizg.geofind.data.repository.TourRepository;
+
+import java.util.List;
+
 public class MapListViewModel
 		extends AndroidViewModel {
 
-	private final MapRepository repository;
+	private final TourRepository repository;
 	private APIException error;
 
 
 	public MapListViewModel(@NonNull Application application) {
 		super(application);
-		repository = new MapRepository(application);
+		repository = new TourRepository(application);
 	}
 
 

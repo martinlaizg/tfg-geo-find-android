@@ -7,17 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.google.android.material.button.MaterialButton;
-import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.adapter.LocationListAdapter;
-import com.martinlaizg.geofind.config.Preferences;
-import com.martinlaizg.geofind.data.access.database.entities.Tour;
-import com.martinlaizg.geofind.data.access.database.entities.User;
-import com.martinlaizg.geofind.views.fragment.creator.CreatorFragment;
-import com.martinlaizg.geofind.views.viewmodel.MapViewModel;
-
-import org.jetbrains.annotations.NotNull;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +17,21 @@ import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.button.MaterialButton;
+import com.martinlaizg.geofind.R;
+import com.martinlaizg.geofind.adapter.LocationListAdapter;
+import com.martinlaizg.geofind.config.Preferences;
+import com.martinlaizg.geofind.data.access.database.entities.Place;
+import com.martinlaizg.geofind.data.access.database.entities.Tour;
+import com.martinlaizg.geofind.data.access.database.entities.User;
+import com.martinlaizg.geofind.views.fragment.creator.CreatorFragment;
+import com.martinlaizg.geofind.views.viewmodel.TourViewModel;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -50,46 +55,46 @@ public class TourFragment
 	@BindView(R.id.places_list)
 	RecyclerView places_list;
 
+	@BindView(R.id.play_button)
+	MaterialButton play_button;
+
 	@BindView(R.id.empty_text)
 	TextView empty_text;
 
+
 	private SharedPreferences sp;
 	private LocationListAdapter adapter;
-	private Integer tour_id;
 
 	@Override
 	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_tour, container, false);
 		ButterKnife.bind(this, view);
-		Bundle b = getArguments();
-		if (b != null) {
-			tour_id = b.getInt(TOUR_ID);
-		}
 		return view;
 	}
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-
-		places_list.setLayoutManager(new LinearLayoutManager(requireActivity()));
-		adapter = new LocationListAdapter();
-		places_list.setAdapter(adapter);
-		places_list.setVisibility(View.GONE);
-
-		MapViewModel viewModel = ViewModelProviders.of(requireActivity()).get(MapViewModel.class);
-		viewModel.getMap(tour_id).observe(requireActivity(), this::setMap);
-		viewModel.getLocations(tour_id).observe(requireActivity(), locationEntities -> {
-			if (locationEntities != null && !locationEntities.isEmpty()) {
-				places_list.setVisibility(View.VISIBLE);
-				adapter.setLocationEntities(locationEntities);
-				tour_num_locations.setText(String.format(getString(R.string.num_places), locationEntities.size()));
-			}
-		});
 		sp = PreferenceManager.getDefaultSharedPreferences(requireActivity());
+
+		adapter = new LocationListAdapter();
+		places_list.setLayoutManager(new LinearLayoutManager(requireActivity()));
+		places_list.setAdapter(adapter);
+
+		int tour_id = 0;
+		Bundle b = getArguments();
+		if (b != null) {
+			tour_id = b.getInt(TOUR_ID);
+		}
+		if (tour_id == 0) {
+			Toast.makeText(requireContext(), requireContext().getString(R.string.tour_not_permitted), Toast.LENGTH_SHORT).show();
+			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
+		}
+		TourViewModel viewModel = ViewModelProviders.of(requireActivity()).get(TourViewModel.class);
+		viewModel.loadTour(tour_id).observe(requireActivity(), this::setTour);
+
 	}
 
-	private void setMap(Tour tour) {
+	private void setTour(Tour tour) {
 		if (tour != null) {
 			tour_name.setText(tour.getName());
 			tour_description.setText(tour.getDescription());
@@ -103,6 +108,17 @@ public class TourFragment
 				b.putInt(CreatorFragment.TOUR_ID, tour.getId());
 				edit_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toEditTour, b));
 				edit_button.setVisibility(View.VISIBLE);
+			}
+
+			// Set places
+			List<Place> places = tour.getPlaces();
+			if (places != null && !places.isEmpty()) {
+				adapter.setLocationEntities(places);
+				tour_num_locations.setText(String.format(getString(R.string.num_places), places.size()));
+				play_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toPlayTour));
+			} else {
+				places_list.setVisibility(View.GONE);
+				play_button.setVisibility(View.GONE);
 			}
 		}
 	}

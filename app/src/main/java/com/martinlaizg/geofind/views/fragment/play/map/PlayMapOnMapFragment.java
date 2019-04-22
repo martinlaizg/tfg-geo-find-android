@@ -11,6 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,20 +28,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
-import com.martinlaizg.geofind.views.viewmodel.MapViewModel;
+import com.martinlaizg.geofind.views.viewmodel.TourViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@Deprecated
 public class PlayMapOnMapFragment
 		extends Fragment
 		implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
@@ -51,7 +53,7 @@ public class PlayMapOnMapFragment
 
 	@BindView(R.id.map_view)
 	MapView map_view;
-	private MapViewModel viewModel;
+	private TourViewModel viewModel;
 	private GoogleMap gMap;
 
 	@Override
@@ -68,7 +70,7 @@ public class PlayMapOnMapFragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		viewModel = ViewModelProviders.of(requireActivity()).get(MapViewModel.class);
+		viewModel = ViewModelProviders.of(requireActivity()).get(TourViewModel.class);
 		Tour tour = new Tour();
 		map_name.setText(tour.getName());
 		map_description.setText(tour.getDescription());

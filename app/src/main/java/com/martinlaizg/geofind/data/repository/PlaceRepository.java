@@ -2,6 +2,9 @@ package com.martinlaizg.geofind.data.repository;
 
 import android.app.Application;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.martinlaizg.geofind.data.access.api.service.LocationService;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
@@ -9,9 +12,6 @@ import com.martinlaizg.geofind.data.access.database.dao.PlaceDAO;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 
 import java.util.List;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 public class LocationRepository {
 
@@ -56,7 +56,7 @@ public class LocationRepository {
 		return locs;
 	}
 
-	public Place getLocation(Integer place_id) throws APIException {
+	public Place getPlace(Integer place_id) throws APIException {
 		Place place = locDAO.getPlace(place_id);
 		if (place == null) {
 			place = locationService.getLocation(place_id);
@@ -67,4 +67,5 @@ public class LocationRepository {
 		}
 		return place;
 	}
+
 }

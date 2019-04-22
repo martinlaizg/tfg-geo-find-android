@@ -3,17 +3,6 @@ package com.martinlaizg.geofind.data.access.database;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.martinlaizg.geofind.data.access.database.converter.DateTypeConverter;
-import com.martinlaizg.geofind.data.access.database.converter.PlayLevelTypeConverter;
-import com.martinlaizg.geofind.data.access.database.converter.UserTypeTypeConverter;
-import com.martinlaizg.geofind.data.access.database.dao.PlaceDAO;
-import com.martinlaizg.geofind.data.access.database.dao.TourDAO;
-import com.martinlaizg.geofind.data.access.database.dao.UserDAO;
-import com.martinlaizg.geofind.data.access.database.dao.relations.MapLocationsDAO;
-import com.martinlaizg.geofind.data.access.database.entities.Place;
-import com.martinlaizg.geofind.data.access.database.entities.Tour;
-import com.martinlaizg.geofind.data.access.database.entities.User;
-
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -21,7 +10,20 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {User.class, Tour.class, Place.class}, version = 1, exportSchema = false)
+import com.martinlaizg.geofind.data.access.database.converter.DateTypeConverter;
+import com.martinlaizg.geofind.data.access.database.converter.PlayLevelTypeConverter;
+import com.martinlaizg.geofind.data.access.database.converter.UserTypeTypeConverter;
+import com.martinlaizg.geofind.data.access.database.dao.PlaceDAO;
+import com.martinlaizg.geofind.data.access.database.dao.PlayDAO;
+import com.martinlaizg.geofind.data.access.database.dao.TourDAO;
+import com.martinlaizg.geofind.data.access.database.dao.UserDAO;
+import com.martinlaizg.geofind.data.access.database.dao.relations.MapLocationsDAO;
+import com.martinlaizg.geofind.data.access.database.entities.Place;
+import com.martinlaizg.geofind.data.access.database.entities.Play;
+import com.martinlaizg.geofind.data.access.database.entities.Tour;
+import com.martinlaizg.geofind.data.access.database.entities.User;
+
+@Database(entities = {User.class, Tour.class, Place.class, Play.class}, version = 2, exportSchema = false)
 @TypeConverters({DateTypeConverter.class, PlayLevelTypeConverter.class, UserTypeTypeConverter.class})
 public abstract class AppDatabase
 		extends RoomDatabase {
@@ -49,6 +51,8 @@ public abstract class AppDatabase
 	public abstract TourDAO mapDAO();
 
 	public abstract PlaceDAO locationDAO();
+
+	public abstract PlayDAO playDAO();
 
 	public abstract MapLocationsDAO mapLocsDAO();
 
