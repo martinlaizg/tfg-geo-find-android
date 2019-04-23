@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.martinlaizg.geofind.PlayTourFragment;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.adapter.LocationListAdapter;
 import com.martinlaizg.geofind.config.Preferences;
@@ -115,7 +116,9 @@ public class TourFragment
 			if (places != null && !places.isEmpty()) {
 				adapter.setLocationEntities(places);
 				tour_num_locations.setText(String.format(getString(R.string.num_places), places.size()));
-				play_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toPlayTour));
+				Bundle b = new Bundle();
+				b.putInt(PlayTourFragment.TOUR_ID, tour.getId());
+				play_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toPlayTour, b));
 			} else {
 				places_list.setVisibility(View.GONE);
 				play_button.setVisibility(View.GONE);

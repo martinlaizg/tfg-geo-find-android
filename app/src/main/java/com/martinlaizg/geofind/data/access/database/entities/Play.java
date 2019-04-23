@@ -25,9 +25,8 @@ public class Play {
 	private Tour tour;
 	@Ignore
 	private User user;
-
 	@Ignore
-	private List<Integer> completedPlaces;
+	private List<Place> places;
 
 	public Play(@NonNull Integer id, Integer tour_id, Integer user_id, Date created_at, Date updated_at) {
 		this.id = id;
@@ -40,6 +39,13 @@ public class Play {
 	@Ignore
 	public Play() {
 		this.id = 0;
+	}
+
+	@Ignore
+	public Play(int tour_id, int user_id) {
+		this.id = 0;
+		this.tour_id = tour_id;
+		this.user_id = user_id;
 	}
 
 	@NotNull
@@ -97,11 +103,11 @@ public class Play {
 		this.user = user;
 	}
 
-	public List<Integer> getCompletedPlaces() {
-		return completedPlaces;
+	public List<Place> getPlaces() {
+		return places;
 	}
 
-	public void setCompletedPlaces(List<Integer> completedPlaces) {
-		this.completedPlaces = completedPlaces;
+	public void setPlaces(List<Place> places) {
+		this.places = places;
 	}
 }

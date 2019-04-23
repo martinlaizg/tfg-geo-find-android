@@ -10,7 +10,6 @@ import com.martinlaizg.geofind.data.access.database.entities.User;
 
 public class UserRepository {
 
-	private static final String TAG = UserRepository.class.getSimpleName();
 	private final UserDAO userDAO;
 	private final UserService userService;
 
@@ -35,5 +34,13 @@ public class UserRepository {
 			userDAO.insert(u);
 		}
 		return u;
+	}
+
+	public void insert(User user) {
+		userDAO.insert(user);
+	}
+
+	public User getUser(int user_id) {
+		return userDAO.getUser(user_id);
 	}
 }

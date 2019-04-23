@@ -10,24 +10,31 @@ import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Play;
 import com.martinlaizg.geofind.data.repository.PlayRepository;
+import com.martinlaizg.geofind.data.repository.RepositoryFactory;
 
 public class PlayTourViewModel
 		extends AndroidViewModel {
 
 	private final PlayRepository playRepo;
 
+
 	private APIException error;
+	private Play play;
 
 	public PlayTourViewModel(@NonNull Application application) {
 		super(application);
-		playRepo = new PlayRepository(application);
+		playRepo = RepositoryFactory.getPlayRepository(application);
 	}
 
-	public MutableLiveData<Play> loadPlay(int tour_id, int user_id) {
+	public MutableLiveData<Play> loadPlay(int user_id, int tour_id) {
 		MutableLiveData<Play> m = new MutableLiveData<>();
 		new Thread(() -> {
-			Play p = playRepo.getPlay(tour_id, user_id);
-			m.postValue(p);
+			try {
+				play = playRepo.getPlay(user_id, tour_id);
+			} catch (APIException e) {
+				setError(e);
+			}
+			m.postValue(play);
 		}).start();
 		return m;
 	}

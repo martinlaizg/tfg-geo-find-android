@@ -35,7 +35,7 @@ public class LocationService {
 		Response<List<Place>> response;
 		APIException apiException;
 		try {
-			response = restClient.getLocations(new HashMap<>()).execute();
+			response = restClient.getPlaces(new HashMap<>()).execute();
 			if (response.isSuccessful()) {
 				return response.body();
 			}
@@ -51,14 +51,14 @@ public class LocationService {
 		Response<List<Place>> response;
 		APIException apiException;
 		try {
-			response = restClient.createMapLocations(id, locationEntities).execute();
+			response = restClient.createTourPlaces(id, locationEntities).execute();
 			if (response.isSuccessful()) {
 				return response.body();
 			}
 			apiException = ErrorUtils.parseError(response);
 		} catch (IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
-			Log.e(TAG, "createMapLocations: ", e);
+			Log.e(TAG, "createTourPlaces: ", e);
 		}
 		throw apiException;
 	}
@@ -67,14 +67,14 @@ public class LocationService {
 		Response<List<Place>> response;
 		APIException apiException;
 		try {
-			response = restClient.updateMapLocations(id, locationEntities).execute();
+			response = restClient.updateTourPlaces(id, locationEntities).execute();
 			if (response.isSuccessful()) {
 				return response.body();
 			}
 			apiException = ErrorUtils.parseError(response);
 		} catch (IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
-			Log.e(TAG, "updateMapLocations: ", e);
+			Log.e(TAG, "updateTourPlaces: ", e);
 		}
 		throw apiException;
 	}
@@ -83,7 +83,7 @@ public class LocationService {
 		Response<List<Place>> response;
 		APIException apiException;
 		try {
-			response = restClient.getMapLocations(id).execute();
+			response = restClient.getTourPlaces(id).execute();
 			if (response.isSuccessful()) {
 				return response.body();
 			}

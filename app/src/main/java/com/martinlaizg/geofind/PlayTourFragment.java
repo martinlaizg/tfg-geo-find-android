@@ -68,15 +68,15 @@ public class PlayTourFragment
 			tour_id = b.getInt(TOUR_ID);
 		}
 		User u = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(requireContext()));
-		viewModel.loadPlay(tour_id, u.getId()).observe(requireActivity(), play -> {
-			setPlace();
-		});
+		viewModel.loadPlay(u.getId(), tour_id).observe(requireActivity(), play -> setPlace());
 	}
 
 	private void setPlace() {
 		Place p = viewModel.getNextPlace();
-		place_name.setText(p.getName());
-		place_description.setText(p.getDescription());
+		if (p != null) {
+			place_name.setText(p.getName());
+			place_description.setText(p.getDescription());
+		}
 	}
 
 	@Override

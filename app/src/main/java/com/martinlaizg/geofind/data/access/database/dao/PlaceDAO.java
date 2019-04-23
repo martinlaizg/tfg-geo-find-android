@@ -1,20 +1,23 @@
 package com.martinlaizg.geofind.data.access.database.dao;
 
-import com.martinlaizg.geofind.data.access.database.entities.Place;
-
-import java.util.List;
-
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.martinlaizg.geofind.data.access.database.entities.Place;
+
+import java.util.List;
+
 @Dao
 public interface PlaceDAO {
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	void insert(Place place);
+
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	void insert(List<Place> place);
 
 	@Update
 	void update(Place place);

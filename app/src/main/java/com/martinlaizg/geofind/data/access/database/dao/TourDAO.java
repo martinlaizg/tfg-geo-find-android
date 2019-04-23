@@ -1,12 +1,12 @@
 package com.martinlaizg.geofind.data.access.database.dao;
 
-import com.martinlaizg.geofind.data.access.database.entities.Tour;
-
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import com.martinlaizg.geofind.data.access.database.entities.Tour;
 
 @Dao
 public interface TourDAO {
@@ -17,4 +17,6 @@ public interface TourDAO {
 	@Update
 	void update(Tour tour);
 
+	@Query("SELECT * FROM tours WHERE id = :tour_id")
+	Tour getTour(Integer tour_id);
 }

@@ -178,6 +178,6 @@
     <fragment
         android:id="@+id/navPlayTour"
         android:name="com.martinlaizg.geofind.PlayTourFragment"
-        android:label="fragment_play_tour"
+        android:label="@string/play_tour"
         tools:layout="@layout/fragment_play_tour" />
 </navigation>

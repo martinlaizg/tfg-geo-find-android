@@ -15,27 +15,27 @@ import java.util.List;
 
 import retrofit2.Response;
 
-public class MapService {
+public class TourService {
 
-	private static MapService mapService;
+	private static TourService tourService;
 	private static RestClient restClient;
-	private final String TAG = MapService.class.getSimpleName();
+	private final String TAG = TourService.class.getSimpleName();
 
-	public static MapService getInstance() {
+	public static TourService getInstance() {
 		if (restClient == null) {
 			restClient = RetrofitInstance.getRestClient();
 		}
-		if (mapService == null) {
-			mapService = new MapService();
+		if (tourService == null) {
+			tourService = new TourService();
 		}
-		return mapService;
+		return tourService;
 	}
 
 	public List<Tour> getAllMaps() throws APIException {
 		Response<List<Tour>> response;
 		APIException apiException;
 		try {
-			response = restClient.getMaps(new HashMap<>()).execute();
+			response = restClient.getTours(new HashMap<>()).execute();
 			if (response.isSuccessful()) {
 				return response.body();
 			}
@@ -52,7 +52,7 @@ public class MapService {
 		Response<Tour> response;
 		APIException apiException;
 		try {
-			response = restClient.createMap(tour).execute();
+			response = restClient.createTour(tour).execute();
 			if (response.isSuccessful()) {
 				return response.body();
 			}
@@ -69,7 +69,7 @@ public class MapService {
 		Response<Tour> response;
 		APIException apiException;
 		try {
-			response = restClient.getMap(id).execute();
+			response = restClient.getTour(id).execute();
 			if (response.isSuccessful()) {
 				return response.body();
 			}

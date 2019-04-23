@@ -51,7 +51,6 @@ public class PlayMapOnMapFragment
 	@BindView(R.id.tour_description)
 	TextView map_description;
 
-	@BindView(R.id.map_view)
 	MapView map_view;
 	private TourViewModel viewModel;
 	private GoogleMap gMap;

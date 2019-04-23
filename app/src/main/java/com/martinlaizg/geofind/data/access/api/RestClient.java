@@ -1,6 +1,7 @@
 package com.martinlaizg.geofind.data.access.api;
 
 import com.martinlaizg.geofind.data.access.database.entities.Place;
+import com.martinlaizg.geofind.data.access.database.entities.Play;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 
@@ -22,40 +23,32 @@ public interface RestClient {
 	//
 	// Tours
 
-	// Get maps with optional filter
-	@GET("maps")
-	Call<List<Tour>> getMaps(@QueryMap java.util.Map<String, String> params);
+	// Get tours with optional filter
+	@GET("tours")
+	Call<List<Tour>> getTours(@QueryMap java.util.Map<String, String> params);
 
-	@POST("maps")
-	Call<Tour> createMap(@Body Tour tour);
+	@POST("tours")
+	Call<Tour> createTour(@Body Tour tour);
 
 	// Get single tourEntity
-	@GET("maps/{id}")
-	Call<Tour> getMap(@Path("id") Integer id);
+	@GET("tours/{tour_id}")
+	Call<Tour> getTour(@Path("tour_id") Integer tour_id);
 
 	// Update tourEntity
-	@PUT("maps/{id}")
-	Call<Tour> update(@Path("id") Integer id, @Body Tour m);
+	@PUT("tours/{tour_id}")
+	Call<Tour> update(@Path("tour_id") Integer tour_id, @Body Tour t);
 
-	// Get tourEntity locationEntities
-	@GET("maps/{id}/locationEntities")
-	Call<List<Place>> getMapLocations(@Path("id") Integer map_id);
-
-	// Create tourEntity locationEntities
-	@POST("maps/{id}/locationEntities")
-	Call<List<Place>> createMapLocations(@Path("id") Integer map_id, @Body List<Place> locationEntities);
+	// Get tour places
+	@GET("tours/{tour_id}/palces")
+	Call<List<Place>> getTourPlaces(@Path("tour_id") Integer tour_id);
 
 	// Create tourEntity locationEntities
-	@PUT("maps/{id}/locationEntities")
-	Call<List<Place>> updateMapLocations(@Path("id") Integer map_id, @Body List<Place> locationEntities);
+	@POST("tours/{tour_id}/places")
+	Call<List<Place>> createTourPlaces(@Path("tour_id") Integer tour_id, @Body List<Place> places);
 
-	// Get tourEntity location
-	@GET("maps/{map_id}/locationEntities/{loc_id}")
-	Call<List<Place>> getMapLocation(@Path("map_id") String map_id, @Path("loc_id") String loc_id);
-
-	// Update tourEntity place
-	@PUT("maps/{map_id}/locationEntities/{loc_id}")
-	Call<List<Place>> updateMapLocation(@Path("map_id") String map_id, @Path("loc_id") String loc_id, @Body Place place);
+	// Create tourEntity locationEntities
+	@PUT("tours/{tour_id}/places")
+	Call<List<Place>> updateTourPlaces(@Path("tour_id") Integer tour_id, @Body List<Place> places);
 
 
 	//
@@ -65,11 +58,11 @@ public interface RestClient {
 	// Locations requests
 
 	// Get locationEntities
-	@GET("locationEntities")
-	Call<List<Place>> getLocations(@QueryMap java.util.Map<String, String> params);
+	@GET("places")
+	Call<List<Place>> getPlaces(@QueryMap java.util.Map<String, String> params);
 
 	// Get location
-	@GET("locationEntities/{loc_id}")
+	@GET("places/{loc_id}")
 	Call<Place> getLocation(@Path("loc_id") Integer loc_id);
 
 
@@ -83,15 +76,19 @@ public interface RestClient {
 	@POST("login")
 	Call<User> login(@Body User body);
 
-	// Get all users
-	@GET("users")
-	Call<List<User>> getUsers();
-
 	// Create a user
 	@POST("users")
 	Call<User> registry(@Body User user);
 
 	// Get single user
-	@GET("users/{usr_id}")
-	Call<User> getUser(@Path("usr_id") String usr_id);
+	@GET("users/{user_id}")
+	Call<User> getUser(@Path("user_id") String user_id);
+
+	// Get user play
+	@GET("users/{user_id}/tours/{tour_id}")
+	Call<Play> getUserPlay(@Path("user_id") int user_id, @Path("tour_id") int tour_id);
+
+	// Create user play
+	@POST("users/{user_id}/tours/{tour_id}")
+	Call<Play> createUserPlay(int user_id, int tour_id);
 }

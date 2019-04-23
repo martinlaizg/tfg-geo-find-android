@@ -12,7 +12,6 @@ import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.enums.PlayLevel;
-import com.martinlaizg.geofind.data.repository.PlaceRepository;
 import com.martinlaizg.geofind.data.repository.TourRepository;
 
 import java.util.List;
@@ -21,7 +20,6 @@ public class CreatorViewModel
 		extends AndroidViewModel {
 
 	private final TourRepository mapRepo;
-	private final PlaceRepository locRepo;
 	private Tour tour;
 	private APIException error;
 	private boolean load;
@@ -30,7 +28,6 @@ public class CreatorViewModel
 	public CreatorViewModel(@NonNull Application application) {
 		super(application);
 		mapRepo = new TourRepository(application);
-		locRepo = new PlaceRepository(application);
 		load = true;
 	}
 

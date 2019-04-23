@@ -2,13 +2,11 @@ package com.martinlaizg.geofind.data.repository;
 
 import android.app.Application;
 
-import com.martinlaizg.geofind.data.access.api.service.MapService;
+import com.martinlaizg.geofind.data.access.api.service.TourService;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
-import com.martinlaizg.geofind.data.access.database.dao.PlaceDAO;
 import com.martinlaizg.geofind.data.access.database.dao.TourDAO;
-import com.martinlaizg.geofind.data.access.database.dao.UserDAO;
-import com.martinlaizg.geofind.data.access.database.dao.relations.MapLocationsDAO;
+import com.martinlaizg.geofind.data.access.database.dao.relations.TourPlacesDAO;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.access.database.entities.User;
@@ -19,19 +17,21 @@ import java.util.List;
 
 public class TourRepository {
 
-	private final MapService mapService;
+	private final TourService tourService;
 	private final TourDAO tourDAO;
-	private final MapLocationsDAO mapLocsDAO;
-	private final PlaceDAO locDAO;
-	private final UserDAO userDAO;
+	private final TourPlacesDAO mapLocsDAO;
+
+	private final PlaceRepository placeRepo;
+	private final UserRepository userRepo;
 
 	public TourRepository(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
-		tourDAO = database.mapDAO();
-		locDAO = database.locationDAO();
-		userDAO = database.userDAO();
+		tourDAO = database.tourDAO();
+		tourService = TourService.getInstance();
 		mapLocsDAO = database.mapLocsDAO();
-		mapService = MapService.getInstance();
+
+		placeRepo = RepositoryFactory.getPlaceRepository(application);
+		userRepo = RepositoryFactory.getUserRepository(application);
 	}
 
 	public List<Tour> getAllMaps() throws APIException {
@@ -46,13 +46,13 @@ public class TourRepository {
 		}
 
 		if (ts.isEmpty()) {
-			ts = mapService.getAllMaps();
+			ts = tourService.getAllMaps();
 			if (ts != null) {
 				for (Tour t : ts) {
 					tourDAO.insert(t);
-					userDAO.insert(t.getCreator());
-					for (Place l : t.getPlaces()) {
-						locDAO.insert(l);
+					userRepo.insert(t.getCreator());
+					for (Place p : t.getPlaces()) {
+						placeRepo.insert(p);
 					}
 				}
 			}
@@ -61,10 +61,10 @@ public class TourRepository {
 	}
 
 	public Tour getTour(Integer id) throws APIException {
-		TourCreatorPlaces tcp = mapLocsDAO.getMap(id);
+		TourCreatorPlaces tcp = mapLocsDAO.getTour(id);
 		Tour t;
 		if (tcp == null) {
-			t = mapService.getMap(id);
+			t = tourService.getMap(id);
 		} else {
 			t = tcp.getTour();
 			t.setCreator(tcp.getCreator());
@@ -74,20 +74,24 @@ public class TourRepository {
 	}
 
 	public Tour create(Tour tour) throws APIException {
-		tour = mapService.create(tour);
+		tour = tourService.create(tour);
 		if (tour != null) tourDAO.insert(tour);
 		return tour;
 	}
 
 	public Tour update(Tour tour) throws APIException {
-		tour = mapService.update(tour);
+		tour = tourService.update(tour);
 		if (tour != null) {
 			tourDAO.update(tour);
 			if (tour.getPlaces() != null) {
-				locDAO.removeTourPlaces(tour.getId());
-				for (Place p : tour.getPlaces()) locDAO.insert(p);
+				placeRepo.removeTourPlaces(tour.getId());
+				for (Place p : tour.getPlaces()) placeRepo.insert(p);
 			}
 		}
 		return tour;
+	}
+
+	public void insert(Tour tour) {
+		tourDAO.insert(tour);
 	}
 }

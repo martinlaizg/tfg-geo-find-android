@@ -17,7 +17,8 @@ import com.martinlaizg.geofind.data.access.database.dao.PlaceDAO;
 import com.martinlaizg.geofind.data.access.database.dao.PlayDAO;
 import com.martinlaizg.geofind.data.access.database.dao.TourDAO;
 import com.martinlaizg.geofind.data.access.database.dao.UserDAO;
-import com.martinlaizg.geofind.data.access.database.dao.relations.MapLocationsDAO;
+import com.martinlaizg.geofind.data.access.database.dao.relations.PlacePlayDAO;
+import com.martinlaizg.geofind.data.access.database.dao.relations.TourPlacesDAO;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Play;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
@@ -48,13 +49,15 @@ public abstract class AppDatabase
 
 	public abstract UserDAO userDAO();
 
-	public abstract TourDAO mapDAO();
+	public abstract TourDAO tourDAO();
 
-	public abstract PlaceDAO locationDAO();
+	public abstract PlaceDAO placeDAO();
 
 	public abstract PlayDAO playDAO();
 
-	public abstract MapLocationsDAO mapLocsDAO();
+	public abstract TourPlacesDAO mapLocsDAO();
+
+	public abstract PlacePlayDAO playPlaceDAO();
 
 	private static class PopulateDbAsyncTask
 			extends AsyncTask<Void, Void, Void> {
