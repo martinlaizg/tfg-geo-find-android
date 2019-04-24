@@ -4,13 +4,12 @@ package com.martinlaizg.geofind.views.preferences;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.config.Preferences;
-
 import androidx.navigation.Navigation;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
+
+import com.martinlaizg.geofind.R;
+import com.martinlaizg.geofind.config.Preferences;
 
 
 public class SettingsFragment

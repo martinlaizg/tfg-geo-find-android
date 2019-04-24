@@ -49,7 +49,7 @@ public class PlayTourViewModel
 
 	public Place getNextPlace() {
 		int numPlaces = play.getPlaces().size();
-		if(numPlaces>= play.getTour().getPlaces().size()){
+		if (numPlaces >= play.getTour().getPlaces().size()) {
 			return null;
 		}
 		return play.getTour().getPlaces().get(numPlaces);

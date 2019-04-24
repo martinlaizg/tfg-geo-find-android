@@ -1,13 +1,13 @@
 package com.martinlaizg.geofind.data.access.database.entities.relations;
 
+import androidx.room.Embedded;
+import androidx.room.Relation;
+
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 
 import java.util.List;
-
-import androidx.room.Embedded;
-import androidx.room.Relation;
 
 public class TourCreatorPlaces {
 

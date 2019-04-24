@@ -1,8 +1,8 @@
 package com.martinlaizg.geofind.data.access.database.converter;
 
-import com.martinlaizg.geofind.data.enums.UserType;
-
 import androidx.room.TypeConverter;
+
+import com.martinlaizg.geofind.data.enums.UserType;
 
 public class UserTypeTypeConverter {
 

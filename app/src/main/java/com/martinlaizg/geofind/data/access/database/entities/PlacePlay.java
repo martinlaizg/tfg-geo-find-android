@@ -7,9 +7,7 @@ import androidx.room.Index;
 
 import org.jetbrains.annotations.NotNull;
 
-@Entity(tableName = "place_play", primaryKeys = {"play_id", "place_id"},
-        foreignKeys = {@ForeignKey(entity = Play.class, parentColumns = "id", childColumns = "play_id"), @ForeignKey(entity = Place.class, parentColumns = "id", childColumns = "place_id")},
-indices = @Index({"place_id","play_id"}))
+@Entity(tableName = "place_play", primaryKeys = {"play_id", "place_id"}, foreignKeys = {@ForeignKey(entity = Play.class, parentColumns = "id", childColumns = "play_id"), @ForeignKey(entity = Place.class, parentColumns = "id", childColumns = "place_id")}, indices = @Index({"place_id", "play_id"}))
 public class PlacePlay {
 
 	@NonNull

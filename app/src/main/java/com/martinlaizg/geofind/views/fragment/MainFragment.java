@@ -7,16 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
+
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.views.activity.MainActivity;
 
 import org.jetbrains.annotations.NotNull;
-
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-import androidx.preference.PreferenceManager;
 
 public class MainFragment
 		extends Fragment {

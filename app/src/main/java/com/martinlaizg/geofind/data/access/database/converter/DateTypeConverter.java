@@ -1,8 +1,8 @@
 package com.martinlaizg.geofind.data.access.database.converter;
 
-import java.sql.Date;
-
 import androidx.room.TypeConverter;
+
+import java.sql.Date;
 
 public class DateTypeConverter {
 	@TypeConverter

@@ -89,13 +89,13 @@ public class PlayTourFragment
 	}
 
 	private void setPlace() {
-		if(googleMap!=null) {
+		if (googleMap != null) {
 			LatLngBounds.Builder builder = new LatLngBounds.Builder();
-			if(place!=null)	builder.include(place.getPosition());
-			if(userLocation!= null)builder.include(new LatLng(userLocation.getLatitude(), userLocation.getLongitude()));
+			if (place != null) builder.include(place.getPosition());
+			if (userLocation != null) builder.include(new LatLng(userLocation.getLatitude(), userLocation.getLongitude()));
 			CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(builder.build(), MAP_PADDING);
 
-			if(place!=null)	googleMap.addMarker(new MarkerOptions().position(place.getPosition()));
+			if (place != null) googleMap.addMarker(new MarkerOptions().position(place.getPosition()));
 			googleMap.getUiSettings().setMyLocationButtonEnabled(false);
 			googleMap.getUiSettings().setMapToolbarEnabled(false);
 			googleMap.moveCamera(cu);
@@ -111,7 +111,7 @@ public class PlayTourFragment
 		}
 		googleMap.setMyLocationEnabled(true);
 		LocationManager locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
-		userLocation =locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		userLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		setPlace();
 	}
 
@@ -128,8 +128,8 @@ public class PlayTourFragment
 					permissions[1].equals(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
 				googleMap.setMyLocationEnabled(true);
 				LocationManager locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
-				 userLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-				 setPlace();
+				userLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+				setPlace();
 			}
 		}
 

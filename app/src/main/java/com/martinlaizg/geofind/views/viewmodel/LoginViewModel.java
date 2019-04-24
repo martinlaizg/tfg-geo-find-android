@@ -2,12 +2,12 @@ package com.martinlaizg.geofind.views.viewmodel;
 
 import android.app.Application;
 
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.MutableLiveData;
+
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.data.repository.UserRepository;
-
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.MutableLiveData;
 
 public class LoginViewModel
 		extends AndroidViewModel {
