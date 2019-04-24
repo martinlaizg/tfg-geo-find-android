@@ -20,11 +20,12 @@ import com.martinlaizg.geofind.data.access.database.dao.UserDAO;
 import com.martinlaizg.geofind.data.access.database.dao.relations.PlacePlayDAO;
 import com.martinlaizg.geofind.data.access.database.dao.relations.TourPlacesDAO;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
+import com.martinlaizg.geofind.data.access.database.entities.PlacePlay;
 import com.martinlaizg.geofind.data.access.database.entities.Play;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 
-@Database(entities = {User.class, Tour.class, Place.class, Play.class}, version = 2, exportSchema = false)
+@Database(entities = {User.class, Tour.class, Place.class, Play.class, PlacePlay.class}, version = 3, exportSchema = false)
 @TypeConverters({DateTypeConverter.class, PlayLevelTypeConverter.class, UserTypeTypeConverter.class})
 public abstract class AppDatabase
 		extends RoomDatabase {

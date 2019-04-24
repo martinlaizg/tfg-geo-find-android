@@ -48,6 +48,10 @@ public class PlayTourViewModel
 	}
 
 	public Place getNextPlace() {
-		return null;
+		int numPlaces = play.getPlaces().size();
+		if(numPlaces>= play.getTour().getPlaces().size()){
+			return null;
+		}
+		return play.getTour().getPlaces().get(numPlaces);
 	}
 }

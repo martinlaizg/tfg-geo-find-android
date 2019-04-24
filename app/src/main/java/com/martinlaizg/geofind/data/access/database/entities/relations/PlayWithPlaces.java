@@ -12,7 +12,7 @@ public class PlayWithPlaces {
 	@Embedded
 	public Play play;
 
-	@Relation(parentColumn = "place_id", entityColumn = "id")
+	@Relation(parentColumn = "id", entityColumn = "id")
 	List<Place> places;
 
 	public Play getPlay() {

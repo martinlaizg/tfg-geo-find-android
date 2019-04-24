@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitInstance {
 
 	//	private static final String BASE_URL = "https://geo-find-martinlaizg.herokuapp.com/api/";
-	private static final String BASE_URL = "http://192.168.1.44:8000/api/";
+	private static final String BASE_URL = "http://192.168.1.182:8000/api/";
 	private static Retrofit retrofitInstance;
 
 
