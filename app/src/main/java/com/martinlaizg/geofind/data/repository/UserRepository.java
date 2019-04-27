@@ -19,10 +19,9 @@ public class UserRepository {
 		userService = UserService.getInstance();
 	}
 
-
 	public User login(User u) throws APIException {
 		u = userService.login(u);
-		if (u != null) {
+		if(u != null) {
 			userDAO.insert(u);
 		}
 		return u;
@@ -30,7 +29,7 @@ public class UserRepository {
 
 	public User registry(User u) throws APIException {
 		u = userService.registry(u);
-		if (u != null) {
+		if(u != null) {
 			userDAO.insert(u);
 		}
 		return u;

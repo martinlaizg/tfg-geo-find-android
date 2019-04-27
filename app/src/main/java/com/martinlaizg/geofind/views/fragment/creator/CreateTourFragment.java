@@ -1,6 +1,5 @@
 package com.martinlaizg.geofind.views.fragment.creator;
 
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +48,6 @@ public class CreateTourFragment
 
 	private CreatorViewModel viewModel;
 
-
 	@Override
 	public View onCreateView(@NotNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.fragment_create_tour, container, false);
@@ -62,14 +60,14 @@ public class CreateTourFragment
 		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel.class);
 		Tour m = viewModel.getTour();
 		viewModel.setLoad(false);
-		if (m != null) {
-			if (!m.getName().isEmpty()) {
+		if(m != null) {
+			if(!m.getName().isEmpty()) {
 				Objects.requireNonNull(new_map_name.getEditText()).setText(m.getName());
 			}
-			if (!m.getDescription().isEmpty()) {
+			if(!m.getDescription().isEmpty()) {
 				Objects.requireNonNull(new_map_description.getEditText()).setText(m.getDescription());
 			}
-			if (m.getMin_level() != null) {
+			if(m.getMin_level() != null) {
 				difficultySpinner.setSelection(m.getMin_level().ordinal());
 			}
 		}
@@ -80,25 +78,25 @@ public class CreateTourFragment
 	public void onClick(View v) {
 		try {
 			new_map_name.setError("");
-			if (Objects.requireNonNull(new_map_name.getEditText()).getText().toString().trim().isEmpty()) {
+			if(Objects.requireNonNull(new_map_name.getEditText()).getText().toString().trim().isEmpty()) {
 				new_map_name.setError(getString(R.string.required_name));
 				return;
 			}
 			new_map_name.setError("");
-			if (new_map_name.getEditText().getText().toString().trim().length() > getResources().getInteger(R.integer.max_name_length)) {
+			if(new_map_name.getEditText().getText().toString().trim().length() > getResources().getInteger(R.integer.max_name_length)) {
 				new_map_name.setError(getString(R.string.text_too_long));
 				return;
 			}
 			new_map_description.setError("");
-			if (Objects.requireNonNull(new_map_description.getEditText()).getText().toString().trim().isEmpty()) {
+			if(Objects.requireNonNull(new_map_description.getEditText()).getText().toString().trim().isEmpty()) {
 				new_map_description.setError(getString(R.string.required_description));
 				return;
 			}
-			if (new_map_description.getEditText().getText().toString().trim().length() > getResources().getInteger(R.integer.max_description_length)) {
+			if(new_map_description.getEditText().getText().toString().trim().length() > getResources().getInteger(R.integer.max_description_length)) {
 				new_map_description.setError(getString(R.string.text_too_long));
 				return;
 			}
-		} catch (NullPointerException ex) {
+		} catch(NullPointerException ex) {
 			Toast.makeText(getContext(), "View incorrecto", Toast.LENGTH_SHORT).show();
 			return;
 		}

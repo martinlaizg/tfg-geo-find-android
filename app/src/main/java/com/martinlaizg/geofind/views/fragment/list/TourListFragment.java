@@ -39,8 +39,7 @@ public class TourListFragment
 
 	@Nullable
 	@Override
-	public View onCreateView(
-			@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState) {
+	public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.fragment_tour_list, container, false);
 		ButterKnife.bind(this, view);
 
@@ -50,7 +49,7 @@ public class TourListFragment
 
 		viewModel = ViewModelProviders.of(this).get(MapListViewModel.class);
 		viewModel.getTours().observe(this, tours -> {
-			if (tours != null) {
+			if(tours != null) {
 				adapter.setTours(tours);
 			} else {
 				APIException error = viewModel.getError();

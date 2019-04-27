@@ -41,30 +41,6 @@ public class Place {
 		return id;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Double getLat() {
-		return lat;
-	}
-
-	public void setLat(Double lat) {
-		this.lat = lat;
-	}
-
-	public Double getLon() {
-		return lon;
-	}
-
-	public void setLon(Double lon) {
-		this.lon = lon;
-	}
-
 	public Date getCreated_at() {
 		return created_at;
 	}
@@ -89,21 +65,29 @@ public class Place {
 		this.tour_id = tour_id;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public LatLng getPosition() {
 		return new LatLng(getLat(), getLon());
+	}
+
+	public Double getLat() {
+		return lat;
+	}
+
+	public Double getLon() {
+		return lon;
 	}
 
 	public void setPosition(LatLng position) {
 		setLat(position.latitude);
 		setLon(position.longitude);
+	}
+
+	public void setLat(Double lat) {
+		this.lat = lat;
+	}
+
+	public void setLon(Double lon) {
+		this.lon = lon;
 	}
 
 	public Integer getOrder() {
@@ -114,8 +98,23 @@ public class Place {
 		this.order = order;
 	}
 
-
 	boolean isValid() {
 		return getName() != null && !getName().isEmpty() && getDescription() != null && !getDescription().isEmpty() && getLat() != null && getLon() != null;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

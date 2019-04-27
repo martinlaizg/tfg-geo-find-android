@@ -52,36 +52,12 @@ public class Tour {
 		return id;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public Integer getCreator_id() {
 		return creator_id;
 	}
 
 	public void setCreator_id(Integer creator_id) {
 		this.creator_id = creator_id;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public PlayLevel getMin_level() {
-		return min_level;
-	}
-
-	public void setMin_level(PlayLevel min_level) {
-		this.min_level = min_level;
 	}
 
 	public Date getCreated_at() {
@@ -100,18 +76,6 @@ public class Tour {
 		this.updated_at = updated_at;
 	}
 
-
-	//-------------------------
-
-
-	public List<Place> getPlaces() {
-		return places;
-	}
-
-	public void setPlaces(List<Place> places) {
-		this.places = places;
-	}
-
 	public User getCreator() {
 		return creator;
 	}
@@ -121,11 +85,45 @@ public class Tour {
 	}
 
 	public boolean isValid() {
-		for (Place p : getPlaces()) {
-			if (!p.isValid()) return false;
+		for(Place p : getPlaces()) {
+			if(!p.isValid()) return false;
 		}
 		return getName() != null && !getName().isEmpty() && //
 				getDescription() != null && !getDescription().isEmpty() && //
 				getMin_level() != null;
+	}
+
+	public List<Place> getPlaces() {
+		return places;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	//-------------------------
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public PlayLevel getMin_level() {
+		return min_level;
+	}
+
+	public void setMin_level(PlayLevel min_level) {
+		this.min_level = min_level;
+	}
+
+	public void setPlaces(List<Place> places) {
+		this.places = places;
 	}
 }

@@ -24,6 +24,10 @@ public enum Preferences {
 		return gson.fromJson(user_string, User.class);
 	}
 
+	private String getKey() {
+		return key;
+	}
+
 	public static void setLoggedUser(SharedPreferences sp, User user) {
 		Gson gson = new GsonBuilder().setDateFormat(DateUtils.DATE_FORMAT).create();
 		String stringUser = user.toJson();
@@ -32,11 +36,6 @@ public enum Preferences {
 
 	public static void logout(SharedPreferences sp) {
 		sp.edit().putString(USER.getKey(), null).apply();
-	}
-
-
-	private String getKey() {
-		return key;
 	}
 
 }

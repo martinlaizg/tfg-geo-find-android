@@ -20,10 +20,10 @@ public class PlayService {
 	private final String TAG = PlayService.class.getSimpleName();
 
 	public static PlayService getInstance() {
-		if (restClient == null) {
+		if(restClient == null) {
 			restClient = RetrofitInstance.getRestClient();
 		}
-		if (locationService == null) {
+		if(locationService == null) {
 			locationService = new PlayService();
 		}
 		return locationService;
@@ -34,11 +34,11 @@ public class PlayService {
 		APIException apiException;
 		try {
 			response = restClient.getUserPlay(user_id, tour_id).execute();
-			if (response.isSuccessful()) {
+			if(response.isSuccessful()) {
 				return response.body();
 			}
 			apiException = ErrorUtils.parseError(response);
-		} catch (IOException e) {
+		} catch(IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
 			Log.e(TAG, "getPlace: ", e);
 		}
@@ -50,11 +50,11 @@ public class PlayService {
 		APIException apiException;
 		try {
 			response = restClient.createUserPlay(user_id, tour_id).execute();
-			if (response.isSuccessful()) {
+			if(response.isSuccessful()) {
 				return response.body();
 			}
 			apiException = ErrorUtils.parseError(response);
-		} catch (IOException e) {
+		} catch(IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
 			Log.e(TAG, "getPlace: ", e);
 		}

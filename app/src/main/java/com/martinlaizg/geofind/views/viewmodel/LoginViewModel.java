@@ -29,7 +29,7 @@ public class LoginViewModel
 			try {
 				user = repository.login(user);
 				u.postValue(user);
-			} catch (APIException e) {
+			} catch(APIException e) {
 				setError(e);
 				u.postValue(null);
 			}
@@ -44,7 +44,7 @@ public class LoginViewModel
 			try {
 				user = repository.registry(user);
 				u.postValue(user);
-			} catch (APIException e) {
+			} catch(APIException e) {
 				setError(e);
 				u.postValue(null);
 			}
@@ -56,7 +56,6 @@ public class LoginViewModel
 		user.setEmail(email);
 		user.setPassword(password);
 	}
-
 
 	public void setRegistry(String name, String username, String email, String password) {
 		user.setName(name);

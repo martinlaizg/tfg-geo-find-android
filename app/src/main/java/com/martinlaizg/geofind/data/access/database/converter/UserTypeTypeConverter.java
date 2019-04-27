@@ -6,7 +6,6 @@ import com.martinlaizg.geofind.data.enums.UserType;
 
 public class UserTypeTypeConverter {
 
-
 	@TypeConverter
 	public static UserType toPlayLevel(String userTypeString) {
 		return userTypeString == null ?

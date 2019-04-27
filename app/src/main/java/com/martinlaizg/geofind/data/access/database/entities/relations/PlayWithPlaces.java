@@ -9,6 +9,7 @@ import com.martinlaizg.geofind.data.access.database.entities.Play;
 import java.util.List;
 
 public class PlayWithPlaces {
+
 	@Embedded
 	public Play play;
 

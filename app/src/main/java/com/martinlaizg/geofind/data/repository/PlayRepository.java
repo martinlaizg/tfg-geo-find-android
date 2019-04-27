@@ -32,9 +32,9 @@ public class PlayRepository {
 
 	public Play getPlay(int user_id, int tour_id) throws APIException {
 		Play p = playDAO.getPlay(user_id, tour_id);
-		if (p == null) {
+		if(p == null) {
 			p = playService.getUserPlay(user_id, tour_id);
-			if (p == null) {
+			if(p == null) {
 				p = playService.createUserPlay(user_id, tour_id);
 			}
 			p.setUser_id(p.getUser().getId());

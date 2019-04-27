@@ -22,10 +22,10 @@ public class LocationService {
 	private final String TAG = LocationService.class.getSimpleName();
 
 	public static LocationService getInstance() {
-		if (restClient == null) {
+		if(restClient == null) {
 			restClient = RetrofitInstance.getRestClient();
 		}
-		if (locationService == null) {
+		if(locationService == null) {
 			locationService = new LocationService();
 		}
 		return locationService;
@@ -36,11 +36,11 @@ public class LocationService {
 		APIException apiException;
 		try {
 			response = restClient.getPlaces(new HashMap<>()).execute();
-			if (response.isSuccessful()) {
+			if(response.isSuccessful()) {
 				return response.body();
 			}
 			apiException = ErrorUtils.parseError(response);
-		} catch (IOException e) {
+		} catch(IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
 			Log.e(TAG, "getAllLocations: ", e);
 		}
@@ -52,11 +52,11 @@ public class LocationService {
 		APIException apiException;
 		try {
 			response = restClient.createTourPlaces(id, locationEntities).execute();
-			if (response.isSuccessful()) {
+			if(response.isSuccessful()) {
 				return response.body();
 			}
 			apiException = ErrorUtils.parseError(response);
-		} catch (IOException e) {
+		} catch(IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
 			Log.e(TAG, "createTourPlaces: ", e);
 		}
@@ -68,11 +68,11 @@ public class LocationService {
 		APIException apiException;
 		try {
 			response = restClient.updateTourPlaces(id, locationEntities).execute();
-			if (response.isSuccessful()) {
+			if(response.isSuccessful()) {
 				return response.body();
 			}
 			apiException = ErrorUtils.parseError(response);
-		} catch (IOException e) {
+		} catch(IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
 			Log.e(TAG, "updateTourPlaces: ", e);
 		}
@@ -84,11 +84,11 @@ public class LocationService {
 		APIException apiException;
 		try {
 			response = restClient.getTourPlaces(id).execute();
-			if (response.isSuccessful()) {
+			if(response.isSuccessful()) {
 				return response.body();
 			}
 			apiException = ErrorUtils.parseError(response);
-		} catch (IOException e) {
+		} catch(IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
 			Log.e(TAG, "getPlacesByTour: ", e);
 		}
@@ -100,11 +100,11 @@ public class LocationService {
 		APIException apiException;
 		try {
 			response = restClient.getLocation(loc_id).execute();
-			if (response.isSuccessful()) {
+			if(response.isSuccessful()) {
 				return response.body();
 			}
 			apiException = ErrorUtils.parseError(response);
-		} catch (IOException e) {
+		} catch(IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
 			Log.e(TAG, "getPlace: ", e);
 		}

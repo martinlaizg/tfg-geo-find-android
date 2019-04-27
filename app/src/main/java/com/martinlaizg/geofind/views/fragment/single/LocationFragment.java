@@ -31,7 +31,6 @@ public class LocationFragment
 	@BindView(R.id.place_image)
 	ImageView location_image;
 
-
 	private int place_id;
 
 	@Nullable
@@ -40,7 +39,7 @@ public class LocationFragment
 		View view = inflater.inflate(R.layout.fragment_place, container, false);
 		ButterKnife.bind(this, view);
 		Bundle b = getArguments();
-		if (b != null) {
+		if(b != null) {
 			place_id = b.getInt(PLACE_ID);
 		}
 		return view;
@@ -55,7 +54,7 @@ public class LocationFragment
 	}
 
 	private void setPlace(Place place) {
-		if (place != null) {
+		if(place != null) {
 			location_name.setText(place.getName());
 			location_description.setText(place.getDescription());
 			location_image.setImageResource(R.drawable.default_map_image);

@@ -6,7 +6,6 @@ import com.martinlaizg.geofind.data.enums.PlayLevel;
 
 public class PlayLevelTypeConverter {
 
-
 	@TypeConverter
 	public static PlayLevel toPlayLevel(String playLevelString) {
 		return playLevelString == null ?

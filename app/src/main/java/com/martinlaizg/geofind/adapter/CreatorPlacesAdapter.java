@@ -23,15 +23,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 public class CreatorPlacesAdapter
 		extends RecyclerView.Adapter<CreatorPlacesAdapter.CreatorPlacesViewHolder> {
 
 	private List<Place> places;
-
-	public CreatorPlacesAdapter() {
-		places = new ArrayList<>();
-	}
 
 	@NotNull
 	@Override
@@ -57,8 +52,12 @@ public class CreatorPlacesAdapter
 		return places.size();
 	}
 
+	public CreatorPlacesAdapter() {
+		places = new ArrayList<>();
+	}
+
 	public void setPlaces(List<Place> places) {
-		if (places != null) {
+		if(places != null) {
 			// sort elements
 			places.sort((o1, o2) -> o1.getOrder() > o2.getOrder() ?
 					1 :

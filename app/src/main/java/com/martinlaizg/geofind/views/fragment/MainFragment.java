@@ -1,6 +1,5 @@
 package com.martinlaizg.geofind.views.fragment;
 
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,10 +20,9 @@ import org.jetbrains.annotations.NotNull;
 public class MainFragment
 		extends Fragment {
 
-
 	@Override
 	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		if (!isLogged()) {
+		if(!isLogged()) {
 			return null;
 		}
 		return inflater.inflate(R.layout.fragment_main, container, false);
@@ -34,7 +32,7 @@ public class MainFragment
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireActivity());
 		User u = Preferences.getLoggedUser(sp);
 		MainActivity mainActivity = (MainActivity) requireActivity();
-		if (u != null && !u.getEmail().isEmpty()) {
+		if(u != null && !u.getEmail().isEmpty()) {
 			mainActivity.setDrawerHeader(u.getUsername(), u.getName());
 			mainActivity.disableToolbarAndDrawer(true);
 			return true;

@@ -24,7 +24,6 @@ public class CreatorViewModel
 	private APIException error;
 	private boolean load;
 
-
 	public CreatorViewModel(@NonNull Application application) {
 		super(application);
 		mapRepo = new TourRepository(application);
@@ -36,16 +35,16 @@ public class CreatorViewModel
 	public MutableLiveData<Tour> createTour() {
 		MutableLiveData<Tour> m = new MutableLiveData<>();
 		new Thread(() -> {
-			if (!tour.isValid()) {
+			if(!tour.isValid()) {
 				setError(new APIException(ErrorType.OTHER, "Faltan datos"));
 				m.postValue(null);
 				return;
 			}
 			load = true;
-			if (tour.getId() == 0) { // Create tour
+			if(tour.getId() == 0) { // Create tour
 				try {
 					tour = mapRepo.create(tour);
-				} catch (APIException e) {
+				} catch(APIException e) {
 					setError(e);
 					m.postValue(null);
 					return;
@@ -53,7 +52,7 @@ public class CreatorViewModel
 			} else { // Update tour
 				try {
 					tour = mapRepo.update(tour);
-				} catch (APIException e) {
+				} catch(APIException e) {
 					setError(e);
 					m.postValue(null);
 					return;
@@ -64,13 +63,9 @@ public class CreatorViewModel
 		return m;
 	}
 
-	public List<Place> getPlaces() {
-		return tour.getPlaces();
-	}
-
 	public void setLocation(String name, String description, LatLng position, int order) {
 		Place p;
-		if (order < tour.getPlaces().size()) { // Existing place
+		if(order < tour.getPlaces().size()) { // Existing place
 			p = tour.getPlaces().get(order);
 		} else {
 			p = new Place();
@@ -83,7 +78,7 @@ public class CreatorViewModel
 	}
 
 	public void setCreatedMap(String name, String description, Integer creator_id, PlayLevel pl) {
-		if (tour == null) tour = new Tour();
+		if(tour == null) tour = new Tour();
 		tour.setName(name);
 		tour.setDescription(description);
 		tour.setCreator_id(creator_id);
@@ -93,12 +88,12 @@ public class CreatorViewModel
 	public MutableLiveData<Tour> loadTour(Integer tour_id) {
 		MutableLiveData<Tour> t = new MutableLiveData<>();
 		new Thread(() -> {
-			if (load) {
+			if(load) {
 				tour = new Tour();
-				if (tour_id > 0) {
+				if(tour_id > 0) {
 					try {
 						tour = mapRepo.getTour(tour_id);
-					} catch (APIException e) {
+					} catch(APIException e) {
 						setError(e);
 						tour = null;
 					}
@@ -110,11 +105,11 @@ public class CreatorViewModel
 		return t;
 	}
 
-	// ============================================
-
 	public Tour getTour() {
 		return tour;
 	}
+
+	// ============================================
 
 	public void setTour(Tour tour) {
 		this.tour = tour;
@@ -133,9 +128,13 @@ public class CreatorViewModel
 	}
 
 	public boolean checkPlaceName(String newName) {
-		for (Place p : getPlaces()) {
-			if (p.getName().equals(newName)) return false;
+		for(Place p : getPlaces()) {
+			if(p.getName().equals(newName)) return false;
 		}
 		return true;
+	}
+
+	public List<Place> getPlaces() {
+		return tour.getPlaces();
 	}
 }

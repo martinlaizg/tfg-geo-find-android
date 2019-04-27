@@ -16,7 +16,6 @@ public class PlaceRepository {
 	private final PlayService playService;
 	private PlacePlayDAO placePlayDAO;
 
-
 	PlaceRepository(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
 		placeDAO = database.placeDAO();

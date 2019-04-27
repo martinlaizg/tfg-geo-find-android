@@ -20,10 +20,10 @@ public class UserService {
 	private final String TAG = UserService.class.getSimpleName();
 
 	public static UserService getInstance() {
-		if (restClient == null) {
+		if(restClient == null) {
 			restClient = RetrofitInstance.getRestClient();
 		}
-		if (userService == null) {
+		if(userService == null) {
 			userService = new UserService();
 		}
 		return userService;
@@ -34,11 +34,11 @@ public class UserService {
 		APIException apiException;
 		try {
 			response = restClient.login(user).execute();
-			if (response.isSuccessful()) {
+			if(response.isSuccessful()) {
 				return response.body();
 			}
 			apiException = ErrorUtils.parseError(response);
-		} catch (IOException e) {
+		} catch(IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
 			Log.e(TAG, "login: ", e);
 		}
@@ -50,11 +50,11 @@ public class UserService {
 		APIException apiException;
 		try {
 			response = restClient.registry(user).execute();
-			if (response.isSuccessful()) {
+			if(response.isSuccessful()) {
 				return response.body();
 			}
 			apiException = ErrorUtils.parseError(response);
-		} catch (IOException e) {
+		} catch(IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
 			Log.e(TAG, "registry: ", e);
 		}

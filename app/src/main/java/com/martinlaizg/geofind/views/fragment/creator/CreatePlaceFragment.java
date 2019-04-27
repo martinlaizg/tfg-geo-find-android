@@ -1,6 +1,5 @@
 package com.martinlaizg.geofind.views.fragment.creator;
 
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
@@ -41,7 +40,6 @@ import butterknife.ButterKnife;
 
 import static android.content.Context.LOCATION_SERVICE;
 
-
 public class CreatePlaceFragment
 		extends Fragment
 		implements View.OnClickListener, OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
@@ -67,6 +65,110 @@ public class CreatePlaceFragment
 	private int position;
 
 	@Override
+	public void onClick(View v) {
+		alert_no_location_text.setVisibility(View.GONE);
+		try {
+			if(Objects.requireNonNull(new_location_name.getEditText()).getText().toString().trim().isEmpty()) {
+				new_location_name.setError(getString(R.string.required_name));
+				return;
+			}
+			if(new_location_name.getEditText().getText().toString().length() > getResources().getInteger(R.integer.max_name_length)) {
+				new_location_name.setError(getString(R.string.text_too_long));
+				return;
+			}
+			if(!viewModel.checkPlaceName(new_location_name.getEditText().getText().toString())) {
+				new_location_name.setError(getString(R.string.repeated_name));
+				return;
+			}
+			new_location_name.setError("");
+			if(Objects.requireNonNull(new_location_description.getEditText()).getText().toString().trim().isEmpty()) {
+				new_location_description.setError(getString(R.string.required_description));
+				return;
+			}
+			if(new_location_description.getEditText().getText().toString().length() > getResources().getInteger(R.integer.max_description_length)) {
+				new_location_description.setError(getString(R.string.text_too_long));
+				return;
+			}
+			new_location_description.setError("");
+			if(marker == null) {
+				alert_no_location_text.setVisibility(View.VISIBLE);
+				return;
+			}
+		} catch(NullPointerException ex) {
+			Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		String name = new_location_name.getEditText().getText().toString().trim();
+		String description = new_location_description.getEditText().getText().toString().trim();
+
+		viewModel.setLocation(name, description, marker.getPosition(), position);
+		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
+	}
+
+	@Override
+	public void onMapReady(GoogleMap googleMap) {
+		gMap = googleMap;
+		if(requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+				requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION},
+			                   PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION);
+			Toast.makeText(requireActivity(), getString(R.string.rejected_location_access), Toast.LENGTH_SHORT).show();
+			return;
+		}
+		setLocation();
+	}
+
+	@SuppressLint("MissingPermission")
+	private void setLocation() {
+		Location usrLocation = getLastKnownLocation();
+		if(gMap != null) {
+			gMap.setMyLocationEnabled(true);
+			gMap.setOnMapLongClickListener(this);
+			gMap.getUiSettings().setMyLocationButtonEnabled(true);
+			gMap.getUiSettings().setMapToolbarEnabled(false);
+			gMap.getUiSettings().setTiltGesturesEnabled(false);
+
+			LatLng usrLatLng = new LatLng(usrLocation.getLatitude(), usrLocation.getLongitude());
+			gMap.clear();
+			if(marker != null) {
+				gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), CAMERA_UPDATE_ZOOM));
+				gMap.addMarker(marker);
+			} else {
+				gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(usrLatLng, CAMERA_UPDATE_ZOOM));
+			}
+		}
+	}
+
+	@SuppressLint("MissingPermission")
+	private Location getLastKnownLocation() {
+		LocationManager locationManager = (LocationManager) requireActivity().getSystemService(LOCATION_SERVICE);
+		List<String> providers = locationManager.getProviders(true);
+		Location bestLocation = null;
+		for(String provider : providers) {
+			Location l = locationManager.getLastKnownLocation(provider);
+			if(l == null) {
+				continue;
+			}
+			if(bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+				// Found best last known location: %s", l);
+				bestLocation = l;
+			}
+		}
+		return bestLocation;
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		if(requestCode == PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION) {
+			if(permissions[0].equals(Manifest.permission.ACCESS_COARSE_LOCATION) && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+					permissions[1].equals(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+				setLocation();
+			}
+		}
+	}
+
+	@Override
 	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_create_place, container, false);
 		ButterKnife.bind(this, view);
@@ -83,10 +185,10 @@ public class CreatePlaceFragment
 		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel.class);
 		viewModel.setLoad(false);
 		Bundle b = getArguments();
-		if (b != null) {
+		if(b != null) {
 			position = b.getInt(PLACE_POSITION, viewModel.getPlaces().size());
 
-			if (position < viewModel.getPlaces().size()) {
+			if(position < viewModel.getPlaces().size()) {
 				Place l = viewModel.getPlaces().get(position);
 				Objects.requireNonNull(new_location_name.getEditText()).setText(l.getName());
 				Objects.requireNonNull(new_location_description.getEditText()).setText(l.getDescription());
@@ -94,118 +196,15 @@ public class CreatePlaceFragment
 			}
 		}
 		create_button.setOnClickListener(this);
-		if (marker != null) create_button.setText(R.string.update_place);
+		if(marker != null) create_button.setText(R.string.update_place);
 
-	}
-
-	@Override
-	public void onClick(View v) {
-		alert_no_location_text.setVisibility(View.GONE);
-		try {
-			if (Objects.requireNonNull(new_location_name.getEditText()).getText().toString().trim().isEmpty()) {
-				new_location_name.setError(getString(R.string.required_name));
-				return;
-			}
-			if (new_location_name.getEditText().getText().toString().length() > getResources().getInteger(R.integer.max_name_length)) {
-				new_location_name.setError(getString(R.string.text_too_long));
-				return;
-			}
-			if (!viewModel.checkPlaceName(new_location_name.getEditText().getText().toString())) {
-				new_location_name.setError(getString(R.string.repeated_name));
-				return;
-			}
-			new_location_name.setError("");
-			if (Objects.requireNonNull(new_location_description.getEditText()).getText().toString().trim().isEmpty()) {
-				new_location_description.setError(getString(R.string.required_description));
-				return;
-			}
-			if (new_location_description.getEditText().getText().toString().length() > getResources().getInteger(R.integer.max_description_length)) {
-				new_location_description.setError(getString(R.string.text_too_long));
-				return;
-			}
-			new_location_description.setError("");
-			if (marker == null) {
-				alert_no_location_text.setVisibility(View.VISIBLE);
-				return;
-			}
-		} catch (NullPointerException ex) {
-			Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
-			return;
-		}
-
-		String name = new_location_name.getEditText().getText().toString().trim();
-		String description = new_location_description.getEditText().getText().toString().trim();
-
-		viewModel.setLocation(name, description, marker.getPosition(), position);
-		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
-	}
-
-	@Override
-	public void onMapReady(GoogleMap googleMap) {
-		gMap = googleMap;
-		if (requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-				requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-			requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION);
-			Toast.makeText(requireActivity(), getString(R.string.rejected_location_access), Toast.LENGTH_SHORT).show();
-			return;
-		}
-		setLocation();
-	}
-
-	@Override
-	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-		if (requestCode == PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION) {
-			if (permissions[0].equals(Manifest.permission.ACCESS_COARSE_LOCATION) && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-					permissions[1].equals(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-				setLocation();
-			}
-		}
-	}
-
-	@SuppressLint("MissingPermission")
-	private void setLocation() {
-		Location usrLocation = getLastKnownLocation();
-		if (gMap != null) {
-			gMap.setMyLocationEnabled(true);
-			gMap.setOnMapLongClickListener(this);
-			gMap.getUiSettings().setMyLocationButtonEnabled(true);
-			gMap.getUiSettings().setMapToolbarEnabled(false);
-			gMap.getUiSettings().setTiltGesturesEnabled(false);
-
-			LatLng usrLatLng = new LatLng(usrLocation.getLatitude(), usrLocation.getLongitude());
-			gMap.clear();
-			if (marker != null) {
-				gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), CAMERA_UPDATE_ZOOM));
-				gMap.addMarker(marker);
-			} else {
-				gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(usrLatLng, CAMERA_UPDATE_ZOOM));
-			}
-		}
-	}
-
-	@SuppressLint("MissingPermission")
-	private Location getLastKnownLocation() {
-		LocationManager locationManager = (LocationManager) requireActivity().getSystemService(LOCATION_SERVICE);
-		List<String> providers = locationManager.getProviders(true);
-		Location bestLocation = null;
-		for (String provider : providers) {
-			Location l = locationManager.getLastKnownLocation(provider);
-			if (l == null) {
-				continue;
-			}
-			if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
-				// Found best last known location: %s", l);
-				bestLocation = l;
-			}
-		}
-		return bestLocation;
 	}
 
 	@Override
 	public void onMapLongClick(LatLng latLng) {
 		alert_no_location_text.setVisibility(View.GONE);
 		MarkerOptions m = new MarkerOptions().position(latLng);
-		if (gMap != null) {
+		if(gMap != null) {
 			gMap.clear();
 			gMap.addMarker(m);
 		}

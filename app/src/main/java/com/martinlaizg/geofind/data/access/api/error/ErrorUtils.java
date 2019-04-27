@@ -23,10 +23,10 @@ public class ErrorUtils {
 
 		APIException error = null;
 		try {
-			if (response.errorBody() != null) {
+			if(response.errorBody() != null) {
 				error = converter.convert(response.errorBody());
 			}
-		} catch (IOException e) {
+		} catch(IOException e) {
 			return new APIException(ErrorType.PARSE, e.getMessage());
 		}
 

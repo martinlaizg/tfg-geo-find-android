@@ -40,7 +40,7 @@ public abstract class AppDatabase
 	};
 
 	public static synchronized AppDatabase getInstance(Context context) {
-		if (instance == null) {
+		if(instance == null) {
 			instance = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "geo_find_database").
 					fallbackToDestructiveMigration().
 					build();
@@ -62,6 +62,7 @@ public abstract class AppDatabase
 
 	private static class PopulateDbAsyncTask
 			extends AsyncTask<Void, Void, Void> {
+
 		private final UserDAO userDAO;
 
 		private PopulateDbAsyncTask(AppDatabase db) {

@@ -30,7 +30,7 @@ public class TourViewModel
 			try {
 				tour = tourRepo.getTour(map_id);
 				m.postValue(tour);
-			} catch (APIException e) {
+			} catch(APIException e) {
 				setError(e);
 				m.postValue(null);
 			}
@@ -41,8 +41,8 @@ public class TourViewModel
 	public MutableLiveData<Place> loadPlace(int place_id) {
 		MutableLiveData<Place> p = new MutableLiveData<>();
 		new Thread(() -> {
-			for (Place place : tour.getPlaces()) {
-				if (place.getId().equals(place_id)) {
+			for(Place place : tour.getPlaces()) {
+				if(place.getId().equals(place_id)) {
 					p.postValue(place);
 					return;
 				}

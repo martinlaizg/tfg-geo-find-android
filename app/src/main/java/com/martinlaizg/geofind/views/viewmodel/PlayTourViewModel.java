@@ -17,7 +17,6 @@ public class PlayTourViewModel
 
 	private final PlayRepository playRepo;
 
-
 	private APIException error;
 	private Play play;
 
@@ -31,7 +30,7 @@ public class PlayTourViewModel
 		new Thread(() -> {
 			try {
 				play = playRepo.getPlay(user_id, tour_id);
-			} catch (APIException e) {
+			} catch(APIException e) {
 				setError(e);
 			}
 			m.postValue(play);
@@ -49,7 +48,7 @@ public class PlayTourViewModel
 
 	public Place getNextPlace() {
 		int numPlaces = play.getPlaces().size();
-		if (numPlaces >= play.getTour().getPlaces().size()) {
+		if(numPlaces >= play.getTour().getPlaces().size()) {
 			return null;
 		}
 		return play.getTour().getPlaces().get(numPlaces);

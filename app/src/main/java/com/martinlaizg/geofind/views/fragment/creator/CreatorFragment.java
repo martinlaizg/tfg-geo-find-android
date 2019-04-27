@@ -29,7 +29,6 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 public class CreatorFragment
 		extends Fragment
 		implements View.OnClickListener {
@@ -72,15 +71,15 @@ public class CreatorFragment
 		Bundle b = getArguments();
 		Integer tour_id = Objects.requireNonNull(b).getInt(TOUR_ID);
 		viewModel.loadTour(tour_id).observe(this, tour -> {
-			if (tour != null) {
+			if(tour != null) {
 				adapter.setPlaces(tour.getPlaces());
-				if (tour.getId() != 0) {
+				if(tour.getId() != 0) {
 					create_tour_button.setText(R.string.update_tour);
 				}
-				if (!tour.getName().isEmpty()) {
+				if(!tour.getName().isEmpty()) {
 					tour_name.setText(tour.getName());
 				}
-				if (!tour.getDescription().isEmpty()) {
+				if(!tour.getDescription().isEmpty()) {
 					tour_description.setText(tour.getDescription());
 				}
 			}
@@ -101,7 +100,7 @@ public class CreatorFragment
 		create_tour_button.setEnabled(false);
 		viewModel.createTour().observe(this, tour -> {
 			create_tour_button.setEnabled(true);
-			if (tour == null) {
+			if(tour == null) {
 				APIException err = viewModel.getError();
 				Toast.makeText(requireActivity(), err.getType().getMessage(), Toast.LENGTH_LONG).show();
 				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack(R.id.navTourList, false);

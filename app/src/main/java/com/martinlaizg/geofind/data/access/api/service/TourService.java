@@ -22,10 +22,10 @@ public class TourService {
 	private final String TAG = TourService.class.getSimpleName();
 
 	public static TourService getInstance() {
-		if (restClient == null) {
+		if(restClient == null) {
 			restClient = RetrofitInstance.getRestClient();
 		}
-		if (tourService == null) {
+		if(tourService == null) {
 			tourService = new TourService();
 		}
 		return tourService;
@@ -36,12 +36,12 @@ public class TourService {
 		APIException apiException;
 		try {
 			response = restClient.getTours(new HashMap<>()).execute();
-			if (response.isSuccessful()) {
+			if(response.isSuccessful()) {
 				return response.body();
 			}
 			apiException = ErrorUtils.parseError(response);
 
-		} catch (IOException e) {
+		} catch(IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
 			Log.e(TAG, "getTours: ", e);
 		}
@@ -53,12 +53,12 @@ public class TourService {
 		APIException apiException;
 		try {
 			response = restClient.createTour(tour).execute();
-			if (response.isSuccessful()) {
+			if(response.isSuccessful()) {
 				return response.body();
 			}
 			apiException = ErrorUtils.parseError(response);
 
-		} catch (IOException e) {
+		} catch(IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
 			Log.e(TAG, "create: ", e);
 		}
@@ -70,11 +70,11 @@ public class TourService {
 		APIException apiException;
 		try {
 			response = restClient.getTour(id).execute();
-			if (response.isSuccessful()) {
+			if(response.isSuccessful()) {
 				return response.body();
 			}
 			apiException = ErrorUtils.parseError(response);
-		} catch (IOException e) {
+		} catch(IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
 			Log.e(TAG, "getTour: ", e);
 		}
@@ -86,11 +86,11 @@ public class TourService {
 		APIException apiException;
 		try {
 			response = restClient.update(tourEntity.getId(), tourEntity).execute();
-			if (response.isSuccessful()) {
+			if(response.isSuccessful()) {
 				return response.body();
 			}
 			apiException = ErrorUtils.parseError(response);
-		} catch (IOException e) {
+		} catch(IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
 			Log.e(TAG, "update: ", e);
 		}

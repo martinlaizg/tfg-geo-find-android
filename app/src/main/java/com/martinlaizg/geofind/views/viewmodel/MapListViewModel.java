@@ -18,26 +18,23 @@ public class MapListViewModel
 	private final TourRepository repository;
 	private APIException error;
 
-
 	public MapListViewModel(@NonNull Application application) {
 		super(application);
 		repository = new TourRepository(application);
 	}
-
 
 	public MutableLiveData<List<Tour>> getTours() {
 		MutableLiveData<List<Tour>> tours = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
 				tours.postValue(repository.getAllMaps());
-			} catch (APIException e) {
+			} catch(APIException e) {
 				setError(e);
 				tours.postValue(null);
 			}
 		}).start();
 		return tours;
 	}
-
 
 	public APIException getError() {
 		return error;

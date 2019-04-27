@@ -26,10 +26,6 @@ public class LocationListAdapter
 
 	private List<Place> locationEntities;
 
-	public LocationListAdapter() {
-		locationEntities = new ArrayList<>();
-	}
-
 	@NonNull
 	@Override
 	public LocationsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
@@ -47,16 +43,19 @@ public class LocationListAdapter
 		holder.location_card.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.navPlace, b));
 	}
 
-	public void setLocationEntities(List<Place> locationEntities) {
-		this.locationEntities = locationEntities;
-		notifyDataSetChanged();
-	}
-
 	@Override
 	public int getItemCount() {
 		return locationEntities.size();
 	}
 
+	public LocationListAdapter() {
+		locationEntities = new ArrayList<>();
+	}
+
+	public void setLocationEntities(List<Place> locationEntities) {
+		this.locationEntities = locationEntities;
+		notifyDataSetChanged();
+	}
 
 	class LocationsViewHolder
 			extends RecyclerView.ViewHolder {

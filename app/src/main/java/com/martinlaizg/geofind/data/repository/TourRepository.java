@@ -37,7 +37,7 @@ public class TourRepository {
 	public List<Tour> getAllMaps() throws APIException {
 		List<TourCreatorPlaces> mls = mapLocsDAO.getTourCreatorPlaces();
 		List<Tour> ts = new ArrayList<>();
-		for (TourCreatorPlaces ml : mls) {
+		for(TourCreatorPlaces ml : mls) {
 			Tour t = ml.getTour();
 			User u = new User();
 			u.setUsername(ml.getUsername());
@@ -45,13 +45,13 @@ public class TourRepository {
 			ts.add(t);
 		}
 
-		if (ts.isEmpty()) {
+		if(ts.isEmpty()) {
 			ts = tourService.getAllMaps();
-			if (ts != null) {
-				for (Tour t : ts) {
+			if(ts != null) {
+				for(Tour t : ts) {
 					tourDAO.insert(t);
 					userRepo.insert(t.getCreator());
-					for (Place p : t.getPlaces()) {
+					for(Place p : t.getPlaces()) {
 						placeRepo.insert(p);
 					}
 				}
@@ -63,7 +63,7 @@ public class TourRepository {
 	public Tour getTour(Integer id) throws APIException {
 		TourCreatorPlaces tcp = mapLocsDAO.getTour(id);
 		Tour t;
-		if (tcp == null) {
+		if(tcp == null) {
 			t = tourService.getMap(id);
 		} else {
 			t = tcp.getTour();
@@ -75,17 +75,17 @@ public class TourRepository {
 
 	public Tour create(Tour tour) throws APIException {
 		tour = tourService.create(tour);
-		if (tour != null) tourDAO.insert(tour);
+		if(tour != null) tourDAO.insert(tour);
 		return tour;
 	}
 
 	public Tour update(Tour tour) throws APIException {
 		tour = tourService.update(tour);
-		if (tour != null) {
+		if(tour != null) {
 			tourDAO.update(tour);
-			if (tour.getPlaces() != null) {
+			if(tour.getPlaces() != null) {
 				placeRepo.removeTourPlaces(tour.getId());
-				for (Place p : tour.getPlaces()) placeRepo.insert(p);
+				for(Place p : tour.getPlaces()) placeRepo.insert(p);
 			}
 		}
 		return tour;

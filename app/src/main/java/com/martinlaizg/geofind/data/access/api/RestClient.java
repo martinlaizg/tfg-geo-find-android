@@ -50,7 +50,6 @@ public interface RestClient {
 	@PUT("tours/{tour_id}/places")
 	Call<List<Place>> updateTourPlaces(@Path("tour_id") Integer tour_id, @Body List<Place> places);
 
-
 	//
 	//
 	//
@@ -64,7 +63,6 @@ public interface RestClient {
 	// Get location
 	@GET("places/{loc_id}")
 	Call<Place> getLocation(@Path("loc_id") Integer loc_id);
-
 
 	//
 	//

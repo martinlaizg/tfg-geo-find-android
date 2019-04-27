@@ -12,18 +12,17 @@ public class RetrofitInstance {
 	private static final String BASE_URL = "http://192.168.1.182:8000/api/";
 	private static Retrofit retrofitInstance;
 
+	public static RestClient getRestClient() {
+		Retrofit rf = getRetrofitInstance();
+		return rf.create(RestClient.class);
+	}
 
 	public static Retrofit getRetrofitInstance() {
-		if (retrofitInstance == null) {
+		if(retrofitInstance == null) {
 			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 			retrofitInstance = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create(gson)).build();
 		}
 
 		return retrofitInstance;
-	}
-
-	public static RestClient getRestClient() {
-		Retrofit rf = getRetrofitInstance();
-		return rf.create(RestClient.class);
 	}
 }

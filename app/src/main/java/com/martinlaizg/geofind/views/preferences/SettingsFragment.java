@@ -1,6 +1,5 @@
 package com.martinlaizg.geofind.views.preferences;
 
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -11,10 +10,8 @@ import androidx.preference.PreferenceManager;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 
-
 public class SettingsFragment
 		extends PreferenceFragmentCompat {
-
 
 	@Override
 	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -22,7 +19,6 @@ public class SettingsFragment
 		setLogoutPreference();
 
 	}
-
 
 	private void setLogoutPreference() {
 		findPreference(getString(R.string.log_out)).setOnPreferenceClickListener(preference -> {

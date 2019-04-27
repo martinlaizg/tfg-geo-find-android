@@ -23,6 +23,7 @@ import butterknife.ButterKnife;
 
 public class MainActivity
 		extends AppCompatActivity {
+
 	private static final String TAG = MainActivity.class.getSimpleName();
 
 	@BindView(R.id.drawer_layout)
@@ -54,7 +55,6 @@ public class MainActivity
 
 	}
 
-
 	public void setDrawerHeader(String username, String name) {
 		View headerView = navigationView.getHeaderView(0);
 		((TextView) headerView.findViewById(R.id.drawer_header_name)).setText(name);
@@ -63,11 +63,11 @@ public class MainActivity
 
 	public void disableToolbarAndDrawer(boolean visibility) {
 		toolbar.setVisibility(visibility ?
-				View.VISIBLE :
-				View.GONE);
+				                      View.VISIBLE :
+				                      View.GONE);
 		drawer_layout.setDrawerLockMode(visibility ?
-				DrawerLayout.LOCK_MODE_UNLOCKED :
-				DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+				                                DrawerLayout.LOCK_MODE_UNLOCKED :
+				                                DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 	}
 
 }

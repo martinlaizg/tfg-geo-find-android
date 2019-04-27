@@ -1,6 +1,5 @@
 package com.martinlaizg.geofind.views.fragment.login;
 
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,7 +23,6 @@ import org.jetbrains.annotations.NotNull;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 
 public class RegistryFragment
 		extends Fragment {
@@ -59,7 +57,7 @@ public class RegistryFragment
 		super.onViewCreated(view, savedInstanceState);
 		viewModel = ViewModelProviders.of(requireActivity()).get(LoginViewModel.class);
 		String email = viewModel.getEmail();
-		if (email != null && !email.isEmpty()) {
+		if(email != null && !email.isEmpty()) {
 			email_input.getEditText().setText(email);
 		}
 		btn_registr.setOnClickListener(new View.OnClickListener() {
@@ -73,33 +71,33 @@ public class RegistryFragment
 	private void registry() {
 		btn_registr.setEnabled(false);
 		try {
-			if (name_input.getEditText().getText().toString().trim().isEmpty()) {
+			if(name_input.getEditText().getText().toString().trim().isEmpty()) {
 				name_input.setError(getString(R.string.required_name));
 				return;
 			}
-			if (username_input.getEditText().getText().toString().trim().isEmpty()) {
+			if(username_input.getEditText().getText().toString().trim().isEmpty()) {
 				username_input.setError(getString(R.string.required_username));
 				return;
 			}
-			if (email_input.getEditText().getText().toString().trim().isEmpty()) {
+			if(email_input.getEditText().getText().toString().trim().isEmpty()) {
 				email_input.setError(getString(R.string.required_password));
 				return;
 			}
 			String password = password_input.getEditText().getText().toString().trim();
-			if (password.isEmpty()) {
+			if(password.isEmpty()) {
 				password_input.setError(getString(R.string.required_verify_password));
 				return;
 			}
 			final String c_password = c_password_input.getEditText().getText().toString().trim();
-			if (c_password.isEmpty()) {
+			if(c_password.isEmpty()) {
 				password_input.setError(getString(R.string.required_verify_password));
 				return;
 			}
-			if (!c_password.equals(password)) {
+			if(!c_password.equals(password)) {
 				password_input.setError(getString(R.string.password_does_not_match));
 				return;
 			}
-		} catch (NullPointerException ex) {
+		} catch(NullPointerException ex) {
 			Log.e(TAG, "registry: ", ex);
 		}
 
@@ -110,7 +108,7 @@ public class RegistryFragment
 		viewModel.setRegistry(name, username, email, password);
 		viewModel.registry().observe(this, (user) -> {
 			btn_registr.setEnabled(true);
-			if (user == null) {
+			if(user == null) {
 				APIException error = viewModel.getError();
 				Toast.makeText(requireActivity(), "Algo ha ido mal", Toast.LENGTH_SHORT).show();
 				return;

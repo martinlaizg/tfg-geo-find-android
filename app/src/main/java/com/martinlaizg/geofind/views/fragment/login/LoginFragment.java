@@ -27,7 +27,6 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 public class LoginFragment
 		extends Fragment
 		implements View.OnClickListener {
@@ -64,11 +63,11 @@ public class LoginFragment
 
 	@Override
 	public void onClick(View v) {
-		if (TextUtils.isEmpty(Objects.requireNonNull(email_input.getEditText()).getText())) {
+		if(TextUtils.isEmpty(Objects.requireNonNull(email_input.getEditText()).getText())) {
 			email_input.setError(getString(R.string.required_email));
 			return;
 		}
-		if (TextUtils.isEmpty(Objects.requireNonNull(password_input.getEditText()).getText())) {
+		if(TextUtils.isEmpty(Objects.requireNonNull(password_input.getEditText()).getText())) {
 			password_input.setError(getString(R.string.required_password));
 			return;
 		}
@@ -79,7 +78,7 @@ public class LoginFragment
 		String password = password_input.getEditText().getText().toString().trim();
 		viewModel.setLogin(email, password);
 		viewModel.login().observe(this, user -> {
-			if (user == null) {
+			if(user == null) {
 				email_input.setError(getString(R.string.wrong_email_password));
 				password_input.setError(getString(R.string.wrong_email_password));
 				return;

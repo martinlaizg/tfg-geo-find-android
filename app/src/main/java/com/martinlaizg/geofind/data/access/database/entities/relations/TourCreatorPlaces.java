@@ -27,14 +27,6 @@ public class TourCreatorPlaces {
 		this.tour = tour;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
 	public List<Place> getPlaces() {
 		return places;
 	}
@@ -47,5 +39,13 @@ public class TourCreatorPlaces {
 		User u = new User();
 		u.setUsername(getUsername());
 		return u;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 }

@@ -1,6 +1,5 @@
 package com.martinlaizg.geofind.views.fragment.single;
 
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -36,7 +35,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 public class TourFragment
 		extends Fragment {
 
@@ -62,7 +60,6 @@ public class TourFragment
 	@BindView(R.id.empty_text)
 	TextView empty_text;
 
-
 	private SharedPreferences sp;
 	private LocationListAdapter adapter;
 
@@ -83,10 +80,10 @@ public class TourFragment
 
 		int tour_id = 0;
 		Bundle b = getArguments();
-		if (b != null) {
+		if(b != null) {
 			tour_id = b.getInt(TOUR_ID);
 		}
-		if (tour_id == 0) {
+		if(tour_id == 0) {
 			Toast.makeText(requireContext(), requireContext().getString(R.string.tour_not_permitted), Toast.LENGTH_SHORT).show();
 			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
 		}
@@ -96,15 +93,15 @@ public class TourFragment
 	}
 
 	private void setTour(Tour tour) {
-		if (tour != null) {
+		if(tour != null) {
 			tour_name.setText(tour.getName());
 			tour_description.setText(tour.getDescription());
 			tour_creator.setText(tour.getCreator().getUsername());
-			if (tour.getPlaces().isEmpty()) {
+			if(tour.getPlaces().isEmpty()) {
 				empty_text.setVisibility(View.VISIBLE);
 			}
 			User u = Preferences.getLoggedUser(sp);
-			if (u != null && u.getId().equals(tour.getCreator_id())) {
+			if(u != null && u.getId().equals(tour.getCreator_id())) {
 				Bundle b = new Bundle();
 				b.putInt(CreatorFragment.TOUR_ID, tour.getId());
 				edit_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toEditTour, b));
@@ -113,7 +110,7 @@ public class TourFragment
 
 			// Set places
 			List<Place> places = tour.getPlaces();
-			if (places != null && !places.isEmpty()) {
+			if(places != null && !places.isEmpty()) {
 				adapter.setLocationEntities(places);
 				tour_num_locations.setText(String.format(getString(R.string.num_places), places.size()));
 				Bundle b = new Bundle();

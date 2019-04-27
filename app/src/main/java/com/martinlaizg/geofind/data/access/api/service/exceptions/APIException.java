@@ -9,6 +9,14 @@ public class APIException
 	private ErrorType type;
 	private String message;
 
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
 	public APIException(ErrorType type, String message) {
 		this.type = type;
 		this.message = message;
@@ -20,14 +28,6 @@ public class APIException
 
 	public void setType(ErrorType type) {
 		this.type = type;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
 	}
 
 	public APIError getAPIError() {
