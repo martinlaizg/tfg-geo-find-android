@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
-import com.martinlaizg.geofind.PlayTourFragment;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.adapter.LocationListAdapter;
 import com.martinlaizg.geofind.config.Preferences;
@@ -27,6 +26,7 @@ import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.views.fragment.creator.CreatorFragment;
+import com.martinlaizg.geofind.views.fragment.play.PlayTourFragment;
 import com.martinlaizg.geofind.views.viewmodel.TourViewModel;
 
 import org.jetbrains.annotations.NotNull;

@@ -177,7 +177,7 @@
         app:popExitAnim="@anim/slide_out_right" />
     <fragment
         android:id="@+id/navPlayTour"
-        android:name="com.martinlaizg.geofind.PlayTourFragment"
+        android:name="com.martinlaizg.geofind.views.fragment.play.PlayTourFragment"
         android:label="@string/play_tour"
         tools:layout="@layout/fragment_play_tour" />
 </navigation>
