@@ -59,4 +59,10 @@
     <string name="wrong_email_password">Email o contraseña incorrectos</string>
     <string name="rejected_location_access">Denegado permiso de localización</string>
     <string name="app_about_description">App desarrollada cómo Trabajo de Final de Grado para el grado en Ingeniería Informática de la Universidad de Alicante</string>
+    <string name="home">Inicio</string>
+    <string name="place_distance">%d m</string>
+    <string name="play">Jugar</string>
+    <string name="play_tour">Jugar Tour</string>
+    <string name="tour_completenes">Sitios %d/%d</string>
+    <string name="tour_not_permitted">Tour no permitido</string>
 </resources>

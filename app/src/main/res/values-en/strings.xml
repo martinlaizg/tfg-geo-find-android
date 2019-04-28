@@ -63,4 +63,6 @@
     <string name="play">Play</string>
     <string name="tour_not_permitted">Tour not permitted</string>
     <string name="play_tour">Play Tour</string>
+    <string name="place_distance">%d m</string>
+    <string name="tour_completenes">Places %d/%d</string>
 </resources>
