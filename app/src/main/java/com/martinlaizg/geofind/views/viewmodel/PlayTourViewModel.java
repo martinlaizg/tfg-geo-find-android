@@ -53,4 +53,8 @@ public class PlayTourViewModel
 		}
 		return play.getTour().getPlaces().get(numPlaces);
 	}
+
+	public Play getPlay() {
+		return play;
+	}
 }

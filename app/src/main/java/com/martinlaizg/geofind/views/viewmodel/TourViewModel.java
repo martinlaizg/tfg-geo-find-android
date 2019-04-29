@@ -11,6 +11,8 @@ import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.repository.TourRepository;
 
+import java.util.List;
+
 public class TourViewModel
 		extends AndroidViewModel {
 
@@ -24,17 +26,21 @@ public class TourViewModel
 		tourRepo = new TourRepository(application);
 	}
 
-	public MutableLiveData<Tour> loadTour(Integer map_id) {
+	public MutableLiveData<Tour> loadTour(Integer tour_id) {
 		MutableLiveData<Tour> m = new MutableLiveData<>();
-		new Thread(() -> {
-			try {
-				tour = tourRepo.getTour(map_id);
+		if(tour == null || !tour.getId().equals(tour_id)) {
+			new Thread(() -> {
+				try {
+					tour = tourRepo.getTour(tour_id);
+				} catch(APIException e) {
+					setError(e);
+					tour = null;
+				}
 				m.postValue(tour);
-			} catch(APIException e) {
-				setError(e);
-				m.postValue(null);
-			}
-		}).start();
+			}).start();
+		} else {
+			m.postValue(tour);
+		}
 		return m;
 	}
 
@@ -59,4 +65,7 @@ public class TourViewModel
 		this.error = error;
 	}
 
+	public List<Place> getPlaces() {
+		return tour.getPlaces();
+	}
 }

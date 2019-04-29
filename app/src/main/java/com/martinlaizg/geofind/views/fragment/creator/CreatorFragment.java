@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.adapter.CreatorPlacesAdapter;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
+import com.martinlaizg.geofind.views.adapter.CreatorPlacesAdapter;
 import com.martinlaizg.geofind.views.fragment.single.TourFragment;
 import com.martinlaizg.geofind.views.viewmodel.CreatorViewModel;
 

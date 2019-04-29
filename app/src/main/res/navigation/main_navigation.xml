@@ -87,7 +87,7 @@
         android:label="@string/tour"
         tools:layout="@layout/fragment_tour">
         <action
-            android:id="@+id/toLocation"
+            android:id="@+id/toPlace"
             app:destination="@id/navPlace"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -114,7 +114,7 @@
     </fragment>
     <fragment
         android:id="@+id/navPlace"
-        android:name="com.martinlaizg.geofind.views.fragment.single.LocationFragment"
+        android:name="com.martinlaizg.geofind.views.fragment.single.PlaceFragment"
         android:label="@string/place"
         tools:layout="@layout/fragment_place">
         <argument
@@ -177,7 +177,7 @@
         app:popExitAnim="@anim/slide_out_right" />
     <fragment
         android:id="@+id/navPlayTour"
-        android:name="com.martinlaizg.geofind.views.fragment.play.PlayTourFragment"
+        android:name="com.martinlaizg.geofind.views.fragment.play.PlayMapFragment"
         android:label="@string/play_tour"
         tools:layout="@layout/fragment_play_tour" />
 </navigation>

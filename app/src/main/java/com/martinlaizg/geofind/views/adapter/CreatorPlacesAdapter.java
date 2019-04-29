@@ -1,4 +1,4 @@
-package com.martinlaizg.geofind.adapter;
+package com.martinlaizg.geofind.views.adapter;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

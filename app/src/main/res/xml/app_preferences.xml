@@ -15,15 +15,15 @@
 
     <ListPreference
         android:defaultValue="1"
-        android:entries="@array/dificulties"
-        android:entryValues="@array/dificulties"
+        android:entries="@array/difficulties"
+        android:entryValues="@array/difficulties"
         android:key="list_preference_1"
         android:title="List preference" />
 
     <MultiSelectListPreference
-        android:defaultValue="@array/dificulties"
-        android:entries="@array/dificulties"
-        android:entryValues="@array/dificulties"
+        android:defaultValue="@array/difficulties"
+        android:entries="@array/difficulties"
+        android:entryValues="@array/difficulties"
         android:key="multi_select_list_preference_1"
         android:title="Multi select list preference" />
 

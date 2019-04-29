@@ -19,13 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.adapter.LocationListAdapter;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.access.database.entities.User;
+import com.martinlaizg.geofind.views.adapter.PlaceListAdapter;
 import com.martinlaizg.geofind.views.fragment.creator.CreatorFragment;
-import com.martinlaizg.geofind.views.fragment.play.PlayTourFragment;
+import com.martinlaizg.geofind.views.fragment.play.PlayMapFragment;
 import com.martinlaizg.geofind.views.viewmodel.TourViewModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -61,7 +61,7 @@ public class TourFragment
 	TextView empty_text;
 
 	private SharedPreferences sp;
-	private LocationListAdapter adapter;
+	private PlaceListAdapter adapter;
 
 	@Override
 	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,7 +74,7 @@ public class TourFragment
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		sp = PreferenceManager.getDefaultSharedPreferences(requireActivity());
 
-		adapter = new LocationListAdapter();
+		adapter = new PlaceListAdapter();
 		places_list.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		places_list.setAdapter(adapter);
 
@@ -111,10 +111,10 @@ public class TourFragment
 			// Set places
 			List<Place> places = tour.getPlaces();
 			if(places != null && !places.isEmpty()) {
-				adapter.setLocationEntities(places);
+				adapter.setPlaces(places);
 				tour_num_locations.setText(String.format(getString(R.string.num_places), places.size()));
 				Bundle b = new Bundle();
-				b.putInt(PlayTourFragment.TOUR_ID, tour.getId());
+				b.putInt(PlayMapFragment.TOUR_ID, tour.getId());
 				play_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toPlayTour, b));
 			} else {
 				places_list.setVisibility(View.GONE);

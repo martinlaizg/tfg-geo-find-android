@@ -64,11 +64,6 @@
     <string name="rejected_location_access">Refused permission to location</string>
     <string name="app_about_description">App desarrollada cómo Trabajo de Final de Grado para el grado en Ingeniería Informática de la Universidad de Alicante</string>
     <string name="home">Home</string>
-    <string-array name="dificulties">
-        <item>Mapa</item>
-        <item>Brújula</item>
-        <item>Termometro</item>
-    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
@@ -77,4 +72,10 @@
     <string name="play_tour">Play Tour</string>
     <string name="place_distance">%d m</string>
     <string name="tour_completenes">Places %d/%d</string>
+    <string name="map_type">Map type</string>
+    <string name="map">Map</string>
+    <string name="compass">Compass</string>
+    <string name="therm">Therm</string>
+    <string name="satellite">Satellite</string>
+    <string name="place_completeness">Place %d/%d</string>
 </resources>

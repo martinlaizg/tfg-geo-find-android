@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.adapter.TourListAdapter;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
+import com.martinlaizg.geofind.views.adapter.TourListAdapter;
 import com.martinlaizg.geofind.views.viewmodel.MapListViewModel;
 
 import butterknife.BindView;
