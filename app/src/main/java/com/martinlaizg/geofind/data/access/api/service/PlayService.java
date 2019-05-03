@@ -7,9 +7,11 @@ import com.martinlaizg.geofind.data.access.api.RetrofitInstance;
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.error.ErrorUtils;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
+import com.martinlaizg.geofind.data.access.database.entities.PlacePlay;
 import com.martinlaizg.geofind.data.access.database.entities.Play;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import retrofit2.Response;
 
@@ -33,9 +35,15 @@ public class PlayService {
 		Response<Play> response;
 		APIException apiException;
 		try {
-			response = restClient.getUserPlay(user_id, tour_id).execute();
+			HashMap<String, String> params = new HashMap<>();
+			params.put("user_id", String.valueOf(user_id));
+			params.put("tour_id", String.valueOf(tour_id));
+			response = restClient.getUserPlay(params).execute();
 			if(response.isSuccessful()) {
 				return response.body();
+			}
+			if(response.code() == 404) {
+				return null;
 			}
 			apiException = ErrorUtils.parseError(response);
 		} catch(IOException e) {
@@ -49,7 +57,27 @@ public class PlayService {
 		Response<Play> response;
 		APIException apiException;
 		try {
-			response = restClient.createUserPlay(user_id, tour_id).execute();
+			HashMap<String, String> params = new HashMap<>();
+			params.put("user_id", String.valueOf(user_id));
+			params.put("tour_id", String.valueOf(tour_id));
+			response = restClient.createUserPlay(params).execute();
+			if(response.isSuccessful()) {
+				return response.body();
+			}
+			apiException = ErrorUtils.parseError(response);
+		} catch(IOException e) {
+			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
+			Log.e(TAG, "getPlace: ", e);
+		}
+		throw apiException;
+	}
+
+	public Play createPlacePlay(Integer play_id, Integer place_id) throws APIException {
+		Response<Play> response;
+		APIException apiException;
+		try {
+			PlacePlay pp = new PlacePlay(place_id, play_id);
+			response = restClient.createPlacePlay(play_id, pp).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}

@@ -35,7 +35,4 @@ public class PlaceRepository {
 		placeDAO.insert(place);
 	}
 
-	public List<Place> getPlacesByPlay(Integer play_id) {
-		return placePlayDAO.getPlayWithPlaces(play_id).getPlaces();
-	}
 }

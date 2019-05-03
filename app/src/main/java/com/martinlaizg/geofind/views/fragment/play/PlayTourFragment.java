@@ -15,7 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
+import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.User;
@@ -39,10 +41,13 @@ abstract class PlayTourFragment
 	private LocationManager locationManager;
 
 	@Override
-	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-		if(requestCode == PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION) {
-			if(permissions[0].equals(Manifest.permission.ACCESS_COARSE_LOCATION) && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-					permissions[1].equals(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+			@NonNull int[] grantResults) {
+		if(requestCode == PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION && permissions.length >= 2) {
+			if(permissions[0].equals(Manifest.permission.ACCESS_COARSE_LOCATION) &&
+					grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+					permissions[1].equals(Manifest.permission.ACCESS_FINE_LOCATION) &&
+					grantResults[1] == PackageManager.PERMISSION_GRANTED) {
 				Log.d(TAG(), "onRequestPermissionsResult: success");
 			}
 			Log.d(TAG(), "onRequestPermissionsResult: deny");
@@ -59,9 +64,16 @@ abstract class PlayTourFragment
 		if(b != null) {
 			tour_id = b.getInt(TOUR_ID);
 		}
-		User u = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(requireContext()));
-		viewModel.loadPlay(u.getId(), tour_id).observe(requireActivity(), play -> {
-			place = viewModel.getNextPlace();
+		User u = Preferences
+				.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(requireContext()));
+		viewModel.loadPlay(u.getId(), tour_id).observe(requireActivity(), place -> {
+			if(place == null) {
+				Log.i(TAG(), "onViewCreated: tour completed");
+				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+						.navigate(R.id.toCompleteTour);
+				return;
+			}
+			this.place = place;
 			updateView();
 		});
 	}
@@ -70,22 +82,29 @@ abstract class PlayTourFragment
 	public void onResume() {
 		super.onResume();
 		Log.i(TAG(), "onResume: check location permissions");
-		locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
-		if(requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-				requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-			requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION);
+		locationManager = (LocationManager) requireActivity()
+				.getSystemService(Context.LOCATION_SERVICE);
+		if(requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) !=
+				PackageManager.PERMISSION_GRANTED &&
+				requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) !=
+						PackageManager.PERMISSION_GRANTED) {
+			requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+					                   Manifest.permission.ACCESS_FINE_LOCATION},
+			                   PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION);
 			return;
 		}
 		usrLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		Log.i(TAG(), "onResume: start request location updates");
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOC_TIME_REQ, LOC_DIST_REQ, this);
+		locationManager
+				.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOC_TIME_REQ, LOC_DIST_REQ,
+				                        this);
 		updateView();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		Log.i(TAG(), "onPause: remove location updates");
+		Log.i(TAG(), "onPause: delete location updates");
 		locationManager.removeUpdates(this);
 	}
 

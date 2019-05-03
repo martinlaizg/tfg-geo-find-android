@@ -19,7 +19,8 @@ public class ErrorUtils {
 	 * @return parsed response
 	 */
 	public static APIException parseError(Response<?> response) {
-		Converter<ResponseBody, APIException> converter = RetrofitInstance.getRetrofitInstance().responseBodyConverter(APIException.class, new Annotation[0]);
+		Converter<ResponseBody, APIException> converter = RetrofitInstance.getRetrofitInstance()
+				.responseBodyConverter(APIException.class, new Annotation[0]);
 
 		APIException error = null;
 		try {
@@ -27,7 +28,7 @@ public class ErrorUtils {
 				error = converter.convert(response.errorBody());
 			}
 		} catch(IOException e) {
-			return new APIException(ErrorType.PARSE, e.getMessage());
+			return new APIException(ErrorType.PARSE);
 		}
 
 		return error;

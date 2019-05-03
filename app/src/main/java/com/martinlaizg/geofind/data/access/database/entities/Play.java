@@ -2,15 +2,27 @@ package com.martinlaizg.geofind.data.access.database.entities;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
+
+import com.martinlaizg.geofind.utils.DateUtils;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 
-@Entity(tableName = "plays")
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "plays", foreignKeys = {
+		@ForeignKey(entity = Tour.class, parentColumns = "id", childColumns = "tour_id",
+		            onDelete = CASCADE),
+		@ForeignKey(entity = User.class, parentColumns = "id", childColumns = "user_id",
+		            onDelete = CASCADE)},
+        indices = {@Index({"tour_id", "user_id"}), @Index("user_id")})
 public class Play {
 
 	@PrimaryKey
@@ -20,6 +32,7 @@ public class Play {
 	private Integer user_id;
 	private Date created_at;
 	private Date updated_at;
+	private Date updated;
 
 	@Ignore
 	private Tour tour;
@@ -28,7 +41,8 @@ public class Play {
 	@Ignore
 	private List<Place> places;
 
-	public Play(@NonNull Integer id, Integer tour_id, Integer user_id, Date created_at, Date updated_at) {
+	public Play(@NonNull Integer id, Integer tour_id, Integer user_id, Date created_at,
+			Date updated_at) {
 		this.id = id;
 		this.tour_id = tour_id;
 		this.user_id = user_id;
@@ -109,5 +123,20 @@ public class Play {
 
 	public void setPlaces(List<Place> places) {
 		this.places = places;
+	}
+
+	public boolean isOutOfDate() {
+		return DateUtils.isDateExpire(updated);
+	}
+
+	public Date getUpdated() {
+		return new Date(Calendar.getInstance().getTime().getTime());
+	}
+
+	public void setUpdated(Date updated) {
+		if(updated == null) {
+			this.updated = new Date(Calendar.getInstance().getTime().getTime());
+		}
+		this.updated = updated;
 	}
 }

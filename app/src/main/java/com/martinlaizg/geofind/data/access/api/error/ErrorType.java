@@ -8,7 +8,8 @@ public enum ErrorType {
 	@SerializedName("parse") PARSE(R.string.parse_error),
 	@SerializedName("other") NETWORK(R.string.network_error),
 	@SerializedName("email") EMAIL(R.string.email_error),
-	@SerializedName("id") ID(R.string.id_error);
+	@SerializedName("id") ID(R.string.id_error),
+	@SerializedName("completed") COMPLETED(R.string.tour_is_completed);
 
 	private int message;
 

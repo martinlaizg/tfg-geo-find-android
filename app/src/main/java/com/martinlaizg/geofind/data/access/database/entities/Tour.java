@@ -5,11 +5,13 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.martinlaizg.geofind.data.enums.PlayLevel;
+import com.martinlaizg.geofind.utils.DateUtils;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @Entity(tableName = "tours")
@@ -23,13 +25,15 @@ public class Tour {
 	private Date created_at;
 	private Date updated_at;
 	private Integer creator_id;
+	private Date updated;
 
 	@Ignore
 	private List<Place> places;
 	@Ignore
 	private User creator;
 
-	public Tour(Integer id, String name, String description, PlayLevel min_level, Date created_at, Date updated_at, Integer creator_id) {
+	public Tour(Integer id, String name, String description, PlayLevel min_level, Date created_at,
+			Date updated_at, Integer creator_id) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -125,5 +129,20 @@ public class Tour {
 
 	public void setPlaces(List<Place> places) {
 		this.places = places;
+	}
+
+	public boolean isOutOfDate() {
+		return DateUtils.isDateExpire(updated);
+	}
+
+	public Date getUpdated() {
+		return new Date(Calendar.getInstance().getTime().getTime());
+	}
+
+	public void setUpdated(Date updated) {
+		if(updated == null) {
+			this.updated = new Date(Calendar.getInstance().getTime().getTime());
+		}
+		this.updated = updated;
 	}
 }

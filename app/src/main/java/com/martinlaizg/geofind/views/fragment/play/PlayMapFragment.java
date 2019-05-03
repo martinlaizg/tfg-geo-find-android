@@ -2,7 +2,6 @@ package com.martinlaizg.geofind.views.fragment.play;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -11,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.navigation.Navigation;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -55,7 +57,8 @@ public class PlayMapFragment
 	private GoogleMap googleMap;
 
 	@Override
-	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_play_tour, container, false);
 		ButterKnife.bind(this, view);
 		map_view.onCreate(savedInstanceState);
@@ -66,12 +69,8 @@ public class PlayMapFragment
 		int[] mapTypes = {GoogleMap.MAP_TYPE_NORMAL, GoogleMap.MAP_TYPE_SATELLITE};
 		map_type_button.setOnClickListener(v -> {
 			AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-			builder.setTitle("Select Option");
-			builder.setItems(options, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int item) {
-					googleMap.setMapType(mapTypes[item]);
-				}
-			});
+			builder.setTitle(getResources().getString(R.string.map_type));
+			builder.setItems(options, (dialog, item) -> googleMap.setMapType(mapTypes[item]));
 			AlertDialog alert = builder.create();
 			alert.show();
 		});
@@ -81,9 +80,13 @@ public class PlayMapFragment
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
 		this.googleMap = googleMap;
-		if(requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-				requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-			requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION);
+		if(requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) !=
+				PackageManager.PERMISSION_GRANTED &&
+				requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) !=
+						PackageManager.PERMISSION_GRANTED) {
+			requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+					                   Manifest.permission.ACCESS_FINE_LOCATION},
+			                   PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION);
 			return;
 		}
 		this.googleMap.setMyLocationEnabled(true);
@@ -104,7 +107,8 @@ public class PlayMapFragment
 			place_description.setText(place.getDescription());
 			int completed = play.getPlaces().size() + 1;
 			int total = play.getTour().getPlaces().size();
-			place_complete.setText(getResources().getString(R.string.tour_completenes, completed, total));
+			place_complete
+					.setText(getResources().getString(R.string.tour_completenes, completed, total));
 
 			if(googleMap != null && usrLocation != null) {
 
@@ -115,9 +119,23 @@ public class PlayMapFragment
 				Float distance = 0f;
 				distance = usrLocation.distanceTo(placeLocation);
 				Log.d(TAG, "updateView: distance=" + distance + "m");
-				place_distance.setText(getResources().getString(R.string.place_distance, distance.intValue()));
+				place_distance.setText(
+						getResources().getString(R.string.place_distance, distance.intValue()));
 				if(distance < DISTANCE_TO_COMPLETE) {
+
 					Log.i(TAG, "updateView: user arrive to the place");
+					viewModel.completePlace(place.getId()).observe(this, done -> {
+						if(!done) {
+							Toast.makeText(requireContext(), viewModel.getError().getMessage(),
+							               Toast.LENGTH_SHORT).show();
+							return;
+						}
+						Log.d(TAG, "updateView: Place done");
+						Bundle b = new Bundle();
+						b.putInt(TOUR_ID, viewModel.getTour().getId());
+						Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+								.navigate(R.id.reload_play_map, b);
+					});
 				}
 
 				// Move map camera
@@ -131,6 +149,7 @@ public class PlayMapFragment
 				} else {
 					cu = CameraUpdateFactory.newLatLngBounds(cameraPosition, MAP_PADDING);
 				}
+				googleMap.getUiSettings().setMyLocationButtonEnabled(true);
 				googleMap.animateCamera(cu);
 				Log.d(TAG, "updateView: zoom=" + googleMap.getCameraPosition().zoom);
 

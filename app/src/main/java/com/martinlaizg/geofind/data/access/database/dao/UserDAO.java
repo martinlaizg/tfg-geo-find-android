@@ -17,6 +17,6 @@ public interface UserDAO {
 	@Update
 	void update(User user);
 
-	@Query("SELECT * FROM users WHERE user_id = :user_id")
+	@Query("SELECT * FROM users WHERE id = :user_id")
 	User getUser(int user_id);
 }

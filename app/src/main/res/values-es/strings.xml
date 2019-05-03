@@ -67,8 +67,9 @@
     <string name="tour_not_permitted">Tour no permitido</string>
     <string name="compass">Brújula</string>
     <string name="map">Mapa</string>
-    <string name="map_type">Tipo de mapa</string>
-    <string name="satellite">Satélite</string>
     <string name="therm">Termometro</string>
     <string name="place_completeness">Sitio %d/%d</string>
+    <string name="satellite">Satélite</string>
+    <string name="map_type">Tipo de mapa</string>
+    <string name="tour_is_completed">El tour se ha completado</string>
 </resources>

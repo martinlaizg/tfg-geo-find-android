@@ -1,6 +1,5 @@
 package com.martinlaizg.geofind.data.access.database.entities;
 
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -13,13 +12,13 @@ import com.martinlaizg.geofind.utils.DateUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 
 @Entity(tableName = "users")
 public class User {
 
 	@PrimaryKey
-	@ColumnInfo(name = "user_id")
 	private final Integer id;
 	private String email;
 	private String username;
@@ -28,11 +27,13 @@ public class User {
 	private UserType user_type;
 	private Date created_at;
 	private Date updated_at;
+	private Date updated;
 
 	@Ignore
 	private List<Place> createdPlaces;
 
-	public User(Integer id, String email, String username, String name, String password, UserType user_type, Date created_at, Date updated_at) {
+	public User(Integer id, String email, String username, String name, String password,
+			UserType user_type, Date created_at, Date updated_at) {
 		this.id = id;
 		this.email = email;
 		this.username = username;
@@ -114,4 +115,18 @@ public class User {
 		return gson.toJson(this);
 	}
 
+	public boolean isOutOfDate() {
+		return DateUtils.isDateExpire(updated);
+	}
+
+	public Date getUpdated() {
+		return new Date(Calendar.getInstance().getTime().getTime());
+	}
+
+	public void setUpdated(Date updated) {
+		if(updated == null) {
+			this.updated = new Date(Calendar.getInstance().getTime().getTime());
+		}
+		this.updated = updated;
+	}
 }

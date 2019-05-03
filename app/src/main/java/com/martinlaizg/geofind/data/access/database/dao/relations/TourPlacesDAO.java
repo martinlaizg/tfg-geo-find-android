@@ -12,10 +12,10 @@ import java.util.List;
 public interface TourPlacesDAO {
 
 	@Transaction
-	@Query("SELECT t.*, username FROM tours as t LEFT JOIN users AS u ON u.user_id = t.creator_id;")
+	@Query("SELECT t.*, username FROM tours as t LEFT JOIN users AS u ON u.id = t.creator_id;")
 	List<TourCreatorPlaces> getTourCreatorPlaces();
 
 	@Transaction
-	@Query("SELECT t.*, username FROM tours as t LEFT JOIN users AS u ON u.user_id = t.creator_id WHERE t.id = :tour_id;")
+	@Query("SELECT t.*, username FROM tours as t LEFT JOIN users AS u ON u.id = t.creator_id WHERE t.id = :tour_id;")
 	TourCreatorPlaces getTour(Integer tour_id);
 }

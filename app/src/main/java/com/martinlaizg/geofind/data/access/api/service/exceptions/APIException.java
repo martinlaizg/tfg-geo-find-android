@@ -1,20 +1,20 @@
 package com.martinlaizg.geofind.data.access.api.service.exceptions;
 
-import com.martinlaizg.geofind.data.access.api.error.APIError;
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 
 public class APIException
 		extends Throwable {
 
-	private ErrorType type;
-	private String message;
+	private final ErrorType type;
+	private final String message;
 
 	public String getMessage() {
 		return message;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public APIException(ErrorType type) {
+		this.type = type;
+		this.message = null;
 	}
 
 	public APIException(ErrorType type, String message) {
@@ -26,11 +26,4 @@ public class APIException
 		return type;
 	}
 
-	public void setType(ErrorType type) {
-		this.type = type;
-	}
-
-	public APIError getAPIError() {
-		return new APIError(type, message);
-	}
 }

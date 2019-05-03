@@ -179,5 +179,21 @@
         android:id="@+id/navPlayTour"
         android:name="com.martinlaizg.geofind.views.fragment.play.PlayMapFragment"
         android:label="@string/play_tour"
-        tools:layout="@layout/fragment_play_tour" />
+        tools:layout="@layout/fragment_play_tour">
+        <action
+            android:id="@+id/reload_play_map"
+            app:destination="@id/navPlayTour"
+            app:popUpTo="@+id/navTour"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/toCompleteTour"
+            app:destination="@id/navCompleteTour"
+            app:popUpTo="@+id/navTourList"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/navCompleteTour"
+        android:name="com.martinlaizg.geofind.views.fragment.play.CompleteTour"
+        android:label="fragment_complete_tour"
+        tools:layout="@layout/fragment_complete_tour" />
 </navigation>

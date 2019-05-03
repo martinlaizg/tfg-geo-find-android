@@ -5,8 +5,10 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.martinlaizg.geofind.utils.DateUtils;
 
 import java.sql.Date;
+import java.util.Calendar;
 
 @Entity(tableName = "places")
 public class Place {
@@ -21,8 +23,10 @@ public class Place {
 	private Integer order;
 	private Date created_at;
 	private Date updated_at;
+	private Date updated;
 
-	public Place(Integer id, String name, Double lat, Double lon, Integer tour_id, Date created_at, Date updated_at) {
+	public Place(Integer id, String name, Double lat, Double lon, Integer tour_id, Date created_at,
+			Date updated_at) {
 		this.id = id;
 		this.name = name;
 		this.lat = lat;
@@ -99,7 +103,8 @@ public class Place {
 	}
 
 	boolean isValid() {
-		return getName() != null && !getName().isEmpty() && getDescription() != null && !getDescription().isEmpty() && getLat() != null && getLon() != null;
+		return getName() != null && !getName().isEmpty() && getDescription() != null &&
+				!getDescription().isEmpty() && getLat() != null && getLon() != null;
 	}
 
 	public String getName() {
@@ -117,4 +122,20 @@ public class Place {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public Date getUpdated() {
+		return new Date(Calendar.getInstance().getTime().getTime());
+	}
+
+	public void setUpdated(Date updated) {
+		if(updated == null) {
+			this.updated = new Date(Calendar.getInstance().getTime().getTime());
+		}
+		this.updated = updated;
+	}
+
+	public boolean isOutOfDate() {
+		return DateUtils.isDateExpire(updated);
+	}
+
 }

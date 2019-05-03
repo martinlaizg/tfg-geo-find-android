@@ -28,7 +28,7 @@ public class TourRepository {
 		AppDatabase database = AppDatabase.getInstance(application);
 		tourDAO = database.tourDAO();
 		tourService = TourService.getInstance();
-		mapLocsDAO = database.mapLocsDAO();
+		mapLocsDAO = database.tourPlacesDAO();
 
 		placeRepo = RepositoryFactory.getPlaceRepository(application);
 		userRepo = RepositoryFactory.getUserRepository(application);

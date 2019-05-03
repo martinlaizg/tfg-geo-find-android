@@ -89,6 +89,8 @@ public class PlaceFragment
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
 		googleMap.getUiSettings().setAllGesturesEnabled(false);
+		googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+		googleMap.getUiSettings().setMapToolbarEnabled(false);
 		this.googleMap = googleMap;
 	}
 }
