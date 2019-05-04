@@ -63,7 +63,7 @@ public class CreatorViewModel
 		return m;
 	}
 
-	public void setLocation(String name, String description, LatLng position, int order) {
+	public void setPlace(String name, String description, LatLng position, int order) {
 		Place p;
 		if(order < tour.getPlaces().size()) { // Existing place
 			p = tour.getPlaces().get(order);
@@ -77,7 +77,7 @@ public class CreatorViewModel
 		p.setOrder(order);
 	}
 
-	public void setCreatedMap(String name, String description, Integer creator_id, PlayLevel pl) {
+	public void setCreatedTour(String name, String description, Integer creator_id, PlayLevel pl) {
 		if(tour == null) tour = new Tour();
 		tour.setName(name);
 		tour.setDescription(description);

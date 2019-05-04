@@ -2,6 +2,7 @@ package com.martinlaizg.geofind.data.access.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.martinlaizg.geofind.utils.DateUtils;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -19,9 +20,8 @@ public class RetrofitInstance {
 
 	public static Retrofit getRetrofitInstance() {
 		if(retrofitInstance == null) {
-			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-			retrofitInstance = new Retrofit.Builder().baseUrl(BASE_URL)
-					.addConverterFactory(GsonConverterFactory.create(gson)).build();
+			Gson gson = new GsonBuilder().setDateFormat(DateUtils.DATE_FORMAT).create();
+			retrofitInstance = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create(gson)).build();
 		}
 
 		return retrofitInstance;

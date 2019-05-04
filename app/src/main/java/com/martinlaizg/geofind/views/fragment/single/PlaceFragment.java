@@ -33,13 +33,13 @@ public class PlaceFragment
 	private static final float MAP_ZOOM = 14.5f;
 
 	@BindView(R.id.place_name)
-	TextView location_name;
+	TextView place_name;
 	@BindView(R.id.place_description)
-	TextView location_description;
+	TextView place_description;
 	@BindView(R.id.place_position)
 	TextView place_position;
 	@BindView(R.id.place_image)
-	ImageView location_image;
+	ImageView place_image;
 	@BindView(R.id.place_map)
 	MapView place_map;
 
@@ -72,9 +72,9 @@ public class PlaceFragment
 
 	private void setPlace(Place place) {
 		if(place != null) {
-			location_name.setText(place.getName());
-			location_description.setText(place.getDescription());
-			location_image.setImageResource(R.drawable.default_map_image);
+			place_name.setText(place.getName());
+			place_description.setText(place.getDescription());
+			place_image.setImageResource(R.drawable.default_map_image);
 			int number = place.getOrder() + 1;
 			int total = viewModel.getPlaces().size();
 			place_position.setText(getResources().getString(R.string.place_completeness, number, total));

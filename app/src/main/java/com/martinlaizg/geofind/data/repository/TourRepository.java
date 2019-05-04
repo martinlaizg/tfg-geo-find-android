@@ -19,7 +19,7 @@ public class TourRepository {
 
 	private final TourService tourService;
 	private final TourDAO tourDAO;
-	private final TourPlacesDAO mapLocsDAO;
+	private final TourPlacesDAO tourPlacesDAO;
 
 	private final PlaceRepository placeRepo;
 	private final UserRepository userRepo;
@@ -28,14 +28,14 @@ public class TourRepository {
 		AppDatabase database = AppDatabase.getInstance(application);
 		tourDAO = database.tourDAO();
 		tourService = TourService.getInstance();
-		mapLocsDAO = database.tourPlacesDAO();
+		tourPlacesDAO = database.tourPlacesDAO();
 
 		placeRepo = RepositoryFactory.getPlaceRepository(application);
 		userRepo = RepositoryFactory.getUserRepository(application);
 	}
 
-	public List<Tour> getAllMaps() throws APIException {
-		List<TourCreatorPlaces> mls = mapLocsDAO.getTourCreatorPlaces();
+	public List<Tour> getAllTours() throws APIException {
+		List<TourCreatorPlaces> mls = tourPlacesDAO.getTourCreatorPlaces();
 		List<Tour> ts = new ArrayList<>();
 		for(TourCreatorPlaces ml : mls) {
 			Tour t = ml.getTour();
@@ -46,7 +46,7 @@ public class TourRepository {
 		}
 
 		if(ts.isEmpty()) {
-			ts = tourService.getAllMaps();
+			ts = tourService.getAllTours();
 			if(ts != null) {
 				for(Tour t : ts) {
 					tourDAO.insert(t);
@@ -61,10 +61,10 @@ public class TourRepository {
 	}
 
 	public Tour getTour(Integer id) throws APIException {
-		TourCreatorPlaces tcp = mapLocsDAO.getTour(id);
+		TourCreatorPlaces tcp = tourPlacesDAO.getTour(id);
 		Tour t;
 		if(tcp == null) {
-			t = tourService.getMap(id);
+			t = tourService.getTour(id);
 		} else {
 			t = tcp.getTour();
 			t.setCreator(tcp.getCreator());

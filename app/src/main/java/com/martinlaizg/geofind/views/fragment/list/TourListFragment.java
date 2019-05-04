@@ -18,7 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.views.adapter.TourListAdapter;
-import com.martinlaizg.geofind.views.viewmodel.MapListViewModel;
+import com.martinlaizg.geofind.views.viewmodel.TourListViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,13 +28,13 @@ public class TourListFragment
 
 	private static final String TAG = TourListFragment.class.getSimpleName();
 
-	@BindView(R.id.map_list)
-	RecyclerView recyclerView;
+	@BindView(R.id.tour_list)
+	RecyclerView tour_list;
 
-	@BindView(R.id.create_map_button)
-	FloatingActionButton create_map_button;
+	@BindView(R.id.create_tour_button)
+	FloatingActionButton create_tour_button;
 
-	private MapListViewModel viewModel;
+	private TourListViewModel viewModel;
 	private TourListAdapter adapter;
 
 	@Nullable
@@ -43,11 +43,11 @@ public class TourListFragment
 		final View view = inflater.inflate(R.layout.fragment_tour_list, container, false);
 		ButterKnife.bind(this, view);
 
-		recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+		tour_list.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		adapter = new TourListAdapter();
-		recyclerView.setAdapter(adapter);
+		tour_list.setAdapter(adapter);
 
-		viewModel = ViewModelProviders.of(this).get(MapListViewModel.class);
+		viewModel = ViewModelProviders.of(this).get(TourListViewModel.class);
 		viewModel.getTours().observe(this, tours -> {
 			if(tours != null) {
 				adapter.setTours(tours);
@@ -56,7 +56,7 @@ public class TourListFragment
 				Toast.makeText(requireActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
 			}
 		});
-		create_map_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreator));
+		create_tour_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreator));
 
 		return view;
 	}

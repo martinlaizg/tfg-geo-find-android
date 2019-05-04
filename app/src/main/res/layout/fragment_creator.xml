@@ -41,7 +41,7 @@
                 tools:text="@sample/tours.json/data/name[0]" />
 
             <TextView
-                android:id="@+id/create_map_description"
+                android:id="@+id/tour_description"
                 style="@android:style/TextAppearance.Material.Subhead"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -106,13 +106,13 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="@string/add_place"
-        app:layout_constraintBottom_toTopOf="@+id/create_map_button"
+        app:layout_constraintBottom_toTopOf="@+id/create_tour_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/create_map_button"
+        android:id="@+id/create_tour_button"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
