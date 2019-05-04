@@ -77,7 +77,7 @@
                 tools:text="@sample/tours.json/data/creator" />
 
             <TextView
-                android:id="@+id/tour_num_locations"
+                android:id="@+id/tour_num_places"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"

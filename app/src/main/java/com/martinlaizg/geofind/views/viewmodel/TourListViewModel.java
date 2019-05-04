@@ -12,13 +12,13 @@ import com.martinlaizg.geofind.data.repository.TourRepository;
 
 import java.util.List;
 
-public class MapListViewModel
+public class TourListViewModel
 		extends AndroidViewModel {
 
 	private final TourRepository repository;
 	private APIException error;
 
-	public MapListViewModel(@NonNull Application application) {
+	public TourListViewModel(@NonNull Application application) {
 		super(application);
 		repository = new TourRepository(application);
 	}
@@ -27,7 +27,7 @@ public class MapListViewModel
 		MutableLiveData<List<Tour>> tours = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
-				tours.postValue(repository.getAllMaps());
+				tours.postValue(repository.getAllTours());
 			} catch(APIException e) {
 				setError(e);
 				tours.postValue(null);

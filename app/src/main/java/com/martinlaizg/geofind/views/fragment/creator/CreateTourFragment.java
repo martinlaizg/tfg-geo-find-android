@@ -34,17 +34,17 @@ public class CreateTourFragment
 		extends Fragment
 		implements View.OnClickListener {
 
-	@BindView(R.id.new_map_name_layout)
-	TextInputLayout new_map_name;
-	@BindView(R.id.new_map_description_layout)
-	TextInputLayout new_map_description;
+	@BindView(R.id.tour_name_layout)
+	TextInputLayout tour_name_layout;
+	@BindView(R.id.tour_description_layout)
+	TextInputLayout tour_description_layout;
 
 	@BindView(R.id.done_button)
 	MaterialButton done_button;
 	@BindView(R.id.add_image_button)
 	MaterialButton add_image_button;
 	@BindView(R.id.difficulty_spinner)
-	Spinner difficultySpinner;
+	Spinner difficulty_spinner;
 
 	private CreatorViewModel viewModel;
 
@@ -62,13 +62,13 @@ public class CreateTourFragment
 		viewModel.setLoad(false);
 		if(m != null) {
 			if(!m.getName().isEmpty()) {
-				Objects.requireNonNull(new_map_name.getEditText()).setText(m.getName());
+				Objects.requireNonNull(tour_name_layout.getEditText()).setText(m.getName());
 			}
 			if(!m.getDescription().isEmpty()) {
-				Objects.requireNonNull(new_map_description.getEditText()).setText(m.getDescription());
+				Objects.requireNonNull(tour_description_layout.getEditText()).setText(m.getDescription());
 			}
 			if(m.getMin_level() != null) {
-				difficultySpinner.setSelection(m.getMin_level().ordinal());
+				difficulty_spinner.setSelection(m.getMin_level().ordinal());
 			}
 		}
 		done_button.setOnClickListener(this);
@@ -77,23 +77,23 @@ public class CreateTourFragment
 	@Override
 	public void onClick(View v) {
 		try {
-			new_map_name.setError("");
-			if(Objects.requireNonNull(new_map_name.getEditText()).getText().toString().trim().isEmpty()) {
-				new_map_name.setError(getString(R.string.required_name));
+			tour_name_layout.setError("");
+			if(Objects.requireNonNull(tour_name_layout.getEditText()).getText().toString().trim().isEmpty()) {
+				tour_name_layout.setError(getString(R.string.required_name));
 				return;
 			}
-			new_map_name.setError("");
-			if(new_map_name.getEditText().getText().toString().trim().length() > getResources().getInteger(R.integer.max_name_length)) {
-				new_map_name.setError(getString(R.string.text_too_long));
+			tour_name_layout.setError("");
+			if(tour_name_layout.getEditText().getText().toString().trim().length() > getResources().getInteger(R.integer.max_name_length)) {
+				tour_name_layout.setError(getString(R.string.text_too_long));
 				return;
 			}
-			new_map_description.setError("");
-			if(Objects.requireNonNull(new_map_description.getEditText()).getText().toString().trim().isEmpty()) {
-				new_map_description.setError(getString(R.string.required_description));
+			tour_description_layout.setError("");
+			if(Objects.requireNonNull(tour_description_layout.getEditText()).getText().toString().trim().isEmpty()) {
+				tour_description_layout.setError(getString(R.string.required_description));
 				return;
 			}
-			if(new_map_description.getEditText().getText().toString().trim().length() > getResources().getInteger(R.integer.max_description_length)) {
-				new_map_description.setError(getString(R.string.text_too_long));
+			if(tour_description_layout.getEditText().getText().toString().trim().length() > getResources().getInteger(R.integer.max_description_length)) {
+				tour_description_layout.setError(getString(R.string.text_too_long));
 				return;
 			}
 		} catch(NullPointerException ex) {
@@ -101,12 +101,12 @@ public class CreateTourFragment
 			return;
 		}
 
-		String name = new_map_name.getEditText().getText().toString().trim();
-		String description = new_map_description.getEditText().getText().toString().trim();
-		PlayLevel pl = PlayLevel.getPlayLevel(difficultySpinner.getSelectedItemPosition());
+		String name = tour_name_layout.getEditText().getText().toString().trim();
+		String description = tour_description_layout.getEditText().getText().toString().trim();
+		PlayLevel pl = PlayLevel.getPlayLevel(difficulty_spinner.getSelectedItemPosition());
 
 		User user = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(requireContext()));
-		viewModel.setCreatedMap(name, description, user.getId(), pl);
+		viewModel.setCreatedTour(name, description, user.getId(), pl);
 		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
 
 	}

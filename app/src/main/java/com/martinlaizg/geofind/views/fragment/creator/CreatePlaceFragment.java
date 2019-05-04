@@ -48,16 +48,16 @@ public class CreatePlaceFragment
 	private static final int CAMERA_UPDATE_ZOOM = 15;
 	private static final int PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION = 1;
 
-	@BindView(R.id.new_location_name_layout)
-	TextInputLayout new_location_name;
-	@BindView(R.id.new_location_description_layout)
-	TextInputLayout new_location_description;
-	@BindView(R.id.alert_no_locaiton_text)
-	TextView alert_no_location_text;
-	@BindView(R.id.create_location)
+	@BindView(R.id.new_place_name_layout)
+	TextInputLayout new_place_name;
+	@BindView(R.id.new_place_description_layout)
+	TextInputLayout new_place_description;
+	@BindView(R.id.alert_no_place_text)
+	TextView alert_no_place_text;
+	@BindView(R.id.create_place)
 	Button create_button;
-	@BindView(R.id.new_location_map_view)
-	MapView new_location_map_view;
+	@BindView(R.id.new_place_map_view)
+	MapView new_place_map_view;
 
 	private CreatorViewModel viewModel;
 	private MarkerOptions marker;
@@ -66,32 +66,32 @@ public class CreatePlaceFragment
 
 	@Override
 	public void onClick(View v) {
-		alert_no_location_text.setVisibility(View.GONE);
+		alert_no_place_text.setVisibility(View.GONE);
 		try {
-			if(Objects.requireNonNull(new_location_name.getEditText()).getText().toString().trim().isEmpty()) {
-				new_location_name.setError(getString(R.string.required_name));
+			if(Objects.requireNonNull(new_place_name.getEditText()).getText().toString().trim().isEmpty()) {
+				new_place_name.setError(getString(R.string.required_name));
 				return;
 			}
-			if(new_location_name.getEditText().getText().toString().length() > getResources().getInteger(R.integer.max_name_length)) {
-				new_location_name.setError(getString(R.string.text_too_long));
+			if(new_place_name.getEditText().getText().toString().length() > getResources().getInteger(R.integer.max_name_length)) {
+				new_place_name.setError(getString(R.string.text_too_long));
 				return;
 			}
-			if(!viewModel.checkPlaceName(new_location_name.getEditText().getText().toString())) {
-				new_location_name.setError(getString(R.string.repeated_name));
+			if(!viewModel.checkPlaceName(new_place_name.getEditText().getText().toString())) {
+				new_place_name.setError(getString(R.string.repeated_name));
 				return;
 			}
-			new_location_name.setError("");
-			if(Objects.requireNonNull(new_location_description.getEditText()).getText().toString().trim().isEmpty()) {
-				new_location_description.setError(getString(R.string.required_description));
+			new_place_name.setError("");
+			if(Objects.requireNonNull(new_place_description.getEditText()).getText().toString().trim().isEmpty()) {
+				new_place_description.setError(getString(R.string.required_description));
 				return;
 			}
-			if(new_location_description.getEditText().getText().toString().length() > getResources().getInteger(R.integer.max_description_length)) {
-				new_location_description.setError(getString(R.string.text_too_long));
+			if(new_place_description.getEditText().getText().toString().length() > getResources().getInteger(R.integer.max_description_length)) {
+				new_place_description.setError(getString(R.string.text_too_long));
 				return;
 			}
-			new_location_description.setError("");
+			new_place_description.setError("");
 			if(marker == null) {
-				alert_no_location_text.setVisibility(View.VISIBLE);
+				alert_no_place_text.setVisibility(View.VISIBLE);
 				return;
 			}
 		} catch(NullPointerException ex) {
@@ -99,10 +99,10 @@ public class CreatePlaceFragment
 			return;
 		}
 
-		String name = new_location_name.getEditText().getText().toString().trim();
-		String description = new_location_description.getEditText().getText().toString().trim();
+		String name = new_place_name.getEditText().getText().toString().trim();
+		String description = new_place_description.getEditText().getText().toString().trim();
 
-		viewModel.setLocation(name, description, marker.getPosition(), position);
+		viewModel.setPlace(name, description, marker.getPosition(), position);
 		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
 	}
 
@@ -111,8 +111,7 @@ public class CreatePlaceFragment
 		gMap = googleMap;
 		if(requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
 				requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-			requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION},
-			                   PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION);
+			requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION);
 			Toast.makeText(requireActivity(), getString(R.string.rejected_location_access), Toast.LENGTH_SHORT).show();
 			return;
 		}
@@ -173,9 +172,9 @@ public class CreatePlaceFragment
 		View view = inflater.inflate(R.layout.fragment_create_place, container, false);
 		ButterKnife.bind(this, view);
 
-		new_location_map_view.onCreate(savedInstanceState);
-		new_location_map_view.onResume();
-		new_location_map_view.getMapAsync(this);
+		new_place_map_view.onCreate(savedInstanceState);
+		new_place_map_view.onResume();
+		new_place_map_view.getMapAsync(this);
 		return view;
 	}
 
@@ -190,8 +189,8 @@ public class CreatePlaceFragment
 
 			if(position < viewModel.getPlaces().size()) {
 				Place l = viewModel.getPlaces().get(position);
-				Objects.requireNonNull(new_location_name.getEditText()).setText(l.getName());
-				Objects.requireNonNull(new_location_description.getEditText()).setText(l.getDescription());
+				Objects.requireNonNull(new_place_name.getEditText()).setText(l.getName());
+				Objects.requireNonNull(new_place_description.getEditText()).setText(l.getDescription());
 				onMapLongClick(l.getPosition());
 			}
 		}
@@ -202,7 +201,7 @@ public class CreatePlaceFragment
 
 	@Override
 	public void onMapLongClick(LatLng latLng) {
-		alert_no_location_text.setVisibility(View.GONE);
+		alert_no_place_text.setVisibility(View.GONE);
 		MarkerOptions m = new MarkerOptions().position(latLng);
 		if(gMap != null) {
 			gMap.clear();

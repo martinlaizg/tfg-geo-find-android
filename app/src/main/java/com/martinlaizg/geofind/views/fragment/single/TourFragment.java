@@ -47,8 +47,8 @@ public class TourFragment
 	TextView tour_description;
 	@BindView(R.id.tour_creator)
 	TextView tour_creator;
-	@BindView(R.id.tour_num_locations)
-	TextView tour_num_locations;
+	@BindView(R.id.tour_num_places)
+	TextView tour_num_places;
 	@BindView(R.id.edit_button)
 	MaterialButton edit_button;
 	@BindView(R.id.places_list)
@@ -112,7 +112,7 @@ public class TourFragment
 			List<Place> places = tour.getPlaces();
 			if(places != null && !places.isEmpty()) {
 				adapter.setPlaces(places);
-				tour_num_locations.setText(String.format(getString(R.string.num_places), places.size()));
+				tour_num_places.setText(String.format(getString(R.string.num_places), places.size()));
 				Bundle b = new Bundle();
 				b.putInt(PlayMapFragment.TOUR_ID, tour.getId());
 				play_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toPlayTour, b));

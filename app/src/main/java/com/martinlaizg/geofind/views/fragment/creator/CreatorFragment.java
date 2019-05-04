@@ -38,12 +38,12 @@ public class CreatorFragment
 	// View
 	@BindView(R.id.tour_name)
 	TextView tour_name;
-	@BindView(R.id.create_map_description)
+	@BindView(R.id.tour_description)
 	TextView tour_description;
 
 	@BindView(R.id.add_place_button)
 	MaterialButton add_place_button;
-	@BindView(R.id.create_map_button)
+	@BindView(R.id.create_tour_button)
 	MaterialButton create_tour_button;
 	@BindView(R.id.edit_button)
 	MaterialButton edit_button;

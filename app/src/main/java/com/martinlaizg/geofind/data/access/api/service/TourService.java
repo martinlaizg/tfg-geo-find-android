@@ -31,7 +31,7 @@ public class TourService {
 		return tourService;
 	}
 
-	public List<Tour> getAllMaps() throws APIException {
+	public List<Tour> getAllTours() throws APIException {
 		Response<List<Tour>> response;
 		APIException apiException;
 		try {
@@ -65,7 +65,7 @@ public class TourService {
 		throw apiException;
 	}
 
-	public Tour getMap(Integer id) throws APIException {
+	public Tour getTour(Integer id) throws APIException {
 		Response<Tour> response;
 		APIException apiException;
 		try {
