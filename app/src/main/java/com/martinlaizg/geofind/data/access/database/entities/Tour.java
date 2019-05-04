@@ -1,7 +1,9 @@
 package com.martinlaizg.geofind.data.access.database.entities;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import com.martinlaizg.geofind.data.enums.PlayLevel;
@@ -14,7 +16,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-@Entity(tableName = "tours")
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "tours",
+        foreignKeys = @ForeignKey(entity = User.class, childColumns = "creator_id",
+                                  parentColumns = "id", onDelete = CASCADE),
+        indices = @Index("creator_id"))
 public class Tour {
 
 	@PrimaryKey

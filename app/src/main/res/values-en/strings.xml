@@ -72,4 +72,6 @@
     <string name="satellite">Satellite</string>
     <string name="map_type">Map type</string>
     <string name="tour_is_completed">The tour has been completed</string>
+    <string name="place_completed">Place completed</string>
+    <string name="tour_completed">Tour completed</string>
 </resources>

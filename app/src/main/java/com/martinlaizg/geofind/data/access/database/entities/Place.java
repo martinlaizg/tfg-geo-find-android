@@ -1,7 +1,9 @@
 package com.martinlaizg.geofind.data.access.database.entities;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -10,7 +12,9 @@ import com.martinlaizg.geofind.utils.DateUtils;
 import java.sql.Date;
 import java.util.Calendar;
 
-@Entity(tableName = "places")
+@Entity(tableName = "places",
+        foreignKeys = @ForeignKey(entity = Tour.class, childColumns = "tour_id",
+                                  parentColumns = "id"), indices = @Index("tour_id"))
 public class Place {
 
 	@PrimaryKey

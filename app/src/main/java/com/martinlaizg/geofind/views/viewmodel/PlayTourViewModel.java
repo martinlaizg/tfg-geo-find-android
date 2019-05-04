@@ -83,4 +83,5 @@ public class PlayTourViewModel
 	public Tour getTour() {
 		return play.getTour();
 	}
+
 }
