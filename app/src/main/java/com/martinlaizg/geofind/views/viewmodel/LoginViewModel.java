@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.martinlaizg.geofind.data.Crypto;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.data.repository.UserRepository;
@@ -54,14 +55,14 @@ public class LoginViewModel
 
 	public void setLogin(String email, String password) {
 		user.setEmail(email);
-		user.setPassword(password);
+		user.setPassword(Crypto.hash(password));
 	}
 
 	public void setRegistry(String name, String username, String email, String password) {
 		user.setName(name);
 		user.setUsername(username);
 		user.setEmail(email);
-		user.setPassword(password);
+		user.setPassword(Crypto.hash(password));
 	}
 
 	public String getEmail() {

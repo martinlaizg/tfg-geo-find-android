@@ -52,8 +52,8 @@ public class PlayMapFragment
 	private GoogleMap googleMap;
 
 	@Override
-	public View onCreateView(
-			@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_play_tour, container, false);
 		ButterKnife.bind(this, view);
 		map_view.onCreate(savedInstanceState);
@@ -75,9 +75,13 @@ public class PlayMapFragment
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
 		this.googleMap = googleMap;
-		if(requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-				requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-			requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION);
+		if(requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) !=
+				PackageManager.PERMISSION_GRANTED &&
+				requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) !=
+						PackageManager.PERMISSION_GRANTED) {
+			requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+					                   Manifest.permission.ACCESS_FINE_LOCATION},
+			                   PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION);
 			return;
 		}
 		this.googleMap.setMyLocationEnabled(true);
@@ -93,17 +97,24 @@ public class PlayMapFragment
 
 	protected void updateView() {
 
-		if(place != null && googleMap != null && usrLocation != null) {
-			// Set distance
-			place_distance.setText(getResources().getString(R.string.place_distance, distance.intValue()));
+		if(googleMap != null && usrLocation != null) {
 
-			// Move map camera
+			CameraUpdate cu = null;
 			LatLngBounds.Builder builder = new LatLngBounds.Builder();
 			builder.include(new LatLng(usrLocation.getLatitude(), usrLocation.getLongitude()));
-			builder.include(place.getPosition());
-			CameraUpdate cu;
+			if(place != null) {
+				// Set distance
+				place_distance.setText(
+						getResources().getString(R.string.place_distance, distance.intValue()));
+
+				// Add place to camera update
+				builder.include(place.getPosition());
+
+				// Add place marker
+				googleMap.addMarker(new MarkerOptions().position(place.getPosition()));
+			}
 			LatLngBounds cameraPosition = builder.build();
-			if(distance < DISTANCE_TO_FIX_ZOOM) {
+			if(place == null || distance < DISTANCE_TO_FIX_ZOOM) {
 				cu = CameraUpdateFactory.newLatLngZoom(cameraPosition.getCenter(), MAX_ZOOM);
 			} else {
 				cu = CameraUpdateFactory.newLatLngBounds(cameraPosition, MAP_PADDING);
@@ -112,8 +123,6 @@ public class PlayMapFragment
 			googleMap.animateCamera(cu);
 			Log.d(TAG, "updateView: zoom=" + googleMap.getCameraPosition().zoom);
 
-			// Add place marker
-			googleMap.addMarker(new MarkerOptions().position(place.getPosition()));
 		}
 	}
 
@@ -123,7 +132,8 @@ public class PlayMapFragment
 		place_description.setText(place.getDescription());
 		int numCompletedPlaces = viewModel.getPlay().getPlaces().size() + 1;
 		int numPlaces = viewModel.getPlay().getTour().getPlaces().size();
-		place_complete.setText(getResources().getString(R.string.tour_completenes, numCompletedPlaces, numPlaces));
+		place_complete.setText(
+				getResources().getString(R.string.tour_completenes, numCompletedPlaces, numPlaces));
 
 	}
 }

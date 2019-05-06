@@ -12,9 +12,9 @@ import com.martinlaizg.geofind.utils.DateUtils;
 import java.sql.Date;
 import java.util.Calendar;
 
-@Entity(tableName = "places",
-        foreignKeys = @ForeignKey(entity = Tour.class, childColumns = "tour_id",
-                                  parentColumns = "id"), indices = @Index("tour_id"))
+@Entity(tableName = "places", foreignKeys = @ForeignKey(entity = Tour.class, parentColumns = "id",
+                                                        childColumns = "tour_id"),
+        indices = @Index("tour_id"))
 public class Place {
 
 	@PrimaryKey

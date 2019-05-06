@@ -49,8 +49,8 @@ public class TourRepository {
 			ts = tourService.getAllTours();
 			if(ts != null) {
 				for(Tour t : ts) {
-					tourDAO.insert(t);
 					userRepo.insert(t.getCreator());
+					tourDAO.insert(t);
 					for(Place p : t.getPlaces()) {
 						placeRepo.insert(p);
 					}
