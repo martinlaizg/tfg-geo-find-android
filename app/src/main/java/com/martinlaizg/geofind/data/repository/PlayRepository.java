@@ -44,7 +44,7 @@ public class PlayRepository {
 			p.setUser_id(p.getUser().getId());
 			p.setTour_id(p.getTour().getId());
 			tourRepo.insert(p.getTour());
-			userRepo.insert(p.getUser());
+			// TODO userRepo.insert(p.getUser());
 			playDAO.insert(p);
 			placeRepo.insert(p.getPlaces());
 		}

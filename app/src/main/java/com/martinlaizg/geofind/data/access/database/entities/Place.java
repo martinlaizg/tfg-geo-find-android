@@ -29,15 +29,18 @@ public class Place {
 	private Date updated_at;
 	private Date updated;
 
-	public Place(Integer id, String name, Double lat, Double lon, Integer tour_id, Date created_at,
-			Date updated_at) {
+	public Place(Integer id, String name, Double lat, Double lon, Integer tour_id,
+			String description, Integer order, Date created_at, Date updated_at, Date updated) {
 		this.id = id;
 		this.name = name;
 		this.lat = lat;
 		this.lon = lon;
 		this.tour_id = tour_id;
+		this.description = description;
+		this.order = order;
 		this.created_at = created_at;
 		this.updated_at = updated_at;
+		this.updated = updated;
 	}
 
 	@Ignore

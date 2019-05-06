@@ -115,6 +115,12 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/toPlayCompass"
+            app:destination="@id/navPlayCompass" />
+        <action
+            android:id="@+id/toPlayTherm"
+            app:destination="@id/navPlayTherm" />
     </fragment>
     <fragment
         android:id="@+id/navPlace"
@@ -187,7 +193,7 @@
         android:id="@+id/navPlayTour"
         android:name="com.martinlaizg.geofind.views.fragment.play.PlayMapFragment"
         android:label="@string/play_tour"
-        tools:layout="@layout/fragment_play_tour">
+        tools:layout="@layout/fragment_play_map">
         <action
             android:id="@+id/reload_play_map"
             app:destination="@id/navPlayTour"
@@ -221,7 +227,17 @@
         tools:layout="@layout/fragment_complete_tour" />
     <fragment
         android:id="@+id/navCompletePlace"
-        android:name="com.martinlaizg.geofind.CompletePlace"
+        android:name="com.martinlaizg.geofind.views.fragment.play.CompletePlace"
         android:label="@string/place_completed"
         tools:layout="@layout/fragment_complete_place" />
+    <fragment
+        android:id="@+id/navPlayCompass"
+        android:name="com.martinlaizg.geofind.views.fragment.play.PlayCompassFragment"
+        android:label="@string/play_compass"
+        tools:layout="@layout/fragment_play_compass" />
+    <fragment
+        android:id="@+id/navPlayTherm"
+        android:name="com.martinlaizg.geofind.views.fragment.play.PlayThermFragment"
+        android:label="@string/play_therm"
+        tools:layout="@layout/fragment_play_therm" />
 </navigation>

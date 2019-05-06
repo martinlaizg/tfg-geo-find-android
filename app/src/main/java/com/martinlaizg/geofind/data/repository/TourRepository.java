@@ -9,7 +9,6 @@ import com.martinlaizg.geofind.data.access.database.dao.TourDAO;
 import com.martinlaizg.geofind.data.access.database.dao.relations.TourPlacesDAO;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
-import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.data.access.database.entities.relations.TourCreatorPlaces;
 
 import java.util.ArrayList;
@@ -35,15 +34,15 @@ public class TourRepository {
 	}
 
 	public List<Tour> getAllTours() throws APIException {
-		List<TourCreatorPlaces> mls = tourPlacesDAO.getTourCreatorPlaces();
+		//		List<TourCreatorPlaces> mls = tourPlacesDAO.getTourCreatorPlaces();
 		List<Tour> ts = new ArrayList<>();
-		for(TourCreatorPlaces ml : mls) {
-			Tour t = ml.getTour();
-			User u = new User();
-			u.setUsername(ml.getUsername());
-			t.setCreator(u);
-			ts.add(t);
-		}
+		//		for(TourCreatorPlaces ml : mls) {
+		//			Tour t = ml.getTour();
+		//			User u = new User();
+		//			u.setUsername(ml.getUsername());
+		//			t.setCreator(u);
+		//			ts.add(t);
+		//		}
 
 		if(ts.isEmpty()) {
 			ts = tourService.getAllTours();
@@ -57,6 +56,7 @@ public class TourRepository {
 				}
 			}
 		}
+		//		}
 		return ts;
 	}
 

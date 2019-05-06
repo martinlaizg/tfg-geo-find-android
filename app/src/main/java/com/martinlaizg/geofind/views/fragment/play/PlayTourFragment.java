@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,8 @@ import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.views.viewmodel.PlayTourViewModel;
 
+import butterknife.BindView;
+
 abstract class PlayTourFragment
 		extends Fragment
 		implements LocationListener {
@@ -33,8 +36,17 @@ abstract class PlayTourFragment
 	static final int PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION = 1;
 
 	private static final float DISTANCE_TO_COMPLETE = 10;
-	private static final long LOC_TIME_REQ = 500;
-	private static final float LOC_DIST_REQ = 5;
+	private static final long LOC_TIME_REQ = 200;
+	private static final float LOC_DIST_REQ = 2;
+
+	@BindView(R.id.place_name)
+	TextView place_name;
+	@BindView(R.id.place_description)
+	TextView place_description;
+	@BindView(R.id.place_complete)
+	TextView place_complete;
+	@BindView(R.id.place_distance)
+	TextView place_distance;
 
 	Place place;
 	PlayTourViewModel viewModel;
@@ -45,11 +57,13 @@ abstract class PlayTourFragment
 	private LocationManager locationManager;
 
 	@Override
-	public void onRequestPermissionsResult(
-			int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+			@NonNull int[] grantResults) {
 		if(requestCode == PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION && permissions.length >= 2) {
-			if(permissions[0].equals(Manifest.permission.ACCESS_COARSE_LOCATION) && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-					permissions[1].equals(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+			if(permissions[0].equals(Manifest.permission.ACCESS_COARSE_LOCATION) &&
+					grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+					permissions[1].equals(Manifest.permission.ACCESS_FINE_LOCATION) &&
+					grantResults[1] == PackageManager.PERMISSION_GRANTED) {
 				Log.d(TAG(), "onRequestPermissionsResult: success");
 			}
 			Log.d(TAG(), "onRequestPermissionsResult: deny");
@@ -66,18 +80,16 @@ abstract class PlayTourFragment
 		if(b != null) {
 			tour_id = b.getInt(TOUR_ID);
 		}
-		User u = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(requireContext()));
+		User u = Preferences
+				.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(requireContext()));
 		viewModel.loadPlay(u.getId(), tour_id).observe(requireActivity(), place -> {
 			if(place == null) {
 				Log.i(TAG(), "onViewCreated: tour completed");
-				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).navigate(R.id.toCompleteTour);
+				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+						.navigate(R.id.toCompleteTour);
 				return;
 			}
-			this.place = place;
-			placeLocation = new Location("");
-			placeLocation.setLatitude(place.getLat());
-			placeLocation.setLongitude(place.getLon());
-			setUpView();
+			setPlace(place);
 		});
 	}
 
@@ -85,15 +97,22 @@ abstract class PlayTourFragment
 	public void onResume() {
 		super.onResume();
 		Log.i(TAG(), "onResume: check location permissions");
-		locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
-		if(requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-				requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-			requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION);
+		locationManager = (LocationManager) requireActivity()
+				.getSystemService(Context.LOCATION_SERVICE);
+		if(requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) !=
+				PackageManager.PERMISSION_GRANTED &&
+				requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) !=
+						PackageManager.PERMISSION_GRANTED) {
+			requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+					                   Manifest.permission.ACCESS_FINE_LOCATION},
+			                   PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION);
 			return;
 		}
 		usrLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		Log.i(TAG(), "onResume: start request location updates");
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOC_TIME_REQ, LOC_DIST_REQ, this);
+		locationManager
+				.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOC_TIME_REQ, LOC_DIST_REQ,
+				                        this);
 		updateView();
 	}
 
@@ -106,30 +125,44 @@ abstract class PlayTourFragment
 
 	abstract void updateView();
 
-	abstract void setUpView();
+	private void setPlace(Place nextPlace) {
+		place = nextPlace;
+		placeLocation = new Location("");
+		placeLocation.setLatitude(place.getLat());
+		placeLocation.setLongitude(place.getLon());
+		place_name.setText(place.getName());
+		place_description.setText(place.getDescription());
+		int numCompletedPlaces = viewModel.getPlay().getPlaces().size() + 1;
+		int numPlaces = viewModel.getPlay().getTour().getPlaces().size();
+		place_complete.setText(
+				getResources().getString(R.string.tour_completenes, numCompletedPlaces, numPlaces));
+	}
 
 	@Override
 	public void onLocationChanged(@NonNull Location location) {
-		Log.i(TAG(), "onLocationChanged: ");
+		Log.d(TAG(), "onLocationChanged: ");
 		usrLocation = location;
 
 		// Set distance
-		distance = usrLocation.distanceTo(placeLocation);
-		Log.d(TAG(), "updateView: distance=" + distance + "m");
-		if(distance < DISTANCE_TO_COMPLETE) {
-			Log.i(TAG(), "updateView: user arrive to the place");
-			viewModel.completePlace(place.getId()).observe(this, done -> {
-				if(!done) {
-					Toast.makeText(requireContext(), viewModel.getError().getMessage(), Toast.LENGTH_SHORT).show();
-					return;
-				}
-				Log.d(TAG(), "updateView: Place done");
-				Bundle b = new Bundle();
-				b.putInt(TOUR_ID, viewModel.getTour().getId());
-				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).navigate(R.id.reload_play_map, b);
-			});
+		if(placeLocation != null) {
+			distance = usrLocation.distanceTo(placeLocation);
+			place_distance.setText(
+					getResources().getString(R.string.place_distance, distance.intValue()));
+			Log.d(TAG(), "updateView: distance=" + distance + "m");
+			if(distance < DISTANCE_TO_COMPLETE) {
+				Log.d(TAG(), "updateView: user arrive to the place");
+				viewModel.completePlace(place.getId()).observe(this, done -> {
+					if(!done) {
+						Toast.makeText(requireContext(), viewModel.getError().getMessage(),
+						               Toast.LENGTH_SHORT).show();
+						return;
+					}
+					Log.d(TAG(), "updateView: Place done");
+					setPlace(viewModel.getNextPlace());
+				});
+			}
+			updateView();
 		}
-		updateView();
 	}
 
 	@Override

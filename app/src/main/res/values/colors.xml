@@ -8,4 +8,6 @@
     <color name="colorSecondaryLight">#FFBA44</color>
     <color name="background">#FAFAFA</color>
     <color name="light_black">#222222</color>
+    <color name="green">#43A047</color>
+    <color name="red">#E53935</color>
 </resources>

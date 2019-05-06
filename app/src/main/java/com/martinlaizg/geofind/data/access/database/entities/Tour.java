@@ -40,7 +40,7 @@ public class Tour {
 	private User creator;
 
 	public Tour(Integer id, String name, String description, PlayLevel min_level, Date created_at,
-			Date updated_at, Integer creator_id) {
+			Date updated_at, Integer creator_id, Date updated) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -48,6 +48,7 @@ public class Tour {
 		this.created_at = created_at;
 		this.updated_at = updated_at;
 		this.creator_id = creator_id;
+		this.updated = updated;
 	}
 
 	@Ignore

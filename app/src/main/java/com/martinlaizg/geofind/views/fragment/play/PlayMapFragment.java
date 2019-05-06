@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,14 +35,6 @@ public class PlayMapFragment
 	private static final float DISTANCE_TO_FIX_ZOOM = 100;
 	private static final int MAP_PADDING = 200;
 
-	@BindView(R.id.place_name)
-	TextView place_name;
-	@BindView(R.id.place_description)
-	TextView place_description;
-	@BindView(R.id.place_complete)
-	TextView place_complete;
-	@BindView(R.id.place_distance)
-	TextView place_distance;
 	@BindView(R.id.map_type_button)
 	MaterialButton map_type_button;
 	@BindView(R.id.map_view)
@@ -54,7 +45,7 @@ public class PlayMapFragment
 	@Override
 	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_play_tour, container, false);
+		View view = inflater.inflate(R.layout.fragment_play_map, container, false);
 		ButterKnife.bind(this, view);
 		map_view.onCreate(savedInstanceState);
 		map_view.onResume();
@@ -132,8 +123,7 @@ public class PlayMapFragment
 		place_description.setText(place.getDescription());
 		int numCompletedPlaces = viewModel.getPlay().getPlaces().size() + 1;
 		int numPlaces = viewModel.getPlay().getTour().getPlaces().size();
-		place_complete.setText(
-				getResources().getString(R.string.tour_completenes, numCompletedPlaces, numPlaces));
+		place_complete.setText(getResources().getString(R.string.tour_completenes, numCompletedPlaces, numPlaces));
 
 	}
 }

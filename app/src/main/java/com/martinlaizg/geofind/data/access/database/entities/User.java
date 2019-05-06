@@ -21,9 +21,10 @@ public class User {
 	@PrimaryKey
 	private final Integer id;
 	private String email;
+	@Ignore
+	private String password;
 	private String username;
 	private String name;
-	private String password;
 	private UserType user_type;
 	private Date created_at;
 	private Date updated_at;
@@ -32,13 +33,12 @@ public class User {
 	@Ignore
 	private List<Place> createdPlaces;
 
-	public User(Integer id, String email, String username, String name, String password,
-			UserType user_type, Date created_at, Date updated_at) {
+	public User(Integer id, String email, String username, String name, UserType user_type,
+			Date created_at, Date updated_at) {
 		this.id = id;
 		this.email = email;
 		this.username = username;
 		this.name = name;
-		this.password = password;
 		this.user_type = user_type;
 		this.created_at = created_at;
 		this.updated_at = updated_at;

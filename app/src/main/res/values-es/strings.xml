@@ -72,4 +72,10 @@
     <string name="satellite">Satélite</string>
     <string name="map_type">Tipo de mapa</string>
     <string name="tour_is_completed">El tour se ha completado</string>
+    <string name="navigation_arrow_description">Flecha de navegación</string>
+    <string name="place_completed">Sitio completado</string>
+    <string name="play_compass">Jugar compass</string>
+    <string name="play_therm">Jugar termometro</string>
+    <string name="select_play_difficulty">Seleccionad dificultad</string>
+    <string name="tour_completed">Tour completado</string>
 </resources>

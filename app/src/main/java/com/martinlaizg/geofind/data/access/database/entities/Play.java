@@ -42,12 +42,13 @@ public class Play {
 	private List<Place> places;
 
 	public Play(@NonNull Integer id, Integer tour_id, Integer user_id, Date created_at,
-			Date updated_at) {
+			Date updated_at, Date updated) {
 		this.id = id;
 		this.tour_id = tour_id;
 		this.user_id = user_id;
 		this.created_at = created_at;
 		this.updated_at = updated_at;
+		this.updated = updated;
 	}
 
 	@Ignore

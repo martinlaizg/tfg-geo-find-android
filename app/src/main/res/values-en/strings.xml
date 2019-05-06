@@ -74,4 +74,8 @@
     <string name="tour_is_completed">The tour has been completed</string>
     <string name="place_completed">Place completed</string>
     <string name="tour_completed">Tour completed</string>
+    <string name="navigation_arrow_description">Navigation arrow</string>
+    <string name="play_compass">Play compass</string>
+    <string name="select_play_difficulty">Select play difficulty</string>
+    <string name="play_therm">Play therm</string>
 </resources>
