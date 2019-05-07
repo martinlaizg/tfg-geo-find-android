@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -19,8 +21,6 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.button.MaterialButton;
 import com.martinlaizg.geofind.R;
-
-import org.jetbrains.annotations.NotNull;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,7 +43,7 @@ public class PlayMapFragment
 	private GoogleMap googleMap;
 
 	@Override
-	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_play_map, container, false);
 		ButterKnife.bind(this, view);
@@ -94,10 +94,6 @@ public class PlayMapFragment
 			LatLngBounds.Builder builder = new LatLngBounds.Builder();
 			builder.include(new LatLng(usrLocation.getLatitude(), usrLocation.getLongitude()));
 			if(place != null) {
-				// Set distance
-				place_distance.setText(
-						getResources().getString(R.string.place_distance, distance.intValue()));
-
 				// Add place to camera update
 				builder.include(place.getPosition());
 
@@ -115,15 +111,5 @@ public class PlayMapFragment
 			Log.d(TAG, "updateView: zoom=" + googleMap.getCameraPosition().zoom);
 
 		}
-	}
-
-	@Override
-	void setUpView() {
-		place_name.setText(place.getName());
-		place_description.setText(place.getDescription());
-		int numCompletedPlaces = viewModel.getPlay().getPlaces().size() + 1;
-		int numPlaces = viewModel.getPlay().getTour().getPlaces().size();
-		place_complete.setText(getResources().getString(R.string.tour_completenes, numCompletedPlaces, numPlaces));
-
 	}
 }

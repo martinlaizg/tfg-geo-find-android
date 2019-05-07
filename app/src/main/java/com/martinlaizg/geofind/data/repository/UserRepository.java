@@ -8,6 +8,8 @@ import com.martinlaizg.geofind.data.access.database.AppDatabase;
 import com.martinlaizg.geofind.data.access.database.dao.UserDAO;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 
+import java.util.List;
+
 public class UserRepository {
 
 	private final UserDAO userDAO;
@@ -36,7 +38,10 @@ public class UserRepository {
 	}
 
 	public void insert(User user) {
-		userDAO.insert(user);
+		if(user != null) {
+			List<User> users = userDAO.getAll();
+			userDAO.insert(user);
+		}
 	}
 
 	public User getUser(int user_id) {

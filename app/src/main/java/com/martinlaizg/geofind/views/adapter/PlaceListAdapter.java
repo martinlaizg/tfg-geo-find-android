@@ -24,12 +24,15 @@ import butterknife.ButterKnife;
 public class PlaceListAdapter
 		extends RecyclerView.Adapter<PlaceListAdapter.PlaceViewHolder> {
 
+	private final int disabled_color;
 	private List<Place> places;
+	private boolean completed;
 
 	@NonNull
 	@Override
 	public PlaceViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-		View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_place_item, viewGroup, false);
+		View view = LayoutInflater.from(viewGroup.getContext())
+				.inflate(R.layout.fragment_place_item, viewGroup, false);
 		return new PlaceViewHolder(view);
 	}
 
@@ -40,7 +43,12 @@ public class PlaceListAdapter
 		holder.place_description.setText(l.getDescription());
 		Bundle b = new Bundle();
 		b.putInt(PlaceFragment.PLACE_ID, l.getId());
-		holder.place_card.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toPlace, b));
+		holder.place_card
+				.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toPlace, b));
+		if(completed) {
+			holder.place_name.setTextColor(disabled_color);
+			holder.place_description.setTextColor(disabled_color);
+		}
 	}
 
 	@Override
@@ -48,8 +56,10 @@ public class PlaceListAdapter
 		return places.size();
 	}
 
-	public PlaceListAdapter() {
+	public PlaceListAdapter(boolean completed, int disabled_color) {
 		places = new ArrayList<>();
+		this.completed = completed;
+		this.disabled_color = disabled_color;
 	}
 
 	public void setPlaces(List<Place> places) {

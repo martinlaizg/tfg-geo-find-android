@@ -22,8 +22,6 @@ import com.martinlaizg.geofind.views.adapter.CreatorPlacesAdapter;
 import com.martinlaizg.geofind.views.fragment.single.TourFragment;
 import com.martinlaizg.geofind.views.viewmodel.CreatorViewModel;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -54,7 +52,8 @@ public class CreatorFragment
 	private CreatorViewModel viewModel;
 
 	@Override
-	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_creator, container, false);
 		ButterKnife.bind(this, view);
 		return view;
@@ -89,9 +88,12 @@ public class CreatorFragment
 		add_place_button.setOnClickListener(v -> {
 			Bundle p = new Bundle();
 			p.putInt(CreatePlaceFragment.PLACE_POSITION, viewModel.getPlaces().size());
-			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).navigate(R.id.toCreatePlace, p);
+			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+					.navigate(R.id.toCreatePlace, p);
 		});
-		edit_button.setOnClickListener(v -> Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).navigate(R.id.toCreateTour));
+		edit_button.setOnClickListener(
+				v -> Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+						.navigate(R.id.toCreateTour));
 		create_tour_button.setOnClickListener(this);
 	}
 
@@ -102,14 +104,17 @@ public class CreatorFragment
 			create_tour_button.setEnabled(true);
 			if(tour == null) {
 				APIException err = viewModel.getError();
-				Toast.makeText(requireActivity(), err.getType().getMessage(), Toast.LENGTH_LONG).show();
-				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack(R.id.navTourList, false);
+				Toast.makeText(requireActivity(), err.getType().getMessage(), Toast.LENGTH_LONG)
+						.show();
+				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+						.popBackStack(R.id.navTourList, false);
 				return;
 			}
 			Toast.makeText(requireActivity(), R.string.tour_created, Toast.LENGTH_SHORT).show();
 			Bundle b = new Bundle();
 			b.putInt(TourFragment.TOUR_ID, tour.getId());
-			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).navigate(R.id.toNewTour, b);
+			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+					.navigate(R.id.toNewTour, b);
 		});
 	}
 }

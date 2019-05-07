@@ -23,7 +23,7 @@ import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 
 @Database(entities = {User.class, Tour.class, Place.class, Play.class, PlacePlay.class},
-          version = 1, exportSchema = false)
+          version = 5, exportSchema = false)
 @TypeConverters(
 		{DateTypeConverter.class, PlayLevelTypeConverter.class, UserTypeTypeConverter.class})
 public abstract class AppDatabase
@@ -34,7 +34,7 @@ public abstract class AppDatabase
 	public static synchronized AppDatabase getInstance(Context context) {
 		if(instance == null) {
 			instance = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class,
-			                                "geo_find_database").
+			                                "geo_find_database.db").
 					fallbackToDestructiveMigration().
 					build();
 		}

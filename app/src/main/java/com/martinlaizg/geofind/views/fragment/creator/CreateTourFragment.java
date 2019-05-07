@@ -23,8 +23,6 @@ import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.data.enums.PlayLevel;
 import com.martinlaizg.geofind.views.viewmodel.CreatorViewModel;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -49,7 +47,8 @@ public class CreateTourFragment
 	private CreatorViewModel viewModel;
 
 	@Override
-	public View onCreateView(@NotNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+	public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container,
+			final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.fragment_create_tour, container, false);
 		ButterKnife.bind(this, view);
 		return view;
@@ -65,7 +64,8 @@ public class CreateTourFragment
 				Objects.requireNonNull(tour_name_layout.getEditText()).setText(m.getName());
 			}
 			if(!m.getDescription().isEmpty()) {
-				Objects.requireNonNull(tour_description_layout.getEditText()).setText(m.getDescription());
+				Objects.requireNonNull(tour_description_layout.getEditText())
+						.setText(m.getDescription());
 			}
 			if(m.getMin_level() != null) {
 				difficulty_spinner.setSelection(m.getMin_level().ordinal());
@@ -78,21 +78,25 @@ public class CreateTourFragment
 	public void onClick(View v) {
 		try {
 			tour_name_layout.setError("");
-			if(Objects.requireNonNull(tour_name_layout.getEditText()).getText().toString().trim().isEmpty()) {
+			if(Objects.requireNonNull(tour_name_layout.getEditText()).getText().toString().trim()
+					.isEmpty()) {
 				tour_name_layout.setError(getString(R.string.required_name));
 				return;
 			}
 			tour_name_layout.setError("");
-			if(tour_name_layout.getEditText().getText().toString().trim().length() > getResources().getInteger(R.integer.max_name_length)) {
+			if(tour_name_layout.getEditText().getText().toString().trim().length() >
+					getResources().getInteger(R.integer.max_name_length)) {
 				tour_name_layout.setError(getString(R.string.text_too_long));
 				return;
 			}
 			tour_description_layout.setError("");
-			if(Objects.requireNonNull(tour_description_layout.getEditText()).getText().toString().trim().isEmpty()) {
+			if(Objects.requireNonNull(tour_description_layout.getEditText()).getText().toString()
+					.trim().isEmpty()) {
 				tour_description_layout.setError(getString(R.string.required_description));
 				return;
 			}
-			if(tour_description_layout.getEditText().getText().toString().trim().length() > getResources().getInteger(R.integer.max_description_length)) {
+			if(tour_description_layout.getEditText().getText().toString().trim().length() >
+					getResources().getInteger(R.integer.max_description_length)) {
 				tour_description_layout.setError(getString(R.string.text_too_long));
 				return;
 			}
@@ -105,7 +109,8 @@ public class CreateTourFragment
 		String description = tour_description_layout.getEditText().getText().toString().trim();
 		PlayLevel pl = PlayLevel.getPlayLevel(difficulty_spinner.getSelectedItemPosition());
 
-		User user = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(requireContext()));
+		User user = Preferences
+				.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(requireContext()));
 		viewModel.setCreatedTour(name, description, user.getId(), pl);
 		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
 

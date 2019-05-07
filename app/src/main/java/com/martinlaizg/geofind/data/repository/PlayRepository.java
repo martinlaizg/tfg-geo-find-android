@@ -76,4 +76,8 @@ public class PlayRepository {
 		placePlayDAO.insert(pp);
 		return p;
 	}
+
+	public void getPlayOnStart(int userId) {
+		// TODO
+	}
 }

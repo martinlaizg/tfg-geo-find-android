@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
@@ -15,13 +16,12 @@ import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.views.activity.MainActivity;
 
-import org.jetbrains.annotations.NotNull;
-
 public class MainFragment
 		extends Fragment {
 
 	@Override
-	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		if(!isLogged()) {
 			return null;
 		}
@@ -39,7 +39,8 @@ public class MainFragment
 		}
 		// If user is not logged, go to LoginFragment
 		mainActivity.disableToolbarAndDrawer(false);
-		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).navigate(R.id.toLogin);
+		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+				.navigate(R.id.toLogin);
 		return false;
 	}
 

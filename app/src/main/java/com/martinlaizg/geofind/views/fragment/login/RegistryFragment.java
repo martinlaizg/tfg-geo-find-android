@@ -19,8 +19,6 @@ import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.views.viewmodel.LoginViewModel;
 
-import org.jetbrains.annotations.NotNull;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -46,7 +44,8 @@ public class RegistryFragment
 	private LoginViewModel viewModel;
 
 	@Override
-	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_registry, container, false);
 		ButterKnife.bind(this, view);
 		return view;
@@ -114,7 +113,8 @@ public class RegistryFragment
 				return;
 			}
 			Toast.makeText(requireActivity(), "Registrado correctamente", Toast.LENGTH_LONG).show();
-			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
+			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+					.popBackStack();
 
 		});
 		// TODO: add loading image

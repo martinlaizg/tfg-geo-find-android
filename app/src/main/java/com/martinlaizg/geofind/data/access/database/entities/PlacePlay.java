@@ -7,8 +7,6 @@ import androidx.room.Index;
 
 import com.martinlaizg.geofind.utils.DateUtils;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.sql.Date;
 import java.util.Calendar;
 
@@ -31,28 +29,28 @@ public class PlacePlay {
 	private Date updated_at;
 	private Date updated;
 
-	public PlacePlay(@NotNull Integer place_id, @NotNull Integer play_id) {
+	public PlacePlay(@NonNull Integer place_id, @NonNull Integer play_id) {
 		this.play_id = play_id;
 		this.place_id = place_id;
 		this.created_at = new Date(Calendar.getInstance().getTime().getTime());
 		this.updated_at = new Date(Calendar.getInstance().getTime().getTime());
 	}
 
-	@NotNull
+	@NonNull
 	public Integer getPlay_id() {
 		return play_id;
 	}
 
-	public void setPlay_id(@NotNull Integer play_id) {
+	public void setPlay_id(@NonNull Integer play_id) {
 		this.play_id = play_id;
 	}
 
-	@NotNull
+	@NonNull
 	public Integer getPlace_id() {
 		return place_id;
 	}
 
-	public void setPlace_id(@NotNull Integer place_id) {
+	public void setPlace_id(@NonNull Integer place_id) {
 		this.place_id = place_id;
 	}
 

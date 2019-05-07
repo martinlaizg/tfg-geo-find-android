@@ -30,8 +30,6 @@ import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.views.viewmodel.CreatorViewModel;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -68,11 +66,13 @@ public class CreatePlaceFragment
 	public void onClick(View v) {
 		alert_no_place_text.setVisibility(View.GONE);
 		try {
-			if(Objects.requireNonNull(new_place_name.getEditText()).getText().toString().trim().isEmpty()) {
+			if(Objects.requireNonNull(new_place_name.getEditText()).getText().toString().trim()
+					.isEmpty()) {
 				new_place_name.setError(getString(R.string.required_name));
 				return;
 			}
-			if(new_place_name.getEditText().getText().toString().length() > getResources().getInteger(R.integer.max_name_length)) {
+			if(new_place_name.getEditText().getText().toString().length() >
+					getResources().getInteger(R.integer.max_name_length)) {
 				new_place_name.setError(getString(R.string.text_too_long));
 				return;
 			}
@@ -81,11 +81,13 @@ public class CreatePlaceFragment
 				return;
 			}
 			new_place_name.setError("");
-			if(Objects.requireNonNull(new_place_description.getEditText()).getText().toString().trim().isEmpty()) {
+			if(Objects.requireNonNull(new_place_description.getEditText()).getText().toString()
+					.trim().isEmpty()) {
 				new_place_description.setError(getString(R.string.required_description));
 				return;
 			}
-			if(new_place_description.getEditText().getText().toString().length() > getResources().getInteger(R.integer.max_description_length)) {
+			if(new_place_description.getEditText().getText().toString().length() >
+					getResources().getInteger(R.integer.max_description_length)) {
 				new_place_description.setError(getString(R.string.text_too_long));
 				return;
 			}
@@ -109,10 +111,15 @@ public class CreatePlaceFragment
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
 		gMap = googleMap;
-		if(requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-				requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-			requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION);
-			Toast.makeText(requireActivity(), getString(R.string.rejected_location_access), Toast.LENGTH_SHORT).show();
+		if(requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) !=
+				PackageManager.PERMISSION_GRANTED &&
+				requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) !=
+						PackageManager.PERMISSION_GRANTED) {
+			requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
+					                   android.Manifest.permission.ACCESS_FINE_LOCATION},
+			                   PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION);
+			Toast.makeText(requireActivity(), getString(R.string.rejected_location_access),
+			               Toast.LENGTH_SHORT).show();
 			return;
 		}
 		setLocation();
@@ -131,17 +138,20 @@ public class CreatePlaceFragment
 			LatLng usrLatLng = new LatLng(usrLocation.getLatitude(), usrLocation.getLongitude());
 			gMap.clear();
 			if(marker != null) {
-				gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), CAMERA_UPDATE_ZOOM));
+				gMap.moveCamera(CameraUpdateFactory
+						                .newLatLngZoom(marker.getPosition(), CAMERA_UPDATE_ZOOM));
 				gMap.addMarker(marker);
 			} else {
-				gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(usrLatLng, CAMERA_UPDATE_ZOOM));
+				gMap.animateCamera(
+						CameraUpdateFactory.newLatLngZoom(usrLatLng, CAMERA_UPDATE_ZOOM));
 			}
 		}
 	}
 
 	@SuppressLint("MissingPermission")
 	private Location getLastKnownLocation() {
-		LocationManager locationManager = (LocationManager) requireActivity().getSystemService(LOCATION_SERVICE);
+		LocationManager locationManager = (LocationManager) requireActivity()
+				.getSystemService(LOCATION_SERVICE);
 		List<String> providers = locationManager.getProviders(true);
 		Location bestLocation = null;
 		for(String provider : providers) {
@@ -158,17 +168,21 @@ public class CreatePlaceFragment
 	}
 
 	@Override
-	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+			@NonNull int[] grantResults) {
 		if(requestCode == PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION) {
-			if(permissions[0].equals(Manifest.permission.ACCESS_COARSE_LOCATION) && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-					permissions[1].equals(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+			if(permissions[0].equals(Manifest.permission.ACCESS_COARSE_LOCATION) &&
+					grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+					permissions[1].equals(Manifest.permission.ACCESS_FINE_LOCATION) &&
+					grantResults[1] == PackageManager.PERMISSION_GRANTED) {
 				setLocation();
 			}
 		}
 	}
 
 	@Override
-	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_create_place, container, false);
 		ButterKnife.bind(this, view);
 
@@ -190,7 +204,8 @@ public class CreatePlaceFragment
 			if(position < viewModel.getPlaces().size()) {
 				Place l = viewModel.getPlaces().get(position);
 				Objects.requireNonNull(new_place_name.getEditText()).setText(l.getName());
-				Objects.requireNonNull(new_place_description.getEditText()).setText(l.getDescription());
+				Objects.requireNonNull(new_place_description.getEditText())
+						.setText(l.getDescription());
 				onMapLongClick(l.getPosition());
 			}
 		}

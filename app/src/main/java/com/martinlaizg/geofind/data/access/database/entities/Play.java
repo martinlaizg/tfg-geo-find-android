@@ -9,8 +9,6 @@ import androidx.room.PrimaryKey;
 
 import com.martinlaizg.geofind.utils.DateUtils;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
@@ -63,7 +61,7 @@ public class Play {
 		this.user_id = user_id;
 	}
 
-	@NotNull
+	@NonNull
 	public Integer getId() {
 		return id;
 	}

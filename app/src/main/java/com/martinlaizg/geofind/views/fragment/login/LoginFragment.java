@@ -20,8 +20,6 @@ import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.views.viewmodel.LoginViewModel;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -47,7 +45,8 @@ public class LoginFragment
 	private LoginViewModel viewModel;
 
 	@Override
-	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_login, container, false);
 		ButterKnife.bind(this, view);
 		return view;
@@ -58,7 +57,8 @@ public class LoginFragment
 		super.onViewCreated(view, savedInstanceState);
 		viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
 		login_button.setOnClickListener(this);
-		registry_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toRegistry));
+		registry_button
+				.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toRegistry));
 	}
 
 	@Override
@@ -83,10 +83,12 @@ public class LoginFragment
 				password_input.setError(getString(R.string.wrong_email_password));
 				return;
 			}
-			Preferences.setLoggedUser(PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(getContext())), user);
+			Preferences.setLoggedUser(PreferenceManager.getDefaultSharedPreferences(
+					Objects.requireNonNull(getContext())), user);
 			login_button.setEnabled(true);
 			loading_spinner.setVisibility(View.GONE);
-			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
+			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+					.popBackStack();
 		});
 	}
 }

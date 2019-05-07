@@ -35,4 +35,7 @@ public class PlaceRepository {
 		placeDAO.insert(place);
 	}
 
+	public void getPlaceOnStart(int userId) {
+		// TODO
+	}
 }

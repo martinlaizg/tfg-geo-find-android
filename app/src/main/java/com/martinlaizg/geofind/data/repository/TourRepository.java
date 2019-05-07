@@ -33,31 +33,41 @@ public class TourRepository {
 		userRepo = RepositoryFactory.getUserRepository(application);
 	}
 
-	public List<Tour> getAllTours() throws APIException {
-		//		List<TourCreatorPlaces> mls = tourPlacesDAO.getTourCreatorPlaces();
-		List<Tour> ts = new ArrayList<>();
-		//		for(TourCreatorPlaces ml : mls) {
-		//			Tour t = ml.getTour();
-		//			User u = new User();
-		//			u.setUsername(ml.getUsername());
-		//			t.setCreator(u);
-		//			ts.add(t);
-		//		}
+	public List<TourCreatorPlaces> getAllTours() throws APIException {
+		List<TourCreatorPlaces> mls = tourPlacesDAO.getTourCreatorPlaces();
 
-		if(ts.isEmpty()) {
-			ts = tourService.getAllTours();
-			if(ts != null) {
-				for(Tour t : ts) {
-					userRepo.insert(t.getCreator());
-					tourDAO.insert(t);
-					for(Place p : t.getPlaces()) {
-						placeRepo.insert(p);
-					}
+		if(mls != null) {
+			for(int i = 0; i < mls.size(); i++) {
+				if(mls.get(i).getTour().isOutOfDate()) {
+					mls.remove(i);
+					i--;
 				}
 			}
 		}
-		//		}
-		return ts;
+
+		if(mls == null || mls.isEmpty()) {
+			mls = new ArrayList<>();
+			List<Tour> tours = tourService.getAllTours();
+			if(tours != null) {
+				for(Tour t : tours) {
+					insert(t);
+					TourCreatorPlaces tcp = new TourCreatorPlaces();
+					tcp.setTour(t);
+					tcp.setUsername(t.getCreator().getUsername());
+					tcp.setPlaces(t.getPlaces());
+					mls.add(tcp);
+				}
+			}
+		}
+		return mls;
+	}
+
+	public void insert(Tour t) {
+		if(t != null) {
+			userRepo.insert(t.getCreator());
+			tourDAO.insert(t);
+			placeRepo.insert(t.getPlaces());
+		}
 	}
 
 	public Tour getTour(Integer id) throws APIException {
@@ -91,7 +101,7 @@ public class TourRepository {
 		return tour;
 	}
 
-	public void insert(Tour tour) {
-		tourDAO.insert(tour);
+	public void getToursOnStart(int userId) {
+		// TODO
 	}
 }

@@ -30,8 +30,6 @@ import com.martinlaizg.geofind.views.fragment.creator.CreatorFragment;
 import com.martinlaizg.geofind.views.fragment.play.PlayMapFragment;
 import com.martinlaizg.geofind.views.viewmodel.TourViewModel;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
 import butterknife.BindView;
@@ -55,6 +53,8 @@ public class TourFragment
 	MaterialButton edit_button;
 	@BindView(R.id.places_list)
 	RecyclerView places_list;
+	@BindView(R.id.other_places)
+	RecyclerView other_places;
 
 	@BindView(R.id.play_button)
 	MaterialButton play_button;
@@ -63,11 +63,14 @@ public class TourFragment
 	TextView empty_text;
 
 	private SharedPreferences sp;
-	private PlaceListAdapter adapter;
+	private PlaceListAdapter adapterCompleted;
+	private PlaceListAdapter adapterNoCompleted;
 	private AlertDialog alert;
+	private TourViewModel viewModel;
+	private User user;
 
 	@Override
-	public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_tour, container, false);
 		ButterKnife.bind(this, view);
@@ -77,10 +80,15 @@ public class TourFragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		sp = PreferenceManager.getDefaultSharedPreferences(requireActivity());
+		user = Preferences.getLoggedUser(sp);
 
-		adapter = new PlaceListAdapter();
+		adapterCompleted = new PlaceListAdapter(true, getResources().getColor(R.color.grey));
 		places_list.setLayoutManager(new LinearLayoutManager(requireActivity()));
-		places_list.setAdapter(adapter);
+		places_list.setAdapter(adapterCompleted);
+
+		adapterNoCompleted = new PlaceListAdapter(false, 0);
+		other_places.setLayoutManager(new LinearLayoutManager(requireActivity()));
+		other_places.setAdapter(adapterNoCompleted);
 
 		int tour_id = 0;
 		Bundle b = getArguments();
@@ -94,8 +102,8 @@ public class TourFragment
 			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
 					.popBackStack();
 		}
-		TourViewModel viewModel = ViewModelProviders.of(requireActivity()).get(TourViewModel.class);
-		viewModel.loadTour(tour_id).observe(requireActivity(), this::setTour);
+		viewModel = ViewModelProviders.of(requireActivity()).get(TourViewModel.class);
+		viewModel.loadTour(tour_id, user.getId()).observe(requireActivity(), this::setTour);
 
 		Bundle c = new Bundle();
 		c.putInt(PlayMapFragment.TOUR_ID, tour_id);
@@ -130,8 +138,7 @@ public class TourFragment
 			if(tour.getPlaces().isEmpty()) {
 				empty_text.setVisibility(View.VISIBLE);
 			}
-			User u = Preferences.getLoggedUser(sp);
-			if(u != null && u.getId().equals(tour.getCreator_id())) {
+			if(user != null && user.getId() == tour.getCreator_id()) {
 				Bundle b = new Bundle();
 				b.putInt(CreatorFragment.TOUR_ID, tour.getId());
 				edit_button.setOnClickListener(
@@ -141,16 +148,12 @@ public class TourFragment
 
 			// Set places
 			List<Place> places = tour.getPlaces();
-			if(places != null && !places.isEmpty()) {
-				adapter.setPlaces(places);
-				tour_num_places
-						.setText(String.format(getString(R.string.num_places), places.size()));
+			adapterCompleted.setPlaces(viewModel.getCompletedPlaces());
+			adapterNoCompleted.setPlaces(viewModel.getNoCompletedPlaces());
+			tour_num_places.setText(String.format(getString(R.string.num_places), places.size()));
 
-				play_button.setOnClickListener(v -> alert.show());
-			} else {
-				places_list.setVisibility(View.GONE);
-				play_button.setVisibility(View.GONE);
-			}
+			play_button.setOnClickListener(v -> alert.show());
+
 		}
 	}
 }

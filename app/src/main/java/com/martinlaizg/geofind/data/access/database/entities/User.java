@@ -2,6 +2,7 @@ package com.martinlaizg.geofind.data.access.database.entities;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.Gson;
@@ -9,20 +10,16 @@ import com.google.gson.GsonBuilder;
 import com.martinlaizg.geofind.data.enums.UserType;
 import com.martinlaizg.geofind.utils.DateUtils;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
 
-@Entity(tableName = "users")
+@Entity(tableName = "users", indices = {@Index({"id"})})
 public class User {
 
 	@PrimaryKey
-	private final Integer id;
+	private int id;
 	private String email;
-	@Ignore
-	private String password;
 	private String username;
 	private String name;
 	private UserType user_type;
@@ -30,6 +27,8 @@ public class User {
 	private Date updated_at;
 	private Date updated;
 
+	@Ignore
+	private String password;
 	@Ignore
 	private List<Place> createdPlaces;
 
@@ -49,8 +48,7 @@ public class User {
 		id = 0;
 	}
 
-	@NotNull
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
 

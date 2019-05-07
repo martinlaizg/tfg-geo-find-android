@@ -8,9 +8,13 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
+import com.martinlaizg.geofind.data.access.database.entities.Play;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
+import com.martinlaizg.geofind.data.repository.PlayRepository;
+import com.martinlaizg.geofind.data.repository.RepositoryFactory;
 import com.martinlaizg.geofind.data.repository.TourRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TourViewModel
@@ -20,18 +24,22 @@ public class TourViewModel
 	private APIException error;
 
 	private Tour tour;
+	private Play userPlay;
+	private PlayRepository playRepo;
 
 	public TourViewModel(@NonNull Application application) {
 		super(application);
-		tourRepo = new TourRepository(application);
+		tourRepo = RepositoryFactory.getTourRepository(application);
+		playRepo = RepositoryFactory.getPlayRepository(application);
 	}
 
-	public MutableLiveData<Tour> loadTour(Integer tour_id) {
+	public MutableLiveData<Tour> loadTour(int tour_id, int user_id) {
 		MutableLiveData<Tour> m = new MutableLiveData<>();
-		if(tour == null || !tour.getId().equals(tour_id)) {
+		if(tour == null || tour.getId() != tour_id) {
 			new Thread(() -> {
 				try {
 					tour = tourRepo.getTour(tour_id);
+					userPlay = playRepo.getPlay(user_id, tour_id);
 				} catch(APIException e) {
 					setError(e);
 					tour = null;
@@ -48,7 +56,7 @@ public class TourViewModel
 		MutableLiveData<Place> p = new MutableLiveData<>();
 		new Thread(() -> {
 			for(Place place : tour.getPlaces()) {
-				if(place.getId().equals(place_id)) {
+				if(place.getId() == place_id) {
 					p.postValue(place);
 					return;
 				}
@@ -67,5 +75,27 @@ public class TourViewModel
 
 	public List<Place> getPlaces() {
 		return tour.getPlaces();
+	}
+
+	public List<Place> getCompletedPlaces() {
+		List<Place> places = new ArrayList<>();
+		if(userPlay != null) places.addAll(userPlay.getPlaces());
+		return places;
+	}
+
+	public List<Place> getNoCompletedPlaces() {
+		List<Place> places = tour.getPlaces();
+		if(userPlay == null) {
+			return places;
+		}
+		List<Place> noCompleted = new ArrayList<>();
+		for(Place tp : places) {
+			boolean completed = false;
+			for(Place pp : userPlay.getPlaces()) {
+				if(tp.getId() == pp.getId()) completed = true;
+			}
+			if(!completed) noCompleted.add(tp);
+		}
+		return noCompleted;
 	}
 }

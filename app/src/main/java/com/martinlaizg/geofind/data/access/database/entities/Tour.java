@@ -1,5 +1,6 @@
 package com.martinlaizg.geofind.data.access.database.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
@@ -9,8 +10,6 @@ import androidx.room.PrimaryKey;
 import com.martinlaizg.geofind.data.enums.PlayLevel;
 import com.martinlaizg.geofind.utils.DateUtils;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -18,14 +17,14 @@ import java.util.List;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "tours",
-        foreignKeys = @ForeignKey(entity = User.class, childColumns = "creator_id",
-                                  parentColumns = "id", onDelete = CASCADE),
+@Entity(tableName = "tours", foreignKeys = @ForeignKey(entity = User.class, parentColumns = "id",
+                                                       childColumns = "creator_id",
+                                                       onDelete = CASCADE),
         indices = @Index("creator_id"))
 public class Tour {
 
 	@PrimaryKey
-	private final Integer id;
+	private final int id;
 	private String name;
 	private String description;
 	private PlayLevel min_level;
@@ -59,8 +58,8 @@ public class Tour {
 		places = new ArrayList<>();
 	}
 
-	@NotNull
-	public Integer getId() {
+	@NonNull
+	public int getId() {
 		return id;
 	}
 

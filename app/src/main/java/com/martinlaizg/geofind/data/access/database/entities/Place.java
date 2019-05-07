@@ -18,7 +18,7 @@ import java.util.Calendar;
 public class Place {
 
 	@PrimaryKey
-	private final Integer id;
+	private final int id;
 	private String name;
 	private Double lat;
 	private Double lon;
@@ -48,7 +48,7 @@ public class Place {
 		id = 0;
 	}
 
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
 

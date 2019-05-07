@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,8 +15,6 @@ import com.google.android.material.card.MaterialCardView;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.views.fragment.creator.CreatePlaceFragment;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,15 +27,16 @@ public class CreatorPlacesAdapter
 
 	private List<Place> places;
 
-	@NotNull
+	@NonNull
 	@Override
-	public CreatorPlacesViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
-		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_editable_place, parent, false);
+	public CreatorPlacesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		View view = LayoutInflater.from(parent.getContext())
+				.inflate(R.layout.fragment_editable_place, parent, false);
 		return new CreatorPlacesViewHolder(view);
 	}
 
 	@Override
-	public void onBindViewHolder(@NotNull final CreatorPlacesViewHolder holder, int position) {
+	public void onBindViewHolder(@NonNull final CreatorPlacesViewHolder holder, int position) {
 		holder.place_name.setText(places.get(position).getName());
 		holder.place_delete_button.setOnClickListener(v -> {
 			places.remove(position);
@@ -44,7 +44,8 @@ public class CreatorPlacesAdapter
 		});
 		Bundle b = new Bundle();
 		b.putInt(CreatePlaceFragment.PLACE_POSITION, position);
-		holder.place_card.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreatePlace, b));
+		holder.place_card.setOnClickListener(
+				Navigation.createNavigateOnClickListener(R.id.toCreatePlace, b));
 	}
 
 	@Override

@@ -22,12 +22,6 @@ public interface PlaceDAO {
 	@Update
 	void update(Place place);
 
-	@Query("SELECT * FROM places WHERE tour_id = :place_id")
-	Place getPlace(Integer place_id);
-
-	@Query("SELECT * FROM places WHERE tour_id = :tour_id ORDER BY `order`")
-	List<Place> getPlacesByTour(Integer tour_id);
-
 	@Query("DELETE FROM places WHERE tour_id = :tour_id")
 	void removeTourPlaces(Integer tour_id);
 }
