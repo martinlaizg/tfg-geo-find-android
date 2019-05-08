@@ -12,8 +12,11 @@ import com.martinlaizg.geofind.utils.DateUtils;
 import java.sql.Date;
 import java.util.Calendar;
 
+import static androidx.room.ForeignKey.CASCADE;
+
 @Entity(tableName = "places", foreignKeys = @ForeignKey(entity = Tour.class, parentColumns = "id",
-                                                        childColumns = "tour_id"),
+                                                        childColumns = "tour_id",
+                                                        onDelete = CASCADE),
         indices = @Index("tour_id"))
 public class Place {
 

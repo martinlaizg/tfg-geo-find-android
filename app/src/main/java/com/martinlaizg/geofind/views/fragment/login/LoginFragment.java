@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
 
+import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
@@ -83,6 +84,7 @@ public class LoginFragment
 				password_input.setError(getString(R.string.wrong_email_password));
 				return;
 			}
+			Credential credential = new Credential.Builder(email).setPassword(password).build();
 			Preferences.setLoggedUser(PreferenceManager.getDefaultSharedPreferences(
 					Objects.requireNonNull(getContext())), user);
 			login_button.setEnabled(true);

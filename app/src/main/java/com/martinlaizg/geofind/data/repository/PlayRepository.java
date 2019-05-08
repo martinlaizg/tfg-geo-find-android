@@ -43,10 +43,7 @@ public class PlayRepository {
 			}
 			p.setUser_id(p.getUser().getId());
 			p.setTour_id(p.getTour().getId());
-			tourRepo.insert(p.getTour());
-			// TODO userRepo.insert(p.getUser());
-			playDAO.insert(p);
-			placeRepo.insert(p.getPlaces());
+			insert(p);
 		}
 		return p;
 	}
@@ -64,6 +61,15 @@ public class PlayRepository {
 		p.setUser(userRepo.getUser(user_id));
 		p.setPlaces(getPlacesByPlay(p.getId()));
 		return p;
+	}
+
+	private void insert(Play p) {
+		if(p != null) {
+			userRepo.insert(p.getUser());
+			tourRepo.insert(p.getTour());
+			playDAO.insert(p);
+			placeRepo.insert(p.getPlaces());
+		}
 	}
 
 	private List<Place> getPlacesByPlay(Integer play_id) {

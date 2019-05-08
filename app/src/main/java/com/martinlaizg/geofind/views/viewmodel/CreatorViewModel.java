@@ -14,6 +14,7 @@ import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.enums.PlayLevel;
 import com.martinlaizg.geofind.data.repository.TourRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CreatorViewModel
@@ -135,6 +136,9 @@ public class CreatorViewModel
 	}
 
 	public List<Place> getPlaces() {
-		return tour.getPlaces();
+		List<Place> places = tour.getPlaces();
+		return places == null ?
+				new ArrayList<>() :
+				places;
 	}
 }
