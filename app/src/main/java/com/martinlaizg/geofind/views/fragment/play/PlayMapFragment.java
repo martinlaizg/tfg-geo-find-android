@@ -98,6 +98,7 @@ public class PlayMapFragment
 				builder.include(place.getPosition());
 
 				// Add place marker
+				googleMap.clear();
 				googleMap.addMarker(new MarkerOptions().position(place.getPosition()));
 			}
 			LatLngBounds cameraPosition = builder.build();

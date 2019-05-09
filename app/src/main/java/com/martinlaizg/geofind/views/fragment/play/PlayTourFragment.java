@@ -35,7 +35,7 @@ abstract class PlayTourFragment
 
 	static final int PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION = 1;
 
-	private static final float DISTANCE_TO_COMPLETE = 10;
+	private static final float DISTANCE_TO_COMPLETE = 15;
 	private static final long LOC_TIME_REQ = 200;
 	private static final float LOC_DIST_REQ = 2;
 

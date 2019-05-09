@@ -59,12 +59,7 @@ public class RegistryFragment
 		if(email != null && !email.isEmpty()) {
 			email_input.getEditText().setText(email);
 		}
-		btn_registr.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(final View v) {
-				registry();
-			}
-		});
+		btn_registr.setOnClickListener(v -> registry());
 	}
 
 	private void registry() {

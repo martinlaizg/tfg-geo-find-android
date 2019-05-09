@@ -39,8 +39,7 @@ public class TourRepository {
 		if(mls != null) {
 			for(int i = 0; i < mls.size(); i++) {
 				if(mls.get(i).getTour().isOutOfDate()) {
-					mls.remove(i);
-					i--;
+					if(!updateTour(mls.get(i).getTour())) i--;
 				}
 			}
 		}
@@ -60,6 +59,17 @@ public class TourRepository {
 			}
 		}
 		return mls;
+	}
+
+	private boolean updateTour(Tour tour) {
+		int tour_id = tour.getId();
+		try {
+			tour = tourService.update(tour);
+			return true;
+		} catch(APIException e) {
+			tourDAO.delete(tour_id);
+		}
+		return false;
 	}
 
 	public void insert(Tour t) {

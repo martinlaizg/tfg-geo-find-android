@@ -81,11 +81,11 @@ public class TourService {
 		throw apiException;
 	}
 
-	public Tour update(Tour tourEntity) throws APIException {
+	public Tour update(Tour tour) throws APIException {
 		Response<Tour> response;
 		APIException apiException;
 		try {
-			response = restClient.update(tourEntity.getId(), tourEntity).execute();
+			response = restClient.update(tour.getId(), tour).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}
