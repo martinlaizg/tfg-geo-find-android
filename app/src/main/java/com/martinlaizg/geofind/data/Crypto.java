@@ -7,8 +7,8 @@ import java.security.NoSuchAlgorithmException;
 
 public class Crypto {
 
+	private static final String TAG = Crypto.class.getSimpleName();
 	private static MessageDigest mdSHA512;
-	private static String TAG = Crypto.class.getSimpleName();
 
 	public static String hash(String toHash) {
 		String hashed = null;
@@ -19,8 +19,8 @@ public class Crypto {
 			// mdSHA512.update(salt);
 			byte[] bytes = mdSHA512.digest(toHash.getBytes());
 			StringBuilder sb = new StringBuilder();
-			for(int i = 0; i < bytes.length; i++) {
-				sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+			for(byte aByte : bytes) {
+				sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
 			}
 			hashed = sb.toString();
 		} catch(NoSuchAlgorithmException e) {

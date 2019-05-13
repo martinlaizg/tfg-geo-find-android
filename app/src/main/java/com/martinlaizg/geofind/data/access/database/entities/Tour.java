@@ -1,6 +1,5 @@
 package com.martinlaizg.geofind.data.access.database.entities;
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
@@ -58,7 +57,6 @@ public class Tour {
 		places = new ArrayList<>();
 	}
 
-	@NonNull
 	public int getId() {
 		return id;
 	}

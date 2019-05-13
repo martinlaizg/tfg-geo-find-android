@@ -39,7 +39,7 @@ public class RegistryFragment
 	@BindView(R.id.c_password_input)
 	TextInputLayout c_password_input;
 	@BindView(R.id.btn_registry)
-	MaterialButton btn_registr;
+	MaterialButton btn_registry;
 
 	private LoginViewModel viewModel;
 
@@ -59,11 +59,11 @@ public class RegistryFragment
 		if(email != null && !email.isEmpty()) {
 			email_input.getEditText().setText(email);
 		}
-		btn_registr.setOnClickListener(v -> registry());
+		btn_registry.setOnClickListener(v -> registry());
 	}
 
 	private void registry() {
-		btn_registr.setEnabled(false);
+		btn_registry.setEnabled(false);
 		try {
 			if(name_input.getEditText().getText().toString().trim().isEmpty()) {
 				name_input.setError(getString(R.string.required_name));
@@ -101,13 +101,16 @@ public class RegistryFragment
 		String password = password_input.getEditText().getText().toString().trim();
 		viewModel.setRegistry(name, username, email, password);
 		viewModel.registry().observe(this, (user) -> {
-			btn_registr.setEnabled(true);
+			btn_registry.setEnabled(true);
 			if(user == null) {
 				APIException error = viewModel.getError();
-				Toast.makeText(requireActivity(), "Algo ha ido mal", Toast.LENGTH_SHORT).show();
+				Toast.makeText(requireActivity(),
+				               getResources().getString(error.getType().getMessage()),
+				               Toast.LENGTH_SHORT).show();
 				return;
 			}
-			Toast.makeText(requireActivity(), "Registrado correctamente", Toast.LENGTH_LONG).show();
+			Toast.makeText(requireActivity(), getResources().getString(R.string.registry),
+			               Toast.LENGTH_LONG).show();
 			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
 					.popBackStack();
 

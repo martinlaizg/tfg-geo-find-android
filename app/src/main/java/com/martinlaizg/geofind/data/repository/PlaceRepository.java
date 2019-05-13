@@ -14,7 +14,7 @@ public class PlaceRepository {
 
 	private final PlaceDAO placeDAO;
 	private final PlayService playService;
-	private PlacePlayDAO placePlayDAO;
+	private final PlacePlayDAO placePlayDAO;
 
 	PlaceRepository(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
@@ -23,18 +23,29 @@ public class PlaceRepository {
 		playService = PlayService.getInstance();
 	}
 
+	/**
+	 * TODO
+	 *
+	 * @return
+	 */
 	public void insert(List<Place> places) {
 		placeDAO.insert(places);
 	}
 
-	public void removeTourPlaces(Integer tourId) {
-		placeDAO.removeTourPlaces(tourId);
-	}
-
+	/**
+	 * TODO
+	 *
+	 * @return
+	 */
 	public void insert(Place place) {
 		placeDAO.insert(place);
 	}
 
+	/**
+	 * TODO
+	 *
+	 * @return
+	 */
 	public void getPlaceOnStart(int userId) {
 		// TODO
 	}

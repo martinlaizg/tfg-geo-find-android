@@ -18,7 +18,7 @@ import java.util.List;
 public class User {
 
 	@PrimaryKey
-	private int id;
+	private final int id;
 	private String email;
 	private String username;
 	private String name;

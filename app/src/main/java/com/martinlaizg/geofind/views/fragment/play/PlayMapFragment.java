@@ -90,7 +90,7 @@ public class PlayMapFragment
 
 		if(googleMap != null && usrLocation != null) {
 
-			CameraUpdate cu = null;
+			CameraUpdate cu;
 			LatLngBounds.Builder builder = new LatLngBounds.Builder();
 			builder.include(new LatLng(usrLocation.getLatitude(), usrLocation.getLongitude()));
 			if(place != null) {

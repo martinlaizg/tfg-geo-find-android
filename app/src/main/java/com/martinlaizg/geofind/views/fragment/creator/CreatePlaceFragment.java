@@ -43,6 +43,8 @@ public class CreatePlaceFragment
 		implements View.OnClickListener, OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
 
 	public static final String PLACE_POSITION = "PLACE_POSITION";
+
+	private static final String TAG = CreatePlaceFragment.class.getSimpleName();
 	private static final int CAMERA_UPDATE_ZOOM = 15;
 	private static final int PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION = 1;
 
@@ -60,7 +62,7 @@ public class CreatePlaceFragment
 	private CreatorViewModel viewModel;
 	private MarkerOptions marker;
 	private GoogleMap gMap;
-	private int position;
+	private Place place;
 
 	@Override
 	public void onClick(View v) {
@@ -74,10 +76,6 @@ public class CreatePlaceFragment
 			if(new_place_name.getEditText().getText().toString().length() >
 					getResources().getInteger(R.integer.max_name_length)) {
 				new_place_name.setError(getString(R.string.text_too_long));
-				return;
-			}
-			if(!viewModel.checkPlaceName(new_place_name.getEditText().getText().toString())) {
-				new_place_name.setError(getString(R.string.repeated_name));
 				return;
 			}
 			new_place_name.setError("");
@@ -101,10 +99,11 @@ public class CreatePlaceFragment
 			return;
 		}
 
-		String name = new_place_name.getEditText().getText().toString().trim();
-		String description = new_place_description.getEditText().getText().toString().trim();
+		place.setName(new_place_name.getEditText().getText().toString().trim());
+		place.setDescription(new_place_description.getEditText().getText().toString().trim());
+		place.setPosition(marker.getPosition());
 
-		viewModel.setPlace(name, description, marker.getPosition(), position);
+		viewModel.setPlace(place);
 		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
 	}
 
@@ -122,11 +121,11 @@ public class CreatePlaceFragment
 			               Toast.LENGTH_SHORT).show();
 			return;
 		}
-		setLocation();
+		setPlace();
 	}
 
 	@SuppressLint("MissingPermission")
-	private void setLocation() {
+	private void setPlace() {
 		Location usrLocation = getLastKnownLocation();
 		if(gMap != null) {
 			gMap.setMyLocationEnabled(true);
@@ -175,7 +174,7 @@ public class CreatePlaceFragment
 					grantResults[0] == PackageManager.PERMISSION_GRANTED &&
 					permissions[1].equals(Manifest.permission.ACCESS_FINE_LOCATION) &&
 					grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-				setLocation();
+				setPlace();
 			}
 		}
 	}
@@ -194,24 +193,30 @@ public class CreatePlaceFragment
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
 		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel.class);
 		viewModel.setLoad(false);
 		Bundle b = getArguments();
 		if(b != null) {
-			position = b.getInt(PLACE_POSITION, viewModel.getPlaces().size());
-
-			if(position < viewModel.getPlaces().size()) {
-				Place l = viewModel.getPlaces().get(position);
-				Objects.requireNonNull(new_place_name.getEditText()).setText(l.getName());
-				Objects.requireNonNull(new_place_description.getEditText())
-						.setText(l.getDescription());
-				onMapLongClick(l.getPosition());
+			int position = b.getInt(PLACE_POSITION, viewModel.getPlaces().size());
+			place = viewModel.getPlace(position);
+			if(place != null) {
+				if(place.getName() != null) {
+					Objects.requireNonNull(new_place_name.getEditText()).setText(place.getName());
+				}
+				if(place.getDescription() != null) {
+					Objects.requireNonNull(new_place_description.getEditText())
+							.setText(place.getDescription());
+				}
+				if(place.getPosition() != null) {
+					onMapLongClick(place.getPosition());
+				}
+			} else {
+				Toast.makeText(requireContext(), getResources().getString(R.string.invalid_place),
+				               Toast.LENGTH_SHORT).show();
 			}
 		}
 		create_button.setOnClickListener(this);
 		if(marker != null) create_button.setText(R.string.update_place);
-
 	}
 
 	@Override

@@ -9,4 +9,12 @@ public class APIError {
 		this.type = type;
 		this.message = message;
 	}
+
+	public ErrorType getType() {
+		return type;
+	}
+
+	public String getMessage() {
+		return message;
+	}
 }

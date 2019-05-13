@@ -17,9 +17,11 @@ public class PlayRepository {
 
 	private final PlayDAO playDAO;
 	private final PlayService playService;
+
 	private final TourRepository tourRepo;
 	private final UserRepository userRepo;
 	private final PlaceRepository placeRepo;
+
 	private final PlacePlayDAO placePlayDAO;
 
 	PlayRepository(Application application) {
@@ -34,6 +36,11 @@ public class PlayRepository {
 		placeRepo = RepositoryFactory.getPlaceRepository(application);
 	}
 
+	/**
+	 * TODO
+	 *
+	 * @return
+	 */
 	public Play getPlay(int user_id, int tour_id) throws APIException {
 		Play p = getPlayDAO(user_id, tour_id);
 		if(p == null) {
@@ -48,6 +55,11 @@ public class PlayRepository {
 		return p;
 	}
 
+	/**
+	 * TODO
+	 *
+	 * @return
+	 */
 	private Play getPlayDAO(int user_id, int tour_id) throws APIException {
 		Play p = playDAO.getPlay(user_id, tour_id);
 		if(p == null) {
@@ -63,6 +75,11 @@ public class PlayRepository {
 		return p;
 	}
 
+	/**
+	 * TODO
+	 *
+	 * @return
+	 */
 	private void insert(Play p) {
 		if(p != null) {
 			userRepo.insert(p.getUser());
@@ -72,10 +89,20 @@ public class PlayRepository {
 		}
 	}
 
+	/**
+	 * TODO
+	 *
+	 * @return
+	 */
 	private List<Place> getPlacesByPlay(Integer play_id) {
 		return playDAO.getPlaces(play_id);
 	}
 
+	/**
+	 * TODO
+	 *
+	 * @return
+	 */
 	public Play completePlay(Integer play_id, Integer place_id) throws APIException {
 		Play p = playService.createPlacePlay(play_id, place_id);
 		PlacePlay pp = new PlacePlay(place_id, play_id);
@@ -83,6 +110,11 @@ public class PlayRepository {
 		return p;
 	}
 
+	/**
+	 * TODO
+	 *
+	 * @return
+	 */
 	public void getPlayOnStart(int userId) {
 		// TODO
 	}

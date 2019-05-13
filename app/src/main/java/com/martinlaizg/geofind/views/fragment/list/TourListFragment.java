@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.martinlaizg.geofind.R;
+import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.views.adapter.TourListAdapter;
 import com.martinlaizg.geofind.views.viewmodel.TourListViewModel;
@@ -39,7 +40,8 @@ public class TourListFragment
 
 	@Nullable
 	@Override
-	public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState) {
+	public View onCreateView(@NonNull final LayoutInflater inflater,
+			@Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.fragment_tour_list, container, false);
 		ButterKnife.bind(this, view);
 
@@ -53,10 +55,18 @@ public class TourListFragment
 				adapter.setTours(tours);
 			} else {
 				APIException error = viewModel.getError();
-				Toast.makeText(requireActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+				if(error.getType() == ErrorType.NETWORK) {
+					Toast.makeText(requireContext(),
+					               getResources().getString(R.string.network_error),
+					               Toast.LENGTH_SHORT).show();
+				} else {
+					Toast.makeText(requireActivity(), error.getMessage(), Toast.LENGTH_SHORT)
+							.show();
+				}
 			}
 		});
-		create_tour_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreator));
+		create_tour_button
+				.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreator));
 
 		return view;
 	}

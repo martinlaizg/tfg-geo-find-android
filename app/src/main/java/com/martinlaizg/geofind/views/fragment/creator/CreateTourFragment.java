@@ -101,7 +101,7 @@ public class CreateTourFragment
 				return;
 			}
 		} catch(NullPointerException ex) {
-			Toast.makeText(getContext(), "View incorrecto", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getContext(), "View incorrect", Toast.LENGTH_SHORT).show();
 			return;
 		}
 

@@ -8,19 +8,20 @@ import androidx.lifecycle.MutableLiveData;
 import com.martinlaizg.geofind.data.Crypto;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.User;
+import com.martinlaizg.geofind.data.repository.RepositoryFactory;
 import com.martinlaizg.geofind.data.repository.UserRepository;
 
 public class LoginViewModel
 		extends AndroidViewModel {
 
-	private final UserRepository repository;
+	private final UserRepository userRepo;
 
 	private User user;
 	private APIException error;
 
 	public LoginViewModel(Application application) {
 		super(application);
-		repository = new UserRepository(application);
+		userRepo = RepositoryFactory.getUserRepository(application);
 		user = new User();
 	}
 
@@ -28,7 +29,7 @@ public class LoginViewModel
 		MutableLiveData<User> u = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
-				user = repository.login(user);
+				user = userRepo.login(user);
 				u.postValue(user);
 			} catch(APIException e) {
 				setError(e);
@@ -43,7 +44,7 @@ public class LoginViewModel
 		MutableLiveData<User> u = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
-				user = repository.registry(user);
+				user = userRepo.registry(user);
 				u.postValue(user);
 			} catch(APIException e) {
 				setError(e);

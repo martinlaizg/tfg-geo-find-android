@@ -62,7 +62,6 @@ public class TourFragment
 	@BindView(R.id.empty_text)
 	TextView empty_text;
 
-	private SharedPreferences sp;
 	private PlaceListAdapter adapterCompleted;
 	private PlaceListAdapter adapterNoCompleted;
 	private AlertDialog alert;
@@ -79,7 +78,7 @@ public class TourFragment
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		sp = PreferenceManager.getDefaultSharedPreferences(requireActivity());
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireActivity());
 		user = Preferences.getLoggedUser(sp);
 
 		adapterCompleted = new PlaceListAdapter(true, getResources().getColor(R.color.grey));

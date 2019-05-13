@@ -80,28 +80,13 @@ public class Place {
 	}
 
 	public LatLng getPosition() {
-		return new LatLng(getLat(), getLon());
-	}
-
-	public Double getLat() {
-		return lat;
-	}
-
-	public Double getLon() {
-		return lon;
+		if(lat == null || lon == null) return null;
+		return new LatLng(lat, lon);
 	}
 
 	public void setPosition(LatLng position) {
 		setLat(position.latitude);
 		setLon(position.longitude);
-	}
-
-	public void setLat(Double lat) {
-		this.lat = lat;
-	}
-
-	public void setLon(Double lon) {
-		this.lon = lon;
 	}
 
 	public Integer getOrder() {
@@ -127,6 +112,22 @@ public class Place {
 
 	public String getDescription() {
 		return description;
+	}
+
+	public Double getLat() {
+		return lat;
+	}
+
+	public Double getLon() {
+		return lon;
+	}
+
+	public void setLat(Double lat) {
+		this.lat = lat;
+	}
+
+	public void setLon(Double lon) {
+		this.lon = lon;
 	}
 
 	public void setDescription(String description) {

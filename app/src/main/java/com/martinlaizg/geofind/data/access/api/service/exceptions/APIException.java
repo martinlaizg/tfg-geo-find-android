@@ -2,6 +2,9 @@ package com.martinlaizg.geofind.data.access.api.service.exceptions;
 
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 
+/**
+ * Exception from API
+ */
 public class APIException
 		extends Throwable {
 

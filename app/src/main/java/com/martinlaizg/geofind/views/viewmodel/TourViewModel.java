@@ -21,11 +21,11 @@ public class TourViewModel
 		extends AndroidViewModel {
 
 	private final TourRepository tourRepo;
-	private APIException error;
+	private final PlayRepository playRepo;
 
+	private APIException error;
 	private Tour tour;
 	private Play userPlay;
-	private PlayRepository playRepo;
 
 	public TourViewModel(@NonNull Application application) {
 		super(application);

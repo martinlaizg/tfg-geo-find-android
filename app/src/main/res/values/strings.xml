@@ -85,4 +85,5 @@
     <string name="play_compass">Play compass</string>
     <string name="select_play_difficulty">Select play difficulty</string>
     <string name="play_therm">Play therm</string>
+    <string name="invalid_place">Invalid place</string>
 </resources>

@@ -3,6 +3,9 @@ package com.martinlaizg.geofind.data.access.api.error;
 import com.google.gson.annotations.SerializedName;
 import com.martinlaizg.geofind.R;
 
+/**
+ * Types of error from de server
+ */
 public enum ErrorType {
 	@SerializedName("other") OTHER(R.string.other_error),
 	@SerializedName("parse") PARSE(R.string.parse_error),
@@ -11,7 +14,7 @@ public enum ErrorType {
 	@SerializedName("id") ID(R.string.id_error),
 	@SerializedName("completed") COMPLETED(R.string.tour_is_completed);
 
-	private int message;
+	private final int message;
 
 	ErrorType(int message) {
 		this.message = message;
@@ -19,5 +22,4 @@ public enum ErrorType {
 
 	public int getMessage() {
 		return message;
-	}
-}
+	}}

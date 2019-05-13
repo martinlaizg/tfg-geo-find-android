@@ -6,12 +6,12 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.enums.PlayLevel;
+import com.martinlaizg.geofind.data.repository.RepositoryFactory;
 import com.martinlaizg.geofind.data.repository.TourRepository;
 
 import java.util.ArrayList;
@@ -20,31 +20,29 @@ import java.util.List;
 public class CreatorViewModel
 		extends AndroidViewModel {
 
-	private final TourRepository mapRepo;
+	private final TourRepository tourRepo;
 	private Tour tour;
 	private APIException error;
 	private boolean load;
 
 	public CreatorViewModel(@NonNull Application application) {
 		super(application);
-		mapRepo = new TourRepository(application);
+		tourRepo = RepositoryFactory.getTourRepository(application);
 		load = true;
 	}
-
-	// ============================================
 
 	public MutableLiveData<Tour> createTour() {
 		MutableLiveData<Tour> m = new MutableLiveData<>();
 		new Thread(() -> {
 			if(!tour.isValid()) {
-				setError(new APIException(ErrorType.OTHER, "Faltan datos"));
+				setError(new APIException(ErrorType.OTHER, "No data"));
 				m.postValue(null);
 				return;
 			}
 			load = true;
 			if(tour.getId() == 0) { // Create tour
 				try {
-					tour = mapRepo.create(tour);
+					tour = tourRepo.create(tour);
 				} catch(APIException e) {
 					setError(e);
 					m.postValue(null);
@@ -52,7 +50,7 @@ public class CreatorViewModel
 				}
 			} else { // Update tour
 				try {
-					tour = mapRepo.update(tour);
+					tour = tourRepo.update(tour);
 				} catch(APIException e) {
 					setError(e);
 					m.postValue(null);
@@ -62,20 +60,6 @@ public class CreatorViewModel
 			m.postValue(tour);
 		}).start();
 		return m;
-	}
-
-	public void setPlace(String name, String description, LatLng position, int order) {
-		Place p;
-		if(order < tour.getPlaces().size()) { // Existing place
-			p = tour.getPlaces().get(order);
-		} else {
-			p = new Place();
-			tour.getPlaces().add(p);
-		}
-		p.setName(name);
-		p.setDescription(description);
-		p.setPosition(position);
-		p.setOrder(order);
 	}
 
 	public void setCreatedTour(String name, String description, Integer creator_id, PlayLevel pl) {
@@ -93,7 +77,7 @@ public class CreatorViewModel
 				tour = new Tour();
 				if(tour_id > 0) {
 					try {
-						tour = mapRepo.getTour(tour_id);
+						tour = tourRepo.getTour(tour_id);
 					} catch(APIException e) {
 						setError(e);
 						tour = null;
@@ -128,17 +112,25 @@ public class CreatorViewModel
 		this.load = load;
 	}
 
-	public boolean checkPlaceName(String newName) {
-		for(Place p : getPlaces()) {
-			if(p.getName().equals(newName)) return false;
-		}
-		return true;
-	}
-
 	public List<Place> getPlaces() {
 		List<Place> places = tour.getPlaces();
 		return places == null ?
 				new ArrayList<>() :
 				places;
+	}
+
+	public Place getPlace(int position) {
+		if(position > tour.getPlaces().size()) return null;
+		if(position < tour.getPlaces().size()) return tour.getPlaces().remove(position);
+		return new Place();
+	}
+
+	public void setPlace(Place place) {
+		if(place.getOrder() == null) {
+			place.setOrder(tour.getPlaces().size());
+			tour.getPlaces().add(place);
+		} else {
+			tour.getPlaces().add(place.getOrder(), place);
+		}
 	}
 }

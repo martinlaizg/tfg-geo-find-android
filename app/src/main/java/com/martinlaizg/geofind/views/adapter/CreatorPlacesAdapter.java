@@ -39,13 +39,20 @@ public class CreatorPlacesAdapter
 	public void onBindViewHolder(@NonNull final CreatorPlacesViewHolder holder, int position) {
 		holder.place_name.setText(places.get(position).getName());
 		holder.place_delete_button.setOnClickListener(v -> {
-			places.remove(position);
-			notifyDataSetChanged();
+			remove(position);
 		});
 		Bundle b = new Bundle();
 		b.putInt(CreatePlaceFragment.PLACE_POSITION, position);
 		holder.place_card.setOnClickListener(
 				Navigation.createNavigateOnClickListener(R.id.toCreatePlace, b));
+	}
+
+	private void remove(int position) {
+		places.remove(position);
+		for(int i = 0; i < places.size(); i++) {
+			places.get(i).setOrder(i);
+		}
+		notifyDataSetChanged();
 	}
 
 	@Override

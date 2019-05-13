@@ -13,12 +13,17 @@ public class UserRepository {
 	private final UserDAO userDAO;
 	private final UserService userService;
 
-	public UserRepository(Application application) {
+	UserRepository(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
 		userDAO = database.userDAO();
 		userService = UserService.getInstance();
 	}
 
+	/**
+	 * TODO
+	 *
+	 * @return
+	 */
 	public User login(User u) throws APIException {
 		u = userService.login(u);
 		if(u != null) {
@@ -27,6 +32,11 @@ public class UserRepository {
 		return u;
 	}
 
+	/**
+	 * TODO
+	 *
+	 * @return
+	 */
 	public User registry(User u) throws APIException {
 		u = userService.registry(u);
 		if(u != null) {
@@ -35,12 +45,22 @@ public class UserRepository {
 		return u;
 	}
 
+	/**
+	 * TODO
+	 *
+	 * @return
+	 */
 	public void insert(User user) {
 		if(user != null) {
 			userDAO.insert(user);
 		}
 	}
 
+	/**
+	 * TODO
+	 *
+	 * @return
+	 */
 	public User getUser(int user_id) {
 		return userDAO.getUser(user_id);
 	}

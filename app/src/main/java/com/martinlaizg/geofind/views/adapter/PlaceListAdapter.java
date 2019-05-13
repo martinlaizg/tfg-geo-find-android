@@ -25,8 +25,8 @@ public class PlaceListAdapter
 		extends RecyclerView.Adapter<PlaceListAdapter.PlaceViewHolder> {
 
 	private final int disabled_color;
+	private final boolean completed;
 	private List<Place> places;
-	private boolean completed;
 
 	@NonNull
 	@Override

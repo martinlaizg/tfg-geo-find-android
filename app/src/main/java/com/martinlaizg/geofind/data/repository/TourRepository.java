@@ -1,6 +1,7 @@
 package com.martinlaizg.geofind.data.repository;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.martinlaizg.geofind.data.access.api.service.TourService;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
@@ -16,6 +17,7 @@ import java.util.List;
 
 public class TourRepository {
 
+	private static final String TAG = TourRepository.class.getSimpleName();
 	private final TourService tourService;
 	private final TourDAO tourDAO;
 	private final TourPlacesDAO tourPlacesDAO;
@@ -23,7 +25,7 @@ public class TourRepository {
 	private final PlaceRepository placeRepo;
 	private final UserRepository userRepo;
 
-	public TourRepository(Application application) {
+	TourRepository(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
 		tourDAO = database.tourDAO();
 		tourService = TourService.getInstance();
@@ -33,53 +35,116 @@ public class TourRepository {
 		userRepo = RepositoryFactory.getUserRepository(application);
 	}
 
-	public List<TourCreatorPlaces> getAllTours() throws APIException {
-		List<TourCreatorPlaces> mls = tourPlacesDAO.getTourCreatorPlaces();
+	/**
+	 * Get the TourCreatorPlaces list from local and update each item from server
+	 *
+	 * @return the list of elements
+	 */
+	public List<TourCreatorPlaces> getAllTours() {
+		List<TourCreatorPlaces> tcps = tourPlacesDAO.getTourCreatorPlaces();
 
-		if(mls != null) {
-			for(int i = 0; i < mls.size(); i++) {
-				if(mls.get(i).getTour().isOutOfDate()) {
-					if(!updateTour(mls.get(i).getTour())) i--;
-				}
-			}
-		}
-
-		if(mls == null || mls.isEmpty()) {
-			mls = new ArrayList<>();
-			List<Tour> tours = tourService.getAllTours();
-			if(tours != null) {
-				for(Tour t : tours) {
-					insert(t);
+		if(tcps != null) {
+			for(int i = 0; i < tcps.size(); i++) {
+				tcps.get(i).getTour().setPlaces(tcps.get(i).getPlaces());
+				if(tcps.get(i).getTour().isOutOfDate()) {
+					Tour newTour = refresh(tcps.get(i).getTour());
+					if(newTour == null) {
+						tcps.remove(i);
+						i--;
+						continue;
+					}
 					TourCreatorPlaces tcp = new TourCreatorPlaces();
-					tcp.setTour(t);
-					tcp.setUsername(t.getCreator().getUsername());
-					tcp.setPlaces(t.getPlaces());
-					mls.add(tcp);
+					tcp.setTour(newTour);
+					tcp.setPlaces(newTour.getPlaces());
+					tcp.setUsername(newTour.getCreator().getUsername());
+					tcps.set(i, tcp);
 				}
 			}
 		}
-		return mls;
+		return tcps;
 	}
 
-	private boolean updateTour(Tour tour) {
-		int tour_id = tour.getId();
+	/**
+	 * Refresh the tour from the server and insert into the local database
+	 *
+	 * @param tour
+	 * 		the tour to refresh, return null on error
+	 * @return the tour refreshed
+	 */
+	private Tour refresh(Tour tour) {
 		try {
-			tour = tourService.update(tour);
-			return true;
+			tour = tourService.getTour(tour.getId());
+			if(tour != null) {
+				insert(tour);
+			}
+			return tour;
 		} catch(APIException e) {
+			Log.e(TAG, "refresh: ", e);
+		}
+		return null;
+	}
+
+	/**
+	 * Insert a Tour to the local database
+	 * Insert the User creator and the list of Place recursively
+	 *
+	 * @param tour
+	 * 		Tour to insert
+	 */
+	public void insert(Tour tour) {
+		if(tour != null) {
+			userRepo.insert(tour.getCreator());
+			tourDAO.insert(tour);
+			placeRepo.insert(tour.getPlaces());
+		}
+	}
+
+	/**
+	 * Update the tour on server and local
+	 * If the tour is removed from server, return null
+	 *
+	 * @param tour
+	 * 		tour to update
+	 * @return tour updated or null if no exist on server
+	 * @throws APIException
+	 * 		exception from server
+	 */
+	public Tour update(Tour tour) throws APIException {
+		int tour_id = tour.getId();
+		tour = tourService.update(tour);
+		if(tour != null) {
+			tourDAO.update(tour);
+			for(Place p : tour.getPlaces()) placeRepo.insert(p);
+		} else {
 			tourDAO.delete(tour_id);
 		}
-		return false;
+		return tour;
 	}
 
-	public void insert(Tour t) {
-		if(t != null) {
-			userRepo.insert(t.getCreator());
-			tourDAO.insert(t);
-			placeRepo.insert(t.getPlaces());
-		}
+	/**
+	 * Create a tour on server and insert into local database
+	 *
+	 * @param tour
+	 * 		tour to insert
+	 * @return inserted tour
+	 * @throws APIException
+	 * 		the exception from API
+	 */
+	public Tour create(Tour tour) throws APIException {
+		tour = tourService.create(tour);
+		if(tour != null) insert(tour);
+		return tour;
 	}
 
+	/**
+	 * Get the tour with this id
+	 *
+	 * @param id
+	 * 		the tour id
+	 * @return the tour
+	 * @throws APIException
+	 * 		the server exception
+	 */
 	public Tour getTour(Integer id) throws APIException {
 		TourCreatorPlaces tcp = tourPlacesDAO.getTour(id);
 		Tour t;
@@ -93,25 +158,34 @@ public class TourRepository {
 		return t;
 	}
 
-	public Tour create(Tour tour) throws APIException {
-		tour = tourService.create(tour);
-		if(tour != null) tourDAO.insert(tour);
-		return tour;
-	}
-
-	public Tour update(Tour tour) throws APIException {
-		tour = tourService.update(tour);
-		if(tour != null) {
-			tourDAO.update(tour);
-			if(tour.getPlaces() != null) {
-				placeRepo.removeTourPlaces(tour.getId());
-				for(Place p : tour.getPlaces()) placeRepo.insert(p);
-			}
-		}
-		return tour;
-	}
-
+	/**
+	 * TODO
+	 *
+	 * @return
+	 */
 	public void getToursOnStart(int userId) {
 		// TODO
+	}
+
+	/**
+	 * Load tours from server and insert into de local database
+	 *
+	 * @return the list of {@link TourCreatorPlaces} from server
+	 * @throws APIException
+	 * 		the server exception
+	 */
+	public List<TourCreatorPlaces> refreshTours() throws APIException {
+
+		List<TourCreatorPlaces> tcps = new ArrayList<>();
+		List<Tour> tours = tourService.getAllTours();
+		for(Tour t : tours) {
+			insert(t);
+			TourCreatorPlaces tcp = new TourCreatorPlaces();
+			tcp.setTour(t);
+			tcp.setPlaces(t.getPlaces());
+			tcp.setUsername(t.getCreator().getUsername());
+			tcps.add(tcp);
+		}
+		return tcps;
 	}
 }
