@@ -31,16 +31,15 @@ public class TourListViewModel
 		MutableLiveData<List<TourCreatorPlaces>> tours = new MutableLiveData<>();
 		new Thread(() -> {
 			tours.postValue(tourRepo.getAllTours());
-			new Thread(() -> {
-				try {
-					tours.postValue(tourRepo.refreshTours());
-				} catch(APIException e) {
-					Log.e(TAG, "getTours: ", e);
-					setError(e);
-					tours.postValue(null);
-				}
-			}).start();
 
+		}).start();
+		new Thread(() -> {
+			try {
+				tourRepo.refreshTours();
+			} catch(APIException e) {
+				Log.e(TAG, "getTours: ", e);
+				setError(e);
+			}
 		}).start();
 		return tours;
 	}

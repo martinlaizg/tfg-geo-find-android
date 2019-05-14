@@ -35,20 +35,16 @@ public class TourViewModel
 
 	public MutableLiveData<Tour> loadTour(int tour_id, int user_id) {
 		MutableLiveData<Tour> m = new MutableLiveData<>();
-		if(tour == null || tour.getId() != tour_id) {
-			new Thread(() -> {
-				try {
-					tour = tourRepo.getTour(tour_id);
-					userPlay = playRepo.getPlay(user_id, tour_id);
-				} catch(APIException e) {
-					setError(e);
-					tour = null;
-				}
-				m.postValue(tour);
-			}).start();
-		} else {
+		new Thread(() -> {
+			try {
+				tour = tourRepo.getTour(tour_id);
+				userPlay = playRepo.getPlay(user_id, tour_id);
+			} catch(APIException e) {
+				setError(e);
+				tour = null;
+			}
 			m.postValue(tour);
-		}
+		}).start();
 		return m;
 	}
 

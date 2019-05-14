@@ -33,8 +33,7 @@ public class PlayTourViewModel
 			try {
 				play = playRepo.getPlay(user_id, tour_id);
 				if(play == null) {
-					m.postValue(null);
-					return;
+					play = playRepo.createPlay(user_id, tour_id);
 				}
 				m.postValue(getNextPlace());
 			} catch(APIException e) {
