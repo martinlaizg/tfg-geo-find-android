@@ -1,6 +1,7 @@
 package com.martinlaizg.geofind.data.repository;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.martinlaizg.geofind.data.access.api.service.PlayService;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
@@ -15,6 +16,7 @@ import java.util.List;
 
 public class PlayRepository {
 
+	private static final String TAG = PlayRepository.class.getSimpleName();
 	private final PlayDAO playDAO;
 	private final PlayService playService;
 
@@ -44,9 +46,11 @@ public class PlayRepository {
 	public Play getPlay(int user_id, int tour_id) throws APIException {
 		Play p = getPlayDAO(user_id, tour_id);
 		if(p == null) {
-			p = playService.getUserPlay(user_id, tour_id);
-			if(p == null) {
-				p = playService.createUserPlay(user_id, tour_id);
+			try {
+				p = playService.getUserPlay(user_id, tour_id);
+			} catch(APIException e) {
+				Log.e(TAG, "getPlay: ", e);
+				return null;
 			}
 			p.setUser_id(p.getUser().getId());
 			p.setTour_id(p.getTour().getId());

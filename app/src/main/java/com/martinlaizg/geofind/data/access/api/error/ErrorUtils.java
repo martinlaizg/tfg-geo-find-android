@@ -28,7 +28,7 @@ public class ErrorUtils {
 				error = converter.convert(response.errorBody());
 			}
 		} catch(IOException e) {
-			return new APIException(ErrorType.PARSE);
+			return new APIException(ErrorType.OTHER);
 		}
 
 		return error;

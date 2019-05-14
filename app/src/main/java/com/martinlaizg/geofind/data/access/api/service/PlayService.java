@@ -42,9 +42,6 @@ public class PlayService {
 			if(response.isSuccessful()) {
 				return response.body();
 			}
-			if(response.code() == 404) {
-				return null;
-			}
 			apiException = ErrorUtils.parseError(response);
 		} catch(IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
