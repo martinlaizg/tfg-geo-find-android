@@ -1,36 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <CheckBoxPreference
-        android:defaultValue="false"
-        android:key="check_box_preference_1"
-        android:title="Check box preference" />
-
-    <EditTextPreference
-        android:defaultValue="Default value"
-        android:key="edit_text_preference_1"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:title="Edit text preference" />
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ListPreference
         android:defaultValue="1"
-        android:entries="@array/difficulties"
-        android:entryValues="@array/difficulties"
-        android:key="list_preference_1"
-        android:title="List preference" />
+        android:entries="@array/mapTypes"
+        android:entryValues="@array/mapTypes"
+        android:key="@string/map_type"
+        android:title="@string/default_map_type"
+        app:summary="@string/default_map_view" />
 
-    <MultiSelectListPreference
-        android:defaultValue="@array/difficulties"
-        android:entries="@array/difficulties"
-        android:entryValues="@array/difficulties"
-        android:key="multi_select_list_preference_1"
-        android:title="Multi select list preference" />
-
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="switch_preference_1"
-        android:title="Switch preference" />
+    <Preference
+        android:key="support"
+        android:summary="Send message to support"
+        android:title="Support message" />
 
     <Preference
         android:key="@string/log_out"

@@ -24,8 +24,13 @@ public class SettingsFragment
 		findPreference(getString(R.string.log_out)).setOnPreferenceClickListener(preference -> {
 			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
 			Preferences.logout(sp);
-			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
+			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+					.popBackStack();
 			return true;
+		});
+
+		findPreference("support").setOnPreferenceClickListener(preference -> {
+
 		});
 	}
 }

@@ -79,4 +79,9 @@
     <string name="select_play_difficulty">Select play difficulty</string>
     <string name="play_therm">Play therm</string>
     <string name="invalid_place">Invalid place</string>
+    <string name="default_map_type">Default map type</string>
+    <string name="default_map_view">Default map view</string>
+    <string name="message_to_support">Message to support</string>
+    <string name="title">Title</string>
+    <string name="message">Message</string>
 </resources>
