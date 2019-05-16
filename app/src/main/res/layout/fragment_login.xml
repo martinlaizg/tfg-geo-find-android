@@ -21,7 +21,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/email_input"
-        style="@style/AppTheme.TextInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -35,14 +35,13 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/email_input"
-            android:inputType="textEmailAddress"
-            android:text="@string/default_email" />
+            android:hint="@string/email"
+            android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/password_input"
-        style="@style/AppTheme.TextInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -57,9 +56,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/password_input"
-            android:inputType="textPassword"
-            android:text="@string/default_password" />
+            android:hint="@string/password"
+            android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -84,9 +82,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/no_has_account_question"
+        android:text="@string/new_in_geofind"
         android:textAlignment="center"
-        android:textSize="@dimen/small_text"
         app:layout_constraintBottom_toTopOf="@+id/login_register_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

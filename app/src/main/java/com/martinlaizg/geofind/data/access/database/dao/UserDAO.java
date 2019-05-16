@@ -1,16 +1,14 @@
 package com.martinlaizg.geofind.data.access.database.dao;
 
-import com.martinlaizg.geofind.data.access.database.entity.User;
-
-import java.util.List;
-
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import com.martinlaizg.geofind.data.access.database.entities.User;
+
+import java.util.List;
 
 @Dao
 public interface UserDAO {
@@ -21,12 +19,9 @@ public interface UserDAO {
 	@Update
 	void update(User user);
 
-	@Delete
-	void delete(User user);
+	@Query("SELECT * FROM users WHERE id = :user_id")
+	User getUser(int user_id);
 
 	@Query("SELECT * FROM users")
-	LiveData<List<User>> getAllUsers();
-
-	@Query("DELETE FROM users")
-	void deleteAllUsers();
+	List<User> getAll();
 }

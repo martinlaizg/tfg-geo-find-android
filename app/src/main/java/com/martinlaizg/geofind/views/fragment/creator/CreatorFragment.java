@@ -7,56 +7,53 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.button.MaterialButton;
-import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.adapter.CreatorLocationAdapter;
-import com.martinlaizg.geofind.data.access.database.entity.Map;
-import com.martinlaizg.geofind.views.viewmodel.MapCreatorViewModel;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.button.MaterialButton;
+import com.martinlaizg.geofind.R;
+import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
+import com.martinlaizg.geofind.views.adapter.CreatorPlacesAdapter;
+import com.martinlaizg.geofind.views.fragment.single.TourFragment;
+import com.martinlaizg.geofind.views.viewmodel.CreatorViewModel;
+
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 
 public class CreatorFragment
 		extends Fragment
 		implements View.OnClickListener {
 
-	// View
-	@BindView(R.id.create_map_name)
-	TextView mapName;
-	@BindView(R.id.create_map_description)
-	TextView mapDescription;
+	public static final String TOUR_ID = "TOUR_ID";
 
-	@BindView(R.id.add_location_button)
-	MaterialButton add_location_button;
-	@BindView(R.id.create_map_button)
-	MaterialButton create_map_button;
+	// View
+	@BindView(R.id.tour_name)
+	TextView tour_name;
+	@BindView(R.id.tour_description)
+	TextView tour_description;
+
+	@BindView(R.id.add_place_button)
+	MaterialButton add_place_button;
+	@BindView(R.id.create_tour_button)
+	MaterialButton create_tour_button;
 	@BindView(R.id.edit_button)
 	MaterialButton edit_button;
 
-	@BindView(R.id.rec_view_loc_list)
-	RecyclerView recyclerView;
+	@BindView(R.id.places_list)
+	RecyclerView places_list;
 
-	private MapCreatorViewModel viewModel;
-
-	public CreatorFragment() {
-		// Required empty public constructor
-	}
-
+	private CreatorViewModel viewModel;
 
 	@Override
-	public View onCreateView(
-			LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_creator, container, false);
 		ButterKnife.bind(this, view);
 		return view;
@@ -64,45 +61,60 @@ public class CreatorFragment
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		NavController navController = Navigation.findNavController(getActivity(), R.id.main_fragment_holder);
-		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-		CreatorLocationAdapter adapter = new CreatorLocationAdapter();
-		recyclerView.setAdapter(adapter);
+		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel.class);
+		CreatorPlacesAdapter adapter = new CreatorPlacesAdapter();
+		places_list.setLayoutManager(new LinearLayoutManager(requireActivity()));
+		places_list.setAdapter(adapter);
 
-		add_location_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreateLocation));
-		edit_button.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreateMap));
-		create_map_button.setOnClickListener(this);
+		// Load tour
+		Bundle b = getArguments();
+		Integer tour_id = Objects.requireNonNull(b).getInt(TOUR_ID);
+		viewModel.loadTour(tour_id).observe(this, tour -> {
+			if(tour != null) {
+				adapter.setPlaces(tour.getPlaces());
+				if(tour.getId() != 0) {
+					create_tour_button.setText(R.string.update_tour);
+				}
+				if(!tour.getName().isEmpty()) {
+					tour_name.setText(tour.getName());
+				}
+				if(!tour.getDescription().isEmpty()) {
+					tour_description.setText(tour.getDescription());
+				}
+			}
+		});
 
-		viewModel = ViewModelProviders.of(getActivity()).get(MapCreatorViewModel.class);
-
-		Map map = viewModel.getCreatedMap();
-		if (!map.getName().isEmpty()) {
-			mapName.setText(map.getName());
-		}
-		if (!map.getDescription().isEmpty()) {
-			mapDescription.setText(map.getDescription());
-		}
-
-		adapter.setLocations(viewModel.getCreatedLocations());
+		// set buttons
+		add_place_button.setOnClickListener(v -> {
+			Bundle p = new Bundle();
+			p.putInt(CreatePlaceFragment.PLACE_POSITION, viewModel.getPlaces().size());
+			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+					.navigate(R.id.toCreatePlace, p);
+		});
+		edit_button.setOnClickListener(
+				v -> Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+						.navigate(R.id.toCreateTour));
+		create_tour_button.setOnClickListener(this);
 	}
 
 	@Override
 	public void onClick(View v) {
-
-		create_map_button.setEnabled(false);
-
-		if (!viewModel.isValid()) {
-			Toast.makeText(getActivity(), "Algo está mal", Toast.LENGTH_SHORT).show();
-			return;
-		}
-		viewModel.createMap().observe(this, new Observer<Map>() {
-			@Override
-			public void onChanged(Map map) {
-
-				create_map_button.setEnabled(true);
-				// TODO navigate to created map
+		create_tour_button.setEnabled(false);
+		viewModel.createTour().observe(this, tour -> {
+			create_tour_button.setEnabled(true);
+			if(tour == null) {
+				APIException err = viewModel.getError();
+				Toast.makeText(requireActivity(), err.getType().getMessage(), Toast.LENGTH_LONG)
+						.show();
+				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+						.popBackStack(R.id.navTourList, false);
+				return;
 			}
+			Toast.makeText(requireActivity(), R.string.tour_created, Toast.LENGTH_SHORT).show();
+			Bundle b = new Bundle();
+			b.putInt(TourFragment.TOUR_ID, tour.getId());
+			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+					.navigate(R.id.toNewTour, b);
 		});
 	}
 }

@@ -4,21 +4,15 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.martinlaizg.geofind.data.access.database.entity.User;
+import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.utils.DateUtils;
 
-public enum Preferences {
+public class Preferences {
 
-	USER("loggedUser");
-
-	final String key;
-
-	Preferences(String key) {
-		this.key = key;
-	}
+	private static final String USER = "loggedUser";
 
 	public static User getLoggedUser(SharedPreferences sp) {
-		String user_string = sp.getString(USER.getKey(), "");
+		String user_string = sp.getString(USER, "");
 
 		Gson gson = new GsonBuilder().setDateFormat(DateUtils.DATE_FORMAT).create();
 		return gson.fromJson(user_string, User.class);
@@ -27,16 +21,11 @@ public enum Preferences {
 	public static void setLoggedUser(SharedPreferences sp, User user) {
 		Gson gson = new GsonBuilder().setDateFormat(DateUtils.DATE_FORMAT).create();
 		String stringUser = user.toJson();
-		sp.edit().putString(USER.getKey(), stringUser).apply();
+		sp.edit().putString(USER, stringUser).apply();
 	}
 
 	public static void logout(SharedPreferences sp) {
-		sp.edit().putString(USER.getKey(), null).apply();
-	}
-
-
-	private String getKey() {
-		return key;
+		sp.edit().putString(USER, null).apply();
 	}
 
 }
