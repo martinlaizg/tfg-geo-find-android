@@ -143,7 +143,7 @@ public class TourFragment
 		// Get all of the difficulties
 		List<String> difficulties = new ArrayList<>(
 				Arrays.asList(getResources().getStringArray(R.array.difficulties)));
-
+		int numDiff = difficulties.size();
 		// Get only the allowed difficulties
 		difficulties = difficulties.subList(min_level.ordinal(), difficulties.size());
 
@@ -153,12 +153,14 @@ public class TourFragment
 			items[i] = difficulties.get(i);
 		}
 
+		int offset = numDiff - items.length;
 		AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
 		builder.setTitle(getResources().getString(R.string.select_play_difficulty));
 		builder.setItems(items, (dialog, item) -> {
 			int[] destinations = {R.id.toPlayTour, R.id.toPlayCompass, R.id.toPlayTherm};
+			int destPos = item + offset;
 			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-					.navigate(destinations[item], c);
+					.navigate(destinations[destPos], c);
 		});
 		alert = builder.create();
 	}
