@@ -63,8 +63,8 @@ public class UserService {
 		throw apiException;
 	}
 
-	public String sendMessage(String title, String message) throws APIException {
-		Response<String> response;
+	public boolean sendMessage(String title, String message) throws APIException {
+		Response<Void> response;
 		APIException apiException;
 		try {
 			Map<String, String> params = new HashMap<>();
@@ -73,7 +73,7 @@ public class UserService {
 
 			response = restClient.sendSupportMessage(params).execute();
 			if(response.isSuccessful()) {
-				return response.body();
+				return true;
 			}
 			apiException = ErrorUtils.parseError(response);
 		} catch(IOException e) {

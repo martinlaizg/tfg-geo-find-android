@@ -73,7 +73,7 @@ public class UserRepository {
 	 * @return the response
 	 * @throws APIException the exception
 	 */
-	public String sendMessage(String title, String message) throws APIException {
+	public boolean sendMessage(String title, String message) throws APIException {
 		return userService.sendMessage(title, message);
 	}
 }
