@@ -64,4 +64,16 @@ public class UserRepository {
 	public User getUser(int user_id) {
 		return userDAO.getUser(user_id);
 	}
+
+	/**
+	 * Send message to support
+	 *
+	 * @param title   the title
+	 * @param message the message
+	 * @return the response
+	 * @throws APIException the exception
+	 */
+	public String sendMessage(String title, String message) throws APIException {
+		return userService.sendMessage(title, message);
+	}
 }

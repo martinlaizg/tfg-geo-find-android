@@ -70,4 +70,6 @@ public interface RestClient {
 	@POST("plays/{play_id}/places")
 	Call<Play> createPlacePlay(@Path("play_id") Integer play_id, @Body PlacePlay placePlay);
 
+	@POST("support")
+	Call<String> sendSupportMessage(@QueryMap Map<String, String> params);
 }
