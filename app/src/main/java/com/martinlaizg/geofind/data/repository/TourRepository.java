@@ -8,7 +8,6 @@ import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
 import com.martinlaizg.geofind.data.access.database.dao.TourDAO;
 import com.martinlaizg.geofind.data.access.database.dao.relations.TourPlacesDAO;
-import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.access.database.entities.relations.TourCreatorPlaces;
 
@@ -42,7 +41,7 @@ public class TourRepository {
 	 */
 	public List<TourCreatorPlaces> getAllTours() {
 		List<TourCreatorPlaces> tcps = tourPlacesDAO.getTourCreatorPlaces();
-
+		List<Tour> tours = tourDAO.getAll();
 		if(tcps != null) {
 			for(int i = 0; i < tcps.size(); i++) {
 				tcps.get(i).getTour().setPlaces(tcps.get(i).getPlaces());
@@ -53,6 +52,7 @@ public class TourRepository {
 						i--;
 						continue;
 					}
+					insert(newTour);
 					TourCreatorPlaces tcp = new TourCreatorPlaces();
 					tcp.setTour(newTour);
 					tcp.setPlaces(newTour.getPlaces());
@@ -113,8 +113,7 @@ public class TourRepository {
 		int tour_id = tour.getId();
 		tour = tourService.update(tour);
 		if(tour != null) {
-			tourDAO.update(tour);
-			for(Place p : tour.getPlaces()) placeRepo.insert(p);
+			insert(tour);
 		} else {
 			tourDAO.delete(tour_id);
 		}

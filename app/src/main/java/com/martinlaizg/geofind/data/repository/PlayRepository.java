@@ -49,7 +49,7 @@ public class PlayRepository {
 			try {
 				p = playService.getUserPlay(user_id, tour_id);
 			} catch(APIException e) {
-				Log.e(TAG, "getPlay: ", e);
+				Log.i(TAG, "getPlay: ", e);
 				return null;
 			}
 			p.setUser_id(p.getUser().getId());
@@ -121,5 +121,11 @@ public class PlayRepository {
 	 */
 	public void getPlayOnStart(int userId) {
 		// TODO
+	}
+
+	public Play createPlay(int user_id, int tour_id) throws APIException {
+		Play p = playService.createUserPlay(user_id, tour_id);
+		insert(p);
+		return p;
 	}
 }

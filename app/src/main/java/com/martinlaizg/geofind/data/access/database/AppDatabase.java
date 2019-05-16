@@ -34,7 +34,7 @@ public abstract class AppDatabase
 	public static synchronized AppDatabase getInstance(Context context) {
 		if(instance == null) {
 			instance = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class,
-			                                "geo_find_database.db").
+			                                "geo_find_database").
 					fallbackToDestructiveMigration().
 					build();
 		}

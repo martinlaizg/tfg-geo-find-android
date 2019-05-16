@@ -9,6 +9,8 @@ import androidx.room.Update;
 
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
 
+import java.util.List;
+
 @Dao
 public interface TourDAO {
 
@@ -26,4 +28,7 @@ public interface TourDAO {
 
 	@Query("DELETE FROM tours WHERE id = :tour_id")
 	void delete(int tour_id);
+
+	@Query("SELECT * FROM tours")
+	List<Tour> getAll();
 }
