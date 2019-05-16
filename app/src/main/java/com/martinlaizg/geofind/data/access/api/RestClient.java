@@ -71,5 +71,5 @@ public interface RestClient {
 	Call<Play> createPlacePlay(@Path("play_id") Integer play_id, @Body PlacePlay placePlay);
 
 	@POST("support")
-	Call<String> sendSupportMessage(@QueryMap Map<String, String> params);
+	Call<Void> sendSupportMessage(@QueryMap Map<String, String> params);
 }

@@ -7,7 +7,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
@@ -16,8 +18,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
-import com.martinlaizg.geofind.data.repository.RepositoryFactory;
-import com.martinlaizg.geofind.data.repository.UserRepository;
+import com.martinlaizg.geofind.views.viewmodel.SettingsViewModel;
 
 import java.util.Objects;
 
@@ -26,30 +27,35 @@ public class SettingsFragment
 
 	private static final String TAG = SettingsFragment.class.getSimpleName();
 	private AlertDialog dialog;
-	private UserRepository userRepo;
+	private SettingsViewModel viewModel;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		userRepo = RepositoryFactory.getUserRepository(requireActivity().getApplication());
-
+		viewModel = ViewModelProviders.of(requireActivity()).get(SettingsViewModel.class);
 	}
 
 	@Override
 	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 		addPreferencesFromResource(R.xml.app_preferences);
-		setLogoutPreference();
 
+		findPreference(getString(R.string.log_out))
+				.setOnPreferenceClickListener(getLogOutListener());
+		setupSupportMessageDialog();
+		findPreference("support").setOnPreferenceClickListener(getSupportListener());
 	}
 
-	private void setLogoutPreference() {
-		findPreference(getString(R.string.log_out)).setOnPreferenceClickListener(preference -> {
+	private Preference.OnPreferenceClickListener getLogOutListener() {
+		return preference -> {
 			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
 			Preferences.logout(sp);
 			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
 					.popBackStack();
 			return true;
-		});
+		};
+	}
+
+	private void setupSupportMessageDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
 		View view = getLayoutInflater().inflate(R.layout.support_message, null);
 		TextInputLayout title_layout = view.findViewById(R.id.title_layout);
@@ -70,23 +76,29 @@ public class SettingsFragment
 			String title = title_layout.getEditText().getText().toString();
 			String message = message_text_layout.getEditText().getText().toString();
 
-			new Thread(() -> {
-				try {
-					userRepo.sendMessage(title, message);
+			viewModel.sendMessage(title, message).observe(requireActivity(), (ok) -> {
+				if(ok == null) {
+					APIException e = viewModel.getError();
+					Log.e(TAG, "setLogoutPreference: " + e.getType().getMessage());
+				} else if(ok) {
 					Toast.makeText(requireContext(), "Message sent", Toast.LENGTH_SHORT).show();
 					Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
 							.popBackStack();
-				} catch(APIException e) {
-					Log.e(TAG, "setLogoutPreference: ", e);
-					Toast.makeText(requireContext(), "", Toast.LENGTH_SHORT).show();
+					dialog.dismiss();
+				} else {
+					Toast.makeText(requireContext(), "Message no sent", Toast.LENGTH_SHORT).show();
 				}
-			}).start();
+			});
+
 		});
 		builder.setView(view);
 		dialog = builder.create();
-		findPreference("support").setOnPreferenceClickListener(preference -> {
+	}
+
+	private Preference.OnPreferenceClickListener getSupportListener() {
+		return preference -> {
 			dialog.show();
 			return true;
-		});
+		};
 	}
 }
