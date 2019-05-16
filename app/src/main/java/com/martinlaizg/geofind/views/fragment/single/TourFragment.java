@@ -3,7 +3,6 @@ package com.martinlaizg.geofind.views.fragment.single;
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,11 +24,14 @@ import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.access.database.entities.User;
+import com.martinlaizg.geofind.data.enums.PlayLevel;
 import com.martinlaizg.geofind.views.adapter.PlaceListAdapter;
 import com.martinlaizg.geofind.views.fragment.creator.CreatorFragment;
 import com.martinlaizg.geofind.views.fragment.play.PlayMapFragment;
 import com.martinlaizg.geofind.views.viewmodel.TourViewModel;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -104,29 +106,6 @@ public class TourFragment
 		viewModel = ViewModelProviders.of(requireActivity()).get(TourViewModel.class);
 		viewModel.loadTour(tour_id, user.getId()).observe(requireActivity(), this::setTour);
 
-		Bundle c = new Bundle();
-		c.putInt(PlayMapFragment.TOUR_ID, tour_id);
-		String[] difficulties = getResources().getStringArray(R.array.difficulties);
-		AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-		builder.setTitle(getResources().getString(R.string.select_play_difficulty));
-		builder.setItems(difficulties, (dialog, item) -> {
-			int destination = R.id.toPlayTour;
-			switch(item) {
-				case 1:
-					destination = R.id.toPlayCompass;
-					Log.i(TAG, "onViewCreated: go to play with compass");
-					break;
-				case 2:
-					destination = R.id.toPlayTherm;
-					Log.i(TAG, "onViewCreated: go to play with therm");
-					break;
-				default:
-					Log.i(TAG, "onViewCreated: go to play on map");
-			}
-			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-					.navigate(destination, c);
-		});
-		alert = builder.create();
 	}
 
 	private void setTour(Tour tour) {
@@ -153,6 +132,34 @@ public class TourFragment
 
 			play_button.setOnClickListener(v -> alert.show());
 
+			setDifficultyDialog(tour.getId(), tour.getMin_level());
 		}
+	}
+
+	private void setDifficultyDialog(int tour_id, PlayLevel min_level) {
+		Bundle c = new Bundle();
+		c.putInt(PlayMapFragment.TOUR_ID, tour_id);
+
+		// Get all of the difficulties
+		List<String> difficulties = new ArrayList<>(
+				Arrays.asList(getResources().getStringArray(R.array.difficulties)));
+
+		// Get only the allowed difficulties
+		difficulties = difficulties.subList(min_level.ordinal(), difficulties.size());
+
+		// Copy difficulties
+		String[] items = new String[difficulties.size()];
+		for(int i = 0; i < difficulties.size(); i++) {
+			items[i] = difficulties.get(i);
+		}
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+		builder.setTitle(getResources().getString(R.string.select_play_difficulty));
+		builder.setItems(items, (dialog, item) -> {
+			int[] destinations = {R.id.toPlayTour, R.id.toPlayCompass, R.id.toPlayTherm};
+			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+					.navigate(destinations[item], c);
+		});
+		alert = builder.create();
 	}
 }

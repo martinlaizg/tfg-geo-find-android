@@ -52,7 +52,12 @@ public class UserRepository {
 	 */
 	public void insert(User user) {
 		if(user != null) {
-			userDAO.insert(user);
+			User u = userDAO.getUser(user.getId());
+			if(u == null) {
+				userDAO.insert(user);
+			} else {
+				userDAO.update(user);
+			}
 		}
 	}
 

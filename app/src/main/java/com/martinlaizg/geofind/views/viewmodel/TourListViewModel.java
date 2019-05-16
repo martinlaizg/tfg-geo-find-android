@@ -33,6 +33,10 @@ public class TourListViewModel
 			tours.postValue(tourRepo.getAllTours());
 
 		}).start();
+		return tours;
+	}
+
+	public void refresh() {
 		new Thread(() -> {
 			try {
 				tourRepo.refreshTours();
@@ -41,7 +45,6 @@ public class TourListViewModel
 				setError(e);
 			}
 		}).start();
-		return tours;
 	}
 
 	public APIException getError() {

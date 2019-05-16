@@ -65,9 +65,9 @@ public class TourListFragment
 				}
 			}
 		});
+		viewModel.refresh();
 		create_tour_button
 				.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreator));
-
 		return view;
 	}
 }

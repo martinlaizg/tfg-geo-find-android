@@ -24,4 +24,7 @@ public interface PlaceDAO {
 
 	@Query("DELETE FROM places WHERE tour_id = :tour_id")
 	void removeTourPlaces(Integer tour_id);
+
+	@Query("SELECT * FROM places WHERE id = :placeId")
+	Place getPlace(int placeId);
 }

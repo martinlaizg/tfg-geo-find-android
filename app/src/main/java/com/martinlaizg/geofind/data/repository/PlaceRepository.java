@@ -29,7 +29,7 @@ public class PlaceRepository {
 	 * @return
 	 */
 	public void insert(List<Place> places) {
-		placeDAO.insert(places);
+		for(Place p : places) insert(p);
 	}
 
 	/**
@@ -38,7 +38,12 @@ public class PlaceRepository {
 	 * @return
 	 */
 	public void insert(Place place) {
-		placeDAO.insert(place);
+		Place p = placeDAO.getPlace(place.getId());
+		if(p == null) {
+			placeDAO.insert(place);
+		} else {
+			placeDAO.update(place);
+		}
 	}
 
 	/**
