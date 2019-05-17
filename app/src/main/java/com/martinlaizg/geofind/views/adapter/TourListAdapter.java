@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.data.access.database.entities.relations.TourCreatorPlaces;
+import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.views.fragment.single.TourFragment;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 public class TourListAdapter
 		extends RecyclerView.Adapter<TourListAdapter.ToursViewHolder> {
 
-	private List<TourCreatorPlaces> tours = new ArrayList<>();
+	private List<Tour> tours = new ArrayList<>();
 
 	@NonNull
 	@Override
@@ -36,13 +36,13 @@ public class TourListAdapter
 
 	@Override
 	public void onBindViewHolder(@NonNull ToursViewHolder holder, final int i) {
-		final TourCreatorPlaces tour = tours.get(i);
-		holder.tourName.setText(tour.getTour().getName());
-		holder.tourCreator.setText(tour.getUsername());
-		holder.tourDescription.setText(tour.getTour().getDescription());
+		final Tour tour = tours.get(i);
+		holder.tourName.setText(tour.getName());
+		holder.tourCreator.setText(tour.getCreator().getUsername());
+		holder.tourDescription.setText(tour.getDescription());
 
 		Bundle b = new Bundle();
-		b.putInt(TourFragment.TOUR_ID, tours.get(i).getTour().getId());
+		b.putInt(TourFragment.TOUR_ID, tours.get(i).getId());
 		holder.materialCardView
 				.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.toTour, b));
 	}
@@ -52,7 +52,7 @@ public class TourListAdapter
 		return tours.size();
 	}
 
-	public void setTours(List<TourCreatorPlaces> tours) {
+	public void setTours(List<Tour> tours) {
 		this.tours = tours;
 		notifyDataSetChanged();
 	}

@@ -84,12 +84,20 @@ public class PlayRepository {
 	 *
 	 * @return
 	 */
-	private void insert(Play p) {
-		if(p != null) {
-			userRepo.insert(p.getUser());
-			tourRepo.insert(p.getTour());
-			playDAO.insert(p);
-			placeRepo.insert(p.getPlaces());
+	private void insert(Play play) {
+		if(play != null) {
+			userRepo.insert(play.getUser());
+			tourRepo.insert(play.getTour());
+			Play p = playDAO.getPlay(play.getId());
+			if(p == null) {
+				playDAO.insert(play);
+			} else {
+				playDAO.update(play);
+			}
+			for(Place place : play.getPlaces()) {
+				PlacePlay pp = new PlacePlay(place.getId(), play.getId());
+				placePlayDAO.insert(pp);
+			}
 		}
 	}
 

@@ -21,6 +21,7 @@ import androidx.navigation.Navigation;
 
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
+import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.views.viewmodel.PlayTourViewModel;
@@ -151,6 +152,8 @@ abstract class PlayTourFragment
 			Log.d(TAG(), "updateView: distance=" + distance + "m");
 			if(distance < DISTANCE_TO_COMPLETE) {
 				Log.d(TAG(), "updateView: user arrive to the place");
+				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+						.navigate(R.id.toCompletePlace);
 				viewModel.completePlace(place.getId()).observe(this, done -> {
 					if(!done) {
 						Toast.makeText(requireContext(), viewModel.getError().getMessage(),
@@ -158,7 +161,16 @@ abstract class PlayTourFragment
 						return;
 					}
 					Log.d(TAG(), "updateView: Place done");
-					setPlace(viewModel.getNextPlace());
+					Place p = viewModel.getNextPlace();
+					if(p == null) {
+						if(viewModel.getError().getType() == ErrorType.COMPLETED) {
+							Navigation
+									.findNavController(requireActivity(), R.id.main_fragment_holder)
+									.navigate(R.id.toCompleteTour);
+						}
+					} else {
+						setPlace(p);
+					}
 				});
 			}
 			updateView();

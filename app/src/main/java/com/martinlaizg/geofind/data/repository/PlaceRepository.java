@@ -46,12 +46,8 @@ public class PlaceRepository {
 		}
 	}
 
-	/**
-	 * TODO
-	 *
-	 * @return
-	 */
-	public void getPlaceOnStart(int userId) {
-		// TODO
+	public List<Place> getTourPlaces(Integer tour_id) {
+		return placeDAO.getTourPlaces(tour_id);
+
 	}
 }

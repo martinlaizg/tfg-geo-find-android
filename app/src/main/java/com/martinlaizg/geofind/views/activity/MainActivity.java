@@ -82,7 +82,6 @@ public class MainActivity
 				playRepository.getPlayOnStart(user.getId());
 				PlaceRepository placeRepository = RepositoryFactory
 						.getPlaceRepository(getApplication());
-				placeRepository.getPlaceOnStart(user.getId());
 			}
 		}).start();
 	}
