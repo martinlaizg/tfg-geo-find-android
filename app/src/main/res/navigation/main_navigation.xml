@@ -155,8 +155,6 @@
         android:name="com.martinlaizg.geofind.views.fragment.login.RegistryFragment"
         android:label="@string/registry"
         tools:layout="@layout/fragment_registry" />
-
-
     <action
         android:id="@+id/toMain"
         app:destination="@id/navMain"
@@ -194,15 +192,6 @@
         android:name="com.martinlaizg.geofind.views.fragment.play.PlayMapFragment"
         android:label="@string/play_tour"
         tools:layout="@layout/fragment_play_map">
-        <action
-            android:id="@+id/reload_play_map"
-            app:destination="@id/navPlayTour"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/navTour"
-            app:popUpToInclusive="false" />
         <action
             android:id="@+id/toCompleteTour"
             app:destination="@id/navCompleteTour"

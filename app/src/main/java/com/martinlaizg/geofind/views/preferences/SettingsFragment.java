@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProviders;
@@ -57,7 +58,8 @@ public class SettingsFragment
 
 	private void setupSupportMessageDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-		View view = getLayoutInflater().inflate(R.layout.support_message, null);
+		View view = getLayoutInflater()
+				.inflate(R.layout.support_message, new LinearLayout(requireContext()), false);
 		TextInputLayout title_layout = view.findViewById(R.id.title_layout);
 		TextInputLayout message_text_layout = view.findViewById(R.id.message_text_layout);
 		MaterialButton send_button = view.findViewById(R.id.send_button);
@@ -79,7 +81,7 @@ public class SettingsFragment
 			viewModel.sendMessage(title, message).observe(requireActivity(), (ok) -> {
 				if(ok == null) {
 					APIException e = viewModel.getError();
-					Log.e(TAG, "setLogoutPreference: " + e.getType().getMessage());
+					Log.e(TAG, "setLogoutPreference: " + e.getType().toString());
 				} else if(ok) {
 					Toast.makeText(requireContext(), "Message sent", Toast.LENGTH_SHORT).show();
 					Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)

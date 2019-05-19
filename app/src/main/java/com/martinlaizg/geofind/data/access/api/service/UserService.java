@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.martinlaizg.geofind.data.access.api.RestClient;
 import com.martinlaizg.geofind.data.access.api.RetrofitInstance;
+import com.martinlaizg.geofind.data.access.api.entities.Login;
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.error.ErrorUtils;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
@@ -31,11 +32,11 @@ public class UserService {
 		return userService;
 	}
 
-	public User login(User user) throws APIException {
+	public User login(Login login) throws APIException {
 		Response<User> response;
 		APIException apiException;
 		try {
-			response = restClient.login(user).execute();
+			response = restClient.login(login).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}
@@ -47,11 +48,11 @@ public class UserService {
 		throw apiException;
 	}
 
-	public User registry(User user) throws APIException {
+	public User registry(Login login) throws APIException {
 		Response<User> response;
 		APIException apiException;
 		try {
-			response = restClient.registry(user).execute();
+			response = restClient.registry(login).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}
@@ -63,6 +64,7 @@ public class UserService {
 		throw apiException;
 	}
 
+	@SuppressWarnings("SameReturnValue")
 	public boolean sendMessage(String title, String message) throws APIException {
 		Response<Void> response;
 		APIException apiException;
@@ -75,11 +77,11 @@ public class UserService {
 			if(response.isSuccessful()) {
 				return true;
 			}
-			apiException = ErrorUtils.parseError(response);
+			throw ErrorUtils.parseError(response);
 		} catch(IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
 			Log.e(TAG, "registry: ", e);
+			throw apiException;
 		}
-		throw apiException;
 	}
 }

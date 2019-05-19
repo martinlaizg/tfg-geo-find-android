@@ -23,9 +23,6 @@ public interface TourDAO {
 	@Query("SELECT * FROM tours WHERE id = :tour_id")
 	Tour getTour(Integer tour_id);
 
-	@Delete
-	void delete(Tour tour);
-
 	@Query("DELETE FROM tours WHERE id = :tour_id")
 	void delete(int tour_id);
 

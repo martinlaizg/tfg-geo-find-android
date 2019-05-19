@@ -4,10 +4,10 @@
     tools:showIn="@layout/fragment_main">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/navMain"
+            android:id="@id/toMain"
             android:title="@string/home" />
         <item
-            android:id="@+id/navTourList"
+            android:id="@id/toTourList"
             android:title="@string/tour" />
     </group>
 
@@ -15,7 +15,7 @@
         <menu>
             <group android:checkableBehavior="none">
                 <item
-                    android:id="@+id/toSettings"
+                    android:id="@id/toSettings"
                     android:title="@string/settings" />
             </group>
         </menu>

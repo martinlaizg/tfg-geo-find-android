@@ -15,8 +15,4 @@ public interface PlacePlayDAO {
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	void insert(PlacePlay placePlay);
 
-	@Transaction
-	@Query("SELECT * FROM plays WHERE id = :play_id")
-	PlayWithPlaces getPlayWithPlaces(int play_id);
-
 }

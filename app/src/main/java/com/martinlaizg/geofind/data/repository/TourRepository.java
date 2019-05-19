@@ -147,15 +147,6 @@ public class TourRepository {
 	}
 
 	/**
-	 * TODO
-	 *
-	 * @return
-	 */
-	public void getToursOnStart(int userId) {
-		// TODO
-	}
-
-	/**
 	 * Load tours from server and insert into de local database
 	 *
 	 * @throws APIException the server exception

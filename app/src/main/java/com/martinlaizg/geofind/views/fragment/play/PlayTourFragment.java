@@ -50,7 +50,7 @@ abstract class PlayTourFragment
 	TextView place_distance;
 
 	Place place;
-	PlayTourViewModel viewModel;
+	private PlayTourViewModel viewModel;
 	Location usrLocation;
 	Location placeLocation;
 	Float distance;
@@ -136,7 +136,7 @@ abstract class PlayTourFragment
 		int numCompletedPlaces = viewModel.getPlay().getPlaces().size() + 1;
 		int numPlaces = viewModel.getPlay().getTour().getPlaces().size();
 		place_complete.setText(
-				getResources().getString(R.string.tour_completenes, numCompletedPlaces, numPlaces));
+				getResources().getString(R.string.tour_completeness, numCompletedPlaces, numPlaces));
 	}
 
 	@Override

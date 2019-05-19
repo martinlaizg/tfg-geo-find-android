@@ -19,25 +19,18 @@
     <string name="tour_main_image">Main tour image</string>
     <string name="create_tour">Create tour</string>
     <string name="name">Name</string>
-    <string name="navigate">Navigate</string>
     <string name="network_error">Network error</string>
-    <string name="new_place">New place</string>
     <string name="description">Description</string>
     <string name="next">Next</string>
     <string name="new_in_geofind">New on GeoFind?</string>
     <string name="no_places">There\'s no places</string>
-    <string name="num_places">%d places</string>
     <string name="other_error">Other error</string>
-    <string name="parse_error">Conversion error</string>
     <string name="password">Password</string>
     <string name="password_does_not_match">Password does not match</string>
     <string name="place">Place</string>
-    <string name="place_description">Place description</string>
     <string name="place_image">Place image</string>
     <string name="place_list">Place list</string>
-    <string name="place_name">Place name</string>
     <string name="registry">Registry</string>
-    <string name="repeated_name">Repeated name</string>
     <string name="required_description">Required description</string>
     <string name="required_email">Required email</string>
     <string name="required_name">Required name</string>
@@ -62,16 +55,15 @@
     <string name="developer" translatable="false">martinlaizg</string>
     <string name="this_year" translatable="false">2019</string>
     <string name="rejected_location_access">Refused permission to location</string>
-    <string name="app_about_description">App desarrollada cómo Trabajo de Final de Grado para el grado en Ingeniería Informática de la Universidad de Alicante</string>
+    <string name="app_about_description" translatable="false">App desarrollada cómo Trabajo de Final de Grado para el
+        grado en Ingeniería Informática de la Universidad de Alicante</string>
     <string name="home">Home</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="play">Play</string>
     <string name="tour_not_permitted">Tour not permitted</string>
     <string name="play_tour">Play Tour</string>
     <string name="place_distance">%d m</string>
-    <string name="tour_completenes">Places %d/%d</string>
+    <string name="tour_completeness">Places %d/%d</string>
     <string name="map">Map</string>
     <string name="compass">Compass</string>
     <string name="therm">Therm</string>
@@ -92,4 +84,6 @@
     <string name="title">Title</string>
     <string name="message">Message</string>
     <string name="send">Send</string>
+    <string name="email_exist">Email already exists</string>
+    <string name="username_exist">Username already exists</string>
 </resources>

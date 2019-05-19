@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="num_places">
+        <item quantity="one">%d place</item>
+        <item quantity="other">%d places</item>
+    </plurals>
+</resources>
