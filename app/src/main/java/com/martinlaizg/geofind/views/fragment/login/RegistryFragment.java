@@ -104,7 +104,7 @@ public class RegistryFragment
 				.trim();
 		String password = Objects.requireNonNull(password_input.getEditText()).getText().toString()
 				.trim();
-		viewModel.setRegistry(name, username, email, password, Login.LoginType.OWN);
+		viewModel.setRegistry(name, username, email, password, Login.Provider.OWN);
 		viewModel.registry().observe(this, (user) -> {
 			btn_registry.setEnabled(true);
 			if(user == null) {

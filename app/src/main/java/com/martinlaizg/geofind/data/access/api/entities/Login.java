@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Login {
 
-	public enum LoginType {
+	public enum Provider {
 		@SerializedName("own") OWN,
 		@SerializedName("google") GOOGLE
 	}
@@ -14,46 +14,38 @@ public class Login {
 	private final String email;
 	private final String username;
 	private final String password;
-	private final LoginType loginType;
+	private final Provider provider;
 
 	/**
 	 * For registry action
 	 *
-	 * @param name
-	 * 		the name
-	 * @param email
-	 * 		the email
-	 * @param username
-	 * 		the username
-	 * @param password
-	 * 		the password
-	 * @param loginType
-	 * 		the login type
+	 * @param name     the name
+	 * @param email    the email
+	 * @param username the username
+	 * @param password the password
+	 * @param provider the login type
 	 */
-	public Login(String name, String email, String username, String password, LoginType loginType) {
+	public Login(String name, String email, String username, String password, Provider provider) {
 		this.name = name;
 		this.email = email;
 		this.username = username;
 		this.password = password;
-		this.loginType = loginType;
+		this.provider = provider;
 	}
 
 	/**
 	 * For login action
 	 *
-	 * @param email
-	 * 		the email
-	 * @param password
-	 * 		the password
-	 * @param loginType
-	 * 		the login type
+	 * @param email    the email
+	 * @param password the password
+	 * @param provider the login type
 	 */
-	public Login(String email, String password, LoginType loginType) {
+	public Login(String email, String password, Provider provider) {
 		this.name = "";
 		this.email = email;
 		this.username = "";
 		this.password = password;
-		this.loginType = loginType;
+		this.provider = provider;
 	}
 
 	public String getEmail() {

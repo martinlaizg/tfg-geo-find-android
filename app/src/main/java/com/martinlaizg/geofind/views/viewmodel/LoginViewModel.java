@@ -52,13 +52,13 @@ public class LoginViewModel
 		return u;
 	}
 
-	public void setLogin(String email, String password, Login.LoginType loginType) {
-		login = new Login(email, Crypto.hash(password), loginType);
+	public void setLogin(String email, String password, Login.Provider provider) {
+		login = new Login(email, Crypto.hash(password), provider);
 	}
 
 	public void setRegistry(String name, String username, String email, String password,
-			Login.LoginType loginType) {
-		login = new Login(name, email, username, Crypto.hash(password), loginType);
+			Login.Provider provider) {
+		login = new Login(name, email, username, Crypto.hash(password), provider);
 	}
 
 	public APIException getError() {

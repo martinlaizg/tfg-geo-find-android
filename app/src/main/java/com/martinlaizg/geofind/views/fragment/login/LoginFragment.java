@@ -76,8 +76,7 @@ public class LoginFragment
 
 			// Signed in successfully, show authenticated UI.
 			if(account != null) {
-				viewModel
-						.setLogin(account.getEmail(), account.getIdToken(), Login.LoginType.GOOGLE);
+				viewModel.setLogin(account.getEmail(), account.getIdToken(), Login.Provider.GOOGLE);
 			}
 			loginWithGoogle(account);
 		} catch(ApiException e) {
@@ -92,7 +91,7 @@ public class LoginFragment
 		if(account != null) {
 			String email = account.getEmail();
 			String idToken = account.getIdToken();
-			viewModel.setLogin(email, idToken, Login.LoginType.GOOGLE);
+			viewModel.setLogin(email, idToken, Login.Provider.GOOGLE);
 			viewModel.login().observe(requireActivity(), user -> {
 				if(user == null) {
 					Log.e(TAG, "loginWithGoogle: Error login", viewModel.getError());
@@ -158,7 +157,7 @@ public class LoginFragment
 
 		String email = email_input.getEditText().getText().toString().trim();
 		String password = password_input.getEditText().getText().toString().trim();
-		viewModel.setLogin(email, password, Login.LoginType.OWN);
+		viewModel.setLogin(email, password, Login.Provider.OWN);
 		viewModel.login().observe(this, user -> {
 			if(user == null) {
 				email_input.setError(getString(R.string.wrong_email_password));

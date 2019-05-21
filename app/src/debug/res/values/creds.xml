@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="client_id" templateMergeStrategy="preserve" translatable="false">331962910469-biu21dkedi9b9rnm0jtk219bck4jj4ua.apps
-        .googleusercontent.com</string>
+    <string name="client_id" templateMergeStrategy="preserve" translatable="false">331962910469-biu21dkedi9b9rnm0jtk219bck4jj4ua.apps.googleusercontent.com</string>
     <string name="project_id" templateMergeStrategy="preserve" translatable="false">geo-find-martin</string>
     <string name="auth_uri" templateMergeStrategy="preserve" translatable="false">https://accounts.google.com/o/oauth2/auth</string>
     <string name="token_uri" templateMergeStrategy="preserve" translatable="false">https://oauth2.googleapis.com/token</string>
