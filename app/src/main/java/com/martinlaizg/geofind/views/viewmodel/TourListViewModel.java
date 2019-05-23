@@ -29,10 +29,7 @@ public class TourListViewModel
 
 	public MutableLiveData<List<Tour>> getTours() {
 		MutableLiveData<List<Tour>> tours = new MutableLiveData<>();
-		new Thread(() -> {
-			tours.postValue(tourRepo.getAllTours());
-
-		}).start();
+		new Thread(() -> tours.postValue(tourRepo.getAllTours())).start();
 		return tours;
 	}
 

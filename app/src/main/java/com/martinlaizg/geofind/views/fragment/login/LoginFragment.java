@@ -1,11 +1,14 @@
 package com.martinlaizg.geofind.views.fragment.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,11 +17,18 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
 
-import com.google.android.gms.auth.api.credentials.Credential;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
+import com.martinlaizg.geofind.data.access.api.entities.Login;
 import com.martinlaizg.geofind.views.viewmodel.LoginViewModel;
 
 import java.util.Objects;
@@ -31,6 +41,7 @@ public class LoginFragment
 		implements View.OnClickListener {
 
 	private static final String TAG = LoginFragment.class.getSimpleName();
+	private static final int RC_SIGN_IN = 0;
 
 	@BindView(R.id.email_input)
 	TextInputLayout email_input;
@@ -43,14 +54,77 @@ public class LoginFragment
 	@BindView(R.id.loading_spinner)
 	ProgressBar loading_spinner;
 
+	@BindView(R.id.google_sign_in_button)
+	SignInButton google_sign_in_button;
+
 	private LoginViewModel viewModel;
+	private GoogleSignInClient mGoogleSignInClient;
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode == RC_SIGN_IN) {
+			Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+			handleSignInResult(task);
+			return;
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	private void handleSignInResult(Task<GoogleSignInAccount> task) {
+		try {
+			GoogleSignInAccount account = task.getResult(ApiException.class);
+			if(account != null) {
+				String email = account.getEmail();
+				String idToken = account.getIdToken();
+				Login l = new Login(email, idToken, Login.Provider.GOOGLE);
+				login(l);
+			} else {
+				Toast.makeText(requireContext(), getString(R.string.wrong_login),
+				               Toast.LENGTH_SHORT).show();
+			}
+		} catch(ApiException e) {
+			Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+			Toast.makeText(requireContext(), getString(R.string.wrong_login), Toast.LENGTH_SHORT)
+					.show();
+		}
+	}
+
+	private void login(Login l) {
+		viewModel.setLogin(l);
+		viewModel.login().observe(this, user -> {
+			if(user == null) {
+				email_input.setError(getString(R.string.wrong_email_password));
+				password_input.setError(getString(R.string.wrong_email_password));
+				return;
+			}
+			Preferences.setLoggedUser(PreferenceManager.getDefaultSharedPreferences(
+					Objects.requireNonNull(getContext())), user);
+			login_button.setEnabled(true);
+			loading_spinner.setVisibility(View.GONE);
+			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+					.popBackStack();
+		});
+	}
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_login, container, false);
 		ButterKnife.bind(this, view);
+
+		google_sign_in_button.setSize(SignInButton.SIZE_STANDARD);
+		google_sign_in_button.setOnClickListener((v) -> googleSignIn());
+		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(
+				GoogleSignInOptions.DEFAULT_SIGN_IN)
+				.requestIdToken(getResources().getString(R.string.client_id)).requestEmail()
+				.build();
+		mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
 		return view;
+	}
+
+	private void googleSignIn() {
+		Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+		startActivityForResult(signInIntent, RC_SIGN_IN);
 	}
 
 	@Override
@@ -60,6 +134,18 @@ public class LoginFragment
 		login_button.setOnClickListener(this);
 		registry_button
 				.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toRegistry));
+	}
+
+	@Override
+	public void onStart() {
+		GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(requireContext());
+		if(account != null) {
+			String email = account.getEmail();
+			String idToken = account.getIdToken();
+			Login l = new Login(email, idToken, Login.Provider.GOOGLE);
+			login(l);
+		}
+		super.onStart();
 	}
 
 	@Override
@@ -77,20 +163,7 @@ public class LoginFragment
 
 		String email = email_input.getEditText().getText().toString().trim();
 		String password = password_input.getEditText().getText().toString().trim();
-		viewModel.setLogin(email, password);
-		viewModel.login().observe(this, user -> {
-			if(user == null) {
-				email_input.setError(getString(R.string.wrong_email_password));
-				password_input.setError(getString(R.string.wrong_email_password));
-				return;
-			}
-			Credential credential = new Credential.Builder(email).setPassword(password).build();
-			Preferences.setLoggedUser(PreferenceManager.getDefaultSharedPreferences(
-					Objects.requireNonNull(getContext())), user);
-			login_button.setEnabled(true);
-			loading_spinner.setVisibility(View.GONE);
-			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-					.popBackStack();
-		});
+		Login l = new Login(email, password);
+		login(l);
 	}
 }

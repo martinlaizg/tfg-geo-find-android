@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="client_id" templateMergeStrategy="preserve" translatable="false">331962910469-biu21dkedi9b9rnm0jtk219bck4jj4ua.apps.googleusercontent.com</string>
+    <string name="project_id" templateMergeStrategy="preserve" translatable="false">geo-find-martin</string>
+    <string name="auth_uri" templateMergeStrategy="preserve" translatable="false">https://accounts.google.com/o/oauth2/auth</string>
+    <string name="token_uri" templateMergeStrategy="preserve" translatable="false">https://oauth2.googleapis.com/token</string>
+    <string name="auth_provider_x509_cert_url" templateMergeStrategy="preserve" translatable="false">https://www.googleapis.com/oauth2/v1/certs</string>
+    <string name="client_secret" templateMergeStrategy="preserve" translatable="false">IALWkeCdOqyoGcylSFjL1RTT</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyB8Ly_c7lUmhBJKsTnb8KpdvPCu9CKyW6M</string>
+</resources>

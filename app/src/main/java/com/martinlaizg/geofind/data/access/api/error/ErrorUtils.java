@@ -13,7 +13,7 @@ import retrofit2.Response;
 public class ErrorUtils {
 
 	/**
-	 * Parse a response to a APIError
+	 * Parse a response to a APIException
 	 *
 	 * @param response response to parse
 	 * @return parsed response

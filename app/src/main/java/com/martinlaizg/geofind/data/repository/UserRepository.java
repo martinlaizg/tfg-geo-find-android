@@ -2,6 +2,7 @@ package com.martinlaizg.geofind.data.repository;
 
 import android.app.Application;
 
+import com.martinlaizg.geofind.data.access.api.entities.Login;
 import com.martinlaizg.geofind.data.access.api.service.UserService;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
@@ -20,35 +21,39 @@ public class UserRepository {
 	}
 
 	/**
-	 * TODO
+	 * Login a user
 	 *
-	 * @return
+	 * @param login loginProvider data to loginProvider (email and password only)
+	 * @return the logged user
+	 * @throws APIException exception from API
 	 */
-	public User login(User u) throws APIException {
-		u = userService.login(u);
-		if(u != null) {
-			userDAO.insert(u);
+	public User login(Login login) throws APIException {
+		User user = userService.login(login);
+		if(user != null) {
+			userDAO.insert(user);
 		}
-		return u;
+		return user;
 	}
 
 	/**
-	 * TODO
+	 * Registry a user
 	 *
-	 * @return
+	 * @param login loginProvider data to be registered (email, username and password only)
+	 * @return the user registered
+	 * @throws APIException exception from API
 	 */
-	public User registry(User u) throws APIException {
-		u = userService.registry(u);
-		if(u != null) {
-			userDAO.insert(u);
+	public User registry(Login login) throws APIException {
+		User user = userService.registry(login);
+		if(user != null) {
+			userDAO.insert(user);
 		}
-		return u;
+		return user;
 	}
 
 	/**
-	 * TODO
+	 * Insert a user into the database
 	 *
-	 * @return
+	 * @param user user to be inserted
 	 */
 	public void insert(User user) {
 		if(user != null) {
@@ -62,9 +67,10 @@ public class UserRepository {
 	}
 
 	/**
-	 * TODO
+	 * Get a user from database
 	 *
-	 * @return
+	 * @param user_id id of the user
+	 * @return the user
 	 */
 	public User getUser(int user_id) {
 		return userDAO.getUser(user_id);

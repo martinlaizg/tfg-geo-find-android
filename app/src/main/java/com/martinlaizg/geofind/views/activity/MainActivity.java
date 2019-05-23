@@ -2,7 +2,6 @@ package com.martinlaizg.geofind.views.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,12 +16,6 @@ import androidx.preference.PreferenceManager;
 
 import com.google.android.material.navigation.NavigationView;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.config.Preferences;
-import com.martinlaizg.geofind.data.access.database.entities.User;
-import com.martinlaizg.geofind.data.repository.PlaceRepository;
-import com.martinlaizg.geofind.data.repository.PlayRepository;
-import com.martinlaizg.geofind.data.repository.RepositoryFactory;
-import com.martinlaizg.geofind.data.repository.TourRepository;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -44,14 +37,13 @@ public class MainActivity
 	NavigationView navigationView;
 
 	NavController navController;
-	private SharedPreferences sp;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		ButterKnife.bind(MainActivity.this);
-		sp = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 
 		navController = Navigation.findNavController(this, R.id.main_fragment_holder);
 
@@ -65,26 +57,26 @@ public class MainActivity
 		NavigationUI.setupWithNavController(navigationView, navController);
 		NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
 
-		loadDatabase();
+//		loadDatabase();
 	}
 
-	private void loadDatabase() {
-		new Thread(() -> {
-			Log.i(TAG, "loadDatabaseOnStart ");
-			User user = Preferences.getLoggedUser(sp);
-			if(user != null && user.getId() > 0) { // is logged
-				// load user plays
-				TourRepository tourRepository = RepositoryFactory
-						.getTourRepository(getApplication());
-				tourRepository.getToursOnStart(user.getId());
-				PlayRepository playRepository = RepositoryFactory
-						.getPlayRepository(getApplication());
-				playRepository.getPlayOnStart(user.getId());
-				PlaceRepository placeRepository = RepositoryFactory
-						.getPlaceRepository(getApplication());
-			}
-		}).start();
-	}
+//	private void loadDatabase() {
+//		new Thread(() -> {
+//			Log.i(TAG, "loadDatabaseOnStart ");
+//			User user = Preferences.getLoggedUser(sp);
+//			if(user != null && user.getId() > 0) { // is logged
+//				// load user plays
+//				TourRepository tourRepository = RepositoryFactory
+//						.getTourRepository(getApplication());
+//				tourRepository.getToursOnStart(user.getId());
+//				PlayRepository playRepository = RepositoryFactory
+//						.getPlayRepository(getApplication());
+//				playRepository.getPlayOnStart(user.getId());
+//				PlaceRepository placeRepository = RepositoryFactory
+//						.getPlaceRepository(getApplication());
+//			}
+//		}).start();
+//	}
 
 	public void setDrawerHeader(String username, String name) {
 		View headerView = navigationView.getHeaderView(0);

@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.martinlaizg.geofind.data.Crypto;
+import com.martinlaizg.geofind.data.access.api.entities.Login;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.data.repository.RepositoryFactory;
@@ -15,21 +16,19 @@ public class LoginViewModel
 		extends AndroidViewModel {
 
 	private final UserRepository userRepo;
-
-	private User user;
+	private Login login;
 	private APIException error;
 
 	public LoginViewModel(Application application) {
 		super(application);
 		userRepo = RepositoryFactory.getUserRepository(application);
-		user = new User();
 	}
 
 	public MutableLiveData<User> login() {
 		MutableLiveData<User> u = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
-				user = userRepo.login(user);
+				User user = userRepo.login(login);
 				u.postValue(user);
 			} catch(APIException e) {
 				setError(e);
@@ -40,11 +39,10 @@ public class LoginViewModel
 	}
 
 	public MutableLiveData<User> registry() {
-
 		MutableLiveData<User> u = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
-				user = userRepo.registry(user);
+				User user = userRepo.registry(login);
 				u.postValue(user);
 			} catch(APIException e) {
 				setError(e);
@@ -54,24 +52,9 @@ public class LoginViewModel
 		return u;
 	}
 
-	public void setLogin(String email, String password) {
-		user.setEmail(email);
-		user.setPassword(Crypto.hash(password));
-	}
-
-	public void setRegistry(String name, String username, String email, String password) {
-		user.setName(name);
-		user.setUsername(username);
-		user.setEmail(email);
-		user.setPassword(Crypto.hash(password));
-	}
-
-	public String getEmail() {
-		return user.getEmail();
-	}
-
-	public void setEmail(String email) {
-		user.setEmail(email);
+	public void setRegistry(String name, String username, String email, String password,
+			Login.Provider provider) {
+		login = new Login(name, email, username, Crypto.hash(password), provider);
 	}
 
 	public APIException getError() {
@@ -80,5 +63,9 @@ public class LoginViewModel
 
 	public void setError(APIException error) {
 		this.error = error;
+	}
+
+	public void setLogin(Login l) {
+		this.login = l;
 	}
 }

@@ -13,29 +13,30 @@ import java.util.List;
 public class PlaceRepository {
 
 	private final PlaceDAO placeDAO;
-	private final PlayService playService;
-	private final PlacePlayDAO placePlayDAO;
 
+	@SuppressWarnings("unused")
 	PlaceRepository(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
 		placeDAO = database.placeDAO();
-		placePlayDAO = database.playPlaceDAO();
-		playService = PlayService.getInstance();
+		PlacePlayDAO placePlayDAO = database.playPlaceDAO();
+		PlayService playService = PlayService.getInstance();
 	}
 
 	/**
-	 * TODO
+	 * Insert a List of Place into the database
 	 *
-	 * @return
+	 * @param places
+	 * 		places to be inserted
 	 */
 	public void insert(List<Place> places) {
 		for(Place p : places) insert(p);
 	}
 
 	/**
-	 * TODO
+	 * Insert a single Place into the database
 	 *
-	 * @return
+	 * @param place
+	 * 		place to be inserted
 	 */
 	public void insert(Place place) {
 		Place p = placeDAO.getPlace(place.getId());
@@ -46,6 +47,13 @@ public class PlaceRepository {
 		}
 	}
 
+	/**
+	 * Get the list of places, by tour id, from the database
+	 *
+	 * @param tour_id
+	 * 		tour id of the places
+	 * @return the list of places
+	 */
 	public List<Place> getTourPlaces(Integer tour_id) {
 		return placeDAO.getTourPlaces(tour_id);
 
