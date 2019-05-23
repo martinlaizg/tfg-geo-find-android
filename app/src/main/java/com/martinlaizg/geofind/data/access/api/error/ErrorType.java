@@ -14,4 +14,6 @@ public enum ErrorType {
 	@SerializedName("user_id") USER_ID,
 	@SerializedName("exist") EXIST,
 	@SerializedName("completed") COMPLETED,
-	@SerializedName("username") USERNAME}
+	@SerializedName("username") USERNAME,
+	@SerializedName("provider") PROVIDER,
+	@SerializedName("provider_login") PROVIDER_LOGIN,}

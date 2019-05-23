@@ -52,10 +52,6 @@ public class LoginViewModel
 		return u;
 	}
 
-	public void setLogin(String email, String password, Login.Provider provider) {
-		login = new Login(email, Crypto.hash(password), provider);
-	}
-
 	public void setRegistry(String name, String username, String email, String password,
 			Login.Provider provider) {
 		login = new Login(name, email, username, Crypto.hash(password), provider);
@@ -67,5 +63,9 @@ public class LoginViewModel
 
 	public void setError(APIException error) {
 		this.error = error;
+	}
+
+	public void setLogin(Login l) {
+		this.login = l;
 	}
 }

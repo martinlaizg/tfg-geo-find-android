@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,7 +17,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
 
-import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -73,34 +73,37 @@ public class LoginFragment
 	private void handleSignInResult(Task<GoogleSignInAccount> task) {
 		try {
 			GoogleSignInAccount account = task.getResult(ApiException.class);
-
-			// Signed in successfully, show authenticated UI.
 			if(account != null) {
-				viewModel.setLogin(account.getEmail(), account.getIdToken(), Login.Provider.GOOGLE);
+				String email = account.getEmail();
+				String idToken = account.getIdToken();
+				Login l = new Login(email, idToken, Login.Provider.GOOGLE);
+				login(l);
+			} else {
+				Toast.makeText(requireContext(), getString(R.string.wrong_login),
+				               Toast.LENGTH_SHORT).show();
 			}
-			loginWithGoogle(account);
 		} catch(ApiException e) {
-			// The ApiException status code indicates the detailed failure reason.
-			// Please refer to the GoogleSignInStatusCodes class reference for more information.
 			Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
-			loginWithGoogle(null);
+			Toast.makeText(requireContext(), getString(R.string.wrong_login), Toast.LENGTH_SHORT)
+					.show();
 		}
 	}
 
-	private void loginWithGoogle(GoogleSignInAccount account) {
-		if(account != null) {
-			String email = account.getEmail();
-			String idToken = account.getIdToken();
-			viewModel.setLogin(email, idToken, Login.Provider.GOOGLE);
-			viewModel.login().observe(requireActivity(), user -> {
-				if(user == null) {
-					Log.e(TAG, "loginWithGoogle: Error login", viewModel.getError());
-					return;
-				}
-				Log.i(TAG, "loginWithGoogle: email=" + user.getEmail() + ", username=" +
-						user.getUsername());
-			});
-		}
+	private void login(Login l) {
+		viewModel.setLogin(l);
+		viewModel.login().observe(this, user -> {
+			if(user == null) {
+				email_input.setError(getString(R.string.wrong_email_password));
+				password_input.setError(getString(R.string.wrong_email_password));
+				return;
+			}
+			Preferences.setLoggedUser(PreferenceManager.getDefaultSharedPreferences(
+					Objects.requireNonNull(getContext())), user);
+			login_button.setEnabled(true);
+			loading_spinner.setVisibility(View.GONE);
+			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+					.popBackStack();
+		});
 	}
 
 	@Override
@@ -137,7 +140,10 @@ public class LoginFragment
 	public void onStart() {
 		GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(requireContext());
 		if(account != null) {
-			loginWithGoogle(account);
+			String email = account.getEmail();
+			String idToken = account.getIdToken();
+			Login l = new Login(email, idToken, Login.Provider.GOOGLE);
+			login(l);
 		}
 		super.onStart();
 	}
@@ -157,20 +163,7 @@ public class LoginFragment
 
 		String email = email_input.getEditText().getText().toString().trim();
 		String password = password_input.getEditText().getText().toString().trim();
-		viewModel.setLogin(email, password, Login.Provider.OWN);
-		viewModel.login().observe(this, user -> {
-			if(user == null) {
-				email_input.setError(getString(R.string.wrong_email_password));
-				password_input.setError(getString(R.string.wrong_email_password));
-				return;
-			}
-			Credential credential = new Credential.Builder(email).setPassword(password).build();
-			Preferences.setLoggedUser(PreferenceManager.getDefaultSharedPreferences(
-					Objects.requireNonNull(getContext())), user);
-			login_button.setEnabled(true);
-			loading_spinner.setVisibility(View.GONE);
-			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-					.popBackStack();
-		});
+		Login l = new Login(email, password);
+		login(l);
 	}
 }

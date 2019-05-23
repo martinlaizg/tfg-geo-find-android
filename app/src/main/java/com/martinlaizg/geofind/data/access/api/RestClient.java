@@ -50,6 +50,10 @@ public interface RestClient {
 	@POST("login")
 	Call<User> login(@Body Login login);
 
+	// Login user with provider
+	@POST("login/{provider}")
+	Call<User> loginProvider(@Path("provider") String provider, @Body Login login);
+
 	// Create a user
 	@POST("users")
 	Call<User> registry(@Body Login login);
