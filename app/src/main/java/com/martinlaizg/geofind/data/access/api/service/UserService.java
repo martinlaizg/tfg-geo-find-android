@@ -32,18 +32,34 @@ public class UserService {
 		return userService;
 	}
 
+	/**
+	 * Login request
+	 * If login provider is own request to /login
+	 * Otherwise /login/{provider}
+	 * ie: /login/google
+	 *
+	 * @param login login object
+	 * @return the logged user
+	 * @throws APIException api exception
+	 */
 	public User login(Login login) throws APIException {
 		Response<User> response;
 		APIException apiException;
 		try {
-			response = restClient.login(login).execute();
+			if(login.getProvider() == Login.Provider.OWN) {
+				response = restClient.login(login).execute();
+			} else {
+				response = restClient
+						.loginProvider(login.getProvider().toString().toLowerCase(), login)
+						.execute();
+			}
 			if(response.isSuccessful()) {
 				return response.body();
 			}
 			apiException = ErrorUtils.parseError(response);
 		} catch(IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
-			Log.e(TAG, "login: ", e);
+			Log.e(TAG, "loginProvider: ", e);
 		}
 		throw apiException;
 	}

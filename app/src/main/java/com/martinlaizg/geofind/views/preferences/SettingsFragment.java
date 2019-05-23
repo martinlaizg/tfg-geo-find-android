@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -14,6 +16,9 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
@@ -29,6 +34,7 @@ public class SettingsFragment
 	private static final String TAG = SettingsFragment.class.getSimpleName();
 	private AlertDialog dialog;
 	private SettingsViewModel viewModel;
+	private GoogleSignInClient mGoogleSignInClient;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -46,12 +52,26 @@ public class SettingsFragment
 		findPreference("support").setOnPreferenceClickListener(getSupportListener());
 	}
 
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(
+				GoogleSignInOptions.DEFAULT_SIGN_IN)
+				.requestIdToken(getResources().getString(R.string.client_id)).requestEmail()
+				.build();
+		mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
+		return super.onCreateView(inflater, container, savedInstanceState);
+	}
+
 	private Preference.OnPreferenceClickListener getLogOutListener() {
 		return preference -> {
-			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
-			Preferences.logout(sp);
-			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-					.popBackStack();
+			mGoogleSignInClient.signOut().addOnCompleteListener(requireActivity(), task -> {
+				SharedPreferences sp = PreferenceManager
+						.getDefaultSharedPreferences(requireContext());
+				Preferences.logout(sp);
+				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+						.popBackStack();
+			});
 			return true;
 		};
 	}
