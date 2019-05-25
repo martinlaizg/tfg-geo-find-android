@@ -5,7 +5,6 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.martinlaizg.geofind.data.Crypto;
 import com.martinlaizg.geofind.data.access.api.entities.Login;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.User;
@@ -16,7 +15,6 @@ public class LoginViewModel
 		extends AndroidViewModel {
 
 	private final UserRepository userRepo;
-	private Login login;
 	private APIException error;
 
 	public LoginViewModel(Application application) {
@@ -24,7 +22,7 @@ public class LoginViewModel
 		userRepo = RepositoryFactory.getUserRepository(application);
 	}
 
-	public MutableLiveData<User> login() {
+	public MutableLiveData<User> login(Login login) {
 		MutableLiveData<User> u = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
@@ -38,11 +36,11 @@ public class LoginViewModel
 		return u;
 	}
 
-	public MutableLiveData<User> registry() {
+	public MutableLiveData<User> registry(Login registry) {
 		MutableLiveData<User> u = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
-				User user = userRepo.registry(login);
+				User user = userRepo.registry(registry);
 				u.postValue(user);
 			} catch(APIException e) {
 				setError(e);
@@ -50,11 +48,6 @@ public class LoginViewModel
 			}
 		}).start();
 		return u;
-	}
-
-	public void setRegistry(String name, String username, String email, String password,
-			Login.Provider provider) {
-		login = new Login(name, email, username, Crypto.hash(password), provider);
 	}
 
 	public APIException getError() {
@@ -65,7 +58,4 @@ public class LoginViewModel
 		this.error = error;
 	}
 
-	public void setLogin(Login l) {
-		this.login = l;
-	}
 }

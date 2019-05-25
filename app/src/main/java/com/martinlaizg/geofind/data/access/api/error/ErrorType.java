@@ -8,12 +8,14 @@ import com.google.gson.annotations.SerializedName;
 public enum ErrorType {
 	@SerializedName("other") OTHER,
 	@SerializedName("other") NETWORK,
+	@SerializedName("username") USERNAME,
 	@SerializedName("email") EMAIL,
+	@SerializedName("password") PASSWORD,
 	@SerializedName("id") ID,
 	@SerializedName("tour_id") TOUR_ID,
 	@SerializedName("user_id") USER_ID,
 	@SerializedName("exist") EXIST,
 	@SerializedName("completed") COMPLETED,
-	@SerializedName("username") USERNAME,
+	@SerializedName("token") TOKEN,
 	@SerializedName("provider") PROVIDER,
 	@SerializedName("provider_login") PROVIDER_LOGIN,}

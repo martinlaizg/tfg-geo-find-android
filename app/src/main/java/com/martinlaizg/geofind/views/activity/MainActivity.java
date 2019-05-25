@@ -57,29 +57,17 @@ public class MainActivity
 		NavigationUI.setupWithNavController(navigationView, navController);
 		NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
 
-//		loadDatabase();
 	}
-
-//	private void loadDatabase() {
-//		new Thread(() -> {
-//			Log.i(TAG, "loadDatabaseOnStart ");
-//			User user = Preferences.getLoggedUser(sp);
-//			if(user != null && user.getId() > 0) { // is logged
-//				// load user plays
-//				TourRepository tourRepository = RepositoryFactory
-//						.getTourRepository(getApplication());
-//				tourRepository.getToursOnStart(user.getId());
-//				PlayRepository playRepository = RepositoryFactory
-//						.getPlayRepository(getApplication());
-//				playRepository.getPlayOnStart(user.getId());
-//				PlaceRepository placeRepository = RepositoryFactory
-//						.getPlaceRepository(getApplication());
-//			}
-//		}).start();
-//	}
 
 	public void setDrawerHeader(String username, String name) {
 		View headerView = navigationView.getHeaderView(0);
+		if(username == null || name == null) {
+			((TextView) headerView.findViewById(R.id.drawer_header_name))
+					.setText(getString(R.string.your_account));
+			((TextView) headerView.findViewById(R.id.drawer_header_username))
+					.setText(getString(R.string.configure));
+			return;
+		}
 		((TextView) headerView.findViewById(R.id.drawer_header_name)).setText(name);
 		((TextView) headerView.findViewById(R.id.drawer_header_username)).setText(username);
 	}

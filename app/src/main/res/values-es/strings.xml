@@ -55,7 +55,7 @@
     <string name="place_distance">%d m</string>
     <string name="play">Jugar</string>
     <string name="play_tour">Jugar Tour</string>
-    <string name="tour_completeness">Sitios %d/%d</string>
+    <string name="tour_completeness">Sitio %d/%d</string>
     <string name="tour_not_permitted">Tour no permitido</string>
     <string name="compass">Brújula</string>
     <string name="map">Mapa</string>
@@ -77,4 +77,13 @@
     <string name="message_to_support">Mensaje para soporte</string>
     <string name="title">Título</string>
     <string name="send">Enviar</string>
+    <string name="configure">Configurar</string>
+    <string name="email_in_use">El email ya se está usando</string>
+    <string name="email_wrong_format">Email con formato incorrecto</string>
+    <string name="service_provider_problem">Problema con proveedor de  servicio</string>
+    <string name="username_exist">El nombre de usuario está en uso</string>
+    <string name="wrong_email">Email incorrecto</string>
+    <string name="wrong_login">No se ha podido iniciar sesión</string>
+    <string name="wrong_password">Contraseña incorrecta</string>
+    <string name="your_account">Tu cuenta</string>
 </resources>

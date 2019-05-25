@@ -128,8 +128,9 @@ public class TourFragment
 			List<Place> places = tour.getPlaces();
 			adapterCompleted.setPlaces(viewModel.getCompletedPlaces());
 			adapterNoCompleted.setPlaces(viewModel.getNoCompletedPlaces());
-			tour_num_places.setText(
-					getResources().getQuantityString(R.plurals.num_places, places.size()));
+			tour_num_places.setText(getResources()
+					                        .getQuantityString(R.plurals.num_places, places.size(),
+					                                           places.size()));
 
 			play_button.setOnClickListener(v -> alert.show());
 

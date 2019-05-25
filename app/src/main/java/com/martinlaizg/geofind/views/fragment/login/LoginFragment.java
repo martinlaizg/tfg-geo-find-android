@@ -4,14 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
@@ -51,8 +52,9 @@ public class LoginFragment
 	MaterialButton login_button;
 	@BindView(R.id.login_register_button)
 	MaterialButton registry_button;
-	@BindView(R.id.loading_spinner)
-	ProgressBar loading_spinner;
+
+	@BindView(R.id.load_layout)
+	ConstraintLayout load_layout;
 
 	@BindView(R.id.google_sign_in_button)
 	SignInButton google_sign_in_button;
@@ -84,23 +86,39 @@ public class LoginFragment
 			}
 		} catch(ApiException e) {
 			Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
-			Toast.makeText(requireContext(), getString(R.string.wrong_login), Toast.LENGTH_SHORT)
-					.show();
 		}
 	}
 
 	private void login(Login l) {
-		viewModel.setLogin(l);
-		viewModel.login().observe(this, user -> {
+		viewModel.login(l).observe(this, user -> {
+			login_button.setEnabled(true);
+			registry_button.setEnabled(true);
+			load_layout.setVisibility(View.GONE);
+
 			if(user == null) {
-				email_input.setError(getString(R.string.wrong_email_password));
-				password_input.setError(getString(R.string.wrong_email_password));
+				switch(viewModel.getError().getType()) {
+					case TOKEN:
+					case PROVIDER:
+					case PROVIDER_LOGIN:
+						Toast.makeText(requireContext(),
+						               getString(R.string.service_provider_problem),
+						               Toast.LENGTH_SHORT).show();
+						break;
+					case EMAIL:
+						email_input.setError(getString(R.string.wrong_email));
+						break;
+					case PASSWORD:
+						password_input.setError(getString(R.string.wrong_password));
+						break;
+					default:
+						Toast.makeText(requireContext(), getString(R.string.other_error),
+						               Toast.LENGTH_SHORT).show();
+				}
 				return;
 			}
+
 			Preferences.setLoggedUser(PreferenceManager.getDefaultSharedPreferences(
 					Objects.requireNonNull(getContext())), user);
-			login_button.setEnabled(true);
-			loading_spinner.setVisibility(View.GONE);
 			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
 					.popBackStack();
 		});
@@ -150,19 +168,27 @@ public class LoginFragment
 
 	@Override
 	public void onClick(View v) {
-		if(TextUtils.isEmpty(Objects.requireNonNull(email_input.getEditText()).getText())) {
+		String email = Objects.requireNonNull(email_input.getEditText()).getText().toString()
+				.trim();
+		String password = Objects.requireNonNull(password_input.getEditText()).getText().toString()
+				.trim();
+		if(TextUtils.isEmpty(email)) {
 			email_input.setError(getString(R.string.required_email));
+			return;
+		}
+		if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+			email_input.setError(getString(R.string.email_wrong_format));
 			return;
 		}
 		if(TextUtils.isEmpty(Objects.requireNonNull(password_input.getEditText()).getText())) {
 			password_input.setError(getString(R.string.required_password));
 			return;
 		}
-		login_button.setEnabled(false);
-		loading_spinner.setVisibility(View.VISIBLE);
 
-		String email = email_input.getEditText().getText().toString().trim();
-		String password = password_input.getEditText().getText().toString().trim();
+		login_button.setEnabled(false);
+		registry_button.setEnabled(false);
+		load_layout.setVisibility(View.VISIBLE);
+
 		Login l = new Login(email, password);
 		login(l);
 	}

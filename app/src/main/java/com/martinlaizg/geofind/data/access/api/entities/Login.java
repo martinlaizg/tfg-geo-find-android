@@ -11,39 +11,20 @@ public class Login {
 	}
 
 
-	private final String name;
 	private final String email;
-	private final String username;
 	private final String password;
 	private final Provider provider;
 	private final String token;
 
 	/**
-	 * For registry action
+	 * Create login for own login/registry action (with email and password)
 	 *
-	 * @param name     the name
-	 * @param email    the email
-	 * @param username the username
-	 * @param password the password
-	 * @param provider the loginProvider type
-	 */
-	public Login(String name, String email, String username, String password, Provider provider) {
-		this.name = name;
-		this.email = email;
-		this.username = username;
-		this.password = password;
-		this.token = "";
-		this.provider = provider;
-	}
-
-	/**
-	 * Create loginProvider for own loginProvider action
-	 *
-	 * @param email the user email
+	 * @param email
+	 * 		the email
+	 * @param password
+	 * 		the password
 	 */
 	public Login(String email, String password) {
-		this.name = "";
-		this.username = "";
 		this.email = email;
 		this.password = Crypto.hash(password);
 		this.token = "";
@@ -51,15 +32,18 @@ public class Login {
 	}
 
 	/**
-	 * Create loginProvider for provider loginProvider action
+	 * Create login for login/registry action with provider
 	 *
-	 * @param email the user email
+	 * @param email
+	 * 		the user email
+	 * @param token
+	 * 		the user token
+	 * @param provider
+	 * 		the user provider
 	 */
 	public Login(String email, String token, Provider provider) {
-		this.name = "";
-		this.username = "";
-		this.email = email;
 		this.password = "";
+		this.email = email;
 		this.token = token;
 		this.provider = provider;
 	}

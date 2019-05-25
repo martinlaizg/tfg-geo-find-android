@@ -63,7 +63,7 @@
     <string name="tour_not_permitted">Tour not permitted</string>
     <string name="play_tour">Play Tour</string>
     <string name="place_distance">%d m</string>
-    <string name="tour_completeness">Places %d/%d</string>
+    <string name="tour_completeness">Place %d/%d</string>
     <string name="map">Map</string>
     <string name="compass">Compass</string>
     <string name="therm">Therm</string>
@@ -84,7 +84,13 @@
     <string name="title">Title</string>
     <string name="message">Message</string>
     <string name="send">Send</string>
-    <string name="email_exist">Email already exists</string>
+    <string name="email_in_use">Email already in use</string>
     <string name="username_exist">Username already exists</string>
     <string name="wrong_login">We can not loggin</string>
+    <string name="service_provider_problem">Problem with service provider</string>
+    <string name="wrong_email">Wrong email</string>
+    <string name="wrong_password">Wrong password</string>
+    <string name="email_wrong_format">Wrong email format</string>
+    <string name="your_account">Your account</string>
+    <string name="configure">Configure</string>
 </resources>

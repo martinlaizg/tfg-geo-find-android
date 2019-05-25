@@ -1,7 +1,6 @@
 package com.martinlaizg.geofind.views.fragment.login;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.api.entities.Login;
+import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.views.viewmodel.LoginViewModel;
 
 import java.util.Objects;
@@ -29,10 +29,6 @@ public class RegistryFragment
 
 	private static final String TAG = RegistryFragment.class.getSimpleName();
 
-	@BindView(R.id.name_input)
-	TextInputLayout name_input;
-	@BindView(R.id.username_input)
-	TextInputLayout username_input;
 	@BindView(R.id.email_input)
 	TextInputLayout email_input;
 	@BindView(R.id.password_input)
@@ -60,64 +56,42 @@ public class RegistryFragment
 	}
 
 	private void registry() {
+
+		final String email = Objects.requireNonNull(email_input.getEditText()).getText().toString()
+				.trim();
+		final String password = Objects.requireNonNull(password_input.getEditText()).getText()
+				.toString().trim();
+		final String c_password = Objects.requireNonNull(c_password_input.getEditText()).getText()
+				.toString().trim();
+
 		btn_registry.setEnabled(false);
-		try {
-			if(Objects.requireNonNull(name_input.getEditText()).getText().toString().trim()
-					.isEmpty()) {
-				name_input.setError(getString(R.string.required_name));
-				return;
-			}
-			if(Objects.requireNonNull(username_input.getEditText()).getText().toString().trim()
-					.isEmpty()) {
-				username_input.setError(getString(R.string.required_username));
-				return;
-			}
-			if(Objects.requireNonNull(email_input.getEditText()).getText().toString().trim()
-					.isEmpty()) {
-				email_input.setError(getString(R.string.required_password));
-				return;
-			}
-			String password = Objects.requireNonNull(password_input.getEditText()).getText()
-					.toString().trim();
-			if(password.isEmpty()) {
-				password_input.setError(getString(R.string.required_verify_password));
-				return;
-			}
-			final String c_password = Objects.requireNonNull(c_password_input.getEditText())
-					.getText().toString().trim();
-			if(c_password.isEmpty()) {
-				password_input.setError(getString(R.string.required_verify_password));
-				return;
-			}
-			if(!c_password.equals(password)) {
-				password_input.setError(getString(R.string.password_does_not_match));
-				return;
-			}
-		} catch(NullPointerException ex) {
-			Log.e(TAG, "registry: ", ex);
+		if(Objects.requireNonNull(email_input.getEditText()).getText().toString().trim()
+				.isEmpty()) {
+			email_input.setError(getString(R.string.required_password));
+			return;
+		}
+		if(password.isEmpty()) {
+			password_input.setError(getString(R.string.required_verify_password));
+			return;
+		}
+		if(c_password.isEmpty()) {
+			c_password_input.setError(getString(R.string.required_verify_password));
+			return;
+		}
+		if(!c_password.equals(password)) {
+			c_password_input.setError(getString(R.string.password_does_not_match));
+			return;
 		}
 
-		String name = Objects.requireNonNull(name_input.getEditText()).getText().toString().trim();
-		String username = Objects.requireNonNull(username_input.getEditText()).getText().toString()
-				.trim();
-		String email = Objects.requireNonNull(email_input.getEditText()).getText().toString()
-				.trim();
-		String password = Objects.requireNonNull(password_input.getEditText()).getText().toString()
-				.trim();
-		viewModel.setRegistry(name, username, email, password, Login.Provider.OWN);
-		viewModel.registry().observe(this, (user) -> {
+		Login l = new Login(email, password);
+		viewModel.registry(l).observe(this, (user) -> {
 			btn_registry.setEnabled(true);
 			if(user == null) {
-				switch(viewModel.getError().getType()) {
-					case EMAIL:
-						email_input.setError(getString(R.string.email_exist));
-						break;
-					case USERNAME:
-						username_input.setError(getString(R.string.username_exist));
-						break;
-					default:
-						Toast.makeText(requireContext(), getString(R.string.other_error),
-						               Toast.LENGTH_SHORT).show();
+				if(viewModel.getError().getType() == ErrorType.EMAIL) {
+					email_input.setError(getString(R.string.email_in_use));
+				} else {
+					Toast.makeText(requireContext(), getString(R.string.other_error),
+					               Toast.LENGTH_SHORT).show();
 				}
 				return;
 			}
