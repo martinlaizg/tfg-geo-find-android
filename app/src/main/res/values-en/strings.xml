@@ -5,7 +5,7 @@
     <string name="add_place">Add place</string>
     <string name="alert_text_no_place_selected">You need to select a place on map</string>
     <string name="app_logo_description">App logo</string>
-    <string name="confirm_password_input">Confirm password</string>
+    <string name="confirm_password">Confirm password</string>
     <string name="create_account">Create account</string>
     <string name="create_place">Create place</string>
     <string name="remove_place">Remove place</string>
@@ -86,4 +86,12 @@
     <string name="email_wrong_format">Wrong email format</string>
     <string name="your_account">Your account</string>
     <string name="configure">Configure</string>
+    <string name="support">Support</string>
+    <string name="save">Save</string>
+    <string name="change_password">Change password</string>
+    <string name="change_image">Change image</string>
+    <string name="cancel">Cancel</string>
+    <string name="change">Change</string>
+    <string name="user_saved">User saved</string>
+    <string name="new_password">New password</string>
 </resources>

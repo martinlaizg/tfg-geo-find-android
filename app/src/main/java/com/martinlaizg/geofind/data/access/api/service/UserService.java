@@ -96,4 +96,22 @@ public class UserService {
 			throw apiException;
 		}
 	}
+
+	public User update(Login login, User user, boolean isChangePassword) throws APIException {
+		Response<User> response;
+		APIException apiException;
+		try {
+			response = isChangePassword ?
+					restClient.changeUserPassword(user.getId(), login, user).execute() :
+					restClient.updateUser(user.getId(), login, user).execute();
+			if(response.isSuccessful()) {
+				return response.body();
+			}
+			throw ErrorUtils.parseError(response);
+		} catch(IOException e) {
+			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
+			Log.e(TAG, "registry: ", e);
+			throw apiException;
+		}
+	}
 }

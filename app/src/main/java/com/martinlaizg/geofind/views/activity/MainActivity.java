@@ -57,6 +57,8 @@ public class MainActivity
 		NavigationUI.setupWithNavController(navigationView, navController);
 		NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
 
+		PreferenceManager.setDefaultValues(this, R.xml.app_preferences, false);
+
 	}
 
 	public void setDrawerHeader(String username, String name) {

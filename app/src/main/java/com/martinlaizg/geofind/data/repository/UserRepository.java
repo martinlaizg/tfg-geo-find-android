@@ -96,4 +96,22 @@ public class UserRepository {
 	public boolean sendMessage(String title, String message) throws APIException {
 		return userService.sendMessage(title, message);
 	}
+
+	/**
+	 * Update the user on the server
+	 *
+	 * @param login
+	 * 		the user login
+	 * @param user
+	 * 		the new user data
+	 * @param isChangePassword
+	 * 		if is request for change password
+	 * @return the new User
+	 * @throws APIException
+	 * 		the API exception
+	 */
+	public User updateUser(Login login, User user, boolean isChangePassword) throws APIException {
+		userService.update(login, user, isChangePassword);
+		return null;
+	}
 }

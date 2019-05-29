@@ -7,7 +7,7 @@
     <string name="add_place">Añadir sitio</string>
     <string name="alert_text_no_place_selected">Necesitas seleccionar un sitio en el mapa</string>
     <string name="app_logo_description">Logo de la aplicación</string>
-    <string name="confirm_password_input">Confirma contraseña</string>
+    <string name="confirm_password">Confirma contraseña</string>
     <string name="create_account">Crear cuenta</string>
     <string name="create_place">Crear sitio</string>
     <string name="create_tour">Crear tour</string>
@@ -86,4 +86,5 @@
     <string name="wrong_login">No se ha podido iniciar sesión</string>
     <string name="wrong_password">Contraseña incorrecta</string>
     <string name="your_account">Tu cuenta</string>
+    <string name="support">Soporte</string>
 </resources>

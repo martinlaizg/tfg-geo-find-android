@@ -1,6 +1,7 @@
 package com.martinlaizg.geofind.views.fragment.login;
 
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -18,12 +19,17 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
 
+import com.google.android.gms.auth.api.credentials.Credential;
+import com.google.android.gms.auth.api.credentials.Credentials;
+import com.google.android.gms.auth.api.credentials.CredentialsClient;
+import com.google.android.gms.auth.api.credentials.CredentialsOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -37,12 +43,15 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.app.Activity.RESULT_OK;
+
 public class LoginFragment
 		extends Fragment
 		implements View.OnClickListener {
 
 	private static final String TAG = LoginFragment.class.getSimpleName();
 	private static final int RC_SIGN_IN = 0;
+	private static final int RC_SAVE = 1;
 
 	@BindView(R.id.email_input)
 	TextInputLayout email_input;
@@ -60,6 +69,7 @@ public class LoginFragment
 	SignInButton google_sign_in_button;
 
 	private LoginViewModel viewModel;
+	private CredentialsClient mCredentialsClient;
 	private GoogleSignInClient mGoogleSignInClient;
 
 	@Override
@@ -68,6 +78,14 @@ public class LoginFragment
 			Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 			handleSignInResult(task);
 			return;
+		}
+		if(requestCode == RC_SAVE) {
+			if(resultCode == RESULT_OK) {
+				Log.d(TAG, "SAVE: OK");
+				Toast.makeText(requireContext(), "Credentials saved", Toast.LENGTH_SHORT).show();
+			} else {
+				Log.e(TAG, "SAVE: Canceled by user");
+			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
@@ -132,11 +150,18 @@ public class LoginFragment
 
 		google_sign_in_button.setSize(SignInButton.SIZE_STANDARD);
 		google_sign_in_button.setOnClickListener((v) -> googleSignIn());
+
+		// Google SignIn Button
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(
 				GoogleSignInOptions.DEFAULT_SIGN_IN)
 				.requestIdToken(getResources().getString(R.string.client_id)).requestEmail()
 				.build();
 		mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
+
+		// Google SmartLock
+		CredentialsOptions options = new CredentialsOptions.Builder().forceEnableSaveDialog()
+				.build();
+		mCredentialsClient = Credentials.getClient(requireActivity(), options);
 		return view;
 	}
 
@@ -188,6 +213,32 @@ public class LoginFragment
 		login_button.setEnabled(false);
 		registry_button.setEnabled(false);
 		load_layout.setVisibility(View.VISIBLE);
+
+		Credential credential = new Credential.Builder(email).setPassword(password).build();
+		mCredentialsClient.save(credential).addOnCompleteListener(task -> {
+			if(task.isSuccessful()) {
+				Log.d(TAG, "SAVE: OK");
+				Toast.makeText(requireContext(), "Credentials saved", Toast.LENGTH_SHORT).show();
+				return;
+			}
+
+			Exception e = task.getException();
+			if(e instanceof ResolvableApiException) {
+				// Try to resolve the save request. This will prompt the user if
+				// the credential is new.
+				ResolvableApiException rae = (ResolvableApiException) e;
+				try {
+					rae.startResolutionForResult(requireActivity(), RC_SAVE);
+				} catch(IntentSender.SendIntentException ex) {
+					// Could not resolve the request
+					Log.e(TAG, "Failed to send resolution.", ex);
+					Toast.makeText(requireContext(), "Save failed", Toast.LENGTH_SHORT).show();
+				}
+			} else {
+				// Request has no resolution
+				Toast.makeText(requireContext(), "Save failed", Toast.LENGTH_SHORT).show();
+			}
+		});
 
 		Login l = new Login(email, password);
 		login(l);

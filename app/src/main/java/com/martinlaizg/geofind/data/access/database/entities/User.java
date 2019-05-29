@@ -29,6 +29,7 @@ public class User {
 
 	@Ignore
 	private String password;
+
 	@Ignore
 	private List<Place> createdPlaces;
 
