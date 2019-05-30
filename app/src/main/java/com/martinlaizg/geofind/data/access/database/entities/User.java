@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.martinlaizg.geofind.data.Crypto;
 import com.martinlaizg.geofind.data.enums.UserType;
 import com.martinlaizg.geofind.utils.DateUtils;
 
@@ -82,7 +83,7 @@ public class User {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = Crypto.hash(password);
 	}
 
 	public UserType getUser_type() {

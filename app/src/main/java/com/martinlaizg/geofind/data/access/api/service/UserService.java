@@ -38,11 +38,9 @@ public class UserService {
 	 * ie: /login/own
 	 * ie: /login/google
 	 *
-	 * @param login
-	 * 		login object
+	 * @param login login object
 	 * @return the logged user
-	 * @throws APIException
-	 * 		api exception
+	 * @throws APIException api exception
 	 */
 	public User login(Login login) throws APIException {
 		Response<User> response;
@@ -101,9 +99,10 @@ public class UserService {
 		Response<User> response;
 		APIException apiException;
 		try {
+			login.setUser(user);
 			response = isChangePassword ?
-					restClient.changeUserPassword(user.getId(), login, user).execute() :
-					restClient.updateUser(user.getId(), login, user).execute();
+					restClient.changeUserPassword(user.getId(), login).execute() :
+					restClient.updateUser(user.getId(), login).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}

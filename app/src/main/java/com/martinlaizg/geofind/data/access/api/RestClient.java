@@ -12,10 +12,8 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
 
@@ -76,12 +74,9 @@ public interface RestClient {
 	@POST("support")
 	Call<Void> sendSupportMessage(@QueryMap Map<String, String> params);
 
-	@Multipart
-	@PUT("users/:user_id/password")
-	Call<User> changeUserPassword(@Path("user_id") Integer user_id, @Part Login login,
-			@Part User user);
+	@PUT("users/{user_id}/password")
+	Call<User> changeUserPassword(@Path("user_id") Integer user_id, @Body Login login);
 
-	@Multipart
-	@PUT("users/:user_id")
-	Call<User> updateUser(@Path("user_id") Integer user_id, @Part Login login, @Part User user);
+	@PUT("users/{user_id}")
+	Call<User> updateUser(@Path("user_id") Integer user_id, @Body Login login);
 }

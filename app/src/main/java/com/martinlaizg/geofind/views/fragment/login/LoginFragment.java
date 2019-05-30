@@ -2,6 +2,7 @@ package com.martinlaizg.geofind.views.fragment.login;
 
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -107,12 +108,11 @@ public class LoginFragment
 		}
 	}
 
-	private void login(Login l) {
-		viewModel.login(l).observe(this, user -> {
+	private void login(Login login) {
+		viewModel.login(login).observe(this, user -> {
 			login_button.setEnabled(true);
 			registry_button.setEnabled(true);
 			load_layout.setVisibility(View.GONE);
-
 			if(user == null) {
 				switch(viewModel.getError().getType()) {
 					case TOKEN:
@@ -135,8 +135,10 @@ public class LoginFragment
 				return;
 			}
 
-			Preferences.setLoggedUser(PreferenceManager.getDefaultSharedPreferences(
-					Objects.requireNonNull(getContext())), user);
+			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
+			Preferences.setLoggedUser(sp, user);
+			Preferences.setLogin(sp, login);
+
 			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
 					.popBackStack();
 		});

@@ -62,12 +62,12 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/password"
+                android:hint="@string/secure"
                 android:inputType="textPassword"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Confirm password input -->
+        <!-- Confirm secure input -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/c_password_input"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

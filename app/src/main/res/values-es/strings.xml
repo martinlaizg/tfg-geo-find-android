@@ -24,7 +24,7 @@
     <string name="next">Siguiente</string>
     <string name="no_places">No hay sitios</string>
     <string name="other_error">Otro error</string>
-    <string name="password">Contraseña</string>
+    <string name="secure">Contraseña</string>
     <string name="password_does_not_match">La contraseña no coincide</string>
     <string name="place">Sitio</string>
     <string name="place_image">Imagen del sitio</string>

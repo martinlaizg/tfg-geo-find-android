@@ -19,6 +19,7 @@ import androidx.navigation.Navigation;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.config.Preferences;
+import com.martinlaizg.geofind.data.access.api.entities.Login;
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.views.viewmodel.EditProfileViewModel;
@@ -43,8 +44,8 @@ public class EditProfileFragment
 	@BindView(R.id.save_button)
 	MaterialButton save_button;
 
-	@BindView(R.id.password_input)
-	TextInputLayout password_input;
+	@BindView(R.id.new_password_input)
+	TextInputLayout new_password_input;
 	@BindView(R.id.change_password_button)
 	MaterialButton change_password_button;
 
@@ -52,6 +53,7 @@ public class EditProfileFragment
 
 	private SharedPreferences sp;
 	private User user;
+	private Login login;
 	private EditProfileViewModel viewModel;
 	private AlertDialog.Builder password_dialog_builder;
 
@@ -66,9 +68,9 @@ public class EditProfileFragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
 		sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
-		user = Preferences.getLoggedUser(sp);
+		fillUserData();
+
 		viewModel = ViewModelProviders.of(this).get(EditProfileViewModel.class);
 
 		// Password confirm dialog
@@ -91,6 +93,19 @@ public class EditProfileFragment
 		});
 	}
 
+	private void fillUserData() {
+		user = Preferences.getLoggedUser(sp);
+		if(user.getName() != null) {
+			Objects.requireNonNull(name_input.getEditText()).setText(user.getName());
+		}
+		if(user.getUsername() != null) {
+			Objects.requireNonNull(username_input.getEditText()).setText(user.getUsername());
+		}
+		if(user.getEmail() != null) {
+			Objects.requireNonNull(email_input.getEditText()).setText(user.getEmail());
+		}
+	}
+
 	private void saveUser() {
 		String name = Objects.requireNonNull(name_input.getEditText()).getText().toString().trim();
 		String username = Objects.requireNonNull(username_input.getEditText()).getText().toString()
@@ -101,35 +116,37 @@ public class EditProfileFragment
 				.toString().trim();
 
 		user = Preferences.getLoggedUser(sp);
+		login = Preferences.getLogin(sp);
 		user.setName(name);
 		user.setUsername(username);
 		user.setEmail(email);
 		user.setPassword(password);
 
-		updateUser(user, false);
+		updateUser(false);
 	}
 
 	private void changeUserPassword() {
-		password_input.setError("");
-		String password = Objects.requireNonNull(password_input.getEditText()).getText().toString()
-				.trim();
+		new_password_input.setError("");
+		String password = Objects.requireNonNull(new_password_input.getEditText()).getText()
+				.toString().trim();
 		String c_password = Objects.requireNonNull(confirm_password_input.getEditText()).getText()
 				.toString().trim();
 
 		if(!password.equals(c_password)) {
-			password_input.setError(getString(R.string.password_does_not_match));
+			new_password_input.setError(getString(R.string.password_does_not_match));
 			confirm_password_input.getEditText().setText("");
 			return;
 		}
 
 		user = Preferences.getLoggedUser(sp);
+		login = Preferences.getLogin(sp);
 		user.setPassword(password);
 
-		updateUser(user, true);
+		updateUser(true);
 	}
 
-	private void updateUser(User user, boolean isChangePassword) {
-		viewModel.updateUser(user, isChangePassword).observe(requireActivity(), u -> {
+	private void updateUser(boolean isChangePassword) {
+		viewModel.updateUser(login, user, isChangePassword).observe(requireActivity(), u -> {
 			if(u == null) {
 				ErrorType error = viewModel.getError().getType();
 				Toast.makeText(requireContext(), "Algo ha ido mal " + error.toString(),
