@@ -3,6 +3,7 @@ package com.martinlaizg.geofind.views.activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import androidx.preference.PreferenceManager;
 
 import com.google.android.material.navigation.NavigationView;
 import com.martinlaizg.geofind.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -36,8 +38,6 @@ public class MainActivity
 	@BindView(R.id.drawer_nav_view)
 	NavigationView navigationView;
 
-	NavController navController;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,7 +45,7 @@ public class MainActivity
 		ButterKnife.bind(MainActivity.this);
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 
-		navController = Navigation.findNavController(this, R.id.main_fragment_holder);
+		NavController navController = Navigation.findNavController(this, R.id.main_fragment_holder);
 
 		Set<Integer> topLevelDestinations = new HashSet<>();
 		topLevelDestinations.add(R.id.navMain);
@@ -61,7 +61,7 @@ public class MainActivity
 
 	}
 
-	public void setDrawerHeader(String username, String name) {
+	public void setDrawerHeader(String username, String name, String image) {
 		View headerView = navigationView.getHeaderView(0);
 		if(username == null || name == null) {
 			((TextView) headerView.findViewById(R.id.drawer_header_name))
@@ -72,6 +72,11 @@ public class MainActivity
 		}
 		((TextView) headerView.findViewById(R.id.drawer_header_name)).setText(name);
 		((TextView) headerView.findViewById(R.id.drawer_header_username)).setText(username);
+
+		if(image != null && !image.isEmpty()) {
+			ImageView imageView = headerView.findViewById(R.id.drawer_user_image);
+			Picasso.with(getApplicationContext()).load(image).into(imageView);
+		}
 	}
 
 	public void disableToolbarAndDrawer(boolean visibility) {

@@ -100,7 +100,7 @@ public class CreatorViewModel
 		return error;
 	}
 
-	public void setError(APIException error) {
+	private void setError(APIException error) {
 		this.error = error;
 	}
 

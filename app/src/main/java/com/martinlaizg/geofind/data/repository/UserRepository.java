@@ -23,9 +23,11 @@ public class UserRepository {
 	/**
 	 * Login a user
 	 *
-	 * @param login login data to login (email and password only)
+	 * @param login
+	 * 		login data to login (email and password only)
 	 * @return the logged user
-	 * @throws APIException exception from API
+	 * @throws APIException
+	 * 		exception from API
 	 */
 	public User login(Login login) throws APIException {
 		User user = userService.login(login);
@@ -38,9 +40,11 @@ public class UserRepository {
 	/**
 	 * Registry a user
 	 *
-	 * @param login login data to be registered (email, username and password only)
+	 * @param login
+	 * 		login data to be registered (email, username and password only)
 	 * @return the user registered
-	 * @throws APIException exception from API
+	 * @throws APIException
+	 * 		exception from API
 	 */
 	public User registry(Login login) throws APIException {
 		User user = userService.registry(login);
@@ -53,7 +57,8 @@ public class UserRepository {
 	/**
 	 * Insert a user into the database
 	 *
-	 * @param user user to be inserted
+	 * @param user
+	 * 		user to be inserted
 	 */
 	public void insert(User user) {
 		if(user != null) {
@@ -69,7 +74,8 @@ public class UserRepository {
 	/**
 	 * Get a user from database
 	 *
-	 * @param user_id id of the user
+	 * @param user_id
+	 * 		id of the user
 	 * @return the user
 	 */
 	public User getUser(int user_id) {
@@ -79,10 +85,13 @@ public class UserRepository {
 	/**
 	 * Send message to support
 	 *
-	 * @param title   the title
-	 * @param message the message
+	 * @param title
+	 * 		the title
+	 * @param message
+	 * 		the message
 	 * @return the response
-	 * @throws APIException the exception
+	 * @throws APIException
+	 * 		the exception
 	 */
 	public boolean sendMessage(String title, String message) throws APIException {
 		return userService.sendMessage(title, message);
@@ -91,14 +100,16 @@ public class UserRepository {
 	/**
 	 * Update the user on the server
 	 *
-	 * @param login            the user login
-	 * @param user             the new user data
-	 * @param isChangePassword if is request for change password
+	 * @param login
+	 * 		the user login
+	 * @param user
+	 * 		the new user data
 	 * @return the new User
-	 * @throws APIException the API exception
+	 * @throws APIException
+	 * 		the API exception
 	 */
-	public User updateUser(Login login, User user, boolean isChangePassword) throws APIException {
-		User u = userService.update(login, user, isChangePassword);
+	public User updateUser(Login login, User user) throws APIException {
+		User u = userService.update(login, user);
 		userDAO.insert(u);
 		return u;
 	}

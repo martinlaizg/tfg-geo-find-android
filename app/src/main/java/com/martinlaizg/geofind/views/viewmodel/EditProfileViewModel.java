@@ -22,11 +22,11 @@ public class EditProfileViewModel
 		userRepo = RepositoryFactory.getUserRepository(application);
 	}
 
-	public MutableLiveData<User> updateUser(Login login, User user, boolean isChangePassword) {
+	public MutableLiveData<User> updateUser(Login login, User user) {
 		MutableLiveData<User> u = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
-				u.postValue(userRepo.updateUser(login, user, isChangePassword));
+				u.postValue(userRepo.updateUser(login, user));
 			} catch(APIException e) {
 				setError(e);
 				u.postValue(null);
@@ -39,7 +39,7 @@ public class EditProfileViewModel
 		return error;
 	}
 
-	public void setError(APIException error) {
+	private void setError(APIException error) {
 		this.error = error;
 	}
 

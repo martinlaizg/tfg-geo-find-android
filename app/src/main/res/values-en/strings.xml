@@ -10,9 +10,7 @@
     <string name="create_place">Create place</string>
     <string name="remove_place">Remove place</string>
     <string name="about">"Developed by "</string>
-    <string name="email_error">Email error</string>
     <string name="email">Email</string>
-    <string name="id_error">ID error</string>
     <string name="edit">Edit</string>
     <string name="log_out">Log out</string>
     <string name="login">Log in</string>
@@ -22,7 +20,6 @@
     <string name="network_error">Network error</string>
     <string name="description">Description</string>
     <string name="next">Next</string>
-    <string name="new_in_geofind">New on GeoFind?</string>
     <string name="no_places">There\'s no places</string>
     <string name="other_error">Other error</string>
     <string name="secure">Password</string>
@@ -35,7 +32,6 @@
     <string name="required_email">Required email</string>
     <string name="required_name">Required name</string>
     <string name="required_password">Required secure</string>
-    <string name="required_username">Required username</string>
     <string name="required_verify_password">Required verify secure</string>
     <string name="select_min_difficulty">Select minimum difficulty</string>
     <string name="settings">Settings</string>
@@ -48,7 +44,6 @@
     <string name="update_tour">Update tour</string>
     <string name="user_image">User image</string>
     <string name="username">Username</string>
-    <string name="wrong_email_password">Wrong email or secure</string>
     <string name="text_too_long">Text too long</string>
     <string name="rejected_location_access">Refused permission to location</string>
     <string name="home">Home</string>
@@ -78,7 +73,6 @@
     <string name="message">Message</string>
     <string name="send">Send</string>
     <string name="email_in_use">Email already in use</string>
-    <string name="username_exist">Username already exists</string>
     <string name="wrong_login">We can not loggin</string>
     <string name="service_provider_problem">Problem with service provider</string>
     <string name="wrong_email">Wrong email</string>
@@ -86,12 +80,14 @@
     <string name="email_wrong_format">Wrong email format</string>
     <string name="your_account">Your account</string>
     <string name="configure">Configure</string>
-    <string name="support">Support</string>
     <string name="save">Save</string>
-    <string name="change_password">Change secure</string>
+    <string name="change_password">Change password</string>
     <string name="change_image">Change image</string>
-    <string name="cancel">Cancel</string>
     <string name="change">Change</string>
     <string name="user_saved">User saved</string>
-    <string name="new_password">New secure</string>
+    <string name="new_password">New password</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="profile">Profile</string>
+    <string name="old_password">Old password</string>
+    <string name="work_in_progress">Work in progress</string>
 </resources>

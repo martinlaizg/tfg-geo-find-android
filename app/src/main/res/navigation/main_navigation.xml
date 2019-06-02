@@ -8,7 +8,7 @@
         android:id="@+id/navMain"
         android:name="com.martinlaizg.geofind.views.fragment.MainFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_main"></fragment>
+        tools:layout="@layout/fragment_main" />
     <fragment
         android:id="@+id/navCreatePlace"
         android:name="com.martinlaizg.geofind.views.fragment.creator.CreatePlaceFragment"
@@ -232,7 +232,7 @@
     <fragment
         android:id="@+id/editProfileFragment"
         android:name="com.martinlaizg.geofind.EditProfileFragment"
-        android:label="fragment_edit_profile"
+        android:label="@string/profile"
         tools:layout="@layout/fragment_edit_profile" />
 
     <action

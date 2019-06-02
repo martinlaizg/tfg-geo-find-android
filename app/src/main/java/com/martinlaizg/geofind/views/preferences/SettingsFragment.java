@@ -31,6 +31,7 @@ import java.util.Objects;
 public class SettingsFragment
 		extends PreferenceFragmentCompat {
 
+	// TODO refactor
 	private static final String TAG = SettingsFragment.class.getSimpleName();
 	private AlertDialog dialog;
 	private SettingsViewModel viewModel;

@@ -18,4 +18,5 @@ public enum ErrorType {
 	@SerializedName("completed") COMPLETED,
 	@SerializedName("token") TOKEN,
 	@SerializedName("provider") PROVIDER,
-	@SerializedName("provider_login") PROVIDER_LOGIN,}
+	@SerializedName("provider_login") PROVIDER_LOGIN,
+	@SerializedName("secure") SECURE,}

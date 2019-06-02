@@ -38,16 +38,17 @@ public class UserService {
 	 * ie: /login/own
 	 * ie: /login/google
 	 *
-	 * @param login login object
+	 * @param login
+	 * 		login object
 	 * @return the logged user
-	 * @throws APIException api exception
+	 * @throws APIException
+	 * 		api exception
 	 */
 	public User login(Login login) throws APIException {
 		Response<User> response;
 		APIException apiException;
 		try {
-			response = restClient.login(login.getProvider().toString().toLowerCase(), login)
-					.execute();
+			response = restClient.login(login).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}
@@ -95,14 +96,12 @@ public class UserService {
 		}
 	}
 
-	public User update(Login login, User user, boolean isChangePassword) throws APIException {
+	public User update(Login login, User user) throws APIException {
 		Response<User> response;
 		APIException apiException;
 		try {
 			login.setUser(user);
-			response = isChangePassword ?
-					restClient.changeUserPassword(user.getId(), login).execute() :
-					restClient.updateUser(user.getId(), login).execute();
+			response = restClient.updateUser(user.getId(), login).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}

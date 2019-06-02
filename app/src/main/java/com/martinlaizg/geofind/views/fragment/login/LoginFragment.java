@@ -1,7 +1,7 @@
 package com.martinlaizg.geofind.views.fragment.login;
 
+import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,6 +10,7 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,7 +21,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
 
-import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.gms.auth.api.credentials.Credentials;
 import com.google.android.gms.auth.api.credentials.CredentialsClient;
 import com.google.android.gms.auth.api.credentials.CredentialsOptions;
@@ -30,12 +30,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
+import com.martinlaizg.geofind.data.Crypto;
 import com.martinlaizg.geofind.data.access.api.entities.Login;
 import com.martinlaizg.geofind.views.viewmodel.LoginViewModel;
 
@@ -43,8 +43,6 @@ import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static android.app.Activity.RESULT_OK;
 
 public class LoginFragment
 		extends Fragment
@@ -72,6 +70,7 @@ public class LoginFragment
 	private LoginViewModel viewModel;
 	private CredentialsClient mCredentialsClient;
 	private GoogleSignInClient mGoogleSignInClient;
+	private String sub;
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -79,14 +78,6 @@ public class LoginFragment
 			Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 			handleSignInResult(task);
 			return;
-		}
-		if(requestCode == RC_SAVE) {
-			if(resultCode == RESULT_OK) {
-				Log.d(TAG, "SAVE: OK");
-				Toast.makeText(requireContext(), "Credentials saved", Toast.LENGTH_SHORT).show();
-			} else {
-				Log.e(TAG, "SAVE: Canceled by user");
-			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
@@ -97,6 +88,7 @@ public class LoginFragment
 			if(account != null) {
 				String email = account.getEmail();
 				String idToken = account.getIdToken();
+				sub = account.getId();
 				Login l = new Login(email, idToken, Login.Provider.GOOGLE);
 				login(l);
 			} else {
@@ -104,6 +96,7 @@ public class LoginFragment
 				               Toast.LENGTH_SHORT).show();
 			}
 		} catch(ApiException e) {
+
 			Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
 		}
 	}
@@ -128,6 +121,8 @@ public class LoginFragment
 					case PASSWORD:
 						password_input.setError(getString(R.string.wrong_password));
 						break;
+					case SECURE:
+						break;
 					default:
 						Toast.makeText(requireContext(), getString(R.string.other_error),
 						               Toast.LENGTH_SHORT).show();
@@ -137,6 +132,7 @@ public class LoginFragment
 
 			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
 			Preferences.setLoggedUser(sp, user);
+			if(login.getProvider() != Login.Provider.OWN) login.setSecure(sub);
 			Preferences.setLogin(sp, login);
 
 			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
@@ -176,6 +172,7 @@ public class LoginFragment
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+
 		login_button.setOnClickListener(this);
 		registry_button
 				.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toRegistry));
@@ -195,6 +192,16 @@ public class LoginFragment
 
 	@Override
 	public void onClick(View v) {
+		InputMethodManager inputManager = (InputMethodManager) requireActivity()
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+		inputManager.hideSoftInputFromWindow(
+				Objects.requireNonNull(requireActivity().getCurrentFocus()).getWindowToken(),
+				InputMethodManager.HIDE_NOT_ALWAYS);
+
+		email_input.clearFocus();
+		password_input.clearFocus();
+
 		String email = Objects.requireNonNull(email_input.getEditText()).getText().toString()
 				.trim();
 		String password = Objects.requireNonNull(password_input.getEditText()).getText().toString()
@@ -216,33 +223,7 @@ public class LoginFragment
 		registry_button.setEnabled(false);
 		load_layout.setVisibility(View.VISIBLE);
 
-		Credential credential = new Credential.Builder(email).setPassword(password).build();
-		mCredentialsClient.save(credential).addOnCompleteListener(task -> {
-			if(task.isSuccessful()) {
-				Log.d(TAG, "SAVE: OK");
-				Toast.makeText(requireContext(), "Credentials saved", Toast.LENGTH_SHORT).show();
-				return;
-			}
-
-			Exception e = task.getException();
-			if(e instanceof ResolvableApiException) {
-				// Try to resolve the save request. This will prompt the user if
-				// the credential is new.
-				ResolvableApiException rae = (ResolvableApiException) e;
-				try {
-					rae.startResolutionForResult(requireActivity(), RC_SAVE);
-				} catch(IntentSender.SendIntentException ex) {
-					// Could not resolve the request
-					Log.e(TAG, "Failed to send resolution.", ex);
-					Toast.makeText(requireContext(), "Save failed", Toast.LENGTH_SHORT).show();
-				}
-			} else {
-				// Request has no resolution
-				Toast.makeText(requireContext(), "Save failed", Toast.LENGTH_SHORT).show();
-			}
-		});
-
-		Login l = new Login(email, password);
+		Login l = new Login(email, Crypto.hash(password));
 		login(l);
 	}
 }

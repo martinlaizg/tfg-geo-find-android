@@ -8,8 +8,6 @@ import androidx.room.Update;
 
 import com.martinlaizg.geofind.data.access.database.entities.User;
 
-import java.util.List;
-
 @Dao
 public interface UserDAO {
 

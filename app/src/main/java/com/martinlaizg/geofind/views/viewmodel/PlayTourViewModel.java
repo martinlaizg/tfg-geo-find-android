@@ -10,7 +10,6 @@ import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Play;
-import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.repository.PlayRepository;
 import com.martinlaizg.geofind.data.repository.RepositoryFactory;
 
@@ -56,7 +55,7 @@ public class PlayTourViewModel
 		return error;
 	}
 
-	public void setError(APIException error) {
+	private void setError(APIException error) {
 		this.error = error;
 	}
 

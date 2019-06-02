@@ -86,7 +86,7 @@ public class PlayMapFragment
 		return TAG;
 	}
 
-	protected void updateView() {
+	void updateView() {
 
 		if(googleMap != null && usrLocation != null) {
 
