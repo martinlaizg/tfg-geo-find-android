@@ -229,4 +229,13 @@
         android:name="com.martinlaizg.geofind.views.fragment.play.PlayThermFragment"
         android:label="@string/play_therm"
         tools:layout="@layout/fragment_play_therm" />
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.martinlaizg.geofind.EditProfileFragment"
+        android:label="@string/profile"
+        tools:layout="@layout/fragment_edit_profile" />
+
+    <action
+        android:id="@+id/toEditProfile"
+        app:destination="@id/editProfileFragment" />
 </navigation>

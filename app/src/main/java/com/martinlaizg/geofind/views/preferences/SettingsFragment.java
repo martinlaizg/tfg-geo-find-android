@@ -31,6 +31,7 @@ import java.util.Objects;
 public class SettingsFragment
 		extends PreferenceFragmentCompat {
 
+	// TODO refactor
 	private static final String TAG = SettingsFragment.class.getSimpleName();
 	private AlertDialog dialog;
 	private SettingsViewModel viewModel;
@@ -48,8 +49,11 @@ public class SettingsFragment
 
 		findPreference(getString(R.string.log_out))
 				.setOnPreferenceClickListener(getLogOutListener());
-		setupSupportMessageDialog();
-		findPreference("support").setOnPreferenceClickListener(getSupportListener());
+		createSupportMessageDialog();
+		findPreference("support").setOnPreferenceClickListener(preference -> {
+			dialog.show();
+			return true;
+		});
 	}
 
 	@Override
@@ -76,7 +80,7 @@ public class SettingsFragment
 		};
 	}
 
-	private void setupSupportMessageDialog() {
+	private void createSupportMessageDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
 		View view = getLayoutInflater()
 				.inflate(R.layout.support_message, new LinearLayout(requireContext()), false);
@@ -115,12 +119,5 @@ public class SettingsFragment
 		});
 		builder.setView(view);
 		dialog = builder.create();
-	}
-
-	private Preference.OnPreferenceClickListener getSupportListener() {
-		return preference -> {
-			dialog.show();
-			return true;
-		};
 	}
 }

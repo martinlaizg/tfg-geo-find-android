@@ -51,7 +51,7 @@ public class PlayMapFragment
 		map_view.onResume();
 		map_view.getMapAsync(this);
 
-		String[] options = getResources().getStringArray(R.array.mapTypes);
+		String[] options = getResources().getStringArray(R.array.pref_map_types);
 		int[] mapTypes = {GoogleMap.MAP_TYPE_NORMAL, GoogleMap.MAP_TYPE_SATELLITE};
 		map_type_button.setOnClickListener(v -> {
 			AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
@@ -86,7 +86,7 @@ public class PlayMapFragment
 		return TAG;
 	}
 
-	protected void updateView() {
+	void updateView() {
 
 		if(googleMap != null && usrLocation != null) {
 

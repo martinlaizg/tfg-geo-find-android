@@ -48,8 +48,7 @@ public class UserService {
 		Response<User> response;
 		APIException apiException;
 		try {
-			response = restClient.login(login.getProvider().toString().toLowerCase(), login)
-					.execute();
+			response = restClient.login(login).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}
@@ -88,6 +87,23 @@ public class UserService {
 			response = restClient.sendSupportMessage(params).execute();
 			if(response.isSuccessful()) {
 				return true;
+			}
+			throw ErrorUtils.parseError(response);
+		} catch(IOException e) {
+			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
+			Log.e(TAG, "registry: ", e);
+			throw apiException;
+		}
+	}
+
+	public User update(Login login, User user) throws APIException {
+		Response<User> response;
+		APIException apiException;
+		try {
+			login.setUser(user);
+			response = restClient.updateUser(user.getId(), login).execute();
+			if(response.isSuccessful()) {
+				return response.body();
 			}
 			throw ErrorUtils.parseError(response);
 		} catch(IOException e) {

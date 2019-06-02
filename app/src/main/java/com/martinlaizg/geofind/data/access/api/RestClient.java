@@ -47,8 +47,8 @@ public interface RestClient {
 	// User requests
 
 	// Login user
-	@POST("login/{provider}")
-	Call<User> login(@Path("provider") String provider, @Body Login login);
+	@POST("login")
+	Call<User> login(@Body Login login);
 
 	// Create a user
 	@POST("users")
@@ -73,4 +73,7 @@ public interface RestClient {
 
 	@POST("support")
 	Call<Void> sendSupportMessage(@QueryMap Map<String, String> params);
+
+	@PUT("users/{user_id}")
+	Call<User> updateUser(@Path("user_id") Integer user_id, @Body Login login);
 }

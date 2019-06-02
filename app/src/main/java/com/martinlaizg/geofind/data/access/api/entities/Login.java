@@ -1,7 +1,8 @@
 package com.martinlaizg.geofind.data.access.api.entities;
 
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
-import com.martinlaizg.geofind.data.Crypto;
+import com.martinlaizg.geofind.data.access.database.entities.User;
 
 public class Login {
 
@@ -12,22 +13,21 @@ public class Login {
 
 
 	private final String email;
-	private final String password;
 	private final Provider provider;
-	private final String token;
+	private String secure;
+	private User user;
 
 	/**
-	 * Create login for own login/registry action (with email and password)
+	 * Create login for own login/registry action (with email and secure)
 	 *
 	 * @param email
 	 * 		the email
-	 * @param password
-	 * 		the password
+	 * @param secure
+	 * 		the secure
 	 */
-	public Login(String email, String password) {
+	public Login(String email, String secure) {
 		this.email = email;
-		this.password = Crypto.hash(password);
-		this.token = "";
+		this.secure = secure;
 		this.provider = Provider.OWN;
 	}
 
@@ -36,15 +36,14 @@ public class Login {
 	 *
 	 * @param email
 	 * 		the user email
-	 * @param token
-	 * 		the user token
+	 * @param secure
+	 * 		the user secure
 	 * @param provider
 	 * 		the user provider
 	 */
-	public Login(String email, String token, Provider provider) {
-		this.password = "";
+	public Login(String email, String secure, Provider provider) {
 		this.email = email;
-		this.token = token;
+		this.secure = secure;
 		this.provider = provider;
 	}
 
@@ -52,7 +51,27 @@ public class Login {
 		return email;
 	}
 
+	public String getSecure() {
+		return secure;
+	}
+
+	public void setSecure(String secure) {
+		this.secure = secure;
+	}
+
 	public Provider getProvider() {
 		return provider;
+	}
+
+	public String toJson() {
+		return new GsonBuilder().create().toJson(this);
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 }

@@ -96,4 +96,21 @@ public class UserRepository {
 	public boolean sendMessage(String title, String message) throws APIException {
 		return userService.sendMessage(title, message);
 	}
+
+	/**
+	 * Update the user on the server
+	 *
+	 * @param login
+	 * 		the user login
+	 * @param user
+	 * 		the new user data
+	 * @return the new User
+	 * @throws APIException
+	 * 		the API exception
+	 */
+	public User updateUser(Login login, User user) throws APIException {
+		User u = userService.update(login, user);
+		userDAO.insert(u);
+		return u;
+	}
 }

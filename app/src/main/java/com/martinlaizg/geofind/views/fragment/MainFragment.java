@@ -33,7 +33,7 @@ public class MainFragment
 		User u = Preferences.getLoggedUser(sp);
 		MainActivity mainActivity = (MainActivity) requireActivity();
 		if(u != null && !u.getEmail().isEmpty()) {
-			mainActivity.setDrawerHeader(u.getUsername(), u.getName());
+			mainActivity.setDrawerHeader(u.getUsername(), u.getName(), u.getImage());
 			mainActivity.disableToolbarAndDrawer(true);
 			return true;
 		}

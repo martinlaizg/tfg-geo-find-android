@@ -42,7 +42,7 @@
         </mxCell>
         <mxCell
             style="shape=partialRectangle;top=0;left=0;right=0;bottom=0;align=left;verticalAlign=top;fillColor=none;spacingLeft=34;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;dropTarget=0;fontSize=12;"
-            id="48" parent="28" value="password" vertex="1">
+            id="48" parent="28" value="secure" vertex="1">
             <mxGeometry as="geometry" height="26" width="150" y="108" />
         </mxCell>
         <mxCell

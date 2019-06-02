@@ -1,47 +1,46 @@
 package com.martinlaizg.geofind.views.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.martinlaizg.geofind.data.access.api.entities.Login;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
+import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.data.repository.RepositoryFactory;
 import com.martinlaizg.geofind.data.repository.UserRepository;
 
-public class SettingsViewModel
+public class EditProfileViewModel
 		extends AndroidViewModel {
 
-	private static final String TAG = SettingsViewModel.class.getSimpleName();
 	private final UserRepository userRepo;
-
 	private APIException error;
 
-	public SettingsViewModel(Application application) {
+	public EditProfileViewModel(Application application) {
 		super(application);
 		userRepo = RepositoryFactory.getUserRepository(application);
+	}
+
+	public MutableLiveData<User> updateUser(Login login, User user) {
+		MutableLiveData<User> u = new MutableLiveData<>();
+		new Thread(() -> {
+			try {
+				u.postValue(userRepo.updateUser(login, user));
+			} catch(APIException e) {
+				setError(e);
+				u.postValue(null);
+			}
+		}).start();
+		return u;
 	}
 
 	public APIException getError() {
 		return error;
 	}
 
-	public MutableLiveData<Boolean> sendMessage(String title, String message) {
-		MutableLiveData<Boolean> r = new MutableLiveData<>();
-		new Thread(() -> {
-			try {
-				r.postValue(userRepo.sendMessage(title, message));
-			} catch(APIException e) {
-				Log.e(TAG, "sendMessage: ", e);
-				setError(e);
-				r.postValue(null);
-			}
-		}).start();
-		return r;
-	}
-
 	private void setError(APIException error) {
 		this.error = error;
 	}
+
 }

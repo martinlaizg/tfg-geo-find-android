@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="@layout/fragment_main">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
             android:id="@id/toMain"
@@ -14,6 +12,9 @@
     <item android:title="@string/account_settings">
         <menu>
             <group android:checkableBehavior="none">
+                <item
+                    android:id="@id/toEditProfile"
+                    android:title="@string/edit_profile" />
                 <item
                     android:id="@id/toSettings"
                     android:title="@string/settings" />

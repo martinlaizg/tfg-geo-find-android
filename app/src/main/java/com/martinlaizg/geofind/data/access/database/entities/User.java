@@ -22,13 +22,15 @@ public class User {
 	private String email;
 	private String username;
 	private String name;
+	private String image;
 	private UserType user_type;
 	private Date created_at;
 	private Date updated_at;
 	private Date updated;
 
 	@Ignore
-	private String password;
+	private String secure;
+
 	@Ignore
 	private List<Place> createdPlaces;
 
@@ -76,14 +78,6 @@ public class User {
 		this.name = name;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public UserType getUser_type() {
 		return user_type;
 	}
@@ -108,6 +102,14 @@ public class User {
 		this.updated_at = updated_at;
 	}
 
+	public String getSecure() {
+		return secure;
+	}
+
+	public void setSecure(String secure) {
+		this.secure = secure;
+	}
+
 	public String toJson() {
 		Gson gson = new GsonBuilder().setDateFormat(DateUtils.DATE_FORMAT).create();
 		return gson.toJson(this);
@@ -126,5 +128,13 @@ public class User {
 			this.updated = new Date(Calendar.getInstance().getTime().getTime());
 		}
 		this.updated = updated;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 }
