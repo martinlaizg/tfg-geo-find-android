@@ -1,5 +1,10 @@
 language: android
 dist: trusty
+
+branches:
+  only:
+    - master
+
 android:
   components:
     - build-tools-28.0.3
@@ -11,7 +16,6 @@ android:
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-
 
 cache:
   directories:
