@@ -155,8 +155,6 @@
         android:name="com.martinlaizg.geofind.views.fragment.login.RegistryFragment"
         android:label="@string/registry"
         tools:layout="@layout/fragment_registry" />
-
-
     <action
         android:id="@+id/toMain"
         app:destination="@id/navMain"
@@ -195,15 +193,6 @@
         android:label="@string/play_tour"
         tools:layout="@layout/fragment_play_map">
         <action
-            android:id="@+id/reload_play_map"
-            app:destination="@id/navPlayTour"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/navTour"
-            app:popUpToInclusive="false" />
-        <action
             android:id="@+id/toCompleteTour"
             app:destination="@id/navCompleteTour"
             app:enterAnim="@anim/slide_in_right"
@@ -240,4 +229,13 @@
         android:name="com.martinlaizg.geofind.views.fragment.play.PlayThermFragment"
         android:label="@string/play_therm"
         tools:layout="@layout/fragment_play_therm" />
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.martinlaizg.geofind.EditProfileFragment"
+        android:label="@string/profile"
+        tools:layout="@layout/fragment_edit_profile" />
+
+    <action
+        android:id="@+id/toEditProfile"
+        app:destination="@id/editProfileFragment" />
 </navigation>

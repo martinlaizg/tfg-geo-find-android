@@ -4,7 +4,10 @@ import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProviders;
@@ -13,6 +16,9 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
@@ -25,9 +31,11 @@ import java.util.Objects;
 public class SettingsFragment
 		extends PreferenceFragmentCompat {
 
+	// TODO refactor
 	private static final String TAG = SettingsFragment.class.getSimpleName();
 	private AlertDialog dialog;
 	private SettingsViewModel viewModel;
+	private GoogleSignInClient mGoogleSignInClient;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -41,23 +49,41 @@ public class SettingsFragment
 
 		findPreference(getString(R.string.log_out))
 				.setOnPreferenceClickListener(getLogOutListener());
-		setupSupportMessageDialog();
-		findPreference("support").setOnPreferenceClickListener(getSupportListener());
+		createSupportMessageDialog();
+		findPreference("support").setOnPreferenceClickListener(preference -> {
+			dialog.show();
+			return true;
+		});
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(
+				GoogleSignInOptions.DEFAULT_SIGN_IN)
+				.requestIdToken(getResources().getString(R.string.client_id)).requestEmail()
+				.build();
+		mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
+		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
 	private Preference.OnPreferenceClickListener getLogOutListener() {
 		return preference -> {
-			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
-			Preferences.logout(sp);
-			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-					.popBackStack();
+			mGoogleSignInClient.signOut().addOnCompleteListener(requireActivity(), task -> {
+				SharedPreferences sp = PreferenceManager
+						.getDefaultSharedPreferences(requireContext());
+				Preferences.logout(sp);
+				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+						.popBackStack();
+			});
 			return true;
 		};
 	}
 
-	private void setupSupportMessageDialog() {
+	private void createSupportMessageDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-		View view = getLayoutInflater().inflate(R.layout.support_message, null);
+		View view = getLayoutInflater()
+				.inflate(R.layout.support_message, new LinearLayout(requireContext()), false);
 		TextInputLayout title_layout = view.findViewById(R.id.title_layout);
 		TextInputLayout message_text_layout = view.findViewById(R.id.message_text_layout);
 		MaterialButton send_button = view.findViewById(R.id.send_button);
@@ -79,7 +105,7 @@ public class SettingsFragment
 			viewModel.sendMessage(title, message).observe(requireActivity(), (ok) -> {
 				if(ok == null) {
 					APIException e = viewModel.getError();
-					Log.e(TAG, "setLogoutPreference: " + e.getType().getMessage());
+					Log.e(TAG, "setLogoutPreference: " + e.getType().toString());
 				} else if(ok) {
 					Toast.makeText(requireContext(), "Message sent", Toast.LENGTH_SHORT).show();
 					Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
@@ -93,12 +119,5 @@ public class SettingsFragment
 		});
 		builder.setView(view);
 		dialog = builder.create();
-	}
-
-	private Preference.OnPreferenceClickListener getSupportListener() {
-		return preference -> {
-			dialog.show();
-			return true;
-		};
 	}
 }

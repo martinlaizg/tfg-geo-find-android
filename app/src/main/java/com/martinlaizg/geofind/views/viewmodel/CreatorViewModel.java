@@ -96,15 +96,11 @@ public class CreatorViewModel
 
 	// ============================================
 
-	public void setTour(Tour tour) {
-		this.tour = tour;
-	}
-
 	public APIException getError() {
 		return error;
 	}
 
-	public void setError(APIException error) {
+	private void setError(APIException error) {
 		this.error = error;
 	}
 

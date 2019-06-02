@@ -15,7 +15,6 @@ import com.martinlaizg.geofind.data.access.database.dao.PlayDAO;
 import com.martinlaizg.geofind.data.access.database.dao.TourDAO;
 import com.martinlaizg.geofind.data.access.database.dao.UserDAO;
 import com.martinlaizg.geofind.data.access.database.dao.relations.PlacePlayDAO;
-import com.martinlaizg.geofind.data.access.database.dao.relations.TourPlacesDAO;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.PlacePlay;
 import com.martinlaizg.geofind.data.access.database.entities.Play;
@@ -23,7 +22,7 @@ import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 
 @Database(entities = {User.class, Tour.class, Place.class, Play.class, PlacePlay.class},
-          version = 5, exportSchema = false)
+          version = 6, exportSchema = false)
 @TypeConverters(
 		{DateTypeConverter.class, PlayLevelTypeConverter.class, UserTypeTypeConverter.class})
 public abstract class AppDatabase
@@ -48,8 +47,6 @@ public abstract class AppDatabase
 	public abstract PlaceDAO placeDAO();
 
 	public abstract PlayDAO playDAO();
-
-	public abstract TourPlacesDAO tourPlacesDAO();
 
 	public abstract PlacePlayDAO playPlaceDAO();
 

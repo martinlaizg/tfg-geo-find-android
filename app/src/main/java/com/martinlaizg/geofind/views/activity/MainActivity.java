@@ -2,8 +2,8 @@ package com.martinlaizg.geofind.views.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,12 +17,7 @@ import androidx.preference.PreferenceManager;
 
 import com.google.android.material.navigation.NavigationView;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.config.Preferences;
-import com.martinlaizg.geofind.data.access.database.entities.User;
-import com.martinlaizg.geofind.data.repository.PlaceRepository;
-import com.martinlaizg.geofind.data.repository.PlayRepository;
-import com.martinlaizg.geofind.data.repository.RepositoryFactory;
-import com.martinlaizg.geofind.data.repository.TourRepository;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -43,17 +38,14 @@ public class MainActivity
 	@BindView(R.id.drawer_nav_view)
 	NavigationView navigationView;
 
-	NavController navController;
-	private SharedPreferences sp;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		ButterKnife.bind(MainActivity.this);
-		sp = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 
-		navController = Navigation.findNavController(this, R.id.main_fragment_holder);
+		NavController navController = Navigation.findNavController(this, R.id.main_fragment_holder);
 
 		Set<Integer> topLevelDestinations = new HashSet<>();
 		topLevelDestinations.add(R.id.navMain);
@@ -65,32 +57,26 @@ public class MainActivity
 		NavigationUI.setupWithNavController(navigationView, navController);
 		NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
 
-		loadDatabase();
+		PreferenceManager.setDefaultValues(this, R.xml.app_preferences, false);
+
 	}
 
-	private void loadDatabase() {
-		new Thread(() -> {
-			Log.i(TAG, "loadDatabaseOnStart ");
-			User user = Preferences.getLoggedUser(sp);
-			if(user != null && user.getId() > 0) { // is logged
-				// load user plays
-				TourRepository tourRepository = RepositoryFactory
-						.getTourRepository(getApplication());
-				tourRepository.getToursOnStart(user.getId());
-				PlayRepository playRepository = RepositoryFactory
-						.getPlayRepository(getApplication());
-				playRepository.getPlayOnStart(user.getId());
-				PlaceRepository placeRepository = RepositoryFactory
-						.getPlaceRepository(getApplication());
-				placeRepository.getPlaceOnStart(user.getId());
-			}
-		}).start();
-	}
-
-	public void setDrawerHeader(String username, String name) {
+	public void setDrawerHeader(String username, String name, String image) {
 		View headerView = navigationView.getHeaderView(0);
+		if(username == null || name == null) {
+			((TextView) headerView.findViewById(R.id.drawer_header_name))
+					.setText(getString(R.string.your_account));
+			((TextView) headerView.findViewById(R.id.drawer_header_username))
+					.setText(getString(R.string.configure));
+			return;
+		}
 		((TextView) headerView.findViewById(R.id.drawer_header_name)).setText(name);
 		((TextView) headerView.findViewById(R.id.drawer_header_username)).setText(username);
+
+		if(image != null && !image.isEmpty()) {
+			ImageView imageView = headerView.findViewById(R.id.drawer_user_image);
+			Picasso.with(getApplicationContext()).load(image).into(imageView);
+		}
 	}
 
 	public void disableToolbarAndDrawer(boolean visibility) {

@@ -1,7 +1,5 @@
 package com.martinlaizg.geofind.data;
 
-import android.util.Log;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -26,7 +24,6 @@ public class Crypto {
 		} catch(NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
-		Log.d(TAG, "hash: " + hashed);
 		return hashed;
 
 	}

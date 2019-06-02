@@ -2,13 +2,14 @@
 <resources>
     <color name="colorPrimary">#4733B7</color>
     <color name="colorPrimaryDark">#000886</color>
-    <color name="colorPrimaryLight">#7E5FEA</color>
     <color name="colorSecondary">#FFA726</color>
-    <color name="colorSecondaryDark">#FB8C00</color>
-    <color name="colorSecondaryLight">#FFCC80</color>
+    <color name="colorSecondaryLight">#FFB74D</color>
     <color name="background">#FAFAFA</color>
     <color name="light_black">#222222</color>
     <color name="green">#43A047</color>
     <color name="red">#E53935</color>
     <color name="grey">#CFCFCF</color>
+
+    <color name="ic_launcher_background">#42A5F5</color>
+
 </resources>

@@ -12,8 +12,6 @@ import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.PlacePlay;
 import com.martinlaizg.geofind.data.access.database.entities.Play;
 
-import java.util.List;
-
 public class PlayRepository {
 
 	private static final String TAG = PlayRepository.class.getSimpleName();
@@ -22,10 +20,10 @@ public class PlayRepository {
 
 	private final TourRepository tourRepo;
 	private final UserRepository userRepo;
-	private final PlaceRepository placeRepo;
 
 	private final PlacePlayDAO placePlayDAO;
 
+	@SuppressWarnings("unused")
 	PlayRepository(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
 		playDAO = database.playDAO();
@@ -35,19 +33,35 @@ public class PlayRepository {
 
 		tourRepo = RepositoryFactory.getTourRepository(application);
 		userRepo = RepositoryFactory.getUserRepository(application);
-		placeRepo = RepositoryFactory.getPlaceRepository(application);
+		PlaceRepository placeRepo = RepositoryFactory.getPlaceRepository(application);
 	}
 
 	/**
-	 * TODO
+	 * Get the play between user and tour
 	 *
-	 * @return
+	 * @param user_id
+	 * 		the id of the user
+	 * @param tour_id
+	 * 		the id of the tour
+	 * @return the play if exists, otherwise null
+	 * @throws APIException
+	 * 		exception from API
 	 */
 	public Play getPlay(int user_id, int tour_id) throws APIException {
-		Play p = getPlayDAO(user_id, tour_id);
-		if(p == null) {
+		Play p = playDAO.getPlay(user_id, tour_id);         // Get the play from the database
+		if(p != null) {
+			if(p.isOutOfDate()) {       // If is out of date remove from database
+				playDAO.delete(p);
+				p = null;
+			} else {                    // If not retrieve data
+				p.setTour(tourRepo.getTour(tour_id));
+				p.setUser(userRepo.getUser(user_id));
+				p.setPlaces(playDAO.getPlaces(p.getId()));
+			}
+		}
+		if(p == null) {                 // The play no exist on database of is out of date
 			try {
-				p = playService.getUserPlay(user_id, tour_id);
+				p = playService.getUserPlay(user_id, tour_id);  // Get from server
 			} catch(APIException e) {
 				Log.i(TAG, "getPlay: ", e);
 				return null;
@@ -60,52 +74,39 @@ public class PlayRepository {
 	}
 
 	/**
-	 * TODO
+	 * Insert the play into the local database
+	 * Usually used for Play retrieved from server
 	 *
-	 * @return
+	 * @param play
+	 * 		Play to be inserted
 	 */
-	private Play getPlayDAO(int user_id, int tour_id) throws APIException {
-		Play p = playDAO.getPlay(user_id, tour_id);
-		if(p == null) {
-			return null;
-		}
-		if(p.isOutOfDate()) {
-			playDAO.delete(p);
-			return null;
-		}
-		p.setTour(tourRepo.getTour(tour_id));
-		p.setUser(userRepo.getUser(user_id));
-		p.setPlaces(getPlacesByPlay(p.getId()));
-		return p;
-	}
-
-	/**
-	 * TODO
-	 *
-	 * @return
-	 */
-	private void insert(Play p) {
-		if(p != null) {
-			userRepo.insert(p.getUser());
-			tourRepo.insert(p.getTour());
-			playDAO.insert(p);
-			placeRepo.insert(p.getPlaces());
+	private void insert(Play play) {
+		if(play != null) {
+			userRepo.insert(play.getUser());
+			tourRepo.insert(play.getTour());
+			Play p = playDAO.getPlay(play.getId());
+			if(p == null) {
+				playDAO.insert(play);
+			} else {
+				playDAO.update(play);
+			}
+			for(Place place : play.getPlaces()) {
+				PlacePlay pp = new PlacePlay(place.getId(), play.getId());
+				placePlayDAO.insert(pp);
+			}
 		}
 	}
 
 	/**
-	 * TODO
+	 * Complete a place of a play, creating the relation between both
 	 *
-	 * @return
-	 */
-	private List<Place> getPlacesByPlay(Integer play_id) {
-		return playDAO.getPlaces(play_id);
-	}
-
-	/**
-	 * TODO
-	 *
-	 * @return
+	 * @param play_id
+	 * 		play to complete
+	 * @param place_id
+	 * 		place to complete
+	 * @return the new play
+	 * @throws APIException
+	 * 		exception from API
 	 */
 	public Play completePlay(Integer play_id, Integer place_id) throws APIException {
 		Play p = playService.createPlacePlay(play_id, place_id);
@@ -115,14 +116,16 @@ public class PlayRepository {
 	}
 
 	/**
-	 * TODO
+	 * Create the play and insert into the database
 	 *
-	 * @return
+	 * @param user_id
+	 * 		the id of the user who plays
+	 * @param tour_id
+	 * 		the id of the tour to play
+	 * @return the play between user and tour
+	 * @throws APIException
+	 * 		exception from API
 	 */
-	public void getPlayOnStart(int userId) {
-		// TODO
-	}
-
 	public Play createPlay(int user_id, int tour_id) throws APIException {
 		Play p = playService.createUserPlay(user_id, tour_id);
 		insert(p);

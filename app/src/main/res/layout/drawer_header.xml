@@ -6,46 +6,64 @@
     android:layout_height="wrap_content"
     android:background="@color/colorPrimary">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/image_layout"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:contentDescription="@string/user_image"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_user_black"
-        android:tint="?attr/colorAccent"
+        app:cardCornerRadius="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/drawer_user_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/user_image"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_user_black" />
+    </com.google.android.material.card.MaterialCardView>
 
-    <TextView
-        android:id="@+id/drawer_header_name"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="32dp"
-        android:textColor="@color/background"
+        android:layout_marginEnd="8dp"
+        android:foregroundGravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="@id/image_layout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView"
-        tools:text="@sample/user.json/data/name" />
+        app:layout_constraintStart_toEndOf="@id/image_layout"
+        app:layout_constraintTop_toTopOf="@id/image_layout">
 
-    <TextView
-        android:id="@+id/drawer_header_username"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:textColor="@color/background"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="@+id/drawer_header_name"
-        app:layout_constraintStart_toStartOf="@+id/drawer_header_name"
-        tools:text="@sample/user.json/data/username" />
+        <TextView
+            android:id="@+id/drawer_header_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textColor="@color/background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@sample/user.json/data/name" />
+
+        <TextView
+            android:id="@+id/drawer_header_username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/background"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/drawer_header_name"
+            tools:text="@sample/user.json/data/username" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

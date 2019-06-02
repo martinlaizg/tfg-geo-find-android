@@ -16,15 +16,12 @@ public interface PlaceDAO {
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	void insert(Place place);
 
-	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	void insert(List<Place> place);
-
 	@Update
 	void update(Place place);
 
-	@Query("DELETE FROM places WHERE tour_id = :tour_id")
-	void removeTourPlaces(Integer tour_id);
-
 	@Query("SELECT * FROM places WHERE id = :placeId")
 	Place getPlace(int placeId);
+
+	@Query("SELECT * FROM places WHERE tour_id = :tour_id")
+	List<Place> getTourPlaces(Integer tour_id);
 }

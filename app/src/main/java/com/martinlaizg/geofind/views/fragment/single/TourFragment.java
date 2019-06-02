@@ -41,7 +41,6 @@ public class TourFragment
 		extends Fragment {
 
 	public static final String TOUR_ID = "TOUR_ID";
-	private static final String TAG = TourFragment.class.getSimpleName();
 
 	@BindView(R.id.tour_name)
 	TextView tour_name;
@@ -78,6 +77,7 @@ public class TourFragment
 		return view;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireActivity());
@@ -128,7 +128,9 @@ public class TourFragment
 			List<Place> places = tour.getPlaces();
 			adapterCompleted.setPlaces(viewModel.getCompletedPlaces());
 			adapterNoCompleted.setPlaces(viewModel.getNoCompletedPlaces());
-			tour_num_places.setText(String.format(getString(R.string.num_places), places.size()));
+			tour_num_places.setText(getResources()
+					                        .getQuantityString(R.plurals.num_places, places.size(),
+					                                           places.size()));
 
 			play_button.setOnClickListener(v -> alert.show());
 

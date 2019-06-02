@@ -8,8 +8,6 @@ import androidx.room.Update;
 
 import com.martinlaizg.geofind.data.access.database.entities.User;
 
-import java.util.List;
-
 @Dao
 public interface UserDAO {
 
@@ -22,6 +20,4 @@ public interface UserDAO {
 	@Query("SELECT * FROM users WHERE id = :user_id")
 	User getUser(int user_id);
 
-	@Query("SELECT * FROM users")
-	List<User> getAll();
 }

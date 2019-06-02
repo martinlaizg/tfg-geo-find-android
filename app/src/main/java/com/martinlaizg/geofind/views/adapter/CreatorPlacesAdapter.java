@@ -38,9 +38,7 @@ public class CreatorPlacesAdapter
 	@Override
 	public void onBindViewHolder(@NonNull final CreatorPlacesViewHolder holder, int position) {
 		holder.place_name.setText(places.get(position).getName());
-		holder.place_delete_button.setOnClickListener(v -> {
-			remove(position);
-		});
+		holder.place_delete_button.setOnClickListener(v -> remove(position));
 		Bundle b = new Bundle();
 		b.putInt(CreatePlaceFragment.PLACE_POSITION, position);
 		holder.place_card.setOnClickListener(

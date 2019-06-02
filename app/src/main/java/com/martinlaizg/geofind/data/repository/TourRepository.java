@@ -7,11 +7,8 @@ import com.martinlaizg.geofind.data.access.api.service.TourService;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
 import com.martinlaizg.geofind.data.access.database.dao.TourDAO;
-import com.martinlaizg.geofind.data.access.database.dao.relations.TourPlacesDAO;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
-import com.martinlaizg.geofind.data.access.database.entities.relations.TourCreatorPlaces;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TourRepository {
@@ -19,7 +16,6 @@ public class TourRepository {
 	private static final String TAG = TourRepository.class.getSimpleName();
 	private final TourService tourService;
 	private final TourDAO tourDAO;
-	private final TourPlacesDAO tourPlacesDAO;
 
 	private final PlaceRepository placeRepo;
 	private final UserRepository userRepo;
@@ -28,7 +24,6 @@ public class TourRepository {
 		AppDatabase database = AppDatabase.getInstance(application);
 		tourDAO = database.tourDAO();
 		tourService = TourService.getInstance();
-		tourPlacesDAO = database.tourPlacesDAO();
 
 		placeRepo = RepositoryFactory.getPlaceRepository(application);
 		userRepo = RepositoryFactory.getUserRepository(application);
@@ -39,29 +34,24 @@ public class TourRepository {
 	 *
 	 * @return the list of elements
 	 */
-	public List<TourCreatorPlaces> getAllTours() {
-		List<TourCreatorPlaces> tcps = tourPlacesDAO.getTourCreatorPlaces();
-		Tour tour = tourDAO.getTour(1);
-		if(tcps != null) {
-			for(int i = 0; i < tcps.size(); i++) {
-				tcps.get(i).getTour().setPlaces(tcps.get(i).getPlaces());
-				if(tcps.get(i).getTour().isOutOfDate()) {
-					Tour newTour = refresh(tcps.get(i).getTour());
-					if(newTour == null) {
-						tcps.remove(i);
-						i--;
-						continue;
-					}
-					insert(newTour);
-					TourCreatorPlaces tcp = new TourCreatorPlaces();
-					tcp.setTour(newTour);
-					tcp.setPlaces(newTour.getPlaces());
-					tcp.setUsername(newTour.getCreator().getUsername());
-					tcps.set(i, tcp);
+	public List<Tour> getAllTours() {
+		List<Tour> tours = tourDAO.getAll();
+		for(int i = 0; i < tours.size(); i++) {
+			if(tours.get(i).isOutOfDate()) {
+				Tour newTour = refresh(tours.get(i));
+				if(newTour == null) {
+					tours.remove(i);
+					i--;
 				}
+				tours.set(i, newTour);
+			} else {
+				Tour t = tours.get(i);
+				t.setCreator(userRepo.getUser(t.getCreator_id()));
+				t.setPlaces(placeRepo.getTourPlaces(t.getId()));
+				tours.set(i, t);
 			}
 		}
-		return tcps;
+		return tours;
 	}
 
 	/**
@@ -71,10 +61,13 @@ public class TourRepository {
 	 * @return the tour refreshed
 	 */
 	private Tour refresh(Tour tour) {
+		int tour_id = tour.getId();
 		try {
 			tour = tourService.getTour(tour.getId());
 			if(tour != null) {
 				insert(tour);
+			} else {
+				tourDAO.delete(tour_id);
 			}
 			return tour;
 		} catch(APIException e) {
@@ -142,47 +135,26 @@ public class TourRepository {
 	 * @throws APIException the server exception
 	 */
 	public Tour getTour(Integer id) throws APIException {
-		TourCreatorPlaces tcp = tourPlacesDAO.getTour(id);
-		Tour t;
-		if(tcp == null) {
+		Tour t = tourDAO.getTour(id);
+		if(t == null) {
 			t = tourService.getTour(id);
+			insert(t);
 		} else {
-			t = tcp.getTour();
-			t.setCreator(tcp.getCreator());
-			t.setPlaces(tcp.getPlaces());
+			t.setCreator(userRepo.getUser(t.getCreator_id()));
+			t.setPlaces(placeRepo.getTourPlaces(id));
 		}
 		return t;
 	}
 
 	/**
-	 * TODO
-	 *
-	 * @return
-	 */
-	public void getToursOnStart(int userId) {
-		// TODO
-	}
-
-	/**
 	 * Load tours from server and insert into de local database
 	 *
-	 * @return the list of {@link TourCreatorPlaces} from server
 	 * @throws APIException the server exception
 	 */
-	public List<TourCreatorPlaces> refreshTours() throws APIException {
-
-		List<TourCreatorPlaces> tcps = new ArrayList<>();
+	public void refreshTours() throws APIException {
 		List<Tour> tours = tourService.getAllTours();
 		for(Tour t : tours) {
 			insert(t);
-			TourCreatorPlaces tcp = new TourCreatorPlaces();
-			tcp.setTour(t);
-			tcp.setPlaces(t.getPlaces());
-			tcp.setUsername(t.getCreator().getUsername());
-			tcps.add(tcp);
 		}
-		tcps = tourPlacesDAO.getTourCreatorPlaces();
-		Tour t = tourDAO.getTour(1);
-		return tcps;
 	}
 }
