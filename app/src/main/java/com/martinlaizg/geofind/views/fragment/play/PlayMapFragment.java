@@ -102,7 +102,7 @@ public class PlayMapFragment
 				googleMap.addMarker(new MarkerOptions().position(place.getPosition()));
 			}
 			LatLngBounds cameraPosition = builder.build();
-			if(place == null || distance < DISTANCE_TO_FIX_ZOOM) {
+			if(place == null || distance == null || distance < DISTANCE_TO_FIX_ZOOM) {
 				cu = CameraUpdateFactory.newLatLngZoom(cameraPosition.getCenter(), MAX_ZOOM);
 			} else {
 				cu = CameraUpdateFactory.newLatLngBounds(cameraPosition, MAP_PADDING);
