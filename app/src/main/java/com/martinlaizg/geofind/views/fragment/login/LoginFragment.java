@@ -151,9 +151,9 @@ public class LoginFragment
 
 		// Google SignIn Button
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(
-				GoogleSignInOptions.DEFAULT_SIGN_IN)
-				.requestIdToken(getResources().getString(R.string.client_id)).requestEmail()
-				.build();
+				GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(
+				"331962910469-04d5uls1tfaoa4rrg3n2uvb79fua3n79.apps.googleusercontent.com")
+				.requestEmail().build();
 		mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
 
 		// Google SmartLock
