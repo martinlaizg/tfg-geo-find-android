@@ -32,7 +32,7 @@ before_install:
 script:
   - ./gradlew clean build
   - ./gradlew test  
-  — ./gradlew jacocoTestReport
+  - ./gradlew jacocoTestReport
 
 after_success: 
-  — bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash)
