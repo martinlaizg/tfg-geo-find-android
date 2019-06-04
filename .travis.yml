@@ -4,6 +4,7 @@ dist: trusty
 branches:
   only:
     - master
+    - dev
 
 android:
   components:
@@ -30,4 +31,8 @@ before_install:
 
 script:
   - ./gradlew clean build
-  - ./gradlew test
+  - ./gradlew test  
+  - ./gradlew jacocoTestReport
+
+after_success: 
+  - bash <(curl -s https://codecov.io/bash)
