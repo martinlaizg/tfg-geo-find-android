@@ -51,9 +51,9 @@
                         android:backgroundTint="#CDECECEC"
                         android:text="@string/change_image"
                         android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/user_image"
-                        app:layout_constraintEnd_toEndOf="@+id/user_image"
-                        app:layout_constraintStart_toStartOf="@+id/user_image"
+                        app:layout_constraintBottom_toBottomOf="@id/user_image"
+                        app:layout_constraintEnd_toEndOf="@id/user_image"
+                        app:layout_constraintStart_toStartOf="@id/user_image"
                         tools:visibility="visible" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -90,7 +90,7 @@
                 app:errorEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/name_input">
+                app:layout_constraintTop_toBottomOf="@id/name_input">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -109,7 +109,7 @@
                 app:errorEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/username_input">
+                app:layout_constraintTop_toBottomOf="@id/username_input">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -127,7 +127,7 @@
                 android:text="@string/save"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/email_input" />
+                app:layout_constraintTop_toBottomOf="@id/email_input" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -160,7 +160,7 @@
                 android:text="@string/change_password"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider" />
+                app:layout_constraintTop_toBottomOf="@id/divider" />
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -174,7 +174,7 @@
                 app:errorEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/change_password_text">
+                app:layout_constraintTop_toBottomOf="@id/change_password_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -193,7 +193,7 @@
                 app:errorEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/new_password_input">
+                app:layout_constraintTop_toBottomOf="@id/new_password_input">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -210,7 +210,7 @@
                 android:text="@string/change"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/c_new_password_input" />
+                app:layout_constraintTop_toBottomOf="@id/c_new_password_input" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

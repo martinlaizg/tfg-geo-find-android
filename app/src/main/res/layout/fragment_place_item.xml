@@ -43,8 +43,8 @@
                 android:maxLines="3"
                 android:minLines="1"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/place_name"
-                app:layout_constraintTop_toBottomOf="@+id/place_name"
+                app:layout_constraintStart_toStartOf="@id/place_name"
+                app:layout_constraintTop_toBottomOf="@id/place_name"
                 tools:text="@sample/places.json/data/description" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

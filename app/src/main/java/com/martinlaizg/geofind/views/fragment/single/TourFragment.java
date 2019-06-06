@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
@@ -47,7 +48,7 @@ public class TourFragment
 	@BindView(R.id.tour_description)
 	TextView tour_description;
 	@BindView(R.id.tour_creator)
-	TextView tour_creator;
+	Chip tour_creator;
 	@BindView(R.id.tour_num_places)
 	TextView tour_num_places;
 	@BindView(R.id.edit_button)
@@ -104,8 +105,7 @@ public class TourFragment
 					.popBackStack();
 		}
 		viewModel = ViewModelProviders.of(requireActivity()).get(TourViewModel.class);
-		viewModel.loadTour(tour_id, user.getId()).observe(requireActivity(), this::setTour);
-
+		viewModel.getTour(tour_id, user.getId()).observe(this, this::setTour);
 	}
 
 	private void setTour(Tour tour) {
@@ -133,7 +133,6 @@ public class TourFragment
 					                                           places.size()));
 
 			play_button.setOnClickListener(v -> alert.show());
-
 			setDifficultyDialog(tour.getId(), tour.getMin_level());
 		}
 	}

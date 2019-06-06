@@ -29,8 +29,8 @@
         android:ellipsize="end"
         android:maxLines="4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/place_name"
-        app:layout_constraintTop_toBottomOf="@+id/place_name"
+        app:layout_constraintStart_toStartOf="@id/place_name"
+        app:layout_constraintTop_toBottomOf="@id/place_name"
         tools:text="@sample/places.json/data/description[0]" />
 
     <TextView
@@ -44,7 +44,7 @@
         android:textAlignment="textEnd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/place_description"
+        app:layout_constraintTop_toBottomOf="@id/place_description"
         tools:text="300 m" />
 
     <TextView
@@ -55,7 +55,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/place_description"
+        app:layout_constraintTop_toBottomOf="@id/place_description"
         tools:text="Places 2/5" />
 
     <androidx.cardview.widget.CardView
@@ -69,6 +69,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/place_distance" />
+        app:layout_constraintTop_toBottomOf="@id/place_distance" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
