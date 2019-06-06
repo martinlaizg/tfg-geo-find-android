@@ -41,6 +41,8 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
+        <!-- TODO replace with deeplink -->
         <action
             android:id="@+id/toNewTour"
             app:destination="@id/navTour"

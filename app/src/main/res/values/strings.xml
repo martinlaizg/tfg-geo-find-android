@@ -100,4 +100,5 @@
     <string name="profile">Profile</string>
     <string name="old_password">Old password</string>
     <string name="work_in_progress">Work in progress</string>
+    <string name="place_has_question">Place has question</string>
 </resources>
