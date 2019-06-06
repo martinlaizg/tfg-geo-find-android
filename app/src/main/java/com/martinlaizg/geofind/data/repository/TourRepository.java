@@ -30,20 +30,17 @@ public class TourRepository {
 	}
 
 	/**
-	 * Get the TourCreatorPlaces list from local and update each item from server
+	 * Get the list of tours from local and removes the outdated ones
+	 * At the same time refresh the local tours with the server
 	 *
 	 * @return the list of elements
 	 */
-	public List<Tour> getAllTours() {
+	public List<Tour> getAllTours() throws APIException {
 		List<Tour> tours = tourDAO.getAll();
 		for(int i = 0; i < tours.size(); i++) {
 			if(tours.get(i).isOutOfDate()) {
-				Tour newTour = refresh(tours.get(i));
-				if(newTour == null) {
-					tours.remove(i);
-					i--;
-				}
-				tours.set(i, newTour);
+				tours.remove(i);
+				i--;
 			} else {
 				Tour t = tours.get(i);
 				t.setCreator(userRepo.getUser(t.getCreator_id()));
@@ -51,13 +48,62 @@ public class TourRepository {
 				tours.set(i, t);
 			}
 		}
+
+		// If the list of tours is empty wait for refresh
+		if(tours.isEmpty()) {
+			tours = refreshTours();
+		} else {
+			// start the refresh on new thread to do it in background
+			new Thread(() -> {
+				try {
+					refreshTours();
+				} catch(APIException e) {
+					Log.e(TAG, "getAllTours: ", e);
+				}
+			}).start();
+		}
 		return tours;
+	}
+
+	/**
+	 * Load tours from server and insert into de local database
+	 *
+	 * @throws APIException
+	 * 		the server exception
+	 */
+	private List<Tour> refreshTours() throws APIException {
+		List<Tour> tours = tourService.getAllTours();
+		for(Tour t : tours) {
+			insert(t);
+		}
+		return tours;
+	}
+
+	/**
+	 * Insert a Tour to the local database
+	 * Insert the User creator and the list of Place recursively
+	 *
+	 * @param tour
+	 * 		Tour to insert
+	 */
+	public void insert(Tour tour) {
+		if(tour != null) {
+			userRepo.insert(tour.getCreator());
+			Tour t = tourDAO.getTour(tour.getId());
+			if(t == null) {
+				tourDAO.insert(tour);
+			} else {
+				tourDAO.update(tour);
+			}
+			placeRepo.insert(tour.getPlaces());
+		}
 	}
 
 	/**
 	 * Refresh the tour from the server and insert into the local database
 	 *
-	 * @param tour the tour to refresh, return null on error
+	 * @param tour
+	 * 		the tour to refresh, return null on error
 	 * @return the tour refreshed
 	 */
 	private Tour refresh(Tour tour) {
@@ -77,31 +123,14 @@ public class TourRepository {
 	}
 
 	/**
-	 * Insert a Tour to the local database
-	 * Insert the User creator and the list of Place recursively
-	 *
-	 * @param tour Tour to insert
-	 */
-	public void insert(Tour tour) {
-		if(tour != null) {
-			userRepo.insert(tour.getCreator());
-			Tour t = tourDAO.getTour(tour.getId());
-			if(t == null) {
-				tourDAO.insert(tour);
-			} else {
-				tourDAO.update(tour);
-			}
-			placeRepo.insert(tour.getPlaces());
-		}
-	}
-
-	/**
 	 * Update the tour on server and local
 	 * If the tour is removed from server, return null
 	 *
-	 * @param tour tour to update
+	 * @param tour
+	 * 		tour to update
 	 * @return tour updated or null if no exist on server
-	 * @throws APIException exception from server
+	 * @throws APIException
+	 * 		exception from server
 	 */
 	public Tour update(Tour tour) throws APIException {
 		int tour_id = tour.getId();
@@ -117,9 +146,11 @@ public class TourRepository {
 	/**
 	 * Create a tour on server and insert into local database
 	 *
-	 * @param tour tour to insert
+	 * @param tour
+	 * 		tour to insert
 	 * @return inserted tour
-	 * @throws APIException the exception from API
+	 * @throws APIException
+	 * 		the exception from API
 	 */
 	public Tour create(Tour tour) throws APIException {
 		tour = tourService.create(tour);
@@ -130,9 +161,11 @@ public class TourRepository {
 	/**
 	 * Get the tour with this id
 	 *
-	 * @param id the tour id
+	 * @param id
+	 * 		the tour id
 	 * @return the tour
-	 * @throws APIException the server exception
+	 * @throws APIException
+	 * 		the server exception
 	 */
 	public Tour getTour(Integer id) throws APIException {
 		Tour t = tourDAO.getTour(id);
@@ -144,17 +177,5 @@ public class TourRepository {
 			t.setPlaces(placeRepo.getTourPlaces(id));
 		}
 		return t;
-	}
-
-	/**
-	 * Load tours from server and insert into de local database
-	 *
-	 * @throws APIException the server exception
-	 */
-	public void refreshTours() throws APIException {
-		List<Tour> tours = tourService.getAllTours();
-		for(Tour t : tours) {
-			insert(t);
-		}
 	}
 }

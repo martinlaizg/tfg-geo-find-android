@@ -10,7 +10,6 @@ import com.martinlaizg.geofind.data.access.api.error.ErrorUtils;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,7 +52,7 @@ public class UserService {
 				return response.body();
 			}
 			apiException = ErrorUtils.parseError(response);
-		} catch(IOException e) {
+		} catch(Exception e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
 			Log.e(TAG, "login: ", e);
 		}
@@ -69,7 +68,7 @@ public class UserService {
 				return response.body();
 			}
 			apiException = ErrorUtils.parseError(response);
-		} catch(IOException e) {
+		} catch(Exception e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
 			Log.e(TAG, "registry: ", e);
 		}
@@ -89,7 +88,7 @@ public class UserService {
 				return true;
 			}
 			throw ErrorUtils.parseError(response);
-		} catch(IOException e) {
+		} catch(Exception e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
 			Log.e(TAG, "registry: ", e);
 			throw apiException;
@@ -106,7 +105,7 @@ public class UserService {
 				return response.body();
 			}
 			throw ErrorUtils.parseError(response);
-		} catch(IOException e) {
+		} catch(Exception e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
 			Log.e(TAG, "registry: ", e);
 			throw apiException;

@@ -1,7 +1,6 @@
 package com.martinlaizg.geofind.views.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -29,19 +28,15 @@ public class TourListViewModel
 
 	public MutableLiveData<List<Tour>> getTours() {
 		MutableLiveData<List<Tour>> tours = new MutableLiveData<>();
-		new Thread(() -> tours.postValue(tourRepo.getAllTours())).start();
-		return tours;
-	}
-
-	public void refresh() {
 		new Thread(() -> {
 			try {
-				tourRepo.refreshTours();
+				tours.postValue(tourRepo.getAllTours());
 			} catch(APIException e) {
-				Log.e(TAG, "getTours: ", e);
 				setError(e);
+				tours.postValue(null);
 			}
 		}).start();
+		return tours;
 	}
 
 	public APIException getError() {

@@ -35,7 +35,7 @@
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_register">
+            app:layout_constraintTop_toBottomOf="@id/image_register">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -56,7 +56,7 @@
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email_input"
+            app:layout_constraintTop_toBottomOf="@id/email_input"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -78,7 +78,7 @@
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password_input"
+            app:layout_constraintTop_toBottomOf="@id/password_input"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -99,9 +99,9 @@
             android:layout_marginBottom="16dp"
             android:text="@string/registry"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/c_password_input"
-            app:layout_constraintStart_toStartOf="@+id/c_password_input"
-            app:layout_constraintTop_toBottomOf="@+id/c_password_input" />
+            app:layout_constraintEnd_toEndOf="@id/c_password_input"
+            app:layout_constraintStart_toStartOf="@id/c_password_input"
+            app:layout_constraintTop_toBottomOf="@id/c_password_input" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

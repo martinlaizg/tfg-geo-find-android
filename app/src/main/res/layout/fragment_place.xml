@@ -38,7 +38,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/place_name"
+            app:layout_constraintTop_toBottomOf="@id/place_name"
             tools:text="@sample/places.json/data/description" />
 
 
@@ -52,7 +52,7 @@
             android:text="@string/place_completeness"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/place_description" />
+            app:layout_constraintTop_toBottomOf="@id/place_description" />
 
         <ImageView
             android:id="@+id/place_image"
@@ -65,7 +65,7 @@
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/place_position"
+            app:layout_constraintTop_toBottomOf="@id/place_position"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <com.google.android.gms.maps.MapView
@@ -77,7 +77,7 @@
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/place_image" />
+            app:layout_constraintTop_toBottomOf="@id/place_image" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
 
