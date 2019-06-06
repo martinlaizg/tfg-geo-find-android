@@ -90,4 +90,5 @@
     <string name="old_password">Antigua contraseña</string>
     <string name="profile">Perfil</string>
     <string name="work_in_progress">En progreso</string>
+    <string name="loading">Cargando</string>
 </resources>
