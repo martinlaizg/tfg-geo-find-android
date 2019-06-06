@@ -10,11 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
@@ -59,6 +61,19 @@ public class CreatePlaceFragment
 	@BindView(R.id.new_place_map_view)
 	MapView new_place_map_view;
 
+	@BindView(R.id.question_switch)
+	Switch question_switch;
+	@BindView(R.id.question_layout)
+	ConstraintLayout question_layout;
+	@BindView(R.id.new_place_question)
+	TextInputLayout new_place_question;
+	@BindView(R.id.new_place_correct_answer)
+	TextInputLayout new_place_correct_answer;
+	@BindView(R.id.new_place_answer_2)
+	TextInputLayout new_place_answer_2;
+	@BindView(R.id.new_place_answer_3)
+	TextInputLayout new_place_answer_3;
+
 	private CreatorViewModel viewModel;
 	private MarkerOptions marker;
 	private GoogleMap gMap;
@@ -67,44 +82,45 @@ public class CreatePlaceFragment
 	@Override
 	public void onClick(View v) {
 		alert_no_place_text.setVisibility(View.GONE);
-		try {
-			if(Objects.requireNonNull(new_place_name.getEditText()).getText().toString().trim()
-					.isEmpty()) {
-				new_place_name.setError(getString(R.string.required_name));
-				return;
-			}
-			if(new_place_name.getEditText().getText().toString().length() >
-					getResources().getInteger(R.integer.max_name_length)) {
-				new_place_name.setError(getString(R.string.text_too_long));
-				return;
-			}
-			new_place_name.setError("");
-			if(Objects.requireNonNull(new_place_description.getEditText()).getText().toString()
-					.trim().isEmpty()) {
-				new_place_description.setError(getString(R.string.required_description));
-				return;
-			}
-			if(new_place_description.getEditText().getText().toString().length() >
-					getResources().getInteger(R.integer.max_description_length)) {
-				new_place_description.setError(getString(R.string.text_too_long));
-				return;
-			}
-			new_place_description.setError("");
-			if(marker == null) {
-				alert_no_place_text.setVisibility(View.VISIBLE);
-				return;
-			}
-		} catch(NullPointerException ex) {
-			Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
-			return;
-		}
-
-		place.setName(new_place_name.getEditText().getText().toString().trim());
-		place.setDescription(new_place_description.getEditText().getText().toString().trim());
-		place.setPosition(marker.getPosition());
+		if(!checkFields()) return;
 
 		viewModel.setPlace(place);
 		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
+	}
+
+	private boolean checkFields() {
+		String placeName = Objects.requireNonNull(new_place_name.getEditText()).getText().toString()
+				.trim();
+		if(placeName.isEmpty()) {
+			new_place_name.setError(getString(R.string.required_name));
+			return false;
+		}
+		if(placeName.length() > getResources().getInteger(R.integer.max_name_length)) {
+			new_place_name.setError(getString(R.string.text_too_long));
+			return false;
+		}
+		new_place_name.setError("");
+		String placeDescription = Objects.requireNonNull(new_place_description.getEditText())
+				.getText().toString().trim();
+		if(placeDescription.isEmpty()) {
+			new_place_description.setError(getString(R.string.required_description));
+			return false;
+		}
+		if(placeDescription.length() >
+				getResources().getInteger(R.integer.max_description_length)) {
+			new_place_description.setError(getString(R.string.text_too_long));
+			return false;
+		}
+		new_place_description.setError("");
+		if(marker == null) {
+			alert_no_place_text.setVisibility(View.VISIBLE);
+			return false;
+		}
+
+		place.setName(placeName);
+		place.setDescription(placeDescription);
+		place.setPosition(marker.getPosition());
+		return true;
 	}
 
 	@Override
@@ -193,6 +209,10 @@ public class CreatePlaceFragment
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		question_switch.setOnCheckedChangeListener((buttonView, isChecked) -> question_layout
+				.setVisibility(isChecked ?
+						               View.VISIBLE :
+						               View.GONE));
 		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel.class);
 		viewModel.setLoad(false);
 		Bundle b = getArguments();
