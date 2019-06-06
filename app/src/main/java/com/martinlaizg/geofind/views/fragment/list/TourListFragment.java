@@ -1,6 +1,7 @@
 package com.martinlaizg.geofind.views.fragment.list;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.martinlaizg.geofind.R;
@@ -35,6 +37,9 @@ public class TourListFragment
 	@BindView(R.id.create_tour_button)
 	FloatingActionButton create_tour_button;
 
+	@BindView(R.id.swipe_refresh)
+	SwipeRefreshLayout swipe_refresh;
+
 	private TourListViewModel viewModel;
 	private TourListAdapter adapter;
 
@@ -48,9 +53,22 @@ public class TourListFragment
 		tour_list.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		adapter = new TourListAdapter();
 		tour_list.setAdapter(adapter);
+		return view;
+	}
 
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		viewModel = ViewModelProviders.of(this).get(TourListViewModel.class);
+		swipe_refresh.setRefreshing(true);
+		refreshTours();
+		create_tour_button
+				.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreator));
+		swipe_refresh.setOnRefreshListener(this::refreshTours);
+	}
+
+	private void refreshTours() {
 		viewModel.getTours().observe(this, tours -> {
+			swipe_refresh.setRefreshing(false);
 			if(tours != null) {
 				adapter.setTours(tours);
 			} else {
@@ -60,14 +78,9 @@ public class TourListFragment
 					               getResources().getString(R.string.network_error),
 					               Toast.LENGTH_SHORT).show();
 				} else {
-					Toast.makeText(requireActivity(), error.getMessage(), Toast.LENGTH_SHORT)
-							.show();
+					Log.e(TAG, "onCreateView: ", error);
 				}
 			}
 		});
-		viewModel.refresh();
-		create_tour_button
-				.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreator));
-		return view;
 	}
 }
