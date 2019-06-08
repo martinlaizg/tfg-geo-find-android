@@ -49,7 +49,8 @@ public class PlaceFragment
 
 	@Nullable
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_place, container, false);
 		ButterKnife.bind(this, view);
 		place_map.onCreate(savedInstanceState);
@@ -67,7 +68,7 @@ public class PlaceFragment
 		super.onViewCreated(view, savedInstanceState);
 		viewModel = ViewModelProviders.of(requireActivity()).get(TourViewModel.class);
 
-		viewModel.loadPlace(place_id).observe(this, this::setPlace);
+		viewModel.getPlace(place_id).observe(this, this::setPlace);
 	}
 
 	private void setPlace(Place place) {
@@ -77,7 +78,8 @@ public class PlaceFragment
 			place_image.setImageResource(R.drawable.default_map_image);
 			int number = place.getOrder() + 1;
 			int total = viewModel.getPlaces().size();
-			place_position.setText(getResources().getString(R.string.place_completeness, number, total));
+			place_position
+					.setText(getResources().getString(R.string.place_completeness, number, total));
 			if(googleMap != null) {
 				googleMap.addMarker(new MarkerOptions().position(place.getPosition()));
 				CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(place.getPosition(), MAP_ZOOM);

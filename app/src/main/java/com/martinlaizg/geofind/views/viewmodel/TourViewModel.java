@@ -25,7 +25,7 @@ public class TourViewModel
 
 	private APIException error;
 	private Tour tour;
-	private Play userPlay;
+	private Play play;
 
 	public TourViewModel(@NonNull Application application) {
 		super(application);
@@ -33,12 +33,12 @@ public class TourViewModel
 		playRepo = RepositoryFactory.getPlayRepository(application);
 	}
 
-	public MutableLiveData<Tour> loadTour(int tour_id, int user_id) {
+	public MutableLiveData<Tour> getTour(int tour_id, int user_id) {
 		MutableLiveData<Tour> m = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
 				tour = tourRepo.getTour(tour_id);
-				userPlay = playRepo.getPlay(user_id, tour_id);
+				play = playRepo.getPlay(user_id, tour_id);
 			} catch(APIException e) {
 				setError(e);
 				tour = null;
@@ -48,7 +48,7 @@ public class TourViewModel
 		return m;
 	}
 
-	public MutableLiveData<Place> loadPlace(int place_id) {
+	public MutableLiveData<Place> getPlace(int place_id) {
 		MutableLiveData<Place> p = new MutableLiveData<>();
 		new Thread(() -> {
 			for(Place place : tour.getPlaces()) {
@@ -74,24 +74,31 @@ public class TourViewModel
 	}
 
 	public List<Place> getCompletedPlaces() {
-		List<Place> places = new ArrayList<>();
-		if(userPlay != null) places.addAll(userPlay.getPlaces());
-		return places;
+		if(play != null) return play.getPlaces();
+		return new ArrayList<>();
 	}
 
 	public List<Place> getNoCompletedPlaces() {
 		List<Place> places = tour.getPlaces();
-		if(userPlay == null) {
+		if(play == null) {
 			return places;
 		}
 		List<Place> noCompleted = new ArrayList<>();
 		for(Place tp : places) {
 			boolean completed = false;
-			for(Place pp : userPlay.getPlaces()) {
+			for(Place pp : play.getPlaces()) {
 				if(tp.getId() == pp.getId()) completed = true;
 			}
 			if(!completed) noCompleted.add(tp);
 		}
 		return noCompleted;
+	}
+
+	public MutableLiveData<List<Place>> getPlaces(int tour_id, int user_id) {
+		MutableLiveData<List<Place>> m = new MutableLiveData<>();
+		new Thread(() -> {
+			m.postValue(new ArrayList<>());
+		}).start();
+		return m;
 	}
 }

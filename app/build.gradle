@@ -17,8 +17,8 @@ android {
         applicationId 'com.martinlaizg.geofind'
         minSdkVersion 24
         targetSdkVersion 28
-        versionCode 5
-        versionName 'v0.2'
+        versionCode 6
+        versionName 'v0.2.1'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
