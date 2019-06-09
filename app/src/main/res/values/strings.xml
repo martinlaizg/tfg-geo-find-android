@@ -58,11 +58,9 @@
     <string name="tour_not_permitted">Tour not permitted</string>
     <string name="play_tour">Play Tour</string>
     <string name="place_distance">%d m</string>
-    <string name="tour_completeness">Place %d/%d</string>
     <string name="map">Map</string>
     <string name="compass">Compass</string>
     <string name="therm">Therm</string>
-    <string name="place_completeness">Place %d/%d</string>
     <string name="satellite">Satellite</string>
     <string name="map_type">Map type</string>
     <string name="tour_is_completed">The tour has been completed</string>
@@ -105,5 +103,7 @@
     <string name="correct_answer">Correct answer</string>
     <string name="other_answer">Other answer</string>
     <string name="with_question">With question</string>
-    <string name="loading">Loading</string>
+    <string name="required_question">Question is required</string>
+    <string name="required_answer">The answer is required</string>
+    <string name="answer_repeated">The answer can not be repeated</string>
 </resources>

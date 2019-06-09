@@ -117,9 +117,63 @@ public class CreatePlaceFragment
 			return false;
 		}
 
+		boolean question = getQuestion();
+		if(!question) return false;
+
 		place.setName(placeName);
 		place.setDescription(placeDescription);
 		place.setPosition(marker.getPosition());
+
+		return true;
+	}
+
+	private boolean getQuestion() {
+		boolean withQuestion = question_switch.isChecked();
+		if(!withQuestion) return true;
+
+		// Check the question
+		String question = Objects.requireNonNull(new_place_question.getEditText()).getText()
+				.toString().trim();
+		if(question.isEmpty()) {
+			new_place_question.setError(getString(R.string.required_question));
+			return false;
+		}
+
+		// Check the correct answer
+		String correctAnswer = Objects.requireNonNull(new_place_correct_answer.getEditText())
+				.getText().toString().trim();
+		if(correctAnswer.isEmpty()) {
+			new_place_correct_answer.setError(getString(R.string.required_answer));
+			return false;
+		}
+
+		// Check the second answer
+		String secondAnswer = Objects.requireNonNull(new_place_answer_2.getEditText()).getText()
+				.toString().trim();
+		if(secondAnswer.isEmpty()) {
+			new_place_answer_2.setError(getString(R.string.required_answer));
+			return false;
+		}
+
+		// Check the third answer
+		String thirdAnswer = Objects.requireNonNull(new_place_answer_3.getEditText()).getText()
+				.toString().trim();
+		if(thirdAnswer.isEmpty()) {
+			new_place_answer_3.setError(getString(R.string.required_answer));
+			return false;
+		}
+
+		if(secondAnswer.equals(thirdAnswer)) {
+			new_place_answer_3.setError(getString(R.string.answer_repeated));
+			return false;
+		}
+
+		// Set the values
+		place.setQuestion(question);
+		place.setAnswer(correctAnswer);
+		place.setAnswer2(secondAnswer);
+		place.setAnswer3(thirdAnswer);
+
 		return true;
 	}
 

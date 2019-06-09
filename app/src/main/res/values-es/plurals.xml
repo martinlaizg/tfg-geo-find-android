@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <plurals name="num_places">
+    <plurals name="number_place">
         <item quantity="one">%d sitio</item>
         <item quantity="other">%d sitios</item>
+    </plurals>
+
+    <plurals name="place_number_number">
+        <item formatted="false" quantity="one">Sitio %1%d/%2%d</item>
+        <item formatted="false" quantity="other">Sitios %1%d/%2%d</item>
     </plurals>
 </resources>

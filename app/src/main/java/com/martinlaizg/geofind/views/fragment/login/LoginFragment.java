@@ -68,7 +68,6 @@ public class LoginFragment
 	SignInButton google_sign_in_button;
 
 	private LoginViewModel viewModel;
-	private CredentialsClient mCredentialsClient;
 	private GoogleSignInClient mGoogleSignInClient;
 	private String sub;
 
@@ -158,7 +157,7 @@ public class LoginFragment
 		// Google SmartLock
 		CredentialsOptions options = new CredentialsOptions.Builder().forceEnableSaveDialog()
 				.build();
-		mCredentialsClient = Credentials.getClient(requireActivity(), options);
+		CredentialsClient mCredentialsClient = Credentials.getClient(requireActivity(), options);
 		return view;
 	}
 

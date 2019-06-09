@@ -5,7 +5,8 @@
       "name": "Lugar 1",
       "description": "Descripción del sitio 1 del tour 1. \n Es un sitio fantabuloso",
       "visits": "2.456",
-      "distance": "563m"
+      "distance": "563m",
+      "completeness": "Place 2/3"
     }
   ]
 }

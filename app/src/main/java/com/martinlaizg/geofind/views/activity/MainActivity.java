@@ -1,6 +1,5 @@
 package com.martinlaizg.geofind.views.activity;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -43,7 +42,6 @@ public class MainActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		ButterKnife.bind(MainActivity.this);
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 
 		NavController navController = Navigation.findNavController(this, R.id.main_fragment_holder);
 

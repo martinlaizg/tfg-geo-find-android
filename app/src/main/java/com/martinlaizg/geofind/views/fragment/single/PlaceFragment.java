@@ -78,8 +78,9 @@ public class PlaceFragment
 			place_image.setImageResource(R.drawable.default_map_image);
 			int number = place.getOrder() + 1;
 			int total = viewModel.getPlaces().size();
-			place_position
-					.setText(getResources().getString(R.string.place_completeness, number, total));
+			place_position.setText(getResources()
+					                       .getQuantityString(R.plurals.place_number_number, number,
+					                                          number, total));
 			if(googleMap != null) {
 				googleMap.addMarker(new MarkerOptions().position(place.getPosition()));
 				CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(place.getPosition(), MAP_ZOOM);
