@@ -37,6 +37,7 @@ public class Place {
 	private String answer;
 	private String answer2;
 	private String answer3;
+	private String image;
 
 	public Place(Integer id, String name, Double lat, Double lon, Integer tour_id,
 			String description, Integer order, Date created_at, Date updated_at, Date updated) {
@@ -185,5 +186,13 @@ public class Place {
 
 	public void setAnswer3(String answer3) {
 		this.answer3 = answer3;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 }

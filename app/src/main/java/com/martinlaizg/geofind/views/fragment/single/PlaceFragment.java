@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.views.viewmodel.TourViewModel;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -75,7 +76,13 @@ public class PlaceFragment
 		if(place != null) {
 			place_name.setText(place.getName());
 			place_description.setText(place.getDescription());
-			place_image.setImageResource(R.drawable.default_map_image);
+
+			if(place.getImage() != null && !place.getImage().isEmpty()) {
+				Picasso.with(requireContext()).load(place.getImage()).into(place_image);
+			} else {
+				place_image.setImageResource(R.drawable.default_map_image);
+			}
+
 			int number = place.getOrder() + 1;
 			int total = viewModel.getPlaces().size();
 			place_position.setText(getResources()
