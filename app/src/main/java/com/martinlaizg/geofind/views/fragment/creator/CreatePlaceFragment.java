@@ -268,7 +268,6 @@ public class CreatePlaceFragment
 						               View.VISIBLE :
 						               View.GONE));
 		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel.class);
-		viewModel.setLoad(false);
 		Bundle b = getArguments();
 		if(b != null) {
 			int position = b.getInt(PLACE_POSITION, viewModel.getPlaces().size());

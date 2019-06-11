@@ -34,6 +34,10 @@
         android:name="com.martinlaizg.geofind.views.fragment.creator.CreatorFragment"
         android:label="@string/tour_creator"
         tools:layout="@layout/fragment_creator">
+        <argument
+            android:name="TOUR_ID"
+            android:defaultValue="0"
+            app:argType="integer" />
         <action
             android:id="@+id/toCreatePlace"
             app:destination="@id/navCreatePlace"
@@ -57,11 +61,16 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/navCreator"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/toEditTourName"
+            app:destination="@id/navCreatePlace"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
-        <argument
-            android:name="TOUR_ID"
-            android:defaultValue="0"
-            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/navTourList"
@@ -88,6 +97,10 @@
         android:name="com.martinlaizg.geofind.views.fragment.single.TourFragment"
         android:label="@string/tour"
         tools:layout="@layout/fragment_tour">
+        <argument
+            android:name="TOUR_ID"
+            android:defaultValue="0"
+            app:argType="integer" />
         <action
             android:id="@+id/toPlace"
             app:destination="@id/navPlace"
@@ -98,14 +111,6 @@
         <action
             android:id="@+id/toEditTour"
             app:destination="@id/navCreator"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-        <argument
-            android:name="TOUR_ID"
-            android:defaultValue="0"
-            app:argType="integer"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"

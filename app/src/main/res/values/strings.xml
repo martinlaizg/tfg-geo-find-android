@@ -106,4 +106,5 @@
     <string name="required_question">Question is required</string>
     <string name="required_answer">The answer is required</string>
     <string name="answer_repeated">The answer can not be repeated</string>
+    <string name="without_decription">Without description</string>
 </resources>

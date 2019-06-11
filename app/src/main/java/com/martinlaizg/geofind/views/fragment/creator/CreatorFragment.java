@@ -1,6 +1,7 @@
 package com.martinlaizg.geofind.views.fragment.creator;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
+import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.views.adapter.CreatorPlacesAdapter;
 import com.martinlaizg.geofind.views.fragment.single.TourFragment;
 import com.martinlaizg.geofind.views.viewmodel.CreatorViewModel;
@@ -32,8 +34,8 @@ public class CreatorFragment
 		implements View.OnClickListener {
 
 	public static final String TOUR_ID = "TOUR_ID";
+	private static final String TAG = CreatorFragment.class.getSimpleName();
 
-	// View
 	@BindView(R.id.tour_name)
 	TextView tour_name;
 	@BindView(R.id.tour_description)
@@ -50,10 +52,12 @@ public class CreatorFragment
 	RecyclerView places_list;
 
 	private CreatorViewModel viewModel;
+	private CreatorPlacesAdapter adapter;
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		Log.e(TAG, "onCreateView: ");
 		View view = inflater.inflate(R.layout.fragment_creator, container, false);
 		ButterKnife.bind(this, view);
 		return view;
@@ -61,28 +65,16 @@ public class CreatorFragment
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		Log.e(TAG, "onViewCreated: ");
 		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel.class);
-		CreatorPlacesAdapter adapter = new CreatorPlacesAdapter();
+		adapter = new CreatorPlacesAdapter();
 		places_list.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		places_list.setAdapter(adapter);
 
 		// Load tour
 		Bundle b = getArguments();
-		Integer tour_id = Objects.requireNonNull(b).getInt(TOUR_ID);
-		viewModel.loadTour(tour_id).observe(this, tour -> {
-			if(tour != null) {
-				adapter.setPlaces(tour.getPlaces());
-				if(tour.getId() != 0) {
-					create_tour_button.setText(R.string.update_tour);
-				}
-				if(!tour.getName().isEmpty()) {
-					tour_name.setText(tour.getName());
-				}
-				if(!tour.getDescription().isEmpty()) {
-					tour_description.setText(tour.getDescription());
-				}
-			}
-		});
+		int tour_id = Objects.requireNonNull(b).getInt(TOUR_ID);
+		viewModel.loadTour(tour_id).observe(this, this::setTour);
 
 		// set buttons
 		add_place_button.setOnClickListener(v -> {
@@ -93,8 +85,35 @@ public class CreatorFragment
 		});
 		edit_button.setOnClickListener(
 				v -> Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-						.navigate(R.id.toCreateTour));
+						.navigate(R.id.toEditTourName));
 		create_tour_button.setOnClickListener(this);
+	}
+
+	private void setTour(Tour tour) {
+		if(tour != null) {
+			adapter.setPlaces(tour.getPlaces());
+			if(tour.getId() != 0) {
+				create_tour_button.setText(R.string.update_tour);
+			}
+			if(tour.getName().isEmpty()) {
+				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+						.navigate(R.id.toCreateTour);
+			} else {
+				tour_name.setText(tour.getName());
+			}
+			if(tour.getDescription().isEmpty()) {
+				tour_description.setText(getResources().getString(R.string.without_decription));
+			} else {
+				tour_description.setText(tour.getDescription());
+			}
+		}
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		// reset the view model
+		viewModel.reset();
 	}
 
 	@Override

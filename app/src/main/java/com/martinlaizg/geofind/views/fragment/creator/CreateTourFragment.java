@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,6 +30,8 @@ import butterknife.ButterKnife;
 public class CreateTourFragment
 		extends Fragment
 		implements View.OnClickListener {
+
+	private final static String TAG = CreateTourFragment.class.getSimpleName();
 
 	@BindView(R.id.tour_name_layout)
 	TextInputLayout tour_name_layout;
@@ -58,7 +59,6 @@ public class CreateTourFragment
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel.class);
 		Tour m = viewModel.getTour();
-		viewModel.setLoad(false);
 		if(m != null) {
 			if(!m.getName().isEmpty()) {
 				Objects.requireNonNull(tour_name_layout.getEditText()).setText(m.getName());
@@ -76,42 +76,35 @@ public class CreateTourFragment
 
 	@Override
 	public void onClick(View v) {
-		try {
-			tour_name_layout.setError("");
-			if(Objects.requireNonNull(tour_name_layout.getEditText()).getText().toString().trim()
-					.isEmpty()) {
-				tour_name_layout.setError(getString(R.string.required_name));
-				return;
-			}
-			tour_name_layout.setError("");
-			if(tour_name_layout.getEditText().getText().toString().trim().length() >
-					getResources().getInteger(R.integer.max_name_length)) {
-				tour_name_layout.setError(getString(R.string.text_too_long));
-				return;
-			}
-			tour_description_layout.setError("");
-			if(Objects.requireNonNull(tour_description_layout.getEditText()).getText().toString()
-					.trim().isEmpty()) {
-				tour_description_layout.setError(getString(R.string.required_description));
-				return;
-			}
-			if(tour_description_layout.getEditText().getText().toString().trim().length() >
-					getResources().getInteger(R.integer.max_description_length)) {
-				tour_description_layout.setError(getString(R.string.text_too_long));
-				return;
-			}
-		} catch(NullPointerException ex) {
-			Toast.makeText(getContext(), "View incorrect", Toast.LENGTH_SHORT).show();
+		tour_name_layout.setError("");
+		String name = Objects.requireNonNull(tour_name_layout.getEditText()).getText().toString()
+				.trim();
+		if(name.isEmpty()) {
+			tour_name_layout.setError(getString(R.string.required_name));
+			return;
+		}
+		tour_name_layout.setError("");
+		if(name.length() > getResources().getInteger(R.integer.max_name_length)) {
+			tour_name_layout.setError(getString(R.string.text_too_long));
+			return;
+		}
+		tour_description_layout.setError("");
+		String description = Objects.requireNonNull(tour_description_layout.getEditText()).getText()
+				.toString().trim();
+		if(description.isEmpty()) {
+			tour_description_layout.setError(getString(R.string.required_description));
+			return;
+		}
+		if(description.length() > getResources().getInteger(R.integer.max_description_length)) {
+			tour_description_layout.setError(getString(R.string.text_too_long));
 			return;
 		}
 
-		String name = tour_name_layout.getEditText().getText().toString().trim();
-		String description = tour_description_layout.getEditText().getText().toString().trim();
 		PlayLevel pl = PlayLevel.getPlayLevel(difficulty_spinner.getSelectedItemPosition());
 
 		User user = Preferences
 				.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(requireContext()));
-		viewModel.setCreatedTour(name, description, user.getId(), pl);
+		viewModel.updateTour(name, description, user.getId(), pl);
 		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
 
 	}
