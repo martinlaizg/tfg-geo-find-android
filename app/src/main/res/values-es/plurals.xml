@@ -6,7 +6,7 @@
     </plurals>
 
     <plurals name="place_number_number">
-        <item formatted="false" quantity="one">Sitio %1%d/%2%d</item>
-        <item formatted="false" quantity="other">Sitios %1%d/%2%d</item>
+        <item formatted="false" quantity="one">Sitio %1$d/%2$d</item>
+        <item formatted="false" quantity="other">Sitios %1$d/%2$d</item>
     </plurals>
 </resources>
