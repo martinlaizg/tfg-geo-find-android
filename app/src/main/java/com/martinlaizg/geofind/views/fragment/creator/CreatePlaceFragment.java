@@ -10,11 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
@@ -45,6 +47,7 @@ public class CreatePlaceFragment
 	public static final String PLACE_POSITION = "PLACE_POSITION";
 
 	private static final String TAG = CreatePlaceFragment.class.getSimpleName();
+
 	private static final int CAMERA_UPDATE_ZOOM = 15;
 	private static final int PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION = 1;
 
@@ -59,6 +62,19 @@ public class CreatePlaceFragment
 	@BindView(R.id.new_place_map_view)
 	MapView new_place_map_view;
 
+	@BindView(R.id.question_switch)
+	Switch question_switch;
+	@BindView(R.id.question_layout)
+	ConstraintLayout question_layout;
+	@BindView(R.id.new_place_question)
+	TextInputLayout new_place_question;
+	@BindView(R.id.new_place_correct_answer)
+	TextInputLayout new_place_correct_answer;
+	@BindView(R.id.new_place_answer_2)
+	TextInputLayout new_place_answer_2;
+	@BindView(R.id.new_place_answer_3)
+	TextInputLayout new_place_answer_3;
+
 	private CreatorViewModel viewModel;
 	private MarkerOptions marker;
 	private GoogleMap gMap;
@@ -66,45 +82,121 @@ public class CreatePlaceFragment
 
 	@Override
 	public void onClick(View v) {
-		alert_no_place_text.setVisibility(View.GONE);
-		try {
-			if(Objects.requireNonNull(new_place_name.getEditText()).getText().toString().trim()
-					.isEmpty()) {
-				new_place_name.setError(getString(R.string.required_name));
-				return;
-			}
-			if(new_place_name.getEditText().getText().toString().length() >
-					getResources().getInteger(R.integer.max_name_length)) {
-				new_place_name.setError(getString(R.string.text_too_long));
-				return;
-			}
-			new_place_name.setError("");
-			if(Objects.requireNonNull(new_place_description.getEditText()).getText().toString()
-					.trim().isEmpty()) {
-				new_place_description.setError(getString(R.string.required_description));
-				return;
-			}
-			if(new_place_description.getEditText().getText().toString().length() >
-					getResources().getInteger(R.integer.max_description_length)) {
-				new_place_description.setError(getString(R.string.text_too_long));
-				return;
-			}
-			new_place_description.setError("");
-			if(marker == null) {
-				alert_no_place_text.setVisibility(View.VISIBLE);
-				return;
-			}
-		} catch(NullPointerException ex) {
-			Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
-			return;
-		}
-
-		place.setName(new_place_name.getEditText().getText().toString().trim());
-		place.setDescription(new_place_description.getEditText().getText().toString().trim());
-		place.setPosition(marker.getPosition());
+		alert_no_place_text.setVisibility(View.INVISIBLE);
+		Place place = getPlace();
+		if(place == null) return;
 
 		viewModel.setPlace(place);
 		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
+	}
+
+	/**
+	 * Get the place data from de inputs
+	 *
+	 * @return the place
+	 */
+	private Place getPlace() {
+		// Get the name
+		String placeName = Objects.requireNonNull(new_place_name.getEditText()).getText().toString()
+				.trim();
+		if(placeName.isEmpty()) {
+			new_place_name.setError(getString(R.string.required_name));
+			return null;
+		}
+		if(placeName.length() > getResources().getInteger(R.integer.max_name_length)) {
+			new_place_name.setError(getString(R.string.text_too_long));
+			return null;
+		}
+		new_place_name.setError("");
+
+		// Get the description
+		String placeDescription = Objects.requireNonNull(new_place_description.getEditText())
+				.getText().toString().trim();
+		if(placeDescription.isEmpty()) {
+			new_place_description.setError(getString(R.string.required_description));
+			return null;
+		}
+		if(placeDescription.length() >
+				getResources().getInteger(R.integer.max_description_length)) {
+			new_place_description.setError(getString(R.string.text_too_long));
+			return null;
+		}
+		new_place_description.setError("");
+
+		// Get the marker
+		if(marker == null) {
+			alert_no_place_text.setVisibility(View.VISIBLE);
+			return null;
+		}
+
+		// Get the question
+		boolean question = getQuestion();
+		if(!question) return null;
+
+		place.setName(placeName);
+		place.setDescription(placeDescription);
+		place.setPosition(marker.getPosition());
+
+		return place;
+	}
+
+	private boolean getQuestion() {
+		if(!question_switch.isChecked()) {
+			place.setQuestion(null);
+			place.setAnswer(null);
+			place.setAnswer2(null);
+			place.setAnswer3(null);
+			return true;
+		}
+
+		// Check the question
+		String question = Objects.requireNonNull(new_place_question.getEditText()).getText()
+				.toString().trim();
+		new_place_question.setError("");
+		if(question.isEmpty()) {
+			new_place_question.setError(getString(R.string.required_question));
+			return false;
+		}
+
+		// Check the correct answer
+		String correctAnswer = Objects.requireNonNull(new_place_correct_answer.getEditText())
+				.getText().toString().trim();
+		new_place_correct_answer.setError("");
+		if(correctAnswer.isEmpty()) {
+			new_place_correct_answer.setError(getString(R.string.required_answer));
+			return false;
+		}
+
+		// Check the second answer
+		String secondAnswer = Objects.requireNonNull(new_place_answer_2.getEditText()).getText()
+				.toString().trim();
+		new_place_answer_2.setError("");
+		if(secondAnswer.isEmpty()) {
+			new_place_answer_2.setError(getString(R.string.required_answer));
+			return false;
+		}
+
+		// Check the third answer
+		String thirdAnswer = Objects.requireNonNull(new_place_answer_3.getEditText()).getText()
+				.toString().trim();
+		new_place_answer_3.setError("");
+		if(thirdAnswer.isEmpty()) {
+			new_place_answer_3.setError(getString(R.string.required_answer));
+			return false;
+		}
+
+		if(secondAnswer.equals(thirdAnswer)) {
+			new_place_answer_3.setError(getString(R.string.answer_repeated));
+			return false;
+		}
+
+		// Set the values
+		place.setQuestion(question);
+		place.setAnswer(correctAnswer);
+		place.setAnswer2(secondAnswer);
+		place.setAnswer3(thirdAnswer);
+
+		return true;
 	}
 
 	@Override
@@ -121,11 +213,11 @@ public class CreatePlaceFragment
 			               Toast.LENGTH_SHORT).show();
 			return;
 		}
-		setPlace();
+		setMarker();
 	}
 
 	@SuppressLint("MissingPermission")
-	private void setPlace() {
+	private void setMarker() {
 		Location usrLocation = getLastKnownLocation();
 		if(gMap != null) {
 			gMap.setMyLocationEnabled(true);
@@ -174,7 +266,7 @@ public class CreatePlaceFragment
 					grantResults[0] == PackageManager.PERMISSION_GRANTED &&
 					permissions[1].equals(Manifest.permission.ACCESS_FINE_LOCATION) &&
 					grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-				setPlace();
+				setMarker();
 			}
 		}
 	}
@@ -193,35 +285,58 @@ public class CreatePlaceFragment
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		question_switch.setOnCheckedChangeListener((buttonView, isChecked) -> question_layout
+				.setVisibility(isChecked ?
+						               View.VISIBLE :
+						               View.GONE));
 		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel.class);
-		viewModel.setLoad(false);
 		Bundle b = getArguments();
 		if(b != null) {
 			int position = b.getInt(PLACE_POSITION, viewModel.getPlaces().size());
-			place = viewModel.getPlace(position);
-			if(place != null) {
-				if(place.getName() != null) {
-					Objects.requireNonNull(new_place_name.getEditText()).setText(place.getName());
-				}
-				if(place.getDescription() != null) {
-					Objects.requireNonNull(new_place_description.getEditText())
-							.setText(place.getDescription());
-				}
-				if(place.getPosition() != null) {
-					onMapLongClick(place.getPosition());
-				}
-			} else {
-				Toast.makeText(requireContext(), getResources().getString(R.string.invalid_place),
-				               Toast.LENGTH_SHORT).show();
-			}
+			setPlace(viewModel.getPlace(position));
 		}
 		create_button.setOnClickListener(this);
 		if(marker != null) create_button.setText(R.string.update_place);
 	}
 
+	private void setPlace(Place place) {
+		this.place = place;
+		if(place != null) {
+			// Set name
+			if(place.getName() != null) {
+				Objects.requireNonNull(new_place_name.getEditText()).setText(place.getName());
+			}
+			// Set description
+			if(place.getDescription() != null) {
+				Objects.requireNonNull(new_place_description.getEditText())
+						.setText(place.getDescription());
+			}
+			// Set position (marker)
+			if(place.getPosition() != null) {
+				onMapLongClick(place.getPosition());
+			}
+			// Set question
+			question_switch.setChecked(false);
+			if(place.getQuestion() != null) {
+				question_switch.setChecked(true);
+				Objects.requireNonNull(new_place_question.getEditText())
+						.setText(place.getQuestion());
+				Objects.requireNonNull(new_place_correct_answer.getEditText())
+						.setText(place.getAnswer());
+				Objects.requireNonNull(new_place_answer_2.getEditText())
+						.setText(place.getAnswer2());
+				Objects.requireNonNull(new_place_answer_3.getEditText())
+						.setText(place.getAnswer3());
+			}
+		} else {
+			Toast.makeText(requireContext(), getResources().getString(R.string.invalid_place),
+			               Toast.LENGTH_SHORT).show();
+		}
+	}
+
 	@Override
 	public void onMapLongClick(LatLng latLng) {
-		alert_no_place_text.setVisibility(View.GONE);
+		alert_no_place_text.setVisibility(View.INVISIBLE);
 		MarkerOptions m = new MarkerOptions().position(latLng);
 		if(gMap != null) {
 			gMap.clear();

@@ -120,7 +120,7 @@ public class TourFragment
 				Bundle b = new Bundle();
 				b.putInt(CreatorFragment.TOUR_ID, tour.getId());
 				edit_button.setOnClickListener(
-						Navigation.createNavigateOnClickListener(R.id.toEditTour, b));
+						Navigation.createNavigateOnClickListener(R.id.toEditCreator, b));
 				edit_button.setVisibility(View.VISIBLE);
 			}
 
@@ -128,9 +128,8 @@ public class TourFragment
 			List<Place> places = tour.getPlaces();
 			adapterCompleted.setPlaces(viewModel.getCompletedPlaces());
 			adapterNoCompleted.setPlaces(viewModel.getNoCompletedPlaces());
-			tour_num_places.setText(getResources()
-					                        .getQuantityString(R.plurals.num_places, places.size(),
-					                                           places.size()));
+			tour_num_places.setText(getResources().getQuantityString(R.plurals.number_place,
+			                                                         places.size(), places.size()));
 
 			play_button.setOnClickListener(v -> alert.show());
 			setDifficultyDialog(tour.getId(), tour.getMin_level());

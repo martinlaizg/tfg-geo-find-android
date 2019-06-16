@@ -15,8 +15,8 @@ public enum ErrorType {
 	@SerializedName("tour_id") TOUR_ID,
 	@SerializedName("user_id") USER_ID,
 	@SerializedName("exist") EXIST,
-	@SerializedName("completed") COMPLETED,
 	@SerializedName("token") TOKEN,
 	@SerializedName("provider") PROVIDER,
 	@SerializedName("provider_login") PROVIDER_LOGIN,
-	@SerializedName("secure") SECURE,}
+	@SerializedName("secure") SECURE,
+	COMPLETE,}

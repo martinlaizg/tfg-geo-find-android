@@ -50,12 +50,10 @@
     <string name="place_distance">%d m</string>
     <string name="play">Jugar</string>
     <string name="play_tour">Jugar Tour</string>
-    <string name="tour_completeness">Sitio %d/%d</string>
     <string name="tour_not_permitted">Tour no permitido</string>
     <string name="compass">Brújula</string>
     <string name="map">Mapa</string>
     <string name="therm">Termometro</string>
-    <string name="place_completeness">Sitio %d/%d</string>
     <string name="satellite">Satélite</string>
     <string name="map_type">Tipo de mapa</string>
     <string name="tour_is_completed">El tour se ha completado</string>
@@ -90,5 +88,17 @@
     <string name="old_password">Antigua contraseña</string>
     <string name="profile">Perfil</string>
     <string name="work_in_progress">En progreso</string>
-    <string name="loading">Cargando</string>
+    <string name="place_has_question">Sitio tiene pregunta</string>
+    <string name="correct_answer">Respuesta correcta</string>
+    <string name="answer_repeated">La respuesta no puede estar repetida</string>
+    <string name="other_answer">Otra respuesta</string>
+    <string name="question">Pregunta</string>
+    <string name="required_answer">La respuesta es obligatoria</string>
+    <string name="required_question">La pregunta es obligatoria</string>
+    <string name="with_question">Con pregunta</string>
+    <string name="without_decription">Sin descripción</string>
+    <string name="at_least_one_place">Al menos un sitio</string>
+    <string name="ok">Vale</string>
+    <string name="wrong_answer">Respuesta incorrecta</string>
+    <string name="wrong_tour">Tour incorrecto</string>
 </resources>

@@ -26,7 +26,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/map_image"
+                android:id="@+id/tour_image"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:contentDescription="@string/tour_main_image"
@@ -34,8 +34,7 @@
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/default_map_image" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tour_name"
@@ -50,7 +49,7 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/map_image"
+                app:layout_constraintTop_toBottomOf="@id/tour_image"
                 tools:text="@sample/tours.json/data/name" />
 
             <TextView

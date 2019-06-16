@@ -28,19 +28,17 @@ public class PlayCompassFragment
 		implements SensorEventListener {
 
 	private static final String TAG = PlayCompassFragment.class.getSimpleName();
-
+	private final float[] mLastAccelerometer = new float[3];
+	private final float[] mLastMagnetometer = new float[3];
+	private final float[] mR = new float[9];
+	private final float[] mOrientation = new float[3];
 	@BindView(R.id.navigation_image)
 	ImageView navigation_image;
-
 	private SensorManager mSensorManager;
 	private Sensor mAccelerometer;
 	private Sensor mMagnetometer;
-	private float[] mLastAccelerometer = new float[3];
-	private float[] mLastMagnetometer = new float[3];
 	private boolean mLastAccelerometerSet = false;
 	private boolean mLastMagnetometerSet = false;
-	private float[] mR = new float[9];
-	private float[] mOrientation = new float[3];
 	private float mCurrentDegree = 0f;
 
 	@Nullable

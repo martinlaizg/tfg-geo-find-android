@@ -1,4 +1,4 @@
-package com.martinlaizg.geofind;
+package com.martinlaizg.geofind.views.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -22,6 +22,7 @@ import androidx.navigation.Navigation;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.Crypto;
 import com.martinlaizg.geofind.data.access.api.entities.Login;
@@ -202,7 +203,7 @@ public class EditProfileFragment
 
 	private void updateUser() {
 		save_button.setEnabled(false);
-		viewModel.updateUser(login, user).observe(requireActivity(), newUser -> {
+		viewModel.updateUser(login, user).observe(this, newUser -> {
 			save_button.setEnabled(true);
 			if(newUser == null) {
 				ErrorType error = viewModel.getError().getType();

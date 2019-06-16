@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Play;
@@ -44,10 +43,7 @@ public class PlayTourViewModel
 
 	public Place getNextPlace() {
 		int numPlaces = play.getPlaces().size();
-		if(numPlaces >= play.getTour().getPlaces().size()) {
-			setError(new APIException(ErrorType.COMPLETED));
-			return null;
-		}
+		if(numPlaces >= play.getTour().getPlaces().size()) return null;
 		return play.getTour().getPlaces().get(numPlaces);
 	}
 
@@ -63,19 +59,21 @@ public class PlayTourViewModel
 		return play;
 	}
 
-	public MutableLiveData<Boolean> completePlace(Integer place_id) {
-		MutableLiveData<Boolean> c = new MutableLiveData<>();
+	public MutableLiveData<Place> completePlace(Integer place_id) {
+		MutableLiveData<Place> c = new MutableLiveData<>();
 		new Thread(() -> {
-			boolean b = false;
 			try {
 				play = playRepo.completePlay(play.getId(), place_id);
-				b = true;
+				c.postValue(getNextPlace());
 			} catch(APIException e) {
 				setError(e);
+				c.postValue(null);
 			}
-			c.postValue(b);
 		}).start();
 		return c;
 	}
 
+	public boolean tourIsCompleted() {
+		return play.getPlaces().size() == play.getTour().getPlaces().size();
+	}
 }

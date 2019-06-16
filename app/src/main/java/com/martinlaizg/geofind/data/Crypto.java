@@ -2,6 +2,7 @@ package com.martinlaizg.geofind.data;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 public class Crypto {
 
@@ -10,6 +11,7 @@ public class Crypto {
 
 	public static String hash(String toHash) {
 		String hashed = null;
+		toHash = Base64.getEncoder().encodeToString(toHash.getBytes());
 		try {
 			if(mdSHA512 == null) {
 				mdSHA512 = MessageDigest.getInstance("SHA-512");

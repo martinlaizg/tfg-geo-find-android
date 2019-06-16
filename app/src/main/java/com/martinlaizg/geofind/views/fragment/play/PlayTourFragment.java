@@ -15,16 +15,22 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.card.MaterialCardView;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
-import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.views.viewmodel.PlayTourViewModel;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 
@@ -50,12 +56,12 @@ abstract class PlayTourFragment
 	TextView place_distance;
 
 	Place place;
-	private PlayTourViewModel viewModel;
 	Location usrLocation;
 	Location placeLocation;
 	Float distance;
-
+	private PlayTourViewModel viewModel;
 	private LocationManager locationManager;
+	private AlertDialog.Builder questionDialog;
 
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -83,15 +89,99 @@ abstract class PlayTourFragment
 		}
 		User u = Preferences
 				.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(requireContext()));
-		viewModel.loadPlay(u.getId(), tour_id).observe(requireActivity(), place -> {
+		viewModel.loadPlay(u.getId(), tour_id).observe(this, place -> {
 			if(place == null) {
-				Log.i(TAG(), "onViewCreated: tour completed");
+				Log.e(TAG(), "onViewCreated: Something went wrong");
 				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-						.navigate(R.id.toCompleteTour);
+						.popBackStack(R.id.navTour, false);
 				return;
+			}
+
+			// If has question build it
+			if(place.getQuestion() != null && !place.getQuestion().isEmpty()) {
+				createDialog(place);
+			} else {
+				questionDialog = null;
 			}
 			setPlace(place);
 		});
+	}
+
+	private void createDialog(Place place) {
+		questionDialog = new AlertDialog.Builder(requireContext());
+		View dialogView = getLayoutInflater()
+				.inflate(R.layout.question_layout, new ConstraintLayout(requireContext()), false);
+		TextView question = dialogView.findViewById(R.id.question);
+		question.setText(place.getQuestion());
+		List<MaterialCardView> cards = Arrays.asList(dialogView.findViewById(R.id.answer1_layout),
+		                                             dialogView.findViewById(R.id.answer2_layout),
+		                                             dialogView.findViewById(R.id.answer3_layout));
+		List<TextView> texts = Arrays.asList(dialogView.findViewById(R.id.answer1),
+		                                     dialogView.findViewById(R.id.answer2),
+		                                     dialogView.findViewById(R.id.answer3));
+
+		// Get random position to start
+		int i = new Random().nextInt(cards.size());
+
+		// Set correct answer
+		texts.get(i).setText(place.getAnswer());
+		cards.get(i).setOnClickListener(v -> completePlace());
+		i++;
+		i %= cards.size();
+		// set second answer
+		texts.get(i).setText(place.getAnswer2());
+		cards.get(i).setOnClickListener(v -> showWrongAnswerToast());
+		i++;
+		i %= cards.size();
+		texts.get(i).setText(place.getAnswer3());
+		cards.get(i).setOnClickListener(v -> showWrongAnswerToast());
+
+		questionDialog.setView(dialogView);
+	}
+
+	private void setPlace(Place nextPlace) {
+		place = nextPlace;
+		placeLocation = new Location("");
+		placeLocation.setLatitude(place.getLat());
+		placeLocation.setLongitude(place.getLon());
+		place_name.setText(place.getName());
+		place_description.setText(place.getDescription());
+		int numCompletedPlaces = viewModel.getPlay().getPlaces().size() + 1;
+		int numPlaces = viewModel.getPlay().getTour().getPlaces().size();
+		place_complete.setText(getResources().getQuantityString(R.plurals.place_number_number,
+		                                                        numCompletedPlaces,
+		                                                        numCompletedPlaces, numPlaces));
+	}
+
+	private void completePlace() {
+		viewModel.completePlace(place.getId()).observe(this, place -> {
+			if(place == null) {
+				if(viewModel.tourIsCompleted()) {
+					AlertDialog.Builder adb = new AlertDialog.Builder(requireContext())
+							.setTitle(R.string.tour_completed);
+					adb.setPositiveButton(R.string.ok, (dialog, which) -> Navigation
+							.findNavController(requireActivity(), R.id.main_fragment_holder)
+							.popBackStack(R.id.navTour, false));
+					adb.show();
+					return;
+				}
+				Toast.makeText(requireContext(), viewModel.getError().getMessage(),
+				               Toast.LENGTH_SHORT).show();
+				return;
+			}
+			Log.d(TAG(), "updateView: Place done");
+			Place p = viewModel.getNextPlace();
+			if(p == null) {
+
+			} else {
+				setPlace(p);
+			}
+		});
+	}
+
+	private void showWrongAnswerToast() {
+		Toast.makeText(requireContext(), getString(R.string.wrong_answer), Toast.LENGTH_SHORT)
+				.show();
 	}
 
 	@Override
@@ -126,19 +216,6 @@ abstract class PlayTourFragment
 
 	abstract void updateView();
 
-	private void setPlace(Place nextPlace) {
-		place = nextPlace;
-		placeLocation = new Location("");
-		placeLocation.setLatitude(place.getLat());
-		placeLocation.setLongitude(place.getLon());
-		place_name.setText(place.getName());
-		place_description.setText(place.getDescription());
-		int numCompletedPlaces = viewModel.getPlay().getPlaces().size() + 1;
-		int numPlaces = viewModel.getPlay().getTour().getPlaces().size();
-		place_complete.setText(
-				getResources().getString(R.string.tour_completeness, numCompletedPlaces, numPlaces));
-	}
-
 	@Override
 	public void onLocationChanged(@NonNull Location location) {
 		Log.d(TAG(), "onLocationChanged: ");
@@ -151,27 +228,15 @@ abstract class PlayTourFragment
 					getResources().getString(R.string.place_distance, distance.intValue()));
 			Log.d(TAG(), "updateView: distance=" + distance + "m");
 			if(distance < DISTANCE_TO_COMPLETE) {
+				locationManager.removeUpdates(this);
 				Log.d(TAG(), "updateView: user arrive to the place");
-				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-						.navigate(R.id.toCompletePlace);
-				viewModel.completePlace(place.getId()).observe(this, done -> {
-					if(!done) {
-						Toast.makeText(requireContext(), viewModel.getError().getMessage(),
-						               Toast.LENGTH_SHORT).show();
-						return;
-					}
-					Log.d(TAG(), "updateView: Place done");
-					Place p = viewModel.getNextPlace();
-					if(p == null) {
-						if(viewModel.getError().getType() == ErrorType.COMPLETED) {
-							Navigation
-									.findNavController(requireActivity(), R.id.main_fragment_holder)
-									.navigate(R.id.toCompleteTour);
-						}
-					} else {
-						setPlace(p);
-					}
-				});
+
+				// If has question display
+				if(questionDialog != null) {
+					questionDialog.show();
+				} else {
+					completePlace();
+				}
 			}
 			updateView();
 		}
@@ -191,5 +256,4 @@ abstract class PlayTourFragment
 	public void onProviderDisabled(String provider) {
 		Log.i(TAG(), "onProviderDisabled: ");
 	}
-
 }
