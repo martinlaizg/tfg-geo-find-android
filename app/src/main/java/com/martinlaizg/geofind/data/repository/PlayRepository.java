@@ -3,6 +3,7 @@ package com.martinlaizg.geofind.data.repository;
 import android.app.Application;
 import android.util.Log;
 
+import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.service.PlayService;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
@@ -63,9 +64,21 @@ public class PlayRepository {
 			try {
 				p = playService.getUserPlay(user_id, tour_id);  // Get from server
 			} catch(APIException e) {
-				Log.i(TAG, "getPlay: ", e);
-				return null;
+				// If no exist
+				if(e.getType() == ErrorType.EXIST) {
+					Log.i(TAG, "getPlay: The play do not exist");
+					try {
+						// Create the play
+						p = playService.createUserPlay(user_id, tour_id);
+					} catch(APIException ex) {
+						Log.e(TAG, "getPlay: ", ex);
+						return null;
+					}
+				} else {
+					Log.e(TAG, "getPlay: Other error");
+				}
 			}
+			if(p == null) return null;
 			p.setUser_id(p.getUser().getId());
 			p.setTour_id(p.getTour().getId());
 			insert(p);

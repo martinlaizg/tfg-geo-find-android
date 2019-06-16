@@ -203,7 +203,7 @@ public class EditProfileFragment
 
 	private void updateUser() {
 		save_button.setEnabled(false);
-		viewModel.updateUser(login, user).observe(requireActivity(), newUser -> {
+		viewModel.updateUser(login, user).observe(this, newUser -> {
 			save_button.setEnabled(true);
 			if(newUser == null) {
 				ErrorType error = viewModel.getError().getType();

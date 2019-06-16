@@ -1,7 +1,6 @@
 package com.martinlaizg.geofind.views.fragment.creator;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +56,6 @@ public class CreatorFragment
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		Log.e(TAG, "onCreateView: ");
 		View view = inflater.inflate(R.layout.fragment_creator, container, false);
 		ButterKnife.bind(this, view);
 		return view;
@@ -65,7 +63,6 @@ public class CreatorFragment
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		Log.e(TAG, "onViewCreated: ");
 		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel.class);
 		adapter = new CreatorPlacesAdapter();
 		places_list.setLayoutManager(new LinearLayoutManager(requireActivity()));
@@ -85,13 +82,13 @@ public class CreatorFragment
 		});
 		edit_button.setOnClickListener(
 				v -> Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-						.navigate(R.id.toEditTourName));
+						.navigate(R.id.toCreateTour));
 		create_tour_button.setOnClickListener(this);
 	}
 
 	private void setTour(Tour tour) {
 		if(tour != null) {
-			adapter.setPlaces(tour.getPlaces());
+			adapter.setPlaces(requireActivity(), tour.getPlaces());
 			if(tour.getId() != 0) {
 				create_tour_button.setText(R.string.update_tour);
 			}
@@ -113,11 +110,16 @@ public class CreatorFragment
 	public void onDetach() {
 		super.onDetach();
 		// reset the view model
-		viewModel.reset();
+		if(viewModel != null) viewModel.reset();
 	}
 
 	@Override
 	public void onClick(View v) {
+		if(viewModel.getTour().getPlaces().isEmpty()) {
+			Toast.makeText(requireContext(), getString(R.string.at_least_one_place),
+			               Toast.LENGTH_SHORT).show();
+			return;
+		}
 		create_tour_button.setEnabled(false);
 		viewModel.createTour().observe(this, tour -> {
 			create_tour_button.setEnabled(true);

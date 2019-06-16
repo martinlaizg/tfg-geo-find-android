@@ -120,7 +120,7 @@ public class TourFragment
 				Bundle b = new Bundle();
 				b.putInt(CreatorFragment.TOUR_ID, tour.getId());
 				edit_button.setOnClickListener(
-						Navigation.createNavigateOnClickListener(R.id.toEditTour, b));
+						Navigation.createNavigateOnClickListener(R.id.toEditCreator, b));
 				edit_button.setVisibility(View.VISIBLE);
 			}
 

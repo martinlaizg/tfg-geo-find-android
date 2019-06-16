@@ -136,6 +136,7 @@ public class TourRepository {
 		int tour_id = tour.getId();
 		tour = tourService.update(tour);
 		if(tour != null) {
+			tourDAO.delete(tour.getId());
 			insert(tour);
 		} else {
 			tourDAO.delete(tour_id);
@@ -154,7 +155,9 @@ public class TourRepository {
 	 */
 	public Tour create(Tour tour) throws APIException {
 		tour = tourService.create(tour);
-		if(tour != null) insert(tour);
+		if(tour != null) {
+			insert(tour);
+		}
 		return tour;
 	}
 

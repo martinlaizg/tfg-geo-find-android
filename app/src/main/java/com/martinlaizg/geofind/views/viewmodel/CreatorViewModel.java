@@ -100,7 +100,7 @@ public class CreatorViewModel
 
 	public Place getPlace(int position) {
 		if(position > tour.getPlaces().size()) return null;
-		if(position < tour.getPlaces().size()) return tour.getPlaces().remove(position);
+		if(position < tour.getPlaces().size()) return tour.getPlaces().get(position);
 		return new Place();
 	}
 
@@ -109,7 +109,7 @@ public class CreatorViewModel
 			place.setOrder(tour.getPlaces().size());
 			tour.getPlaces().add(place);
 		} else {
-			tour.getPlaces().add(place.getOrder(), place);
+			tour.getPlaces().set(place.getOrder(), place);
 		}
 	}
 

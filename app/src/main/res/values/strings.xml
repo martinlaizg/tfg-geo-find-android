@@ -107,4 +107,8 @@
     <string name="required_answer">The answer is required</string>
     <string name="answer_repeated">The answer can not be repeated</string>
     <string name="without_decription">Without description</string>
+    <string name="wrong_tour">Wrong Tour</string>
+    <string name="wrong_answer">Wrong answer</string>
+    <string name="ok">Ok</string>
+    <string name="at_least_one_place">At least one place</string>
 </resources>
