@@ -97,4 +97,8 @@
     <string name="required_question">La pregunta es obligatoria</string>
     <string name="with_question">Con pregunta</string>
     <string name="without_decription">Sin descripción</string>
+    <string name="at_least_one_place">Al menos un sitio</string>
+    <string name="ok">Vale</string>
+    <string name="wrong_answer">Respuesta incorrecta</string>
+    <string name="wrong_tour">Tour incorrecto</string>
 </resources>
