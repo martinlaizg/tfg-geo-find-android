@@ -101,4 +101,5 @@
     <string name="ok">Vale</string>
     <string name="wrong_answer">Respuesta incorrecta</string>
     <string name="wrong_tour">Tour incorrecto</string>
+    <string name="no_permissions">No tienes permisos</string>
 </resources>

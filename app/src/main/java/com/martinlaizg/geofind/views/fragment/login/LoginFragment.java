@@ -121,6 +121,8 @@ public class LoginFragment
 						password_input.setError(getString(R.string.wrong_password));
 						break;
 					case SECURE:
+						Toast.makeText(requireContext(), getString(R.string.wrong_login),
+						               Toast.LENGTH_SHORT).show();
 						break;
 					default:
 						Toast.makeText(requireContext(), getString(R.string.other_error),

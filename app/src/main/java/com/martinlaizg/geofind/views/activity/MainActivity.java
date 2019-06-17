@@ -61,12 +61,11 @@ public class MainActivity
 
 	public void setDrawerHeader(String username, String name, String image) {
 		View headerView = navigationView.getHeaderView(0);
-		if(username == null || name == null) {
-			((TextView) headerView.findViewById(R.id.drawer_header_name))
-					.setText(getString(R.string.your_account));
-			((TextView) headerView.findViewById(R.id.drawer_header_username))
-					.setText(getString(R.string.configure));
-			return;
+		if(name == null) {
+			name = getString(R.string.your_account);
+		}
+		if(username == null) {
+			username = getString(R.string.configure);
 		}
 		((TextView) headerView.findViewById(R.id.drawer_header_name)).setText(name);
 		((TextView) headerView.findViewById(R.id.drawer_header_username)).setText(username);
