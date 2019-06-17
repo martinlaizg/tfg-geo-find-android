@@ -82,7 +82,7 @@ public class CreatorFragment
 		});
 		edit_button.setOnClickListener(
 				v -> Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-						.navigate(R.id.toCreateTour));
+						.navigate(R.id.toEditTour));
 		create_tour_button.setOnClickListener(this);
 	}
 
@@ -93,8 +93,7 @@ public class CreatorFragment
 				create_tour_button.setText(R.string.update_tour);
 			}
 			if(tour.getName().isEmpty()) {
-				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-						.navigate(R.id.toCreateTour);
+				tour_name.setText(getString(R.string.click_edit));
 			} else {
 				tour_name.setText(tour.getName());
 			}
@@ -124,6 +123,7 @@ public class CreatorFragment
 		viewModel.createTour().observe(this, tour -> {
 			create_tour_button.setEnabled(true);
 			if(tour == null) {
+				// TODO add error types
 				APIException err = viewModel.getError();
 				Toast.makeText(requireActivity(), err.getType().toString(), Toast.LENGTH_LONG)
 						.show();

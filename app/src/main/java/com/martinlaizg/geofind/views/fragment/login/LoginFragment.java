@@ -137,7 +137,7 @@ public class LoginFragment
 			Preferences.setLogin(sp, login);
 
 			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-					.popBackStack();
+					.navigate(R.id.toMain);
 		});
 	}
 

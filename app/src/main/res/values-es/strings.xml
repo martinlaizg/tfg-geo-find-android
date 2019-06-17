@@ -102,4 +102,6 @@
     <string name="wrong_answer">Respuesta incorrecta</string>
     <string name="wrong_tour">Tour incorrecto</string>
     <string name="no_permissions">No tienes permisos</string>
+    <string name="click_edit">Click en editar</string>
+    <string name="registred">Registrado</string>
 </resources>

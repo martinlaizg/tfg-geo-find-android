@@ -22,26 +22,17 @@ public class MainFragment
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		if(!isLogged()) {
-			return null;
-		}
-		return inflater.inflate(R.layout.fragment_main, container, false);
-	}
-
-	private boolean isLogged() {
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireActivity());
 		User u = Preferences.getLoggedUser(sp);
 		MainActivity mainActivity = (MainActivity) requireActivity();
-		if(u != null && !u.getEmail().isEmpty()) {
-			mainActivity.setDrawerHeader(u.getUsername(), u.getName(), u.getImage());
-			mainActivity.disableToolbarAndDrawer(true);
-			return true;
+		if(u == null) {
+			// If user is not logged, go to LoginFragment
+			mainActivity.setToolbarAndDrawer(false);
+			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+					.navigate(R.id.toLogin);
+			return null;
 		}
-		// If user is not logged, go to LoginFragment
-		mainActivity.disableToolbarAndDrawer(false);
-		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-				.navigate(R.id.toLogin);
-		return false;
+		mainActivity.setToolbarAndDrawer(true);
+		return inflater.inflate(R.layout.fragment_main, container, false);
 	}
-
 }

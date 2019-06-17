@@ -1,5 +1,6 @@
 package com.martinlaizg.geofind.views.fragment.login;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +12,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
+import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.Crypto;
 import com.martinlaizg.geofind.data.access.api.entities.Login;
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
@@ -96,8 +99,11 @@ public class RegistryFragment
 				}
 				return;
 			}
-			Toast.makeText(requireActivity(), getResources().getString(R.string.registry),
-			               Toast.LENGTH_LONG).show();
+			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
+			Preferences.setLoggedUser(sp, user);
+			Preferences.setLogin(sp, l);
+			Toast.makeText(requireActivity(), getString(R.string.registred), Toast.LENGTH_LONG)
+					.show();
 			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
 					.popBackStack();
 
