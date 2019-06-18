@@ -101,11 +101,9 @@ public class CreateTourFragment
 		}
 
 		PlayLevel pl = PlayLevel.getPlayLevel(difficulty_spinner.getSelectedItemPosition());
-
 		User user = Preferences
 				.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(requireContext()));
 		viewModel.updateTour(name, description, user.getId(), pl);
 		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
-
 	}
 }

@@ -10,8 +10,8 @@ import com.martinlaizg.geofind.utils.DateUtils;
 
 public class Preferences {
 
-	private static final String USER = "user";
-	private static final String LOGIN = "login";
+	public static final String USER = "user";
+	public static final String LOGIN = "login";
 
 	public static User getLoggedUser(SharedPreferences sp) {
 		String user_string = sp.getString(USER, "");
@@ -26,6 +26,7 @@ public class Preferences {
 
 	public static void logout(SharedPreferences sp) {
 		sp.edit().putString(USER, null).apply();
+		sp.edit().putString(LOGIN, null).apply();
 	}
 
 	public static void setLogin(SharedPreferences sp, Login login) {

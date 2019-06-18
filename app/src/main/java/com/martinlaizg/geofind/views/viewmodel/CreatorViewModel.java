@@ -54,6 +54,7 @@ public class CreatorViewModel
 	}
 
 	public void updateTour(String name, String description, Integer creator_id, PlayLevel pl) {
+		if(tour == null) tour = new Tour();
 		tour.setName(name);
 		tour.setDescription(description);
 		tour.setCreator_id(creator_id);

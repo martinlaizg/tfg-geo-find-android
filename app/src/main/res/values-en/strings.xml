@@ -101,4 +101,7 @@
     <string name="wrong_answer">Wrong answer</string>
     <string name="ok">Ok</string>
     <string name="at_least_one_place">At least one place</string>
+    <string name="no_permissions">No has permission</string>
+    <string name="registred">Registred</string>
+    <string name="click_edit">Click edit</string>
 </resources>

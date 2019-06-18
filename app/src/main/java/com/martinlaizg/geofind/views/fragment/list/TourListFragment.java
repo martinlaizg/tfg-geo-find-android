@@ -1,5 +1,6 @@
 package com.martinlaizg.geofind.views.fragment.list;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,14 +13,18 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.martinlaizg.geofind.R;
+import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
+import com.martinlaizg.geofind.data.access.database.entities.User;
+import com.martinlaizg.geofind.data.enums.UserType;
 import com.martinlaizg.geofind.views.adapter.TourListAdapter;
 import com.martinlaizg.geofind.views.viewmodel.TourListViewModel;
 
@@ -61,8 +66,16 @@ public class TourListFragment
 		viewModel = ViewModelProviders.of(this).get(TourListViewModel.class);
 		swipe_refresh.setRefreshing(true);
 		refreshTours();
-		create_tour_button
-				.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreator));
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
+		User u = Preferences.getLoggedUser(sp);
+		if(u.getUser_type() != null && u.getUser_type() != UserType.USER) {
+			create_tour_button
+					.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreator));
+		} else {
+			create_tour_button.setOnClickListener(v -> Toast
+					.makeText(requireContext(), getString(R.string.no_permissions),
+					          Toast.LENGTH_SHORT).show());
+		}
 		swipe_refresh.setOnRefreshListener(this::refreshTours);
 	}
 
