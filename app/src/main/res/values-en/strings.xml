@@ -74,7 +74,7 @@
     <string name="wrong_login">We can not loggin</string>
     <string name="service_provider_problem">Problem with service provider</string>
     <string name="wrong_email">Wrong email</string>
-    <string name="wrong_password">Wrong secure</string>
+    <string name="wrong_password">Wrong password</string>
     <string name="email_wrong_format">Wrong email format</string>
     <string name="your_account">Your account</string>
     <string name="configure">Configure</string>

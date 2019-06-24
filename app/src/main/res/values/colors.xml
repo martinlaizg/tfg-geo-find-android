@@ -10,4 +10,8 @@
     <color name="red">#E53935</color>
     <color name="grey">#CFCFCF</color>
 
+
+    <color name="colorPrimaryTransparency">#4D000886</color>
+    <color name="colorPrimaryDarkTransparency">#83000886</color>
+
 </resources>
