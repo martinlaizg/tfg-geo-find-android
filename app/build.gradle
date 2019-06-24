@@ -58,14 +58,15 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.0.0'
     implementation 'androidx.preference:preference:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'androidx.room:room-runtime:2.0.0'
-    annotationProcessor 'androidx.room:room-compiler:2.0.0'
+    // Room
+    implementation 'androidx.room:room-runtime:2.1.0'
+    annotationProcessor 'androidx.room:room-compiler:2.1.0'
     implementation 'androidx.viewpager:viewpager:1.0.0'
     annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.0.0'
     testImplementation 'androidx.arch.core:core-testing:2.0.1'
 
     // Google auth
-    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
 
     // Core library
     androidTestImplementation 'androidx.test:core:1.2.0'
@@ -93,12 +94,13 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
 
     // Google play maps services
-    implementation 'com.google.android.gms:play-services-maps:16.1.0'
-    implementation 'com.google.android.gms:play-services-location:16.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
 
     // RetrofitService
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
 
     // Butter Knife
     implementation 'com.jakewharton:butterknife:10.1.0'

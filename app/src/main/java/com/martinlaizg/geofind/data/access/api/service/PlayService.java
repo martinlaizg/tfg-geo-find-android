@@ -17,18 +17,21 @@ import retrofit2.Response;
 
 public class PlayService {
 
-	private static PlayService locationService;
+	public static String token;
+
+	private static PlayService playService;
 	private static RestClient restClient;
+
 	private final String TAG = PlayService.class.getSimpleName();
 
 	public static PlayService getInstance() {
 		if(restClient == null) {
 			restClient = RetrofitInstance.getRestClient();
 		}
-		if(locationService == null) {
-			locationService = new PlayService();
+		if(playService == null) {
+			playService = new PlayService();
 		}
-		return locationService;
+		return playService;
 	}
 
 	public Play getUserPlay(int user_id, int tour_id) throws APIException {
@@ -38,16 +41,23 @@ public class PlayService {
 			HashMap<String, String> params = new HashMap<>();
 			params.put("user_id", String.valueOf(user_id));
 			params.put("tour_id", String.valueOf(tour_id));
-			response = restClient.getUserPlay(params).execute();
+			response = restClient.getUserPlay(getToken(), params).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}
 			apiException = ErrorUtils.parseError(response);
+			if(apiException.getType().equals(ErrorType.EXPIRED)) {
+
+			}
 		} catch(IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
 			Log.e(TAG, "getPlace: ", e);
 		}
 		throw apiException;
+	}
+
+	private String getToken() {
+		return "Bearer " + token;
 	}
 
 	public Play createUserPlay(int user_id, int tour_id) throws APIException {
@@ -57,7 +67,7 @@ public class PlayService {
 			HashMap<String, String> params = new HashMap<>();
 			params.put("user_id", String.valueOf(user_id));
 			params.put("tour_id", String.valueOf(tour_id));
-			response = restClient.createUserPlay(params).execute();
+			response = restClient.createUserPlay(getToken(), params).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}
@@ -74,7 +84,7 @@ public class PlayService {
 		APIException apiException;
 		try {
 			PlacePlay pp = new PlacePlay(place_id, play_id);
-			response = restClient.createPlacePlay(play_id, pp).execute();
+			response = restClient.createPlacePlay(getToken(), play_id, pp).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}

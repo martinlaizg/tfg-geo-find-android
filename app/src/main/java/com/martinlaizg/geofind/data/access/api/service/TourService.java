@@ -16,13 +16,18 @@ import retrofit2.Response;
 
 public class TourService {
 
+	public static String token;
 	private static TourService tourService;
+	private static UserService userService;
 	private static RestClient restClient;
 	private final String TAG = TourService.class.getSimpleName();
 
 	public static TourService getInstance() {
 		if(restClient == null) {
 			restClient = RetrofitInstance.getRestClient();
+		}
+		if(userService == null) {
+			userService = UserService.getInstance();
 		}
 		if(tourService == null) {
 			tourService = new TourService();
@@ -67,7 +72,7 @@ public class TourService {
 		Response<Tour> response;
 		APIException apiException;
 		try {
-			response = restClient.createTour(tour).execute();
+			response = restClient.createTour(getToken(), tour).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}
@@ -78,6 +83,10 @@ public class TourService {
 			Log.e(TAG, "create: ", e);
 		}
 		throw apiException;
+	}
+
+	private String getToken() {
+		return "Bearer " + token;
 	}
 
 	/**
@@ -118,7 +127,7 @@ public class TourService {
 		Response<Tour> response;
 		APIException apiException;
 		try {
-			response = restClient.update(tour.getId(), tour).execute();
+			response = restClient.update(getToken(), tour.getId(), tour).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}

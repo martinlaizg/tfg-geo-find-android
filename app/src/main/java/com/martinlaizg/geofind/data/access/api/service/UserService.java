@@ -17,8 +17,11 @@ import retrofit2.Response;
 
 public class UserService {
 
+	public static String token;
+
 	private static UserService userService;
 	private static RestClient restClient;
+
 	private final String TAG = UserService.class.getSimpleName();
 
 	public static UserService getInstance() {
@@ -83,7 +86,7 @@ public class UserService {
 			params.put("title", title);
 			params.put("message", message);
 
-			response = restClient.sendSupportMessage(params).execute();
+			response = restClient.sendSupportMessage(getToken(), params).execute();
 			if(response.isSuccessful()) {
 				return true;
 			}
@@ -95,12 +98,16 @@ public class UserService {
 		}
 	}
 
+	private String getToken() {
+		return "Bearer " + token;
+	}
+
 	public User update(Login login, User user) throws APIException {
 		Response<User> response;
 		APIException apiException;
 		try {
 			login.setUser(user);
-			response = restClient.updateUser(user.getId(), login).execute();
+			response = restClient.updateUser(getToken(), user.getId(), login).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}

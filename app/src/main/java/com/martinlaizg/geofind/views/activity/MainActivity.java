@@ -18,6 +18,9 @@ import androidx.preference.PreferenceManager;
 import com.google.android.material.navigation.NavigationView;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
+import com.martinlaizg.geofind.data.access.api.service.PlayService;
+import com.martinlaizg.geofind.data.access.api.service.TourService;
+import com.martinlaizg.geofind.data.access.api.service.UserService;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.squareup.picasso.Picasso;
 
@@ -43,13 +46,21 @@ public class MainActivity
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-		if(Preferences.USER.equals(key)) {
-			User u = Preferences.getLoggedUser(sharedPreferences);
-			if(u != null) {
-				setDrawerHeader(u.getUsername(), u.getName(), u.getImage());
-			} else {
-				setToolbarAndDrawer(false);
-			}
+		switch(key) {
+			case Preferences.USER:
+				User u = Preferences.getLoggedUser(sharedPreferences);
+				if(u != null) {
+					setDrawerHeader(u.getUsername(), u.getName(), u.getImage());
+				} else {
+					setToolbarAndDrawer(false);
+				}
+				break;
+			case Preferences.TOKEN:
+				String token = Preferences.getToken(sharedPreferences);
+				TourService.token = token;
+				PlayService.token = token;
+				UserService.token = token;
+				break;
 		}
 	}
 
