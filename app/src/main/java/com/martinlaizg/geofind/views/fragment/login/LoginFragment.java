@@ -1,6 +1,5 @@
 package com.martinlaizg.geofind.views.fragment.login;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,6 +35,7 @@ import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.Crypto;
 import com.martinlaizg.geofind.data.access.api.entities.Login;
+import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.views.viewmodel.LoginViewModel;
 
 import java.util.Objects;
@@ -101,11 +100,10 @@ public class LoginFragment
 	}
 
 	private void login(Login login) {
-		viewModel.login(login).observe(this, user -> {
-			login_button.setEnabled(true);
-			registry_button.setEnabled(true);
-			load_layout.setVisibility(View.GONE);
-			if(user == null) {
+		viewModel.login(login).observe(this, token -> {
+			email_input.setError("");
+			password_input.setError("");
+			if(token == null) {
 				switch(viewModel.getError().getType()) {
 					case TOKEN:
 					case PROVIDER:
@@ -131,13 +129,18 @@ public class LoginFragment
 				return;
 			}
 
+			User user = token.getUser();
 			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
 			Preferences.setLoggedUser(sp, user);
+			Preferences.setToken(sp, token.getToken());
 			if(login.getProvider() != Login.Provider.OWN) login.setSecure(sub);
 			Preferences.setLogin(sp, login);
-
 			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
 					.navigate(R.id.toMain);
+
+			login_button.setEnabled(true);
+			registry_button.setEnabled(true);
+			load_layout.setVisibility(View.GONE);
 		});
 	}
 
@@ -192,13 +195,6 @@ public class LoginFragment
 
 	@Override
 	public void onClick(View v) {
-		InputMethodManager inputManager = (InputMethodManager) requireActivity()
-				.getSystemService(Context.INPUT_METHOD_SERVICE);
-
-		inputManager.hideSoftInputFromWindow(
-				Objects.requireNonNull(requireActivity().getCurrentFocus()).getWindowToken(),
-				InputMethodManager.HIDE_NOT_ALWAYS);
-
 		email_input.clearFocus();
 		password_input.clearFocus();
 

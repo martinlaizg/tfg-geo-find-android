@@ -5,6 +5,7 @@ import android.util.Log;
 import com.martinlaizg.geofind.data.access.api.RestClient;
 import com.martinlaizg.geofind.data.access.api.RetrofitInstance;
 import com.martinlaizg.geofind.data.access.api.entities.Login;
+import com.martinlaizg.geofind.data.access.api.entities.Token;
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.error.ErrorUtils;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
@@ -46,8 +47,8 @@ public class UserService {
 	 * @throws APIException
 	 * 		api exception
 	 */
-	public User login(Login login) throws APIException {
-		Response<User> response;
+	public Token login(Login login) throws APIException {
+		Response<Token> response;
 		APIException apiException;
 		try {
 			response = restClient.login(login).execute();

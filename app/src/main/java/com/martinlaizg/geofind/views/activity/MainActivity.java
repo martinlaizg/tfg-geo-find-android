@@ -57,9 +57,7 @@ public class MainActivity
 				break;
 			case Preferences.TOKEN:
 				String token = Preferences.getToken(sharedPreferences);
-				TourService.token = token;
-				PlayService.token = token;
-				UserService.token = token;
+				setServicesToken(token);
 				break;
 		}
 	}
@@ -88,6 +86,12 @@ public class MainActivity
 		drawer_layout.setDrawerLockMode(visibility ?
 				                                DrawerLayout.LOCK_MODE_UNLOCKED :
 				                                DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+	}
+
+	private void setServicesToken(String token) {
+		TourService.token = token;
+		PlayService.token = token;
+		UserService.token = token;
 	}
 
 	@Override
@@ -125,9 +129,12 @@ public class MainActivity
 		NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
 
 		PreferenceManager.setDefaultValues(this, R.xml.app_preferences, false);
-		User u = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(this));
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+		User u = Preferences.getLoggedUser(sp);
 		if(u != null) {
 			setDrawerHeader(u.getUsername(), u.getName(), u.getImage());
 		}
+		String token = Preferences.getToken(sp);
+		setServicesToken(token);
 	}
 }

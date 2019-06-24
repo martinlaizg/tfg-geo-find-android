@@ -1,6 +1,7 @@
 package com.martinlaizg.geofind.data.access.api;
 
 import com.martinlaizg.geofind.data.access.api.entities.Login;
+import com.martinlaizg.geofind.data.access.api.entities.Token;
 import com.martinlaizg.geofind.data.access.database.entities.PlacePlay;
 import com.martinlaizg.geofind.data.access.database.entities.Play;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
@@ -50,7 +51,7 @@ public interface RestClient {
 
 	// Login user
 	@POST("login")
-	Call<User> login(@Body Login login);
+	Call<Token> login(@Body Login login);
 
 	// Create a user
 	@POST("users")

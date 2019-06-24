@@ -3,6 +3,7 @@ package com.martinlaizg.geofind.data.repository;
 import android.app.Application;
 
 import com.martinlaizg.geofind.data.access.api.entities.Login;
+import com.martinlaizg.geofind.data.access.api.entities.Token;
 import com.martinlaizg.geofind.data.access.api.service.UserService;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
@@ -29,12 +30,13 @@ public class UserRepository {
 	 * @throws APIException
 	 * 		exception from API
 	 */
-	public User login(Login login) throws APIException {
-		User user = userService.login(login);
+	public Token login(Login login) throws APIException {
+		Token token = userService.login(login);
+		User user = token.getUser();
 		if(user != null) {
 			userDAO.insert(user);
 		}
-		return user;
+		return token;
 	}
 
 	/**

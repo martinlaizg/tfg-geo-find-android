@@ -1,13 +1,10 @@
 package com.martinlaizg.geofind.views.fragment;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -19,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -144,7 +142,6 @@ public class EditProfileFragment
 					Toast.makeText(requireContext(), getString(R.string.wrong_password),
 					               Toast.LENGTH_SHORT).show();
 				}
-				hiddeKeyboard();
 				dialog.dismiss();
 			});
 			passADB.show();
@@ -184,7 +181,6 @@ public class EditProfileFragment
 					Toast.makeText(requireContext(), getString(R.string.wrong_password),
 					               Toast.LENGTH_SHORT).show();
 				}
-				hiddeKeyboard();
 				dialog.dismiss();
 			});
 			passADB.show();
@@ -226,13 +222,4 @@ public class EditProfileFragment
 					.popBackStack();
 		});
 	}
-
-	private void hiddeKeyboard() {
-		InputMethodManager inputManager = (InputMethodManager) requireActivity()
-				.getSystemService(Context.INPUT_METHOD_SERVICE);
-		inputManager.hideSoftInputFromWindow(
-				Objects.requireNonNull(requireActivity().getCurrentFocus()).getWindowToken(),
-				InputMethodManager.HIDE_NOT_ALWAYS);
-	}
-
 }
