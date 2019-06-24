@@ -17,11 +17,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.LatLng;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.views.viewmodel.TourViewModel;
 import com.squareup.picasso.Picasso;
+
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -89,8 +91,11 @@ public class PlaceFragment
 					                       .getQuantityString(R.plurals.place_number_number, number,
 					                                          number, total));
 			if(googleMap != null) {
-				googleMap.addMarker(new MarkerOptions().position(place.getPosition()));
-				CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(place.getPosition(), MAP_ZOOM);
+				LatLng position = place.getPosition();
+				float latRand = (new Random().nextInt(20000) - 10000) / 3000000f;
+				float lonRand = (new Random().nextInt(20000) - 10000) / 3000000f;
+				position = new LatLng(position.latitude + latRand, position.longitude + lonRand);
+				CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(position, MAP_ZOOM);
 				googleMap.moveCamera(cu);
 			}
 		}

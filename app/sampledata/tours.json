@@ -1,8 +1,8 @@
 {
-  "comment": "Mapas",
+  "comment": "Tours",
   "data": [
     {
-      "name": "Mapa 1",
+      "name": "Tour 1",
       "description": "Descripcion 1",
       "creator": "Creador 1",
       "progress": "50",
@@ -10,7 +10,7 @@
       "num_places": "30 localizaciones"
     },
     {
-      "name": "Mapa 2",
+      "name": "Tour 2",
       "description": "Descripcion 2",
       "creator": "Creador 2",
       "progress": "50",
@@ -18,7 +18,7 @@
       "num_places": "30 localizaciones"
     },
     {
-      "name": "Mapa 3",
+      "name": "Tour 3",
       "description": "Descripcion 3",
       "creator": "Creador 3",
       "progress": "50",
@@ -26,7 +26,7 @@
       "num_places": "30 localizaciones"
     },
     {
-      "name": "Mapa 4",
+      "name": "Tour 4",
       "description": "Descripcion 4",
       "creator": "Creador 4",
       "progress": "50",
@@ -34,7 +34,7 @@
       "num_places": "30 localizaciones"
     },
     {
-      "name": "Mapa 5",
+      "name": "Tour 5",
       "description": "Descripcion 5",
       "creator": "Creador 5",
       "progress": "50",
