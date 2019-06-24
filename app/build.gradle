@@ -12,11 +12,11 @@ android {
             storeFile file('../android-studio-settings/debug.jks')
         }
     }
-    compileSdkVersion 29
+    compileSdkVersion 28
     defaultConfig {
         applicationId 'com.martinlaizg.geofind'
         minSdkVersion 26
-        targetSdkVersion 29
+        targetSdkVersion 28
         versionCode 7
         versionName 'v0.3-SNAPSHOT'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -103,8 +103,8 @@ dependencies {
 
     //
     // RetrofitService
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
 
     //
     // Butter Knife
