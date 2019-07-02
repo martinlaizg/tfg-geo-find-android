@@ -47,7 +47,7 @@
     <string name="username">Nombre de usuario</string>
     <string name="rejected_location_access">Denegado permiso de localización</string>
     <string name="home">Inicio</string>
-    <string name="place_distance">%d m</string>
+    <string name="place_distance_m">%d m</string>
     <string name="play">Jugar</string>
     <string name="play_tour">Jugar Tour</string>
     <string name="tour_not_permitted">Tour no permitido</string>
@@ -105,4 +105,5 @@
     <string name="click_edit">Click en editar</string>
     <string name="registred">Registrado</string>
     <string name="place_area_description">Area del sitio</string>
+    <string name="place_distance_km">%d km</string>
 </resources>

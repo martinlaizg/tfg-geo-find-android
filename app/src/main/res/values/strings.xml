@@ -57,7 +57,7 @@
     <string name="play">Play</string>
     <string name="tour_not_permitted">Tour not permitted</string>
     <string name="play_tour">Play Tour</string>
-    <string name="place_distance">%d m</string>
+    <string name="place_distance_m">%d m</string>
     <string name="map">Map</string>
     <string name="compass">Compass</string>
     <string name="therm">Therm</string>
@@ -115,4 +115,6 @@
     <string name="registred">Registred</string>
     <string name="click_edit">Click edit</string>
     <string name="place_area_description">Place area</string>
+    <string name="place_distance_km">%d km</string>
+    <string name="something_went_wrong">Something went wrong</string>
 </resources>
