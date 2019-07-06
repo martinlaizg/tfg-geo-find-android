@@ -1,9 +1,12 @@
 package com.martinlaizg.geofind.data.repository;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 
+import androidx.preference.PreferenceManager;
+
+import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.api.entities.Login;
-import com.martinlaizg.geofind.data.access.api.entities.Token;
 import com.martinlaizg.geofind.data.access.api.service.UserService;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
@@ -14,29 +17,13 @@ public class UserRepository {
 
 	private final UserDAO userDAO;
 	private final UserService userService;
+	private final SharedPreferences sp;
 
 	UserRepository(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
 		userDAO = database.userDAO();
-		userService = UserService.getInstance();
-	}
-
-	/**
-	 * Login a user
-	 *
-	 * @param login
-	 * 		login data to login (email and password only)
-	 * @return the logged user
-	 * @throws APIException
-	 * 		exception from API
-	 */
-	public Token login(Login login) throws APIException {
-		Token token = userService.login(login);
-		User user = token.getUser();
-		if(user != null) {
-			userDAO.insert(user);
-		}
-		return token;
+		userService = UserService.getInstance(application);
+		sp = PreferenceManager.getDefaultSharedPreferences(application.getApplicationContext());
 	}
 
 	/**
@@ -52,6 +39,8 @@ public class UserRepository {
 		User user = userService.registry(login);
 		if(user != null) {
 			userDAO.insert(user);
+			//			Preferences.setToken(sp, token.getToken());
+			Preferences.setLogin(sp, login);
 		}
 		return user;
 	}
@@ -91,12 +80,11 @@ public class UserRepository {
 	 * 		the title
 	 * @param message
 	 * 		the message
-	 * @return the response
 	 * @throws APIException
 	 * 		the exception
 	 */
-	public boolean sendMessage(String title, String message) throws APIException {
-		return userService.sendMessage(title, message);
+	public void sendMessage(String title, String message) throws APIException {
+		userService.sendMessage(title, message);
 	}
 
 	/**
@@ -114,5 +102,27 @@ public class UserRepository {
 		User u = userService.update(login, user);
 		userDAO.insert(u);
 		return u;
+	}
+
+	public void reLogin() throws APIException {
+		login(Preferences.getLogin(sp));
+	}
+
+	/**
+	 * Login a user
+	 *
+	 * @param login
+	 * 		login data to login (email and password only)
+	 * @return the logged user
+	 * @throws APIException
+	 * 		exception from API
+	 */
+	public User login(Login login) throws APIException {
+		User user = userService.login(login);
+		if(user != null) {
+			userDAO.insert(user);
+			Preferences.setLogin(sp, login);
+		}
+		return user;
 	}
 }

@@ -19,7 +19,7 @@ public class PlaceRepository {
 		AppDatabase database = AppDatabase.getInstance(application);
 		placeDAO = database.placeDAO();
 		PlacePlayDAO placePlayDAO = database.playPlaceDAO();
-		PlayService playService = PlayService.getInstance();
+		PlayService playService = PlayService.getInstance(application);
 	}
 
 	/**

@@ -6,7 +6,6 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.martinlaizg.geofind.data.access.api.entities.Login;
-import com.martinlaizg.geofind.data.access.api.entities.Token;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.data.repository.RepositoryFactory;
@@ -23,12 +22,12 @@ public class LoginViewModel
 		userRepo = RepositoryFactory.getUserRepository(application);
 	}
 
-	public MutableLiveData<Token> login(Login login) {
-		MutableLiveData<Token> t = new MutableLiveData<>();
+	public MutableLiveData<User> login(Login login) {
+		MutableLiveData<User> t = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
-				Token token = userRepo.login(login);
-				t.postValue(token);
+				User user = userRepo.login(login);
+				t.postValue(user);
 			} catch(APIException e) {
 				setError(e);
 				t.postValue(null);

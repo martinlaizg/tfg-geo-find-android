@@ -2,6 +2,7 @@ package com.martinlaizg.geofind.views.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,9 +19,7 @@ import androidx.preference.PreferenceManager;
 import com.google.android.material.navigation.NavigationView;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
-import com.martinlaizg.geofind.data.access.api.service.PlayService;
-import com.martinlaizg.geofind.data.access.api.service.TourService;
-import com.martinlaizg.geofind.data.access.api.service.UserService;
+import com.martinlaizg.geofind.data.access.api.RetrofitInstance;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.squareup.picasso.Picasso;
 
@@ -46,6 +45,7 @@ public class MainActivity
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+		Log.i(TAG, "onSharedPreferenceChanged: changed");
 		switch(key) {
 			case Preferences.USER:
 				User u = Preferences.getLoggedUser(sharedPreferences);
@@ -89,9 +89,7 @@ public class MainActivity
 	}
 
 	private void setServicesToken(String token) {
-		TourService.token = token;
-		PlayService.token = token;
-		UserService.token = token;
+		RetrofitInstance.setToken(token);
 	}
 
 	@Override

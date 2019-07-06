@@ -3,6 +3,5 @@
 
 
     // slide animation duration in ms
-    <integer name="slide">500</integer>
 
 </resources>

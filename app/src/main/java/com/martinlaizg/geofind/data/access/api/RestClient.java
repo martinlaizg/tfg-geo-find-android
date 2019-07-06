@@ -1,7 +1,6 @@
 package com.martinlaizg.geofind.data.access.api;
 
 import com.martinlaizg.geofind.data.access.api.entities.Login;
-import com.martinlaizg.geofind.data.access.api.entities.Token;
 import com.martinlaizg.geofind.data.access.database.entities.PlacePlay;
 import com.martinlaizg.geofind.data.access.database.entities.Play;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
@@ -13,7 +12,6 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -32,7 +30,7 @@ public interface RestClient {
 	Call<List<Tour>> getTours(@QueryMap java.util.Map<String, String> params);
 
 	@POST("tours")
-	Call<Tour> createTour(@Header("Authorization") String token, @Body Tour tour);
+	Call<Tour> createTour(@Body Tour tour);
 
 	// Get single tourEntity
 	@GET("tours/{tour_id}")
@@ -40,8 +38,7 @@ public interface RestClient {
 
 	// Update tourEntity
 	@PUT("tours/{tour_id}")
-	Call<Tour> update(@Header("Authorization") String token, @Path("tour_id") Integer tour_id,
-			@Body Tour t);
+	Call<Tour> update(@Path("tour_id") Integer tour_id, @Body Tour t);
 
 	//
 	//
@@ -51,7 +48,7 @@ public interface RestClient {
 
 	// Login user
 	@POST("login")
-	Call<Token> login(@Body Login login);
+	Call<User> login(@Body Login login);
 
 	// Create a user
 	@POST("users")
@@ -65,23 +62,18 @@ public interface RestClient {
 
 	// Get user play
 	@GET("plays")
-	Call<Play> getUserPlay(@Header("Authorization") String token,
-			@QueryMap Map<String, String> params);
+	Call<Play> getUserPlay(@QueryMap Map<String, String> params);
 
 	// Create user play
 	@POST("plays")
-	Call<Play> createUserPlay(@Header("Authorization") String token,
-			@QueryMap Map<String, String> params);
+	Call<Play> createUserPlay(@QueryMap Map<String, String> params);
 
 	@POST("plays/{play_id}/places")
-	Call<Play> createPlacePlay(@Header("Authorization") String token,
-			@Path("play_id") Integer play_id, @Body PlacePlay placePlay);
+	Call<Play> createPlacePlay(@Path("play_id") Integer play_id, @Body PlacePlay placePlay);
 
 	@POST("support")
-	Call<Void> sendSupportMessage(@Header("Authorization") String token,
-			@QueryMap Map<String, String> params);
+	Call<Void> sendSupportMessage(@QueryMap Map<String, String> params);
 
 	@PUT("users/{user_id}")
-	Call<User> updateUser(@Header("Authorization") String token, @Path("user_id") Integer user_id,
-			@Body Login login);
+	Call<User> updateUser(@Path("user_id") Integer user_id, @Body Login login);
 }

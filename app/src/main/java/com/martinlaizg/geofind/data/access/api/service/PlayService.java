@@ -1,5 +1,6 @@
 package com.martinlaizg.geofind.data.access.api.service;
 
+import android.app.Application;
 import android.util.Log;
 
 import com.martinlaizg.geofind.data.access.api.RestClient;
@@ -17,16 +18,14 @@ import retrofit2.Response;
 
 public class PlayService {
 
-	public static String token;
-
 	private static PlayService playService;
 	private static RestClient restClient;
 
 	private final String TAG = PlayService.class.getSimpleName();
 
-	public static PlayService getInstance() {
+	public static PlayService getInstance(Application application) {
 		if(restClient == null) {
-			restClient = RetrofitInstance.getRestClient();
+			restClient = RetrofitInstance.getRestClient(application);
 		}
 		if(playService == null) {
 			playService = new PlayService();
@@ -41,23 +40,16 @@ public class PlayService {
 			HashMap<String, String> params = new HashMap<>();
 			params.put("user_id", String.valueOf(user_id));
 			params.put("tour_id", String.valueOf(tour_id));
-			response = restClient.getUserPlay(getToken(), params).execute();
+			response = restClient.getUserPlay(params).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}
 			apiException = ErrorUtils.parseError(response);
-			if(apiException.getType().equals(ErrorType.EXPIRED)) {
-
-			}
 		} catch(IOException e) {
 			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
 			Log.e(TAG, "getPlace: ", e);
 		}
 		throw apiException;
-	}
-
-	private String getToken() {
-		return "Bearer " + token;
 	}
 
 	public Play createUserPlay(int user_id, int tour_id) throws APIException {
@@ -67,7 +59,7 @@ public class PlayService {
 			HashMap<String, String> params = new HashMap<>();
 			params.put("user_id", String.valueOf(user_id));
 			params.put("tour_id", String.valueOf(tour_id));
-			response = restClient.createUserPlay(getToken(), params).execute();
+			response = restClient.createUserPlay(params).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}
@@ -84,7 +76,7 @@ public class PlayService {
 		APIException apiException;
 		try {
 			PlacePlay pp = new PlacePlay(place_id, play_id);
-			response = restClient.createPlacePlay(getToken(), play_id, pp).execute();
+			response = restClient.createPlacePlay(play_id, pp).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}

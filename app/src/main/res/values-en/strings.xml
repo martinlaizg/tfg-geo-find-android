@@ -56,9 +56,6 @@
     <string name="therm">Therm</string>
     <string name="satellite">Satellite</string>
     <string name="map_type">Map type</string>
-    <string name="tour_is_completed">The tour has been completed</string>
-    <string name="place_completed">Place completed</string>
-    <string name="tour_completed">Tour completed</string>
     <string name="navigation_arrow_description">Navigation arrow</string>
     <string name="play_compass">Play compass</string>
     <string name="select_play_difficulty">Select play difficulty</string>
@@ -77,7 +74,6 @@
     <string name="wrong_password">Wrong password</string>
     <string name="email_wrong_format">Wrong email format</string>
     <string name="your_account">Your account</string>
-    <string name="configure">Configure</string>
     <string name="save">Save</string>
     <string name="change_password">Change password</string>
     <string name="change_image">Change image</string>
@@ -97,9 +93,7 @@
     <string name="required_answer">The answer is required</string>
     <string name="answer_repeated">The answer can not be repeated</string>
     <string name="without_decription">Without description</string>
-    <string name="wrong_tour">Wrong Tour</string>
     <string name="wrong_answer">Wrong answer</string>
-    <string name="ok">Ok</string>
     <string name="at_least_one_place">At least one place</string>
     <string name="no_permissions">No has permission</string>
     <string name="registred">Registred</string>

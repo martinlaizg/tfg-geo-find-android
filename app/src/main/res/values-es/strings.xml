@@ -56,13 +56,10 @@
     <string name="therm">Termometro</string>
     <string name="satellite">Satélite</string>
     <string name="map_type">Tipo de mapa</string>
-    <string name="tour_is_completed">El tour se ha completado</string>
     <string name="navigation_arrow_description">Flecha de navegación</string>
-    <string name="place_completed">Sitio completado</string>
     <string name="play_compass">Jugar compass</string>
     <string name="play_therm">Jugar termometro</string>
     <string name="select_play_difficulty">Seleccionad dificultad</string>
-    <string name="tour_completed">Tour completado</string>
     <string name="default_map_type">Tipo de mapa por defecto</string>
     <string name="default_map_view">Vista de mapa por defecto</string>
     <string name="invalid_place">Sitio no válido</string>
@@ -70,7 +67,6 @@
     <string name="message_to_support">Mensaje para soporte</string>
     <string name="title">Título</string>
     <string name="send">Enviar</string>
-    <string name="configure">Configurar</string>
     <string name="email_in_use">El email ya se está usando</string>
     <string name="email_wrong_format">Email con formato incorrecto</string>
     <string name="service_provider_problem">Problema con proveedor de  servicio</string>
@@ -98,12 +94,11 @@
     <string name="with_question">Con pregunta</string>
     <string name="without_decription">Sin descripción</string>
     <string name="at_least_one_place">Al menos un sitio</string>
-    <string name="ok">Vale</string>
     <string name="wrong_answer">Respuesta incorrecta</string>
-    <string name="wrong_tour">Tour incorrecto</string>
     <string name="no_permissions">No tienes permisos</string>
     <string name="click_edit">Click en editar</string>
     <string name="registred">Registrado</string>
-    <string name="place_area_description">Area del sitio</string>
+    <string name="place_area_description">Área del sitio</string>
     <string name="place_distance_km">%d km</string>
+    <string name="something_went_wrong">Algo ha ido mal</string>
 </resources>

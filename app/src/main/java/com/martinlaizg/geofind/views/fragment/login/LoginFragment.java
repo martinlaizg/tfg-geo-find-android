@@ -19,9 +19,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
 
-import com.google.android.gms.auth.api.credentials.Credentials;
-import com.google.android.gms.auth.api.credentials.CredentialsClient;
-import com.google.android.gms.auth.api.credentials.CredentialsOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -35,7 +32,7 @@ import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.Crypto;
 import com.martinlaizg.geofind.data.access.api.entities.Login;
-import com.martinlaizg.geofind.data.access.database.entities.User;
+import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.views.viewmodel.LoginViewModel;
 
 import java.util.Objects;
@@ -49,7 +46,6 @@ public class LoginFragment
 
 	private static final String TAG = LoginFragment.class.getSimpleName();
 	private static final int RC_SIGN_IN = 0;
-	private static final int RC_SAVE = 1;
 
 	@BindView(R.id.email_input)
 	TextInputLayout email_input;
@@ -100,11 +96,12 @@ public class LoginFragment
 	}
 
 	private void login(Login login) {
-		viewModel.login(login).observe(this, token -> {
+		viewModel.login(login).observe(this, user -> {
 			email_input.setError("");
 			password_input.setError("");
-			if(token == null) {
-				switch(viewModel.getError().getType()) {
+			if(user == null) {
+				APIException e = viewModel.getError();
+				switch(e.getType()) {
 					case TOKEN:
 					case PROVIDER:
 					case PROVIDER_LOGIN:
@@ -129,10 +126,8 @@ public class LoginFragment
 				return;
 			}
 
-			User user = token.getUser();
 			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
 			Preferences.setLoggedUser(sp, user);
-			Preferences.setToken(sp, token.getToken());
 			if(login.getProvider() != Login.Provider.OWN) login.setSecure(sub);
 			Preferences.setLogin(sp, login);
 			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
@@ -160,9 +155,9 @@ public class LoginFragment
 		mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
 
 		// Google SmartLock
-		CredentialsOptions options = new CredentialsOptions.Builder().forceEnableSaveDialog()
-				.build();
-		CredentialsClient mCredentialsClient = Credentials.getClient(requireActivity(), options);
+		//		CredentialsOptions options = new CredentialsOptions.Builder().forceEnableSaveDialog()
+		//				.build();
+		//		CredentialsClient mCredentialsClient = Credentials.getClient(requireActivity(), options);
 		return view;
 	}
 

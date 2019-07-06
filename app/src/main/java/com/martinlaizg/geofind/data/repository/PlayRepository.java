@@ -28,7 +28,7 @@ public class PlayRepository {
 	PlayRepository(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
 		playDAO = database.playDAO();
-		playService = PlayService.getInstance();
+		playService = PlayService.getInstance(application);
 
 		placePlayDAO = database.playPlaceDAO();
 
@@ -76,6 +76,7 @@ public class PlayRepository {
 					}
 				} else {
 					Log.e(TAG, "getPlay: Other error");
+					throw e;
 				}
 			}
 			if(p == null) return null;

@@ -1,11 +1,11 @@
 package com.martinlaizg.geofind.data.access.api.service;
 
+import android.app.Application;
 import android.util.Log;
 
 import com.martinlaizg.geofind.data.access.api.RestClient;
 import com.martinlaizg.geofind.data.access.api.RetrofitInstance;
 import com.martinlaizg.geofind.data.access.api.entities.Login;
-import com.martinlaizg.geofind.data.access.api.entities.Token;
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.error.ErrorUtils;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
@@ -18,16 +18,14 @@ import retrofit2.Response;
 
 public class UserService {
 
-	public static String token;
-
 	private static UserService userService;
 	private static RestClient restClient;
 
 	private final String TAG = UserService.class.getSimpleName();
 
-	public static UserService getInstance() {
+	public static UserService getInstance(Application application) {
 		if(restClient == null) {
-			restClient = RetrofitInstance.getRestClient();
+			restClient = RetrofitInstance.getRestClient(application);
 		}
 		if(userService == null) {
 			userService = new UserService();
@@ -47,8 +45,8 @@ public class UserService {
 	 * @throws APIException
 	 * 		api exception
 	 */
-	public Token login(Login login) throws APIException {
-		Response<Token> response;
+	public User login(Login login) throws APIException {
+		Response<User> response;
 		APIException apiException;
 		try {
 			response = restClient.login(login).execute();
@@ -79,7 +77,7 @@ public class UserService {
 		throw apiException;
 	}
 
-	public boolean sendMessage(String title, String message) throws APIException {
+	public void sendMessage(String title, String message) throws APIException {
 		Response<Void> response;
 		APIException apiException;
 		try {
@@ -87,9 +85,9 @@ public class UserService {
 			params.put("title", title);
 			params.put("message", message);
 
-			response = restClient.sendSupportMessage(getToken(), params).execute();
+			response = restClient.sendSupportMessage(params).execute();
 			if(response.isSuccessful()) {
-				return true;
+				return;
 			}
 			throw ErrorUtils.parseError(response);
 		} catch(Exception e) {
@@ -99,16 +97,12 @@ public class UserService {
 		}
 	}
 
-	private String getToken() {
-		return "Bearer " + token;
-	}
-
 	public User update(Login login, User user) throws APIException {
 		Response<User> response;
 		APIException apiException;
 		try {
 			login.setUser(user);
-			response = restClient.updateUser(getToken(), user.getId(), login).execute();
+			response = restClient.updateUser(user.getId(), login).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}

@@ -1,5 +1,6 @@
 package com.martinlaizg.geofind.data.access.api.service;
 
+import android.app.Application;
 import android.util.Log;
 
 import com.martinlaizg.geofind.data.access.api.RestClient;
@@ -16,18 +17,17 @@ import retrofit2.Response;
 
 public class TourService {
 
-	public static String token;
 	private static TourService tourService;
 	private static UserService userService;
 	private static RestClient restClient;
 	private final String TAG = TourService.class.getSimpleName();
 
-	public static TourService getInstance() {
+	public static TourService getInstance(Application application) {
 		if(restClient == null) {
-			restClient = RetrofitInstance.getRestClient();
+			restClient = RetrofitInstance.getRestClient(application);
 		}
 		if(userService == null) {
-			userService = UserService.getInstance();
+			userService = UserService.getInstance(application);
 		}
 		if(tourService == null) {
 			tourService = new TourService();
@@ -72,7 +72,7 @@ public class TourService {
 		Response<Tour> response;
 		APIException apiException;
 		try {
-			response = restClient.createTour(getToken(), tour).execute();
+			response = restClient.createTour(tour).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}
@@ -83,10 +83,6 @@ public class TourService {
 			Log.e(TAG, "create: ", e);
 		}
 		throw apiException;
-	}
-
-	private String getToken() {
-		return "Bearer " + token;
 	}
 
 	/**
@@ -127,7 +123,7 @@ public class TourService {
 		Response<Tour> response;
 		APIException apiException;
 		try {
-			response = restClient.update(getToken(), tour.getId(), tour).execute();
+			response = restClient.update(tour.getId(), tour).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}
