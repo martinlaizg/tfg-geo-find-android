@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.service.PlayService;
+import com.martinlaizg.geofind.data.access.api.service.ServiceFactory;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
 import com.martinlaizg.geofind.data.access.database.dao.PlayDAO;
@@ -16,19 +17,19 @@ import com.martinlaizg.geofind.data.access.database.entities.Play;
 public class PlayRepository {
 
 	private static final String TAG = PlayRepository.class.getSimpleName();
-	private final PlayDAO playDAO;
-	private final PlayService playService;
 
-	private final TourRepository tourRepo;
-	private final UserRepository userRepo;
+	private static PlayDAO playDAO;
+	private static PlayService playService;
 
-	private final PlacePlayDAO placePlayDAO;
+	private static TourRepository tourRepo;
+	private static UserRepository userRepo;
 
-	@SuppressWarnings("unused")
-	PlayRepository(Application application) {
+	private static PlacePlayDAO placePlayDAO;
+
+	void instantiate(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
 		playDAO = database.playDAO();
-		playService = PlayService.getInstance(application);
+		playService = ServiceFactory.getPlayService(application);
 
 		placePlayDAO = database.playPlaceDAO();
 
@@ -145,4 +146,5 @@ public class PlayRepository {
 		insert(p);
 		return p;
 	}
+
 }

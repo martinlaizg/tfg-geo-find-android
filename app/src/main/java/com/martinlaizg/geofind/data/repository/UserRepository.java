@@ -7,6 +7,7 @@ import androidx.preference.PreferenceManager;
 
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.api.entities.Login;
+import com.martinlaizg.geofind.data.access.api.service.ServiceFactory;
 import com.martinlaizg.geofind.data.access.api.service.UserService;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
@@ -15,14 +16,14 @@ import com.martinlaizg.geofind.data.access.database.entities.User;
 
 public class UserRepository {
 
-	private final UserDAO userDAO;
-	private final UserService userService;
-	private final SharedPreferences sp;
+	private static UserDAO userDAO;
+	private static UserService userService;
+	private static SharedPreferences sp;
 
-	UserRepository(Application application) {
+	void instantiate(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
 		userDAO = database.userDAO();
-		userService = UserService.getInstance(application);
+		userService = ServiceFactory.getUserService(application);
 		sp = PreferenceManager.getDefaultSharedPreferences(application.getApplicationContext());
 	}
 

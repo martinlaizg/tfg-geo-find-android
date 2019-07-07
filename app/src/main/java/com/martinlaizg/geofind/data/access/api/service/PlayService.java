@@ -18,21 +18,32 @@ import retrofit2.Response;
 
 public class PlayService {
 
-	private static PlayService playService;
 	private static RestClient restClient;
+
+	private static PlayService playService;
 
 	private final String TAG = PlayService.class.getSimpleName();
 
-	public static PlayService getInstance(Application application) {
+	void instantiate(Application application) {
 		if(restClient == null) {
 			restClient = RetrofitInstance.getRestClient(application);
 		}
 		if(playService == null) {
 			playService = new PlayService();
 		}
-		return playService;
 	}
 
+	/**
+	 * Get the user play
+	 *
+	 * @param user_id
+	 * 		the user id
+	 * @param tour_id
+	 * 		the tour id
+	 * @return the play
+	 * @throws APIException
+	 * 		exception from server
+	 */
 	public Play getUserPlay(int user_id, int tour_id) throws APIException {
 		Response<Play> response;
 		APIException apiException;
@@ -52,6 +63,17 @@ public class PlayService {
 		throw apiException;
 	}
 
+	/**
+	 * Create the user play
+	 *
+	 * @param user_id
+	 * 		the user id
+	 * @param tour_id
+	 * 		the tour id
+	 * @return the play
+	 * @throws APIException
+	 * 		exception from server
+	 */
 	public Play createUserPlay(int user_id, int tour_id) throws APIException {
 		Response<Play> response;
 		APIException apiException;
@@ -71,6 +93,17 @@ public class PlayService {
 		throw apiException;
 	}
 
+	/**
+	 * Create the place play
+	 *
+	 * @param play_id
+	 * 		the play id
+	 * @param place_id
+	 * 		the place id
+	 * @return the play
+	 * @throws APIException
+	 * 		exception from the server
+	 */
 	public Play createPlacePlay(Integer play_id, Integer place_id) throws APIException {
 		Response<Play> response;
 		APIException apiException;

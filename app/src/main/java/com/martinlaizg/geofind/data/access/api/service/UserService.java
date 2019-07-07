@@ -18,19 +18,14 @@ import retrofit2.Response;
 
 public class UserService {
 
-	private static UserService userService;
 	private static RestClient restClient;
 
 	private final String TAG = UserService.class.getSimpleName();
 
-	public static UserService getInstance(Application application) {
+	void instantiate(Application application) {
 		if(restClient == null) {
 			restClient = RetrofitInstance.getRestClient(application);
 		}
-		if(userService == null) {
-			userService = new UserService();
-		}
-		return userService;
 	}
 
 	/**
@@ -61,6 +56,15 @@ public class UserService {
 		throw apiException;
 	}
 
+	/**
+	 * Registry the user
+	 *
+	 * @param login
+	 * 		the login data
+	 * @return the registred user
+	 * @throws APIException
+	 * 		exception from server
+	 */
 	public User registry(Login login) throws APIException {
 		Response<User> response;
 		APIException apiException;
@@ -77,6 +81,16 @@ public class UserService {
 		throw apiException;
 	}
 
+	/**
+	 * Send message to support
+	 *
+	 * @param title
+	 * 		the title
+	 * @param message
+	 * 		the message
+	 * @throws APIException
+	 * 		exception from server
+	 */
 	public void sendMessage(String title, String message) throws APIException {
 		Response<Void> response;
 		APIException apiException;
@@ -97,6 +111,17 @@ public class UserService {
 		}
 	}
 
+	/**
+	 * Upadte user data
+	 *
+	 * @param login
+	 * 		the login data
+	 * @param user
+	 * 		the user data
+	 * @return the new user
+	 * @throws APIException
+	 * 		exception from server
+	 */
 	public User update(Login login, User user) throws APIException {
 		Response<User> response;
 		APIException apiException;

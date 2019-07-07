@@ -17,22 +17,19 @@ import retrofit2.Response;
 
 public class TourService {
 
-	private static TourService tourService;
-	private static UserService userService;
 	private static RestClient restClient;
+
+	private static TourService tourService;
+
 	private final String TAG = TourService.class.getSimpleName();
 
-	public static TourService getInstance(Application application) {
+	void instantiate(Application application) {
 		if(restClient == null) {
 			restClient = RetrofitInstance.getRestClient(application);
-		}
-		if(userService == null) {
-			userService = UserService.getInstance(application);
 		}
 		if(tourService == null) {
 			tourService = new TourService();
 		}
-		return tourService;
 	}
 
 	/**
