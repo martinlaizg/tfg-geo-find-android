@@ -148,15 +148,16 @@ abstract class PlayTourFragment
 		if(placeLocation != null) {
 			distance = (int) usrLocation.distanceTo(placeLocation);
 			if(distance > 1000f) {
-				distance = distance / 1000;
-				distance = Math.round(distance * 100f) / 100f;
+				float newDistance = distance / 1000;
+				newDistance = Math.round(newDistance * 100f) / 100f;
 				place_distance
-						.setText(getResources().getString(R.string.place_distance_km, distance));
+						.setText(getResources().getString(R.string.place_distance_km, newDistance));
+				Log.d(TAG(), "updateView: distance=" + newDistance + "km");
 			} else {
 				place_distance.setText(
 						getResources().getString(R.string.place_distance_m, (int) distance));
+				Log.d(TAG(), "updateView: distance=" + distance + "m");
 			}
-			Log.d(TAG(), "updateView: distance=" + distance + "m");
 			if(distance < DISTANCE_TO_COMPLETE) {
 				locationManager.removeUpdates(this);
 				Log.d(TAG(), "updateView: user arrive to the place");
@@ -169,8 +170,8 @@ abstract class PlayTourFragment
 				}
 				return;
 			}
-			updateView();
 		}
+		updateView();
 	}
 
 	private void completePlace() {

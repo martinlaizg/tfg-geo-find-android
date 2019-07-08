@@ -50,7 +50,7 @@ public class PlayRepository {
 	 * 		exception from API
 	 */
 	public Play getPlay(int user_id, int tour_id) throws APIException {
-		Play p = playDAO.getPlay(user_id, tour_id);         // Get the play from the database
+		Play p = null;//playDAO.getPlay(user_id, tour_id);         // Get the play from the database
 		if(p != null) {
 			if(p.isOutOfDate()) {       // If is out of date remove from database
 				playDAO.delete(p);

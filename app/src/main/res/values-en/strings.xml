@@ -99,6 +99,6 @@
     <string name="registred">Registred</string>
     <string name="click_edit">Click edit</string>
     <string name="place_area_description">Place area</string>
-    <string name="place_distance_km">%d km</string>
+    <string name="place_distance_km">%.2f km</string>
     <string name="something_went_wrong">Something went wrong</string>
 </resources>

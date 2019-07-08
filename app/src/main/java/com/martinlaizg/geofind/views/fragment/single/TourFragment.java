@@ -78,7 +78,6 @@ public class TourFragment
 		return view;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireActivity());
