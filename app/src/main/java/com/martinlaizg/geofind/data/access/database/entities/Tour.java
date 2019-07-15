@@ -43,7 +43,7 @@ public class Tour {
 		this.id = id;
 		this.name = name;
 		this.description = description;
-		this.image = image;
+		this.image = null;
 		this.min_level = min_level;
 		this.created_at = created_at;
 		this.updated_at = updated_at;

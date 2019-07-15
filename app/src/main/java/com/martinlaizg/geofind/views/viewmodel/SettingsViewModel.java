@@ -31,7 +31,8 @@ public class SettingsViewModel
 		MutableLiveData<Boolean> r = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
-				r.postValue(userRepo.sendMessage(title, message));
+				userRepo.sendMessage(title, message);
+				r.postValue(true);
 			} catch(APIException e) {
 				Log.e(TAG, "sendMessage: ", e);
 				setError(e);

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -251,7 +252,6 @@ public class CreatePlaceFragment
 				continue;
 			}
 			if(bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
-				// Found best last known location: %s", l);
 				bestLocation = l;
 			}
 		}
@@ -294,6 +294,7 @@ public class CreatePlaceFragment
 		if(b != null) {
 			int position = b.getInt(PLACE_POSITION, viewModel.getPlaces().size());
 			setPlace(viewModel.getPlace(position));
+			Log.i(TAG, "onViewCreated: Get place and set");
 		}
 		create_button.setOnClickListener(this);
 		if(marker != null) create_button.setText(R.string.update_place);

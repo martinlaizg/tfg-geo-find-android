@@ -10,6 +10,7 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
@@ -21,9 +22,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
 
-import com.google.android.gms.auth.api.credentials.Credentials;
-import com.google.android.gms.auth.api.credentials.CredentialsClient;
-import com.google.android.gms.auth.api.credentials.CredentialsOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -35,8 +33,9 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
-import com.martinlaizg.geofind.data.Crypto;
+import com.martinlaizg.geofind.data.Secure;
 import com.martinlaizg.geofind.data.access.api.entities.Login;
+import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.views.viewmodel.LoginViewModel;
 
 import java.util.Objects;
@@ -50,7 +49,6 @@ public class LoginFragment
 
 	private static final String TAG = LoginFragment.class.getSimpleName();
 	private static final int RC_SIGN_IN = 0;
-	private static final int RC_SAVE = 1;
 
 	@BindView(R.id.email_input)
 	TextInputLayout email_input;
@@ -102,11 +100,11 @@ public class LoginFragment
 
 	private void login(Login login) {
 		viewModel.login(login).observe(this, user -> {
-			login_button.setEnabled(true);
-			registry_button.setEnabled(true);
-			load_layout.setVisibility(View.GONE);
+			email_input.setError("");
+			password_input.setError("");
 			if(user == null) {
-				switch(viewModel.getError().getType()) {
+				@SuppressWarnings("ThrowableNotThrown") APIException e = viewModel.getError();
+				switch(e.getType()) {
 					case TOKEN:
 					case PROVIDER:
 					case PROVIDER_LOGIN:
@@ -124,21 +122,35 @@ public class LoginFragment
 						Toast.makeText(requireContext(), getString(R.string.wrong_login),
 						               Toast.LENGTH_SHORT).show();
 						break;
+					case NETWORK:
+						Toast.makeText(requireContext(), getString(R.string.network_error),
+						               Toast.LENGTH_SHORT).show();
+						break;
 					default:
 						Toast.makeText(requireContext(), getString(R.string.other_error),
 						               Toast.LENGTH_SHORT).show();
 				}
-				return;
+			} else {
+				SharedPreferences sp = PreferenceManager
+						.getDefaultSharedPreferences(requireContext());
+				Preferences.setLoggedUser(sp, user);
+				if(login.getProvider() != Login.Provider.OWN) login.setSecure(sub);
+				Preferences.setLogin(sp, login);
+				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+						.navigate(R.id.toMain);
 			}
 
-			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
-			Preferences.setLoggedUser(sp, user);
-			if(login.getProvider() != Login.Provider.OWN) login.setSecure(sub);
-			Preferences.setLogin(sp, login);
-
-			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-					.navigate(R.id.toMain);
+			login_button.setEnabled(true);
+			registry_button.setEnabled(true);
+			load_layout.setVisibility(View.GONE);
 		});
+
+		// Hide the keyboard
+		InputMethodManager editTextInput = (InputMethodManager) requireActivity()
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		editTextInput.hideSoftInputFromWindow(
+				Objects.requireNonNull(requireActivity().getCurrentFocus()).getWindowToken(), 0);
+
 	}
 
 	@Override
@@ -148,7 +160,7 @@ public class LoginFragment
 		ButterKnife.bind(this, view);
 
 		google_sign_in_button.setSize(SignInButton.SIZE_STANDARD);
-		google_sign_in_button.setOnClickListener((v) -> googleSignIn());
+		google_sign_in_button.setOnClickListener(this::googleSignIn);
 
 		// Google SignIn Button
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(
@@ -156,14 +168,10 @@ public class LoginFragment
 				.requestEmail().build();
 		mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
 
-		// Google SmartLock
-		CredentialsOptions options = new CredentialsOptions.Builder().forceEnableSaveDialog()
-				.build();
-		CredentialsClient mCredentialsClient = Credentials.getClient(requireActivity(), options);
 		return view;
 	}
 
-	private void googleSignIn() {
+	private void googleSignIn(View v) {
 		Intent signInIntent = mGoogleSignInClient.getSignInIntent();
 		startActivityForResult(signInIntent, RC_SIGN_IN);
 	}
@@ -173,6 +181,14 @@ public class LoginFragment
 		super.onViewCreated(view, savedInstanceState);
 		viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
 
+		Objects.requireNonNull(password_input.getEditText())
+				.setOnEditorActionListener((v, actionId, event) -> {
+					if(actionId == EditorInfo.IME_ACTION_DONE) {
+						login_button.performClick();
+						return true;
+					}
+					return false;
+				});
 		login_button.setOnClickListener(this);
 		registry_button
 				.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toRegistry));
@@ -192,15 +208,6 @@ public class LoginFragment
 
 	@Override
 	public void onClick(View v) {
-		InputMethodManager inputManager = (InputMethodManager) requireActivity()
-				.getSystemService(Context.INPUT_METHOD_SERVICE);
-
-		inputManager.hideSoftInputFromWindow(
-				Objects.requireNonNull(requireActivity().getCurrentFocus()).getWindowToken(),
-				InputMethodManager.HIDE_NOT_ALWAYS);
-
-		email_input.clearFocus();
-		password_input.clearFocus();
 
 		String email = Objects.requireNonNull(email_input.getEditText()).getText().toString()
 				.trim();
@@ -223,7 +230,7 @@ public class LoginFragment
 		registry_button.setEnabled(false);
 		load_layout.setVisibility(View.VISIBLE);
 
-		Login l = new Login(email, Crypto.hash(password));
+		Login l = new Login(email, Secure.hash(password));
 		login(l);
 	}
 }

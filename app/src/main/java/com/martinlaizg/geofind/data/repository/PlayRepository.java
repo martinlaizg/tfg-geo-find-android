@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.service.PlayService;
+import com.martinlaizg.geofind.data.access.api.service.ServiceFactory;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
 import com.martinlaizg.geofind.data.access.database.dao.PlayDAO;
@@ -16,25 +17,24 @@ import com.martinlaizg.geofind.data.access.database.entities.Play;
 public class PlayRepository {
 
 	private static final String TAG = PlayRepository.class.getSimpleName();
-	private final PlayDAO playDAO;
-	private final PlayService playService;
 
-	private final TourRepository tourRepo;
-	private final UserRepository userRepo;
+	private static PlayDAO playDAO;
+	private static PlayService playService;
 
-	private final PlacePlayDAO placePlayDAO;
+	private static TourRepository tourRepo;
+	private static UserRepository userRepo;
 
-	@SuppressWarnings("unused")
-	PlayRepository(Application application) {
+	private static PlacePlayDAO placePlayDAO;
+
+	void instantiate(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
 		playDAO = database.playDAO();
-		playService = PlayService.getInstance();
+		playService = ServiceFactory.getPlayService(application);
 
 		placePlayDAO = database.playPlaceDAO();
 
 		tourRepo = RepositoryFactory.getTourRepository(application);
 		userRepo = RepositoryFactory.getUserRepository(application);
-		PlaceRepository placeRepo = RepositoryFactory.getPlaceRepository(application);
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class PlayRepository {
 				p.setPlaces(playDAO.getPlaces(p.getId()));
 			}
 		}
-		if(p == null) {                 // The play no exist on database of is out of date
+		if(p == null) {                 // The play no exist on database or is out of date
 			try {
 				p = playService.getUserPlay(user_id, tour_id);  // Get from server
 			} catch(APIException e) {
@@ -76,6 +76,7 @@ public class PlayRepository {
 					}
 				} else {
 					Log.e(TAG, "getPlay: Other error");
+					throw e;
 				}
 			}
 			if(p == null) return null;
@@ -144,4 +145,5 @@ public class PlayRepository {
 		insert(p);
 		return p;
 	}
+
 }

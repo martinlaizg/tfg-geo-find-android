@@ -9,7 +9,6 @@
     <string name="create_account">Create account</string>
     <string name="create_place">Create place</string>
     <string name="remove_place">Remove place</string>
-    <string name="about">"Developed by "</string>
     <string name="email">Email</string>
     <string name="edit">Edit</string>
     <string name="log_out">Log out</string>
@@ -47,32 +46,23 @@
     <string name="text_too_long">Text too long</string>
     <string name="app_name" translatable="false">GeoFind</string>
     <string name="TODO" translatable="false">TODO</string>
-    <string name="developer" translatable="false">martinlaizg</string>
-    <string name="this_year" translatable="false">2019</string>
-    <string name="rejected_location_access">Refused permission to location</string>
-    <string name="app_about_description" translatable="false">App desarrollada cómo Trabajo de Final de Grado para el
-        grado en Ingeniería Informática de la Universidad de Alicante</string>
+    <string name="developer" translatable="false">Martín Laiz Gómez</string>
     <string name="home">Home</string>
-
     <string name="play">Play</string>
     <string name="tour_not_permitted">Tour not permitted</string>
     <string name="play_tour">Play Tour</string>
-    <string name="place_distance">%d m</string>
+    <string name="place_distance_m">%d m</string>
     <string name="map">Map</string>
     <string name="compass">Compass</string>
     <string name="therm">Therm</string>
     <string name="satellite">Satellite</string>
     <string name="map_type">Map type</string>
-    <string name="tour_is_completed">The tour has been completed</string>
-    <string name="place_completed">Place completed</string>
-    <string name="tour_completed">Tour completed</string>
     <string name="navigation_arrow_description">Navigation arrow</string>
     <string name="play_compass">Play compass</string>
     <string name="select_play_difficulty">Select play difficulty</string>
     <string name="play_therm">Play therm</string>
     <string name="invalid_place">Invalid place</string>
     <string name="default_map_type">Default map type</string>
-    <string name="default_map_view">Default map view</string>
     <string name="message_to_support">Message to support</string>
     <string name="title">Title</string>
     <string name="message">Message</string>
@@ -84,7 +74,6 @@
     <string name="wrong_password">Wrong password</string>
     <string name="email_wrong_format">Wrong email format</string>
     <string name="your_account">Your account</string>
-    <string name="configure">Configure</string>
     <string name="pref_map" translatable="false">map</string>
     <string name="pref_satellite" translatable="false">satellite</string>
     <string name="pref_map_type" translatable="false">map_type</string>
@@ -107,12 +96,21 @@
     <string name="required_answer">The answer is required</string>
     <string name="answer_repeated">The answer can not be repeated</string>
     <string name="without_decription">Without description</string>
-    <string name="wrong_tour">Wrong Tour</string>
     <string name="wrong_answer">Wrong answer</string>
-    <string name="ok">Ok</string>
     <string name="at_least_one_place">At least one place</string>
     <string name="no_permissions">No has permission</string>
     <string name="registred">Registred</string>
     <string name="click_edit">Click edit</string>
     <string name="place_area_description">Place area</string>
+    <string name="place_distance_km">%.2f km</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="tour_completed">Tour completed</string>
+    <string name="ok">OK</string>
+    <string name="pref_support" translatable="false">support</string>
+    <string name="send_message_to_support">Send message to support</string>
+    <string name="errors_and_suggestions">Errors and suggestions</string>
+    <string name="app_version">App version</string>
+    <string name="app_developer">App developer</string>
+    <string name="app_version_name" translatable="false">v0.3-SNAPSHOT</string>
+    <string name="rejected_location_access">Refused permission to location</string>
 </resources>

@@ -19,4 +19,6 @@ public enum ErrorType {
 	@SerializedName("provider") PROVIDER,
 	@SerializedName("provider_login") PROVIDER_LOGIN,
 	@SerializedName("secure") SECURE,
+	@SerializedName("auth") AUTH,
+	@SerializedName("expired") EXPIRED,
 	COMPLETE,}

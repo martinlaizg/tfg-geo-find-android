@@ -1,5 +1,6 @@
 package com.martinlaizg.geofind.data.access.api.service;
 
+import android.app.Application;
 import android.util.Log;
 
 import com.martinlaizg.geofind.data.access.api.RestClient;
@@ -16,18 +17,19 @@ import retrofit2.Response;
 
 public class TourService {
 
-	private static TourService tourService;
 	private static RestClient restClient;
+
+	private static TourService tourService;
+
 	private final String TAG = TourService.class.getSimpleName();
 
-	public static TourService getInstance() {
+	void instantiate(Application application) {
 		if(restClient == null) {
-			restClient = RetrofitInstance.getRestClient();
+			restClient = RetrofitInstance.getRestClient(application);
 		}
 		if(tourService == null) {
 			tourService = new TourService();
 		}
-		return tourService;
 	}
 
 	/**

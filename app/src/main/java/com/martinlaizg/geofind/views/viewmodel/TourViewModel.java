@@ -96,9 +96,7 @@ public class TourViewModel
 
 	public MutableLiveData<List<Place>> getPlaces(int tour_id, int user_id) {
 		MutableLiveData<List<Place>> m = new MutableLiveData<>();
-		new Thread(() -> {
-			m.postValue(new ArrayList<>());
-		}).start();
+		new Thread(() -> m.postValue(new ArrayList<>())).start();
 		return m;
 	}
 }

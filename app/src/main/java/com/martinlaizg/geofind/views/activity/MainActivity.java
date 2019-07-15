@@ -2,6 +2,7 @@ package com.martinlaizg.geofind.views.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import androidx.preference.PreferenceManager;
 import com.google.android.material.navigation.NavigationView;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
+import com.martinlaizg.geofind.data.access.api.RetrofitInstance;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.squareup.picasso.Picasso;
 
@@ -43,17 +45,24 @@ public class MainActivity
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-		if(Preferences.USER.equals(key)) {
-			User u = Preferences.getLoggedUser(sharedPreferences);
-			if(u != null) {
-				setDrawerHeader(u.getUsername(), u.getName(), u.getImage());
-			} else {
-				setToolbarAndDrawer(false);
-			}
+		Log.i(TAG, "onSharedPreferenceChanged: changed");
+		switch(key) {
+			case Preferences.USER:
+				User u = Preferences.getLoggedUser(sharedPreferences);
+				if(u != null) {
+					setDrawerHeader(u.getUsername(), u.getName(), u.getImage());
+				} else {
+					setToolbarAndDrawer(false);
+				}
+				break;
+			case Preferences.TOKEN:
+				String token = Preferences.getToken(sharedPreferences);
+				setServicesToken(token);
+				break;
 		}
 	}
 
-	public void setDrawerHeader(String username, String name, String image) {
+	private void setDrawerHeader(String username, String name, String image) {
 		View headerView = navigationView.getHeaderView(0);
 		if(name == null) {
 			name = getString(R.string.your_account);
@@ -77,6 +86,10 @@ public class MainActivity
 		drawer_layout.setDrawerLockMode(visibility ?
 				                                DrawerLayout.LOCK_MODE_UNLOCKED :
 				                                DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+	}
+
+	private void setServicesToken(String token) {
+		RetrofitInstance.setToken(token);
 	}
 
 	@Override
@@ -114,9 +127,12 @@ public class MainActivity
 		NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
 
 		PreferenceManager.setDefaultValues(this, R.xml.app_preferences, false);
-		User u = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(this));
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+		User u = Preferences.getLoggedUser(sp);
 		if(u != null) {
 			setDrawerHeader(u.getUsername(), u.getName(), u.getImage());
 		}
+		String token = Preferences.getToken(sp);
+		setServicesToken(token);
 	}
 }
