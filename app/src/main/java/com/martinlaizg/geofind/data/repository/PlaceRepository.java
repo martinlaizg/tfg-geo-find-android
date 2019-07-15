@@ -33,7 +33,7 @@ public class PlaceRepository {
 	 * @param place
 	 * 		place to be inserted
 	 */
-	public void insert(Place place) {
+	private void insert(Place place) {
 		Place p = placeDAO.getPlace(place.getId());
 		if(p == null) {
 			placeDAO.insert(place);

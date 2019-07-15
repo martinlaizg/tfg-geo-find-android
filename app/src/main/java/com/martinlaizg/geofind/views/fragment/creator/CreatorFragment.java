@@ -123,7 +123,6 @@ public class CreatorFragment
 		viewModel.createTour().observe(this, tour -> {
 			create_tour_button.setEnabled(true);
 			if(tour == null) {
-				// TODO add error types
 				APIException err = viewModel.getError();
 				Toast.makeText(requireActivity(), err.getType().toString(), Toast.LENGTH_LONG)
 						.show();

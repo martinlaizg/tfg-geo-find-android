@@ -177,25 +177,25 @@ abstract class PlayTourFragment
 	private void completePlace() {
 		// hide question dialog if exist and is showing
 		if(questionDialog != null && questionDialog.isShowing()) questionDialog.dismiss();
-		//		viewModel.completePlace(place.getId()).observe(this, place -> {
-		//			if(place == null) {
-		//				if(viewModel.tourIsCompleted()) {
-		//					AlertDialog.Builder questionDialogBuilder = new AlertDialog.Builder(
-		//							requireContext()).setTitle(R.string.tour_completed);
-		//					questionDialogBuilder.setPositiveButton(R.string.ok,
-		//					                                        (dialog, which) -> Navigation
-		//							                                        .findNavController(
-		//									                                        requireActivity(),
-		//									                                        R.id.main_fragment_holder)
-		//							                                        .popBackStack(R.id.navTour,
-		//							                                                      false));
-		//					questionDialogBuilder.show();
-		//					return;
-		//				}
-		//				Toast.makeText(requireContext(), viewModel.getError().getMessage(),
-		//				               Toast.LENGTH_SHORT).show();
-		//			}
-		//		});
+		viewModel.completePlace(place.getId()).observe(this, place -> {
+			if(place == null) {
+				if(viewModel.tourIsCompleted()) {
+					AlertDialog.Builder questionDialogBuilder = new AlertDialog.Builder(
+							requireContext()).setTitle(R.string.tour_completed);
+					questionDialogBuilder.setPositiveButton(R.string.ok,
+					                                        (dialog, which) -> Navigation
+							                                        .findNavController(
+									                                        requireActivity(),
+									                                        R.id.main_fragment_holder)
+							                                        .popBackStack(R.id.navTour,
+							                                                      false));
+					questionDialogBuilder.show();
+					return;
+				}
+				Toast.makeText(requireContext(), viewModel.getError().getMessage(),
+				               Toast.LENGTH_SHORT).show();
+			}
+		});
 		Log.d(TAG(), "updateView: Place done");
 		Place p = viewModel.getNextPlace();
 		if(p == null) {

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="place_list">Lista de sitios</string>
-    <string name="about">"Desarrollado por "</string>
     <string name="account_settings">Ajustes de cuenta</string>
     <string name="add_image">Añadir imagen</string>
     <string name="add_place">Añadir sitio</string>
@@ -61,7 +60,6 @@
     <string name="play_therm">Jugar termometro</string>
     <string name="select_play_difficulty">Seleccionad dificultad</string>
     <string name="default_map_type">Tipo de mapa por defecto</string>
-    <string name="default_map_view">Vista de mapa por defecto</string>
     <string name="invalid_place">Sitio no válido</string>
     <string name="message">Mensaje</string>
     <string name="message_to_support">Mensaje para soporte</string>
@@ -101,4 +99,10 @@
     <string name="place_area_description">Área del sitio</string>
     <string name="place_distance_km">%.2f km</string>
     <string name="something_went_wrong">Algo ha ido mal</string>
+    <string name="ok">Vale</string>
+    <string name="tour_completed">Tour completado</string>
+    <string name="errors_and_suggestions">Errores y sugerencias</string>
+    <string name="send_message_to_support">Enviar mensaje a soporte</string>
+    <string name="app_developer">Dessarrollador de la aplicación</string>
+    <string name="app_version">Version de la aplicación</string>
 </resources>

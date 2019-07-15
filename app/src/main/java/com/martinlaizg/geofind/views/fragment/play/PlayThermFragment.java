@@ -41,9 +41,9 @@ public class PlayThermFragment
 	@Override
 	void updateView() {
 		if(distance > lastDistance) {
-			therm_card.setCardBackgroundColor(getResources().getColor(R.color.red));
+			therm_card.setCardBackgroundColor(getResources().getColor(R.color.red, null));
 		} else {
-			therm_card.setCardBackgroundColor(getResources().getColor(R.color.green));
+			therm_card.setCardBackgroundColor(getResources().getColor(R.color.green, null));
 		}
 		lastDistance = distance;
 	}

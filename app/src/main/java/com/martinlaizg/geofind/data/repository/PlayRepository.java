@@ -35,7 +35,6 @@ public class PlayRepository {
 
 		tourRepo = RepositoryFactory.getTourRepository(application);
 		userRepo = RepositoryFactory.getUserRepository(application);
-		PlaceRepository placeRepo = RepositoryFactory.getPlaceRepository(application);
 	}
 
 	/**
@@ -50,7 +49,7 @@ public class PlayRepository {
 	 * 		exception from API
 	 */
 	public Play getPlay(int user_id, int tour_id) throws APIException {
-		Play p = null;//playDAO.getPlay(user_id, tour_id);         // Get the play from the database
+		Play p = playDAO.getPlay(user_id, tour_id);         // Get the play from the database
 		if(p != null) {
 			if(p.isOutOfDate()) {       // If is out of date remove from database
 				playDAO.delete(p);
@@ -61,7 +60,7 @@ public class PlayRepository {
 				p.setPlaces(playDAO.getPlaces(p.getId()));
 			}
 		}
-		if(p == null) {                 // The play no exist on database of is out of date
+		if(p == null) {                 // The play no exist on database or is out of date
 			try {
 				p = playService.getUserPlay(user_id, tour_id);  // Get from server
 			} catch(APIException e) {

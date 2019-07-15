@@ -40,7 +40,6 @@ public class UserRepository {
 		User user = userService.registry(login);
 		if(user != null) {
 			userDAO.insert(user);
-			//			Preferences.setToken(sp, token.getToken());
 			Preferences.setLogin(sp, login);
 		}
 		return user;

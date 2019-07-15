@@ -62,7 +62,7 @@ public class MainActivity
 		}
 	}
 
-	public void setDrawerHeader(String username, String name, String image) {
+	private void setDrawerHeader(String username, String name, String image) {
 		View headerView = navigationView.getHeaderView(0);
 		if(name == null) {
 			name = getString(R.string.your_account);

@@ -3,9 +3,9 @@ package com.martinlaizg.geofind.data;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class Crypto {
+public class Secure {
 
-	private static final String TAG = Crypto.class.getSimpleName();
+	private static final String TAG = Secure.class.getSimpleName();
 	private static MessageDigest mdSHA512;
 
 	public static String hash(String toHash) {

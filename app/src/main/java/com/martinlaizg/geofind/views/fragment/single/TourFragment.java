@@ -22,6 +22,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
+import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.access.database.entities.User;
@@ -83,7 +84,7 @@ public class TourFragment
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireActivity());
 		user = Preferences.getLoggedUser(sp);
 
-		adapterCompleted = new PlaceListAdapter(true, getResources().getColor(R.color.grey));
+		adapterCompleted = new PlaceListAdapter(true, getResources().getColor(R.color.grey, null));
 		places_list.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		places_list.setAdapter(adapterCompleted);
 
@@ -132,6 +133,14 @@ public class TourFragment
 
 			play_button.setOnClickListener(v -> alert.show());
 			setDifficultyDialog(tour.getId(), tour.getMin_level());
+		} else {
+			APIException error = viewModel.getError();
+			if(error.getType() == null) {
+				Toast.makeText(requireContext(), getString(R.string.something_went_wrong),
+				               Toast.LENGTH_SHORT).show();
+				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+						.popBackStack();
+			}
 		}
 	}
 

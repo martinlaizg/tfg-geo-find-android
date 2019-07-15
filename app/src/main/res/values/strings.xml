@@ -9,7 +9,6 @@
     <string name="create_account">Create account</string>
     <string name="create_place">Create place</string>
     <string name="remove_place">Remove place</string>
-    <string name="about">"Developed by "</string>
     <string name="email">Email</string>
     <string name="edit">Edit</string>
     <string name="log_out">Log out</string>
@@ -47,13 +46,8 @@
     <string name="text_too_long">Text too long</string>
     <string name="app_name" translatable="false">GeoFind</string>
     <string name="TODO" translatable="false">TODO</string>
-    <string name="developer" translatable="false">martinlaizg</string>
-    <string name="this_year" translatable="false">2019</string>
-    <string name="rejected_location_access">Refused permission to location</string>
-    <string name="app_about_description" translatable="false">App desarrollada cómo Trabajo de Final de Grado para el
-        grado en Ingeniería Informática de la Universidad de Alicante</string>
+    <string name="developer" translatable="false">Martín Laiz Gómez</string>
     <string name="home">Home</string>
-
     <string name="play">Play</string>
     <string name="tour_not_permitted">Tour not permitted</string>
     <string name="play_tour">Play Tour</string>
@@ -69,7 +63,6 @@
     <string name="play_therm">Play therm</string>
     <string name="invalid_place">Invalid place</string>
     <string name="default_map_type">Default map type</string>
-    <string name="default_map_view">Default map view</string>
     <string name="message_to_support">Message to support</string>
     <string name="title">Title</string>
     <string name="message">Message</string>
@@ -111,4 +104,13 @@
     <string name="place_area_description">Place area</string>
     <string name="place_distance_km">%.2f km</string>
     <string name="something_went_wrong">Something went wrong</string>
+    <string name="tour_completed">Tour completed</string>
+    <string name="ok">OK</string>
+    <string name="pref_support" translatable="false">support</string>
+    <string name="send_message_to_support">Send message to support</string>
+    <string name="errors_and_suggestions">Errors and suggestions</string>
+    <string name="app_version">App version</string>
+    <string name="app_developer">App developer</string>
+    <string name="app_version_name" translatable="false">v0.3-SNAPSHOT</string>
+    <string name="rejected_location_access">Refused permission to location</string>
 </resources>

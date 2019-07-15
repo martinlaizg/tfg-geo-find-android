@@ -48,10 +48,7 @@ public class PlayService {
 		Response<Play> response;
 		APIException apiException;
 		try {
-			HashMap<String, String> params = new HashMap<>();
-			params.put("user_id", String.valueOf(user_id));
-			params.put("tour_id", String.valueOf(tour_id));
-			response = restClient.getUserPlay(params).execute();
+			response = restClient.getUserPlay(user_id, tour_id).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}
