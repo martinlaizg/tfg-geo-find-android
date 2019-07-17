@@ -148,9 +148,10 @@ public class LoginFragment
 		// Hide the keyboard
 		InputMethodManager editTextInput = (InputMethodManager) requireActivity()
 				.getSystemService(Context.INPUT_METHOD_SERVICE);
-		editTextInput.hideSoftInputFromWindow(
-				Objects.requireNonNull(requireActivity().getCurrentFocus()).getWindowToken(), 0);
-
+		View currentFocus = requireActivity().getCurrentFocus();
+		if(currentFocus != null) {
+			editTextInput.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+		}
 	}
 
 	@Override

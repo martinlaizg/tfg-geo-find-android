@@ -53,7 +53,7 @@ public class RetrofitInstance {
 						.method(originalRequest.method(), originalRequest.body()).build();
 
 				Response response = chain.proceed(newRequest);
-				if(response.code() == 401) { // Code 401 (Unathorized)
+				if(response.code() == 401) { // Code 401 Unauthorized
 					try {
 						userRepo.reLogin();
 					} catch(APIException e) {
