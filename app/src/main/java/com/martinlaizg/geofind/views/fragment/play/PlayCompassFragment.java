@@ -1,14 +1,16 @@
 package com.martinlaizg.geofind.views.fragment.play;
 
-import android.hardware.GeomagneticField;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -39,10 +41,8 @@ public class PlayCompassFragment
 	private SensorManager sensorManager;
 	private Sensor accelSensor;
 	private Sensor magnetSensor;
-	// Degree from north to destination -180 -> 180
+	// Degree from north to destination 0 -> 360
 	private float bearing;
-	// Degree from magnetic to real north -90 -> 90
-	private float declination;
 	private float imgRotation;
 
 	@Nullable
@@ -75,12 +75,29 @@ public class PlayCompassFragment
 
 			// Get user orientation
 			float userOrientation = (float) Math.toDegrees(mOrientation[0]);
-			userOrientation += declination;
-			float direction = -(userOrientation - bearing); // Get compass degree
-			if(Math.abs(imgRotation - direction) > 6) {
-				imgRotation = direction;
-				navigation_image.animate().rotation(imgRotation).setDuration(200).start();
+			if(userOrientation < 0) userOrientation = 360 + userOrientation;
+
+			// Get orientation
+			float direction = bearing - userOrientation;
+			if(direction < 0) direction = 360 + direction;
+
+			Log.i(TAG, " direction " + direction + "  \timgRot " + imgRotation);
+
+			if(Math.abs(imgRotation - direction) < 180) {
+				// Smooth the movement
+				float alpha = 0.95f;
+				direction = imgRotation * alpha + direction * (1 - alpha);
 			}
+
+			RotateAnimation ra = new RotateAnimation(imgRotation, direction,
+			                                         Animation.RELATIVE_TO_SELF, 0.5f,
+			                                         Animation.RELATIVE_TO_SELF, 0.5f);
+			ra.setDuration(100);
+			// set the animation after the end of the reservation status
+			ra.setFillAfter(false);
+			// Start the animation
+			navigation_image.startAnimation(ra);
+			imgRotation = direction;
 		}
 	}
 
@@ -112,10 +129,11 @@ public class PlayCompassFragment
 	void updateView() {
 		if(usrLocation != null && placeLocation != null) {
 			bearing = usrLocation.bearingTo(placeLocation);
-			declination = new GeomagneticField((float) usrLocation.getLatitude(),
-			                                   (float) usrLocation.getLongitude(),
-			                                   (float) usrLocation.getAltitude(),
-			                                   System.currentTimeMillis()).getDeclination();
+			if(bearing < 0) bearing = 360 + bearing;
+			//			declination = new GeomagneticField((float) usrLocation.getLatitude(),
+			//			                                   (float) usrLocation.getLongitude(),
+			//			                                   (float) usrLocation.getAltitude(),
+			//			                                   System.currentTimeMillis()).getDeclination();
 		}
 	}
 }
