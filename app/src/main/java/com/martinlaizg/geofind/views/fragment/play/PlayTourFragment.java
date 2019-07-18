@@ -174,6 +174,21 @@ abstract class PlayTourFragment
 		updateView();
 	}
 
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		Log.i(TAG(), "onStatusChanged: ");
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		Log.i(TAG(), "onProviderEnabled: ");
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+		Log.i(TAG(), "onProviderDisabled: ");
+	}
+
 	private void completePlace() {
 		// hide question dialog if exist and is showing
 		if(questionDialog != null && questionDialog.isShowing()) questionDialog.dismiss();
@@ -215,7 +230,6 @@ abstract class PlayTourFragment
 			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOC_TIME_REQ,
 			                                       LOC_DIST_REQ, this);
 		}
-
 	}
 
 	private void setPlace(Place nextPlace) {
@@ -231,21 +245,6 @@ abstract class PlayTourFragment
 		                                                        numCompletedPlaces,
 		                                                        numCompletedPlaces, numPlaces));
 		updateView();
-	}
-
-	@Override
-	public void onStatusChanged(String provider, int status, Bundle extras) {
-		Log.i(TAG(), "onStatusChanged: ");
-	}
-
-	@Override
-	public void onProviderEnabled(String provider) {
-		Log.i(TAG(), "onProviderEnabled: ");
-	}
-
-	@Override
-	public void onProviderDisabled(String provider) {
-		Log.i(TAG(), "onProviderDisabled: ");
 	}
 
 	private void createDialog(Place place) {
