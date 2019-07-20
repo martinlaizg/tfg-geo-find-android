@@ -1,7 +1,6 @@
 package com.martinlaizg.geofind.data.access.api;
 
 import com.martinlaizg.geofind.data.access.api.entities.Login;
-import com.martinlaizg.geofind.data.access.database.entities.PlacePlay;
 import com.martinlaizg.geofind.data.access.database.entities.Play;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.access.database.entities.User;
@@ -44,8 +43,9 @@ public interface RestClient {
 	@POST("plays")
 	Call<Play> createUserPlay(@QueryMap Map<String, String> params);
 
-	@POST("plays/{play_id}/places")
-	Call<Play> createPlacePlay(@Path("play_id") Integer play_id, @Body PlacePlay placePlay);
+	@POST("plays/{play_id}/places/{place_id}")
+	Call<Play> createPlacePlay(@Path("play_id") Integer play_id,
+			@Path("place_id") Integer place_id);
 
 	@POST("support")
 	Call<Void> sendSupportMessage(@QueryMap Map<String, String> params);

@@ -8,7 +8,6 @@ import com.martinlaizg.geofind.data.access.api.RetrofitInstance;
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.error.ErrorUtils;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
-import com.martinlaizg.geofind.data.access.database.entities.PlacePlay;
 import com.martinlaizg.geofind.data.access.database.entities.Play;
 
 import java.io.IOException;
@@ -48,7 +47,7 @@ public class PlayService {
 		Response<Play> response;
 		APIException apiException;
 		try {
-			response = restClient.getUserPlay(user_id, tour_id).execute();
+			response = restClient.getUserPlay(tour_id, user_id).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}
@@ -105,8 +104,7 @@ public class PlayService {
 		Response<Play> response;
 		APIException apiException;
 		try {
-			PlacePlay pp = new PlacePlay(place_id, play_id);
-			response = restClient.createPlacePlay(play_id, pp).execute();
+			response = restClient.createPlacePlay(play_id, place_id).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}

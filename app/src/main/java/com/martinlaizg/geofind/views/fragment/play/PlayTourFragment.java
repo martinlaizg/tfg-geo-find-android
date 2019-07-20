@@ -24,6 +24,7 @@ import androidx.navigation.Navigation;
 import com.google.android.material.card.MaterialCardView;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
+import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.views.viewmodel.PlayTourViewModel;
@@ -207,29 +208,27 @@ abstract class PlayTourFragment
 					questionDialogBuilder.show();
 					return;
 				}
+				APIException error = viewModel.getError();
+				Log.e(TAG(), "completePlace: ", error);
 				Toast.makeText(requireContext(), viewModel.getError().getMessage(),
 				               Toast.LENGTH_SHORT).show();
+
+			} else {
+				Log.d(TAG(), "updateView: Place done");
+				setPlace(place);
+				if(requireActivity()
+						.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) !=
+						PackageManager.PERMISSION_GRANTED && requireActivity()
+						.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) !=
+						PackageManager.PERMISSION_GRANTED) {
+					Toast.makeText(requireContext(), R.string.rejected_location_access,
+					               Toast.LENGTH_SHORT).show();
+					return;
+				}
+				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOC_TIME_REQ,
+				                                       LOC_DIST_REQ, this);
 			}
 		});
-		Log.d(TAG(), "updateView: Place done");
-		Place p = viewModel.getNextPlace();
-		if(p == null) {
-			Log.e(TAG(), "completePlace: null nextPlace ");
-			Toast.makeText(requireContext(), getString(R.string.something_went_wrong),
-			               Toast.LENGTH_SHORT).show();
-		} else {
-			setPlace(p);
-			if(requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) !=
-					PackageManager.PERMISSION_GRANTED && requireActivity()
-					.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) !=
-					PackageManager.PERMISSION_GRANTED) {
-				Toast.makeText(requireContext(), R.string.rejected_location_access,
-				               Toast.LENGTH_SHORT).show();
-				return;
-			}
-			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOC_TIME_REQ,
-			                                       LOC_DIST_REQ, this);
-		}
 	}
 
 	private void setPlace(Place nextPlace) {

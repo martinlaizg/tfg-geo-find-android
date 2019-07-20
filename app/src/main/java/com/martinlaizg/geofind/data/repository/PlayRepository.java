@@ -122,7 +122,7 @@ public class PlayRepository {
 	 * @throws APIException
 	 * 		exception from API
 	 */
-	public Play completePlay(Integer play_id, Integer place_id) throws APIException {
+	public Play completePlace(Integer play_id, Integer place_id) throws APIException {
 		Play p = playService.createPlacePlay(play_id, place_id);
 		PlacePlay pp = new PlacePlay(place_id, play_id);
 		placePlayDAO.insert(pp);

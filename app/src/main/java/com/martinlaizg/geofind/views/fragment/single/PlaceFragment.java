@@ -45,6 +45,8 @@ public class PlaceFragment
 	ImageView place_image;
 	@BindView(R.id.place_map)
 	MapView place_map;
+	@BindView(R.id.map_circle)
+	ImageView map_circle;
 
 	private int place_id;
 	private GoogleMap googleMap;
@@ -103,6 +105,7 @@ public class PlaceFragment
 
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
+		map_circle.setVisibility(View.VISIBLE);
 		googleMap.getUiSettings().setAllGesturesEnabled(false);
 		googleMap.getUiSettings().setMyLocationButtonEnabled(false);
 		googleMap.getUiSettings().setMapToolbarEnabled(false);

@@ -63,7 +63,7 @@ public class PlayTourViewModel
 		MutableLiveData<Place> c = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
-				play = playRepo.completePlay(play.getId(), place_id);
+				play = playRepo.completePlace(play.getId(), place_id);
 				c.postValue(getNextPlace());
 			} catch(APIException e) {
 				setError(e);
