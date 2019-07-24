@@ -23,17 +23,17 @@ public class LoginViewModel
 	}
 
 	public MutableLiveData<User> login(Login login) {
-		MutableLiveData<User> u = new MutableLiveData<>();
+		MutableLiveData<User> t = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
 				User user = userRepo.login(login);
-				u.postValue(user);
+				t.postValue(user);
 			} catch(APIException e) {
 				setError(e);
-				u.postValue(null);
+				t.postValue(null);
 			}
 		}).start();
-		return u;
+		return t;
 	}
 
 	public MutableLiveData<User> registry(Login registry) {

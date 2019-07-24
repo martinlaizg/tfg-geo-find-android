@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +28,7 @@ public class CreatorPlacesAdapter
 		extends RecyclerView.Adapter<CreatorPlacesAdapter.CreatorPlacesViewHolder> {
 
 	private List<Place> places;
+	private FragmentActivity fragmentActivity;
 
 	@NonNull
 	@Override
@@ -37,12 +40,20 @@ public class CreatorPlacesAdapter
 
 	@Override
 	public void onBindViewHolder(@NonNull final CreatorPlacesViewHolder holder, int position) {
-		holder.place_name.setText(places.get(position).getName());
+		Place place = places.get(position);
+
+		holder.place_name.setText(place.getName());
 		holder.place_delete_button.setOnClickListener(v -> remove(position));
+		holder.questionaire_icon.setVisibility(View.GONE);
+		if(place.getQuestion() != null) {
+			holder.questionaire_icon.setVisibility(View.VISIBLE);
+		}
 		Bundle b = new Bundle();
 		b.putInt(CreatePlaceFragment.PLACE_POSITION, position);
 		holder.place_card.setOnClickListener(
-				Navigation.createNavigateOnClickListener(R.id.toCreatePlace, b));
+				v -> Navigation.findNavController(fragmentActivity, R.id.main_fragment_holder)
+						.navigate(R.id.toCreatePlace, b));
+
 	}
 
 	private void remove(int position) {
@@ -62,7 +73,8 @@ public class CreatorPlacesAdapter
 		places = new ArrayList<>();
 	}
 
-	public void setPlaces(List<Place> places) {
+	public void setPlaces(FragmentActivity fragmentActivity, List<Place> places) {
+		this.fragmentActivity = fragmentActivity;
 		if(places != null) {
 			// sort elements
 			places.sort((o1, o2) -> o1.getOrder() > o2.getOrder() ?
@@ -84,6 +96,8 @@ public class CreatorPlacesAdapter
 		MaterialButton place_delete_button;
 		@BindView(R.id.place_name)
 		TextView place_name;
+		@BindView(R.id.questionaire_icon)
+		ImageView questionaire_icon;
 
 		CreatorPlacesViewHolder(View view) {
 			super(view);

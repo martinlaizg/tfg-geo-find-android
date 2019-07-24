@@ -2,24 +2,19 @@ package com.martinlaizg.geofind.data.repository;
 
 import android.app.Application;
 
-import com.martinlaizg.geofind.data.access.api.service.PlayService;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
 import com.martinlaizg.geofind.data.access.database.dao.PlaceDAO;
-import com.martinlaizg.geofind.data.access.database.dao.relations.PlacePlayDAO;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 
 import java.util.List;
 
 public class PlaceRepository {
 
-	private final PlaceDAO placeDAO;
+	private static PlaceDAO placeDAO;
 
-	@SuppressWarnings("unused")
-	PlaceRepository(Application application) {
+	void instantiate(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
 		placeDAO = database.placeDAO();
-		PlacePlayDAO placePlayDAO = database.playPlaceDAO();
-		PlayService playService = PlayService.getInstance();
 	}
 
 	/**
@@ -38,7 +33,7 @@ public class PlaceRepository {
 	 * @param place
 	 * 		place to be inserted
 	 */
-	public void insert(Place place) {
+	private void insert(Place place) {
 		Place p = placeDAO.getPlace(place.getId());
 		if(p == null) {
 			placeDAO.insert(place);
@@ -54,8 +49,9 @@ public class PlaceRepository {
 	 * 		tour id of the places
 	 * @return the list of places
 	 */
-	public List<Place> getTourPlaces(Integer tour_id) {
+	List<Place> getTourPlaces(Integer tour_id) {
 		return placeDAO.getTourPlaces(tour_id);
 
 	}
+
 }

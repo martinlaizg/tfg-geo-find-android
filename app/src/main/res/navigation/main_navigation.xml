@@ -8,7 +8,11 @@
         android:id="@+id/navMain"
         android:name="com.martinlaizg.geofind.views.fragment.MainFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/toTour"
+            app:destination="@id/navTour" />
+    </fragment>
     <fragment
         android:id="@+id/navCreatePlace"
         android:name="com.martinlaizg.geofind.views.fragment.creator.CreatePlaceFragment"
@@ -34,32 +38,20 @@
         android:name="com.martinlaizg.geofind.views.fragment.creator.CreatorFragment"
         android:label="@string/tour_creator"
         tools:layout="@layout/fragment_creator">
-        <action
-            android:id="@+id/toCreatePlace"
-            app:destination="@id/navCreatePlace"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-        <action
-            android:id="@+id/toNewTour"
-            app:destination="@id/navTour"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/navTourList" />
-        <action
-            android:id="@+id/toCreateTour"
-            app:destination="@id/navCreateTour"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
         <argument
             android:name="TOUR_ID"
             android:defaultValue="0"
             app:argType="integer" />
+        <action
+            android:id="@+id/toCreatePlace"
+            app:destination="@id/navCreatePlace" />
+        <action
+            android:id="@+id/toNewTour"
+            app:destination="@id/navTour"
+            app:popUpTo="@+id/navTourList" />
+        <action
+            android:id="@+id/toEditTour"
+            app:destination="@id/navCreateTour" />
     </fragment>
     <fragment
         android:id="@+id/navTourList"
@@ -68,53 +60,29 @@
         tools:layout="@layout/fragment_tour_list">
         <action
             android:id="@+id/toCreator"
-            app:destination="@id/navCreator"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/navCreator" />
         <action
             android:id="@+id/toTour"
-            app:destination="@id/navTour"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/navTour" />
     </fragment>
     <fragment
         android:id="@+id/navTour"
         android:name="com.martinlaizg.geofind.views.fragment.single.TourFragment"
         android:label="@string/tour"
         tools:layout="@layout/fragment_tour">
-        <action
-            android:id="@+id/toPlace"
-            app:destination="@id/navPlace"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-        <action
-            android:id="@+id/toEditTour"
-            app:destination="@id/navCreator"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
         <argument
             android:name="TOUR_ID"
             android:defaultValue="0"
-            app:argType="integer"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:argType="integer" />
+        <action
+            android:id="@+id/toPlace"
+            app:destination="@id/navPlace" />
+        <action
+            android:id="@+id/toEditCreator"
+            app:destination="@id/navCreator" />
         <action
             android:id="@+id/toPlayTour"
-            app:destination="@id/navPlayTour"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/navPlayTour" />
         <action
             android:id="@+id/toPlayCompass"
             app:destination="@id/navPlayCompass" />
@@ -139,11 +107,7 @@
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/toRegistry"
-            app:destination="@id/navRegistry"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/navRegistry" />
     </fragment>
     <fragment
         android:id="@+id/navSettings"
@@ -158,67 +122,28 @@
     <action
         android:id="@+id/toMain"
         app:destination="@id/navMain"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"
         app:launchSingleTop="true"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right" />
+        app:popUpTo="@+id/navMain"
+        app:popUpToInclusive="true" />
     <action
         android:id="@+id/toTourList"
         app:destination="@id/navTourList"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"
-        app:launchSingleTop="true"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right" />
+        app:launchSingleTop="true" />
     <action
         android:id="@+id/toSettings"
         app:destination="@id/navSettings"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"
-        app:launchSingleTop="true"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right" />
+        app:launchSingleTop="true" />
     <action
         android:id="@+id/toLogin"
         app:destination="@id/navLogin"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"
         app:launchSingleTop="true"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right" />
+        app:popUpTo="@+id/navMain"
+        app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/navPlayTour"
         android:name="com.martinlaizg.geofind.views.fragment.play.PlayMapFragment"
         android:label="@string/play_tour"
-        tools:layout="@layout/fragment_play_map">
-        <action
-            android:id="@+id/toCompleteTour"
-            app:destination="@id/navCompleteTour"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/navTourList"
-            app:popUpToInclusive="false" />
-        <action
-            android:id="@+id/toCompletePlace"
-            app:destination="@id/navCompletePlace"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-    </fragment>
-    <fragment
-        android:id="@+id/navCompleteTour"
-        android:name="com.martinlaizg.geofind.views.fragment.play.CompleteTour"
-        android:label="@string/tour_completed"
-        tools:layout="@layout/fragment_complete_tour" />
-    <fragment
-        android:id="@+id/navCompletePlace"
-        android:name="com.martinlaizg.geofind.views.fragment.play.CompletePlace"
-        android:label="@string/place_completed"
-        tools:layout="@layout/fragment_complete_place" />
+        tools:layout="@layout/fragment_play_map" />
     <fragment
         android:id="@+id/navPlayCompass"
         android:name="com.martinlaizg.geofind.views.fragment.play.PlayCompassFragment"
@@ -231,7 +156,7 @@
         tools:layout="@layout/fragment_play_therm" />
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="com.martinlaizg.geofind.EditProfileFragment"
+        android:name="com.martinlaizg.geofind.views.fragment.EditProfileFragment"
         android:label="@string/profile"
         tools:layout="@layout/fragment_edit_profile" />
 

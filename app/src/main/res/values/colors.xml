@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#4733B7</color>
-    <color name="colorPrimaryDark">#000886</color>
-    <color name="colorSecondary">#FFA726</color>
+    <color name="colorPrimary">#673AB7</color>
+    <color name="colorPrimaryLight">#7E57C2</color>
+    <color name="colorPrimaryDark">#512DA8</color>
+    <color name="colorSecondary">#FF9800</color>
     <color name="colorSecondaryLight">#FFB74D</color>
+    <color name="colorSecondaryDark">#F57C00</color>
     <color name="background">#FAFAFA</color>
     <color name="light_black">#222222</color>
     <color name="green">#43A047</color>
     <color name="red">#E53935</color>
     <color name="grey">#CFCFCF</color>
 
-    <color name="ic_launcher_background">#42A5F5</color>
+
+    <color name="colorPrimaryTransparency">#4D000886</color>
+    <color name="colorPrimaryDarkTransparency">#83000886</color>
 
 </resources>

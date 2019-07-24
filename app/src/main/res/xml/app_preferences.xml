@@ -1,25 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
     <ListPreference
+        android:id="@+id/pref_map_type"
         android:defaultValue="@string/pref_map"
         android:entries="@array/map_types"
         android:entryValues="@array/pref_map_types"
+        android:icon="@drawable/ic_map"
         android:key="@string/pref_map_type"
-        android:title="@string/default_map_type"
-        app:summary="@string/default_map_view" />
+        android:title="@string/default_map_type" />
 
     <Preference
-        android:key="support"
-        android:summary="Send message to support"
-        android:title="Support message" />
+        android:id="@+id/pref_error_and_support"
+        android:key="@string/pref_support"
+        android:summary="@string/send_message_to_support"
+        android:title="@string/errors_and_suggestions" />
 
     <Preference
+        android:id="@+id/pref_log_out"
         android:key="@string/log_out"
         android:title="@string/log_out" />
-    
-    <Preference
-        android:enabled="false"
-        android:layout="@layout/preferences_about" />
+
+    <PreferenceCategory android:title="Información de la app">
+
+        <Preference
+            android:summary="@string/app_version_name"
+            android:title="@string/app_version" />
+        <Preference
+            android:summary="@string/developer"
+            android:title="@string/app_developer" />
+
+    </PreferenceCategory>
 
 </PreferenceScreen>

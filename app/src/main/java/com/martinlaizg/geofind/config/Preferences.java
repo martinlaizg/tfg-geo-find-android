@@ -10,7 +10,8 @@ import com.martinlaizg.geofind.utils.DateUtils;
 
 public class Preferences {
 
-	private static final String USER = "user";
+	public static final String USER = "user";
+	public static final String TOKEN = "token";
 	private static final String LOGIN = "login";
 
 	public static User getLoggedUser(SharedPreferences sp) {
@@ -26,6 +27,7 @@ public class Preferences {
 
 	public static void logout(SharedPreferences sp) {
 		sp.edit().putString(USER, null).apply();
+		sp.edit().putString(LOGIN, null).apply();
 	}
 
 	public static void setLogin(SharedPreferences sp, Login login) {
@@ -37,5 +39,13 @@ public class Preferences {
 		String login_string = sp.getString(LOGIN, "");
 		Gson gson = new GsonBuilder().setDateFormat(DateUtils.DATE_FORMAT).create();
 		return gson.fromJson(login_string, Login.class);
+	}
+
+	public static void setToken(SharedPreferences sp, String token) {
+		sp.edit().putString(TOKEN, token).apply();
+	}
+
+	public static String getToken(SharedPreferences sp) {
+		return sp.getString(TOKEN, "");
 	}
 }

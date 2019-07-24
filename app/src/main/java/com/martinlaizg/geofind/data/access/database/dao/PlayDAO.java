@@ -32,4 +32,7 @@ public interface PlayDAO {
 
 	@Query("SELECT * from plays WHERE id = :play_id")
 	Play getPlay(Integer play_id);
+
+	@Query("SELECT * FROM plays WHERE user_id = :user_id")
+	List<Play> getUserPlays(int user_id);
 }

@@ -98,15 +98,6 @@ public class Play {
 		this.updated_at = updated_at;
 	}
 
-	public Tour getTour() {
-		return tour;
-	}
-
-	public void setTour(Tour tour) {
-		this.tour_id = tour.getId();
-		this.tour = tour;
-	}
-
 	public User getUser() {
 		return user;
 	}
@@ -114,14 +105,6 @@ public class Play {
 	public void setUser(User user) {
 		this.user_id = user.getId();
 		this.user = user;
-	}
-
-	public List<Place> getPlaces() {
-		return places;
-	}
-
-	public void setPlaces(List<Place> places) {
-		this.places = places;
 	}
 
 	public boolean isOutOfDate() {
@@ -137,5 +120,26 @@ public class Play {
 			this.updated = new Date(Calendar.getInstance().getTime().getTime());
 		}
 		this.updated = updated;
+	}
+
+	public boolean isCompleted() {
+		return getPlaces().size() == getTour().getPlaces().size();
+	}
+
+	public List<Place> getPlaces() {
+		return places;
+	}
+
+	public Tour getTour() {
+		return tour;
+	}
+
+	public void setTour(Tour tour) {
+		this.tour_id = tour.getId();
+		this.tour = tour;
+	}
+
+	public void setPlaces(List<Place> places) {
+		this.places = places;
 	}
 }

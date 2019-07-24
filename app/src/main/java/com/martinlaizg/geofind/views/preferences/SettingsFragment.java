@@ -31,7 +31,6 @@ import java.util.Objects;
 public class SettingsFragment
 		extends PreferenceFragmentCompat {
 
-	// TODO refactor
 	private static final String TAG = SettingsFragment.class.getSimpleName();
 	private AlertDialog dialog;
 	private SettingsViewModel viewModel;
@@ -102,7 +101,7 @@ public class SettingsFragment
 			String title = title_layout.getEditText().getText().toString();
 			String message = message_text_layout.getEditText().getText().toString();
 
-			viewModel.sendMessage(title, message).observe(requireActivity(), (ok) -> {
+			viewModel.sendMessage(title, message).observe(this, (ok) -> {
 				if(ok == null) {
 					APIException e = viewModel.getError();
 					Log.e(TAG, "setLogoutPreference: " + e.getType().toString());

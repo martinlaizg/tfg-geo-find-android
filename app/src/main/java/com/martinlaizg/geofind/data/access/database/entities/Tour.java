@@ -26,6 +26,7 @@ public class Tour {
 	private final int id;
 	private String name;
 	private String description;
+	private String image;
 	private PlayLevel min_level;
 	private Date created_at;
 	private Date updated_at;
@@ -42,6 +43,7 @@ public class Tour {
 		this.id = id;
 		this.name = name;
 		this.description = description;
+		this.image = null;
 		this.min_level = min_level;
 		this.created_at = created_at;
 		this.updated_at = updated_at;
@@ -149,5 +151,13 @@ public class Tour {
 			this.updated = new Date(Calendar.getInstance().getTime().getTime());
 		}
 		this.updated = updated;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 }

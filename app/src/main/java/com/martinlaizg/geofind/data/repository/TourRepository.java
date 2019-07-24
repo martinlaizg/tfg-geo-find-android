@@ -3,6 +3,7 @@ package com.martinlaizg.geofind.data.repository;
 import android.app.Application;
 import android.util.Log;
 
+import com.martinlaizg.geofind.data.access.api.service.ServiceFactory;
 import com.martinlaizg.geofind.data.access.api.service.TourService;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
@@ -14,17 +15,17 @@ import java.util.List;
 public class TourRepository {
 
 	private static final String TAG = TourRepository.class.getSimpleName();
-	private final TourService tourService;
-	private final TourDAO tourDAO;
 
-	private final PlaceRepository placeRepo;
-	private final UserRepository userRepo;
+	private static TourService tourService;
+	private static TourDAO tourDAO;
 
-	TourRepository(Application application) {
+	private static PlaceRepository placeRepo;
+	private static UserRepository userRepo;
+
+	void instantiate(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
 		tourDAO = database.tourDAO();
-		tourService = TourService.getInstance();
-
+		tourService = ServiceFactory.getTourService(application);
 		placeRepo = RepositoryFactory.getPlaceRepository(application);
 		userRepo = RepositoryFactory.getUserRepository(application);
 	}
@@ -136,6 +137,7 @@ public class TourRepository {
 		int tour_id = tour.getId();
 		tour = tourService.update(tour);
 		if(tour != null) {
+			tourDAO.delete(tour.getId());
 			insert(tour);
 		} else {
 			tourDAO.delete(tour_id);
@@ -154,7 +156,9 @@ public class TourRepository {
 	 */
 	public Tour create(Tour tour) throws APIException {
 		tour = tourService.create(tour);
-		if(tour != null) insert(tour);
+		if(tour != null) {
+			insert(tour);
+		}
 		return tour;
 	}
 
@@ -178,4 +182,5 @@ public class TourRepository {
 		}
 		return t;
 	}
+
 }

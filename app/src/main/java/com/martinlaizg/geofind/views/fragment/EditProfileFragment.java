@@ -1,13 +1,11 @@
-package com.martinlaizg.geofind;
+package com.martinlaizg.geofind.views.fragment;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -19,13 +17,15 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
-import com.martinlaizg.geofind.data.Crypto;
+import com.martinlaizg.geofind.data.Secure;
 import com.martinlaizg.geofind.data.access.api.entities.Login;
-import com.martinlaizg.geofind.data.access.api.error.ErrorType;
+import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.views.viewmodel.EditProfileViewModel;
 import com.squareup.picasso.Picasso;
@@ -39,6 +39,8 @@ import static com.martinlaizg.geofind.data.access.api.entities.Login.Provider.OW
 
 public class EditProfileFragment
 		extends Fragment {
+
+	private static final String TAG = EditProfileFragment.class.getSimpleName();
 
 	@BindView(R.id.user_image)
 	ImageView user_image;
@@ -137,13 +139,12 @@ public class EditProfileFragment
 			passADB.setPositiveButton(R.string.save, (dialog, which) -> {
 				String password = Objects.requireNonNull(confirm_password_input.getEditText())
 						.getText().toString().trim();
-				if(login.getSecure().equals(Crypto.hash(password))) {
+				if(login.getSecure().equals(Secure.hash(password))) {
 					updateUser();
 				} else {
 					Toast.makeText(requireContext(), getString(R.string.wrong_password),
 					               Toast.LENGTH_SHORT).show();
 				}
-				hiddeKeyboard();
 				dialog.dismiss();
 			});
 			passADB.show();
@@ -152,7 +153,6 @@ public class EditProfileFragment
 		}
 	}
 
-	// Only for Login.Provider.OWN
 	private void changePasswordAction() {
 		String newPassword = Objects.requireNonNull(new_password_input.getEditText()).getText()
 				.toString().trim();
@@ -169,7 +169,7 @@ public class EditProfileFragment
 		}
 
 		user = Preferences.getLoggedUser(sp);
-		user.setSecure(Crypto.hash(newPassword));
+		user.setSecure(Secure.hash(newPassword));
 
 		login = Preferences.getLogin(sp);
 		if(login.getProvider() == OWN) {
@@ -177,13 +177,12 @@ public class EditProfileFragment
 			passADB.setPositiveButton(R.string.save, (dialog, which) -> {
 				String password = Objects.requireNonNull(confirm_password_input.getEditText())
 						.getText().toString().trim();
-				if(login.getSecure().equals(Crypto.hash(password))) {
+				if(login.getSecure().equals(Secure.hash(password))) {
 					updateUser();
 				} else {
 					Toast.makeText(requireContext(), getString(R.string.wrong_password),
 					               Toast.LENGTH_SHORT).show();
 				}
-				hiddeKeyboard();
 				dialog.dismiss();
 			});
 			passADB.show();
@@ -200,13 +199,15 @@ public class EditProfileFragment
 		return passADB;
 	}
 
+	// TODO refactor needed
 	private void updateUser() {
 		save_button.setEnabled(false);
-		viewModel.updateUser(login, user).observe(requireActivity(), newUser -> {
+		viewModel.updateUser(login, user).observe(this, newUser -> {
 			save_button.setEnabled(true);
 			if(newUser == null) {
-				ErrorType error = viewModel.getError().getType();
-				Toast.makeText(requireContext(), "Algo ha ido mal " + error.toString(),
+				APIException error = viewModel.getError();
+				Log.e(TAG, "updateUser: " + getString(R.string.something_went_wrong), error);
+				Toast.makeText(requireContext(), "Algo ha ido mal " + error.getType().toString(),
 				               Toast.LENGTH_SHORT).show();
 				return;
 			}
@@ -214,7 +215,6 @@ public class EditProfileFragment
 			login = new Login(newUser.getEmail(), login.getSecure(), login.getProvider());
 			if(user.getSecure() != null && !user.getSecure().isEmpty()) {
 				login.setSecure(user.getSecure());
-				// TODO remove saved credentials
 			}
 			Preferences.setLogin(sp, login);
 			Preferences.setLoggedUser(sp, newUser);
@@ -225,13 +225,4 @@ public class EditProfileFragment
 					.popBackStack();
 		});
 	}
-
-	private void hiddeKeyboard() {
-		InputMethodManager inputManager = (InputMethodManager) requireActivity()
-				.getSystemService(Context.INPUT_METHOD_SERVICE);
-		inputManager.hideSoftInputFromWindow(
-				Objects.requireNonNull(requireActivity().getCurrentFocus()).getWindowToken(),
-				InputMethodManager.HIDE_NOT_ALWAYS);
-	}
-
 }

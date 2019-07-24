@@ -51,7 +51,7 @@ public class PlayMapFragment
 		map_view.onResume();
 		map_view.getMapAsync(this);
 
-		String[] options = getResources().getStringArray(R.array.pref_map_types);
+		String[] options = getResources().getStringArray(R.array.map_types);
 		int[] mapTypes = {GoogleMap.MAP_TYPE_NORMAL, GoogleMap.MAP_TYPE_SATELLITE};
 		map_type_button.setOnClickListener(v -> {
 			AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
@@ -102,7 +102,7 @@ public class PlayMapFragment
 				googleMap.addMarker(new MarkerOptions().position(place.getPosition()));
 			}
 			LatLngBounds cameraPosition = builder.build();
-			if(place == null || distance == null || distance < DISTANCE_TO_FIX_ZOOM) {
+			if(place == null || distance < DISTANCE_TO_FIX_ZOOM) {
 				cu = CameraUpdateFactory.newLatLngZoom(cameraPosition.getCenter(), MAX_ZOOM);
 			} else {
 				cu = CameraUpdateFactory.newLatLngBounds(cameraPosition, MAP_PADDING);

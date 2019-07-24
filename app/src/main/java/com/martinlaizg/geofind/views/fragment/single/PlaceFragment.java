@@ -17,10 +17,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.LatLng;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.views.viewmodel.TourViewModel;
+import com.squareup.picasso.Picasso;
+
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +45,8 @@ public class PlaceFragment
 	ImageView place_image;
 	@BindView(R.id.place_map)
 	MapView place_map;
+	@BindView(R.id.map_circle)
+	ImageView map_circle;
 
 	private int place_id;
 	private GoogleMap googleMap;
@@ -75,14 +80,24 @@ public class PlaceFragment
 		if(place != null) {
 			place_name.setText(place.getName());
 			place_description.setText(place.getDescription());
-			place_image.setImageResource(R.drawable.default_map_image);
+
+			if(place.getImage() != null && !place.getImage().isEmpty()) {
+				Picasso.with(requireContext()).load(place.getImage()).into(place_image);
+			} else {
+				place_image.setImageResource(R.drawable.default_map_image);
+			}
+
 			int number = place.getOrder() + 1;
 			int total = viewModel.getPlaces().size();
-			place_position
-					.setText(getResources().getString(R.string.place_completeness, number, total));
+			place_position.setText(getResources()
+					                       .getQuantityString(R.plurals.place_number_number, number,
+					                                          number, total));
 			if(googleMap != null) {
-				googleMap.addMarker(new MarkerOptions().position(place.getPosition()));
-				CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(place.getPosition(), MAP_ZOOM);
+				LatLng position = place.getPosition();
+				float latRand = (new Random().nextInt(20000) - 10000) / 3000000f;
+				float lonRand = (new Random().nextInt(20000) - 10000) / 3000000f;
+				position = new LatLng(position.latitude + latRand, position.longitude + lonRand);
+				CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(position, MAP_ZOOM);
 				googleMap.moveCamera(cu);
 			}
 		}
@@ -90,6 +105,7 @@ public class PlaceFragment
 
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
+		map_circle.setVisibility(View.VISIBLE);
 		googleMap.getUiSettings().setAllGesturesEnabled(false);
 		googleMap.getUiSettings().setMyLocationButtonEnabled(false);
 		googleMap.getUiSettings().setMapToolbarEnabled(false);

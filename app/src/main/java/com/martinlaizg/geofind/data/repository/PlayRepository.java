@@ -3,7 +3,9 @@ package com.martinlaizg.geofind.data.repository;
 import android.app.Application;
 import android.util.Log;
 
+import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.service.PlayService;
+import com.martinlaizg.geofind.data.access.api.service.ServiceFactory;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
 import com.martinlaizg.geofind.data.access.database.dao.PlayDAO;
@@ -12,28 +14,29 @@ import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.PlacePlay;
 import com.martinlaizg.geofind.data.access.database.entities.Play;
 
+import java.util.List;
+
 public class PlayRepository {
 
 	private static final String TAG = PlayRepository.class.getSimpleName();
-	private final PlayDAO playDAO;
-	private final PlayService playService;
 
-	private final TourRepository tourRepo;
-	private final UserRepository userRepo;
+	private static PlayDAO playDAO;
+	private static PlayService playService;
 
-	private final PlacePlayDAO placePlayDAO;
+	private static TourRepository tourRepo;
+	private static UserRepository userRepo;
 
-	@SuppressWarnings("unused")
-	PlayRepository(Application application) {
+	private static PlacePlayDAO placePlayDAO;
+
+	void instantiate(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
 		playDAO = database.playDAO();
-		playService = PlayService.getInstance();
+		playService = ServiceFactory.getPlayService(application);
 
 		placePlayDAO = database.playPlaceDAO();
 
 		tourRepo = RepositoryFactory.getTourRepository(application);
 		userRepo = RepositoryFactory.getUserRepository(application);
-		PlaceRepository placeRepo = RepositoryFactory.getPlaceRepository(application);
 	}
 
 	/**
@@ -59,13 +62,26 @@ public class PlayRepository {
 				p.setPlaces(playDAO.getPlaces(p.getId()));
 			}
 		}
-		if(p == null) {                 // The play no exist on database of is out of date
+		if(p == null) {                 // The play no exist on database or is out of date
 			try {
 				p = playService.getUserPlay(user_id, tour_id);  // Get from server
 			} catch(APIException e) {
-				Log.i(TAG, "getPlay: ", e);
-				return null;
+				// If no exist
+				if(e.getType() == ErrorType.EXIST) {
+					Log.i(TAG, "getPlay: The play do not exist");
+					try {
+						// Create the play
+						p = playService.createUserPlay(user_id, tour_id);
+					} catch(APIException ex) {
+						Log.e(TAG, "getPlay: ", ex);
+						return null;
+					}
+				} else {
+					Log.e(TAG, "getPlay: Other error");
+					throw e;
+				}
 			}
+			if(p == null) return null;
 			p.setUser_id(p.getUser().getId());
 			p.setTour_id(p.getTour().getId());
 			insert(p);
@@ -108,7 +124,7 @@ public class PlayRepository {
 	 * @throws APIException
 	 * 		exception from API
 	 */
-	public Play completePlay(Integer play_id, Integer place_id) throws APIException {
+	public Play completePlace(Integer play_id, Integer place_id) throws APIException {
 		Play p = playService.createPlacePlay(play_id, place_id);
 		PlacePlay pp = new PlacePlay(place_id, play_id);
 		placePlayDAO.insert(pp);
@@ -130,5 +146,49 @@ public class PlayRepository {
 		Play p = playService.createUserPlay(user_id, tour_id);
 		insert(p);
 		return p;
+	}
+
+	/**
+	 * Get the list of plays of users
+	 *
+	 * @param user_id
+	 * 		the id of the user to get plays
+	 * @return the list of plays
+	 */
+	public List<Play> getUserPlays(int user_id) throws APIException {
+		List<Play> plays = playDAO.getUserPlays(user_id);
+		if(plays.isEmpty()) {
+			plays.addAll(playService.getUserPlays(user_id));
+			for(Play p : plays) {
+				userRepo.insert(p.getUser());
+				tourRepo.insert(p.getTour());
+				userRepo.insert(p.getTour().getCreator());
+				playDAO.insert(p);
+			}
+		} else {
+			for(int i = 0; i < plays.size(); i++) {
+				if(plays.get(i).isOutOfDate()) {
+					plays.remove(i);
+					i--;
+				}
+				plays.get(i).setTour(tourRepo.getTour(plays.get(i).getTour_id()));
+				plays.get(i).setPlaces(placePlayDAO.getPlayPlace(plays.get(i).getId()));
+			}
+		}
+		refreshUserPlays(user_id);
+		return plays;
+	}
+
+	private void refreshUserPlays(int user_id) {
+		new Thread(() -> {
+			try {
+				List<Play> plays = playService.getUserPlays(user_id);
+				for(Play p : plays) {
+					insert(p);
+				}
+			} catch(APIException e) {
+				Log.e(TAG, "refreshUserPlays: ", e);
+			}
+		}).start();
 	}
 }

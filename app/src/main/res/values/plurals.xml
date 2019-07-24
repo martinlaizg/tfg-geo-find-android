@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <plurals name="num_places">
+    <plurals name="number_place">
         <item quantity="one">%d place</item>
         <item quantity="other">%d places</item>
     </plurals>
+
+    <plurals name="place_number_number">
+        <item formatted="false" quantity="one">Place %1$d/%2$d</item>
+        <item formatted="false" quantity="other">Places %1$d/%2$d</item>
+    </plurals>
+
+    <plurals name="you_complete_num_places">
+        <item formatted="false" quantity="one">You had complete %d tour</item>
+        <item formatted="false" quantity="other">You had complete %d tours</item>
+    </plurals>
+
+    <plurals name="you_progress_tours">
+        <item formatted="false" quantity="one">You had %d tour in progress</item>
+        <item formatted="false" quantity="other">You had %d tours in progress</item>
+    </plurals>
 </resources>
+
+
+

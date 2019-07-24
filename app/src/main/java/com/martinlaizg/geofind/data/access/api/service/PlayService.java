@@ -1,5 +1,6 @@
 package com.martinlaizg.geofind.data.access.api.service;
 
+import android.app.Application;
 import android.util.Log;
 
 import com.martinlaizg.geofind.data.access.api.RestClient;
@@ -7,38 +8,48 @@ import com.martinlaizg.geofind.data.access.api.RetrofitInstance;
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.error.ErrorUtils;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
-import com.martinlaizg.geofind.data.access.database.entities.PlacePlay;
 import com.martinlaizg.geofind.data.access.database.entities.Play;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import retrofit2.Response;
 
 public class PlayService {
 
-	private static PlayService locationService;
 	private static RestClient restClient;
+
+	private static PlayService playService;
+
 	private final String TAG = PlayService.class.getSimpleName();
 
-	public static PlayService getInstance() {
+	void instantiate(Application application) {
 		if(restClient == null) {
-			restClient = RetrofitInstance.getRestClient();
+			restClient = RetrofitInstance.getRestClient(application);
 		}
-		if(locationService == null) {
-			locationService = new PlayService();
+		if(playService == null) {
+			playService = new PlayService();
 		}
-		return locationService;
 	}
 
+	/**
+	 * Get the user play
+	 *
+	 * @param user_id
+	 * 		the user id
+	 * @param tour_id
+	 * 		the tour id
+	 * @return the play
+	 * @throws APIException
+	 * 		exception from server
+	 */
 	public Play getUserPlay(int user_id, int tour_id) throws APIException {
 		Response<Play> response;
 		APIException apiException;
 		try {
-			HashMap<String, String> params = new HashMap<>();
-			params.put("user_id", String.valueOf(user_id));
-			params.put("tour_id", String.valueOf(tour_id));
-			response = restClient.getUserPlay(params).execute();
+			response = restClient.getUserPlay(tour_id, user_id).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}
@@ -50,6 +61,17 @@ public class PlayService {
 		throw apiException;
 	}
 
+	/**
+	 * Create the user play
+	 *
+	 * @param user_id
+	 * 		the user id
+	 * @param tour_id
+	 * 		the tour id
+	 * @return the play
+	 * @throws APIException
+	 * 		exception from server
+	 */
 	public Play createUserPlay(int user_id, int tour_id) throws APIException {
 		Response<Play> response;
 		APIException apiException;
@@ -69,12 +91,22 @@ public class PlayService {
 		throw apiException;
 	}
 
+	/**
+	 * Create the place play
+	 *
+	 * @param play_id
+	 * 		the play id
+	 * @param place_id
+	 * 		the place id
+	 * @return the play
+	 * @throws APIException
+	 * 		exception from the server
+	 */
 	public Play createPlacePlay(Integer play_id, Integer place_id) throws APIException {
 		Response<Play> response;
 		APIException apiException;
 		try {
-			PlacePlay pp = new PlacePlay(place_id, play_id);
-			response = restClient.createPlacePlay(play_id, pp).execute();
+			response = restClient.createPlacePlay(play_id, place_id).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}
@@ -84,5 +116,9 @@ public class PlayService {
 			Log.e(TAG, "getPlace: ", e);
 		}
 		throw apiException;
+	}
+
+	public List<Play> getUserPlays(int user_id) throws APIException {
+		return new ArrayList<>();
 	}
 }

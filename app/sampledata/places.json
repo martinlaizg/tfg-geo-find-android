@@ -1,11 +1,27 @@
 {
-  "comment": "Tours",
-  "data": [
-    {
-      "name": "Lugar 1",
-      "description": "Descripción del sitio 1 del tour 1. \n Es un sitio fantabuloso",
-      "visits": "2.456",
-      "distance": "563m"
-    }
-  ]
+	"comment" : "Places",
+	"data" : [
+		{
+			"name" : "Lugar 1",
+			"description" : "Descripción del sitio 1 del tour 1.Es un sitio fantabuloso",
+			"visits" : "2.456",
+			"distance" : "563m",
+			"completeness" : "Place 2/3",
+			"question" : "Pregunta corta?",
+			"answer1" : "Respuesta corta",
+			"answer2" : "Respuesta un poco más larga",
+			"answer3" : "Respuesta extremadamente larga que podría joderte todo el diseño"
+		},
+		{
+			"name" : "Lugar 2",
+			"description" : "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec.",
+			"visits" : "2.456",
+			"distance" : "563m",
+			"completeness" : "Place 2/3",
+			"question" : "Esta sería una pregunta larga en la que el diseño se te puede ir a la mierda? Es muy importante tener esto en cuenta",
+			"answer1" : "Respuesta corta",
+			"answer2" : "Respuesta un poco más larga",
+			"answer3" : "Respuesta extremadamente larga que podría joderte todo el diseño"
+		}
+	]
 }
