@@ -14,6 +14,8 @@ import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.PlacePlay;
 import com.martinlaizg.geofind.data.access.database.entities.Play;
 
+import java.util.List;
+
 public class PlayRepository {
 
 	private static final String TAG = PlayRepository.class.getSimpleName();
@@ -146,4 +148,47 @@ public class PlayRepository {
 		return p;
 	}
 
+	/**
+	 * Get the list of plays of users
+	 *
+	 * @param user_id
+	 * 		the id of the user to get plays
+	 * @return the list of plays
+	 */
+	public List<Play> getUserPlays(int user_id) throws APIException {
+		List<Play> plays = playDAO.getUserPlays(user_id);
+		if(plays.isEmpty()) {
+			plays.addAll(playService.getUserPlays(user_id));
+			for(Play p : plays) {
+				userRepo.insert(p.getUser());
+				tourRepo.insert(p.getTour());
+				userRepo.insert(p.getTour().getCreator());
+				playDAO.insert(p);
+			}
+		} else {
+			for(int i = 0; i < plays.size(); i++) {
+				if(plays.get(i).isOutOfDate()) {
+					plays.remove(i);
+					i--;
+				}
+				plays.get(i).setTour(tourRepo.getTour(plays.get(i).getTour_id()));
+				plays.get(i).setPlaces(placePlayDAO.getPlayPlace(plays.get(i).getId()));
+			}
+		}
+		refreshUserPlays(user_id);
+		return plays;
+	}
+
+	private void refreshUserPlays(int user_id) {
+		new Thread(() -> {
+			try {
+				List<Play> plays = playService.getUserPlays(user_id);
+				for(Play p : plays) {
+					insert(p);
+				}
+			} catch(APIException e) {
+				Log.e(TAG, "refreshUserPlays: ", e);
+			}
+		}).start();
+	}
 }

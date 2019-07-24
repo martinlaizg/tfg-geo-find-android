@@ -72,6 +72,7 @@ public class LoginFragment
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(requestCode == RC_SIGN_IN) {
+			load_layout.setVisibility(View.VISIBLE);
 			Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 			handleSignInResult(task);
 			return;

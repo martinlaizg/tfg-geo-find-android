@@ -30,7 +30,7 @@
                 app:layout_constraintEnd_toStartOf="@id/edit_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="@sample/tours.json/data/name" />
+                tools:text="@sample/plays.json/data/name" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/edit_button"
@@ -55,7 +55,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/edit_button"
                 app:layout_constraintStart_toStartOf="@+id/tour_name"
                 app:layout_constraintTop_toBottomOf="@id/tour_name"
-                tools:text="@sample/tours.json/data/description" />
+                tools:text="@sample/plays.json/data/description" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/tour_creator"
@@ -98,7 +98,7 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/tour_creator"
                 app:layout_constraintTop_toTopOf="@id/tour_creator"
-                tools:text="@sample/tours.json/data/num_places" />
+                tools:text="@sample/plays.json/data/num_places" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/places_list"

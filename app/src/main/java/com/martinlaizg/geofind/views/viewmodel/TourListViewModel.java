@@ -46,4 +46,5 @@ public class TourListViewModel
 	private void setError(APIException error) {
 		this.error = error;
 	}
+
 }

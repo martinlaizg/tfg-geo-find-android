@@ -36,8 +36,8 @@
     <string name="text_too_long">Texto demasiado largo</string>
     <string name="tour">Tour</string>
     <string name="tour_created">Tour creado</string>
-    <string name="tour_creator">Creador de tours</string>
-    <string name="tour_list">Lista de tours</string>
+    <string name="tour_creator">Creador de plays</string>
+    <string name="tour_list">Lista de plays</string>
     <string name="tour_main_image">Imagen principal del tour</string>
     <string name="tour_without_name">Tour sin nombre</string>
     <string name="update_place">Actualizar sitio</string>

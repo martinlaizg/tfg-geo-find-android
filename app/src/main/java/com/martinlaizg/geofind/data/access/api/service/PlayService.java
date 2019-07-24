@@ -11,7 +11,9 @@ import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.Play;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import retrofit2.Response;
 
@@ -114,5 +116,9 @@ public class PlayService {
 			Log.e(TAG, "getPlace: ", e);
 		}
 		throw apiException;
+	}
+
+	public List<Play> getUserPlays(int user_id) throws APIException {
+		return new ArrayList<>();
 	}
 }
