@@ -81,12 +81,13 @@ public class MainFragment
 				} else {
 					inProgress++;
 				}
-				toursCompletedText.setText(getResources().getQuantityString(
-						R.plurals.you_complete_num_places, completed, completed));
-				toursInProgressText.setText(getResources()
-						                            .getQuantityString(R.plurals.you_progress_tours,
-						                                               inProgress, inProgress));
 			}
+			toursCompletedText.setText(getResources()
+					                           .getQuantityString(R.plurals.you_complete_num_places,
+					                                              completed, completed));
+			toursInProgressText.setText(getResources()
+					                            .getQuantityString(R.plurals.you_progress_tours,
+					                                               inProgress, inProgress));
 		});
 	}
 }

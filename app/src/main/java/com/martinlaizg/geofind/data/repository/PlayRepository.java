@@ -170,9 +170,10 @@ public class PlayRepository {
 				if(plays.get(i).isOutOfDate()) {
 					plays.remove(i);
 					i--;
+				} else {
+					plays.get(i).setTour(tourRepo.getTour(plays.get(i).getTour_id()));
+					plays.get(i).setPlaces(placePlayDAO.getPlayPlace(plays.get(i).getId()));
 				}
-				plays.get(i).setTour(tourRepo.getTour(plays.get(i).getTour_id()));
-				plays.get(i).setPlaces(placePlayDAO.getPlayPlace(plays.get(i).getId()));
 			}
 		}
 		refreshUserPlays(user_id);
