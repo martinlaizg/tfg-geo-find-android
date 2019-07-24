@@ -9,4 +9,14 @@
         <item formatted="false" quantity="one">Sitio %1$d/%2$d</item>
         <item formatted="false" quantity="other">Sitios %1$d/%2$d</item>
     </plurals>
+
+    <plurals name="you_complete_num_places">
+        <item formatted="false" quantity="one">Has completado %d tour</item>
+        <item formatted="false" quantity="other">Has completados %d tours</item>
+    </plurals>
+
+    <plurals name="you_progress_tours">
+        <item formatted="false" quantity="one">Tienes %d tour en progreso</item>
+        <item formatted="false" quantity="other">Tienes %d tours en progreso</item>
+    </plurals>
 </resources>
