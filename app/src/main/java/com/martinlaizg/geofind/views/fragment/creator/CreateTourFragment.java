@@ -1,9 +1,12 @@
 package com.martinlaizg.geofind.views.fragment.creator;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -21,6 +24,7 @@ import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.data.enums.PlayLevel;
 import com.martinlaizg.geofind.views.viewmodel.CreatorViewModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
@@ -37,6 +41,8 @@ public class CreateTourFragment
 	TextInputLayout tour_name_layout;
 	@BindView(R.id.tour_description_layout)
 	TextInputLayout tour_description_layout;
+	@BindView(R.id.tour_image_view)
+	ImageView tour_image_view;
 
 	@BindView(R.id.done_button)
 	MaterialButton done_button;
@@ -46,6 +52,7 @@ public class CreateTourFragment
 	Spinner difficulty_spinner;
 
 	private CreatorViewModel viewModel;
+	private String image_url = "";
 
 	@Override
 	public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container,
@@ -58,20 +65,42 @@ public class CreateTourFragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel.class);
-		Tour m = viewModel.getTour();
-		if(m != null) {
-			if(!m.getName().isEmpty()) {
-				Objects.requireNonNull(tour_name_layout.getEditText()).setText(m.getName());
+		Tour t = viewModel.getTour();
+		if(t != null) {
+			if(!t.getName().isEmpty()) {
+				Objects.requireNonNull(tour_name_layout.getEditText()).setText(t.getName());
 			}
-			if(!m.getDescription().isEmpty()) {
+			if(!t.getDescription().isEmpty()) {
 				Objects.requireNonNull(tour_description_layout.getEditText())
-						.setText(m.getDescription());
+						.setText(t.getDescription());
 			}
-			if(m.getMin_level() != null) {
-				difficulty_spinner.setSelection(m.getMin_level().ordinal());
+			if(t.getMin_level() != null) {
+				difficulty_spinner.setSelection(t.getMin_level().ordinal());
 			}
+			if(t.getImage() != null) image_url = t.getImage();
 		}
 		done_button.setOnClickListener(this);
+		add_image_button.setOnClickListener(v -> {
+			AlertDialog alertDialog = buildDialog();
+			alertDialog.show();
+		});
+	}
+
+	private AlertDialog buildDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		// Get the layout inflater
+		LayoutInflater inflater = requireActivity().getLayoutInflater();
+
+		View view = inflater.inflate(R.layout.add_image_layout, new LinearLayout(requireContext()));
+		TextInputLayout image_url_layout = view.findViewById(R.id.image_url_layout);
+		return builder.setView(view).setPositiveButton(R.string.ok, (dialog, id) -> {
+			image_url = Objects.requireNonNull(image_url_layout.getEditText()).getText().toString();
+			tour_image_view.setVisibility(View.GONE);
+			if(!image_url.isEmpty()) {
+				Picasso.with(requireContext()).load(image_url).into(tour_image_view);
+				tour_image_view.setVisibility(View.VISIBLE);
+			}
+		}).create();
 	}
 
 	@Override
@@ -103,7 +132,7 @@ public class CreateTourFragment
 		PlayLevel pl = PlayLevel.getPlayLevel(difficulty_spinner.getSelectedItemPosition());
 		User user = Preferences
 				.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(requireContext()));
-		viewModel.updateTour(name, description, user.getId(), pl);
+		viewModel.updateTour(name, description, user.getId(), pl, image_url);
 		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
 	}
 }
