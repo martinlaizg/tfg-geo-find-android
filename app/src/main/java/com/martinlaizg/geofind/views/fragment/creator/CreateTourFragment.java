@@ -1,10 +1,12 @@
 package com.martinlaizg.geofind.views.fragment.creator;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -101,6 +103,14 @@ public class CreateTourFragment
 			if(!image_url.isEmpty()) {
 				Picasso.with(requireContext()).load(image_url).into(tour_image_view);
 				tour_image_view.setVisibility(View.VISIBLE);
+			}
+
+			// Hide the keyboard
+			InputMethodManager editTextInput = (InputMethodManager) requireActivity()
+					.getSystemService(Context.INPUT_METHOD_SERVICE);
+			View currentFocus = requireActivity().getCurrentFocus();
+			if(currentFocus != null) {
+				editTextInput.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
 			}
 		}).create();
 	}

@@ -2,6 +2,8 @@ package com.martinlaizg.geofind.views.fragment.creator;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -10,7 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,10 +33,12 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.views.viewmodel.CreatorViewModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Objects;
@@ -63,6 +70,10 @@ public class CreatePlaceFragment
 	@BindView(R.id.new_place_map_view)
 	MapView new_place_map_view;
 
+	@BindView(R.id.new_place_image_button)
+	MaterialButton new_place_image_button;
+	@BindView(R.id.place_image_view)
+	ImageView place_image_view;
 	@BindView(R.id.question_switch)
 	Switch question_switch;
 	@BindView(R.id.question_layout)
@@ -75,6 +86,7 @@ public class CreatePlaceFragment
 	TextInputLayout new_place_answer_2;
 	@BindView(R.id.new_place_answer_3)
 	TextInputLayout new_place_answer_3;
+	private String image_url;
 
 	private CreatorViewModel viewModel;
 	private MarkerOptions marker;
@@ -226,6 +238,7 @@ public class CreatePlaceFragment
 			gMap.getUiSettings().setMyLocationButtonEnabled(true);
 			gMap.getUiSettings().setMapToolbarEnabled(false);
 			gMap.getUiSettings().setTiltGesturesEnabled(false);
+			gMap.getUiSettings().setZoomControlsEnabled(true);
 
 			LatLng usrLatLng = new LatLng(usrLocation.getLatitude(), usrLocation.getLongitude());
 			gMap.clear();
@@ -297,6 +310,10 @@ public class CreatePlaceFragment
 			Log.i(TAG, "onViewCreated: Get place and set");
 		}
 		create_button.setOnClickListener(this);
+		new_place_image_button.setOnClickListener(v -> {
+			AlertDialog alertDialog = buildDialog();
+			alertDialog.show();
+		});
 		if(marker != null) create_button.setText(R.string.update_place);
 	}
 
@@ -333,6 +350,32 @@ public class CreatePlaceFragment
 			Toast.makeText(requireContext(), getResources().getString(R.string.invalid_place),
 			               Toast.LENGTH_SHORT).show();
 		}
+	}
+
+	private AlertDialog buildDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		// Get the layout inflater
+		LayoutInflater inflater = requireActivity().getLayoutInflater();
+
+		View view = inflater.inflate(R.layout.add_image_layout, new LinearLayout(requireContext()));
+		TextInputLayout image_url_layout = view.findViewById(R.id.image_url_layout);
+		Objects.requireNonNull(image_url_layout.getEditText()).setText(image_url);
+		return builder.setView(view).setPositiveButton(R.string.ok, (dialog, id) -> {
+			image_url = Objects.requireNonNull(image_url_layout.getEditText()).getText().toString();
+			place_image_view.setVisibility(View.GONE);
+			if(!image_url.isEmpty()) {
+				Picasso.with(requireContext()).load(image_url).into(place_image_view);
+				place_image_view.setVisibility(View.VISIBLE);
+			}
+
+			// Hide the keyboard
+			InputMethodManager editTextInput = (InputMethodManager) requireActivity()
+					.getSystemService(Context.INPUT_METHOD_SERVICE);
+			View currentFocus = requireActivity().getCurrentFocus();
+			if(currentFocus != null) {
+				editTextInput.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+			}
+		}).create();
 	}
 
 	@Override
