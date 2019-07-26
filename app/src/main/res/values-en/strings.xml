@@ -105,4 +105,6 @@
     <string name="send_message_to_support">Send message to support</string>
     <string name="app_version">App version</string>
     <string name="app_developer">App developer</string>
+    <string name="add_image_url">Add image URL</string>
+    <string name="image_url">Image URL</string>
 </resources>
