@@ -12,7 +12,6 @@ import com.martinlaizg.geofind.data.access.database.entities.Play;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Response;
@@ -76,10 +75,7 @@ public class PlayService {
 		Response<Play> response;
 		APIException apiException;
 		try {
-			HashMap<String, String> params = new HashMap<>();
-			params.put("user_id", String.valueOf(user_id));
-			params.put("tour_id", String.valueOf(tour_id));
-			response = restClient.createUserPlay(params).execute();
+			response = restClient.createUserPlay(tour_id, user_id).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}

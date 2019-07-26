@@ -79,8 +79,12 @@ public class CreateTourFragment
 			if(t.getMin_level() != null) {
 				difficulty_spinner.setSelection(t.getMin_level().ordinal());
 			}
+			tour_image_view.setVisibility(View.GONE);
 			if(t.getImage() != null) image_url = t.getImage();
-			Picasso.with(requireContext()).load(image_url).into(tour_image_view);
+			if(!image_url.isEmpty()) {
+				Picasso.with(requireContext()).load(image_url).into(tour_image_view);
+				tour_image_view.setVisibility(View.VISIBLE);
+			}
 		}
 		done_button.setOnClickListener(this);
 		add_image_button.setOnClickListener(v -> {

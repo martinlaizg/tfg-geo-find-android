@@ -34,14 +34,14 @@ public interface RestClient {
 	@GET("tours/{tour_id}/users/{user_id}/play")
 	Call<Play> getUserPlay(@Path("tour_id") Integer tour_id, @Path("user_id") Integer user_id);
 
+	@POST("tours/{tour_id}/users/{user_id}/play")
+	Call<Play> createUserPlay(@Path("tour_id") Integer tour_id, @Path("user_id") Integer user_id);
+
 	@POST("login")
 	Call<User> login(@Body Login login);
 
 	@POST("users")
 	Call<User> registry(@Body Login login);
-
-	@POST("plays")
-	Call<Play> createUserPlay(@QueryMap Map<String, String> params);
 
 	@POST("plays/{play_id}/places/{place_id}")
 	Call<Play> createPlacePlay(@Path("play_id") Integer play_id,

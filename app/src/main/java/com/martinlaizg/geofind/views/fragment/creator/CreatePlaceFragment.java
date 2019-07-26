@@ -346,6 +346,13 @@ public class CreatePlaceFragment
 				Objects.requireNonNull(new_place_answer_3.getEditText())
 						.setText(place.getAnswer3());
 			}
+
+			place_image_view.setVisibility(View.GONE);
+
+			if(place.getImage() != null && !place.getImage().isEmpty()) {
+				Picasso.with(requireContext()).load(image_url).into(place_image_view);
+				place_image_view.setVisibility(View.VISIBLE);
+			}
 		} else {
 			Toast.makeText(requireContext(), getResources().getString(R.string.invalid_place),
 			               Toast.LENGTH_SHORT).show();
