@@ -111,7 +111,9 @@
     <string name="errors_and_suggestions">Errors and suggestions</string>
     <string name="app_version">App version</string>
     <string name="app_developer">App developer</string>
-    <string name="app_version_name" translatable="false">v0.3-SNAPSHOT</string>
+    <string name="app_version_name" translatable="false">v0.4-SNAPSHOT</string>
     <string name="rejected_location_access">Refused permission to location</string>
     <string name="div" translatable="false">%1$d/%2$d</string>
+    <string name="add_image_url">Add image URL</string>
+    <string name="image_url">Image URL</string>
 </resources>

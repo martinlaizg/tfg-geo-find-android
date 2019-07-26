@@ -53,12 +53,14 @@ public class CreatorViewModel
 		return m;
 	}
 
-	public void updateTour(String name, String description, Integer creator_id, PlayLevel pl) {
+	public void updateTour(String name, String description, Integer creator_id, PlayLevel pl,
+			String image_url) {
 		if(tour == null) tour = new Tour();
 		tour.setName(name);
 		tour.setDescription(description);
 		tour.setCreator_id(creator_id);
 		tour.setMin_level(pl);
+		tour.setImage(image_url);
 	}
 
 	public MutableLiveData<Tour> loadTour(Integer tour_id) {
@@ -117,4 +119,5 @@ public class CreatorViewModel
 	public void reset() {
 		tour = null;
 	}
+
 }

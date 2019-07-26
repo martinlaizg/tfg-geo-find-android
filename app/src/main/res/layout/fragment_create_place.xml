@@ -93,18 +93,31 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/alert_no_place_text" />
 
+        <ImageView
+            android:id="@+id/place_image_view"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/new_place_image_button"
+            tools:srcCompat="@tools:sample/backgrounds/scenic[9]" />
+
         <Switch
             android:id="@+id/question_switch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:text="@string/with_question"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/new_place_image_button" />
+            app:layout_constraintTop_toBottomOf="@+id/place_image_view" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/question_layout"
