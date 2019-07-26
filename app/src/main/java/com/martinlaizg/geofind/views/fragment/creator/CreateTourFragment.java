@@ -78,6 +78,7 @@ public class CreateTourFragment
 				difficulty_spinner.setSelection(t.getMin_level().ordinal());
 			}
 			if(t.getImage() != null) image_url = t.getImage();
+			Picasso.with(requireContext()).load(image_url).into(tour_image_view);
 		}
 		done_button.setOnClickListener(this);
 		add_image_button.setOnClickListener(v -> {
@@ -93,6 +94,7 @@ public class CreateTourFragment
 
 		View view = inflater.inflate(R.layout.add_image_layout, new LinearLayout(requireContext()));
 		TextInputLayout image_url_layout = view.findViewById(R.id.image_url_layout);
+		Objects.requireNonNull(image_url_layout.getEditText()).setText(image_url);
 		return builder.setView(view).setPositiveButton(R.string.ok, (dialog, id) -> {
 			image_url = Objects.requireNonNull(image_url_layout.getEditText()).getText().toString();
 			tour_image_view.setVisibility(View.GONE);
