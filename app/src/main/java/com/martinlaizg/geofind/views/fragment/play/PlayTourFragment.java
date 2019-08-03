@@ -1,6 +1,7 @@
 package com.martinlaizg.geofind.views.fragment.play;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -21,7 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
-import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.button.MaterialButton;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
@@ -97,13 +98,6 @@ abstract class PlayTourFragment
 						.popBackStack(R.id.navTour, false);
 				return;
 			}
-
-			// If has question build it
-			if(place.getQuestion() != null && !place.getQuestion().isEmpty()) {
-				createDialog(place);
-			} else {
-				questionDialog = null;
-			}
 			setPlace(place);
 		});
 	}
@@ -138,6 +132,21 @@ abstract class PlayTourFragment
 		locationManager.removeUpdates(this);
 	}
 
+	private void setPlace(Place nextPlace) {
+		place = nextPlace;
+		placeLocation = new Location("");
+		placeLocation.setLatitude(place.getLat());
+		placeLocation.setLongitude(place.getLon());
+		place_name.setText(place.getName());
+		place_description.setText(place.getDescription());
+		int numCompletedPlaces = viewModel.getPlay().getPlaces().size() + 1;
+		int numPlaces = viewModel.getPlay().getTour().getPlaces().size();
+		place_complete.setText(getResources().getQuantityString(R.plurals.place_number_number,
+		                                                        numCompletedPlaces,
+		                                                        numCompletedPlaces, numPlaces));
+		updateView();
+	}
+
 	abstract void updateView();
 
 	@Override
@@ -164,7 +173,8 @@ abstract class PlayTourFragment
 				Log.d(TAG(), "updateView: user arrive to the place");
 
 				// If has question display
-				if(questionDialog != null && !questionDialog.isShowing()) {
+				if(place != null && place.getQuestion() != null && !place.getQuestion().isEmpty()) {
+					createDialog(place);
 					questionDialog.show();
 				} else {
 					completePlace();
@@ -193,6 +203,7 @@ abstract class PlayTourFragment
 	private void completePlace() {
 		// hide question dialog if exist and is showing
 		if(questionDialog != null && questionDialog.isShowing()) questionDialog.dismiss();
+		locationManager.removeUpdates(this);
 		viewModel.completePlace(place.getId()).observe(this, place -> {
 			if(place == null) {
 				if(viewModel.tourIsCompleted()) {
@@ -231,55 +242,42 @@ abstract class PlayTourFragment
 		});
 	}
 
-	private void setPlace(Place nextPlace) {
-		place = nextPlace;
-		placeLocation = new Location("");
-		placeLocation.setLatitude(place.getLat());
-		placeLocation.setLongitude(place.getLon());
-		place_name.setText(place.getName());
-		place_description.setText(place.getDescription());
-		int numCompletedPlaces = viewModel.getPlay().getPlaces().size() + 1;
-		int numPlaces = viewModel.getPlay().getTour().getPlaces().size();
-		place_complete.setText(getResources().getQuantityString(R.plurals.place_number_number,
-		                                                        numCompletedPlaces,
-		                                                        numCompletedPlaces, numPlaces));
-		updateView();
-	}
-
+	@SuppressLint("MissingPermission")
 	private void createDialog(Place place) {
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(requireContext());
 		View dialogView = getLayoutInflater()
 				.inflate(R.layout.question_layout, new ConstraintLayout(requireContext()), false);
 		TextView question = dialogView.findViewById(R.id.question);
 		question.setText(place.getQuestion());
-		List<MaterialCardView> cards = Arrays.asList(dialogView.findViewById(R.id.answer1_layout),
-		                                             dialogView.findViewById(R.id.answer2_layout),
-		                                             dialogView.findViewById(R.id.answer3_layout));
-		List<TextView> texts = Arrays.asList(dialogView.findViewById(R.id.answer1),
-		                                     dialogView.findViewById(R.id.answer2),
-		                                     dialogView.findViewById(R.id.answer3));
-
+		List<MaterialButton> texts = Arrays.asList(dialogView.findViewById(R.id.answer1),
+		                                           dialogView.findViewById(R.id.answer2),
+		                                           dialogView.findViewById(R.id.answer3));
 		// Get random position to start
-		int i = new Random().nextInt(cards.size());
+		int i = new Random().nextInt(texts.size());
 
 		// Set correct answer
 		texts.get(i).setText(place.getAnswer());
-		cards.get(i).setOnClickListener(v -> completePlace());
+		texts.get(i).setOnClickListener(v -> completePlace());
 		i++;
-		i %= cards.size();
+		i %= texts.size();
 		// set second answer
 		texts.get(i).setText(place.getAnswer2());
-		cards.get(i).setOnClickListener(v -> showWrongAnswerToast());
+		texts.get(i).setOnClickListener(v -> showWrongAnswerToast());
 		i++;
-		i %= cards.size();
+		i %= texts.size();
 		texts.get(i).setText(place.getAnswer3());
-		cards.get(i).setOnClickListener(v -> showWrongAnswerToast());
+		texts.get(i).setOnClickListener(v -> showWrongAnswerToast());
 
 		dialogBuilder.setView(dialogView);
 		questionDialog = dialogBuilder.create();
+		questionDialog.setOnDismissListener(dialog -> locationManager
+				.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOC_TIME_REQ, LOC_DIST_REQ,
+				                        this));
+		;
 	}
 
 	private void showWrongAnswerToast() {
+		if(questionDialog != null && questionDialog.isShowing()) questionDialog.dismiss();
 		Toast.makeText(requireContext(), getString(R.string.wrong_answer), Toast.LENGTH_SHORT)
 				.show();
 	}

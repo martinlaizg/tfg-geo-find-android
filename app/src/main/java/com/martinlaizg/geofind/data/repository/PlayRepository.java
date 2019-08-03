@@ -77,7 +77,7 @@ public class PlayRepository {
 						return null;
 					}
 				} else {
-					Log.e(TAG, "getPlay: Other error");
+					Log.e(TAG, "getPlay: Other error", e);
 					throw e;
 				}
 			}
