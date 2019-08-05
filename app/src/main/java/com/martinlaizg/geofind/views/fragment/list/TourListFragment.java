@@ -54,7 +54,6 @@ public class TourListFragment
 			@Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.fragment_tour_list, container, false);
 		ButterKnife.bind(this, view);
-
 		tour_list.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		adapter = new TourListAdapter();
 		tour_list.setAdapter(adapter);

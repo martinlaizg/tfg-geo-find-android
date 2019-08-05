@@ -17,13 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.martinlaizg.geofind.R;
-import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
+import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.views.adapter.CreatorPlacesAdapter;
 import com.martinlaizg.geofind.views.fragment.single.TourFragment;
 import com.martinlaizg.geofind.views.viewmodel.CreatorViewModel;
-
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,22 +56,22 @@ public class CreatorFragment
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_creator, container, false);
 		ButterKnife.bind(this, view);
+		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel.class);
+		adapter = new CreatorPlacesAdapter();
+		places_list.setLayoutManager(new LinearLayoutManager(requireActivity()));
+		places_list.setAdapter(adapter);
 		return view;
 	}
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel.class);
-		adapter = new CreatorPlacesAdapter();
-		places_list.setLayoutManager(new LinearLayoutManager(requireActivity()));
-		places_list.setAdapter(adapter);
-
-		// Load tour
 		Bundle b = getArguments();
-		int tour_id = Objects.requireNonNull(b).getInt(TOUR_ID);
-		viewModel.loadTour(tour_id).observe(this, this::setTour);
+		int tour_id = 0;
+		if(b != null) {
+			tour_id = b.getInt(TOUR_ID);
+		}
+		viewModel.getTour(tour_id).observe(this, this::setTour);
 
-		// set buttons
 		add_place_button.setOnClickListener(v -> {
 			Bundle p = new Bundle();
 			p.putInt(CreatePlaceFragment.PLACE_POSITION, viewModel.getPlaces().size());
@@ -87,45 +85,34 @@ public class CreatorFragment
 	}
 
 	private void setTour(Tour tour) {
-		if(tour != null) {
-			adapter.setPlaces(requireActivity(), tour.getPlaces());
-			if(tour.getId() != 0) {
-				create_tour_button.setText(R.string.update_tour);
-			}
-			if(tour.getName().isEmpty()) {
-				tour_name.setText(getString(R.string.click_edit));
-			} else {
-				tour_name.setText(tour.getName());
-			}
-			if(tour.getDescription().isEmpty()) {
-				tour_description.setText(getResources().getString(R.string.without_decription));
-			} else {
-				tour_description.setText(tour.getDescription());
-			}
+		if(tour == null) {
+			ErrorType error = viewModel.getError();
+			return;
 		}
-	}
-
-	@Override
-	public void onDetach() {
-		super.onDetach();
-		// reset the view model
-		if(viewModel != null) viewModel.reset();
+		adapter.setPlaces(requireActivity(), tour.getPlaces());
+		if(tour.getId() != 0) {
+			create_tour_button.setText(R.string.update_tour);
+		}
+		if(tour.getName().isEmpty()) {
+			tour_name.setText(getString(R.string.click_edit));
+		} else {
+			tour_name.setText(tour.getName());
+		}
+		if(tour.getDescription().isEmpty()) {
+			tour_description.setText(getResources().getString(R.string.without_decription));
+		} else {
+			tour_description.setText(tour.getDescription());
+		}
 	}
 
 	@Override
 	public void onClick(View v) {
-		if(viewModel.getTour().getPlaces().isEmpty()) {
-			Toast.makeText(requireContext(), getString(R.string.at_least_one_place),
-			               Toast.LENGTH_SHORT).show();
-			return;
-		}
 		create_tour_button.setEnabled(false);
 		viewModel.createTour().observe(this, tour -> {
 			create_tour_button.setEnabled(true);
 			if(tour == null) {
-				APIException err = viewModel.getError();
-				Toast.makeText(requireActivity(), err.getType().toString(), Toast.LENGTH_LONG)
-						.show();
+				ErrorType err = viewModel.getError();
+				Toast.makeText(requireActivity(), err.toString(), Toast.LENGTH_LONG).show();
 				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
 						.popBackStack(R.id.navTourList, false);
 				return;

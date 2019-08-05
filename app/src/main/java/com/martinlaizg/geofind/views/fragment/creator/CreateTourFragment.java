@@ -22,6 +22,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
+import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.data.enums.PlayLevel;
@@ -37,7 +38,8 @@ public class CreateTourFragment
 		extends Fragment
 		implements View.OnClickListener {
 
-	private final static String TAG = CreateTourFragment.class.getSimpleName();
+	public static final String TOUR_ID = "TOUR_ID";
+	private static final String TAG = CreateTourFragment.class.getSimpleName();
 
 	@BindView(R.id.tour_name_layout)
 	TextInputLayout tour_name_layout;
@@ -61,36 +63,51 @@ public class CreateTourFragment
 			final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.fragment_create_tour, container, false);
 		ButterKnife.bind(this, view);
+		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel.class);
 		return view;
 	}
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel.class);
-		Tour t = viewModel.getTour();
-		if(t != null) {
-			if(!t.getName().isEmpty()) {
-				Objects.requireNonNull(tour_name_layout.getEditText()).setText(t.getName());
-			}
-			if(!t.getDescription().isEmpty()) {
-				Objects.requireNonNull(tour_description_layout.getEditText())
-						.setText(t.getDescription());
-			}
-			if(t.getMin_level() != null) {
-				difficulty_spinner.setSelection(t.getMin_level().ordinal());
-			}
-			tour_image_view.setVisibility(View.GONE);
-			if(t.getImage() != null) image_url = t.getImage();
-			if(!image_url.isEmpty()) {
-				Picasso.with(requireContext()).load(image_url).into(tour_image_view);
-				tour_image_view.setVisibility(View.VISIBLE);
-			}
+		Bundle b = getArguments();
+		int tour_id = 0;
+		if(b != null) {
+			tour_id = b.getInt(TOUR_ID);
 		}
+		viewModel.getTour(tour_id).observe(requireActivity(), this::setTour);
+
 		done_button.setOnClickListener(this);
 		add_image_button.setOnClickListener(v -> {
 			AlertDialog alertDialog = buildDialog();
 			alertDialog.show();
 		});
+	}
+
+	private void setTour(Tour tour) {
+		if(tour == null) {
+			ErrorType error = viewModel.getError();
+			if(error == ErrorType.EXIST) {
+				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+						.popBackStack();
+			}
+			return;
+		}
+		Objects.requireNonNull(tour_name_layout.getEditText()).setText(tour.getName());
+
+		Objects.requireNonNull(tour_description_layout.getEditText())
+				.setText(tour.getDescription());
+
+		difficulty_spinner.setSelection(tour.getMin_level().ordinal());
+
+		tour_image_view.setVisibility(View.GONE);
+		if(tour.getImage() != null) image_url = tour.getImage();
+		if(!image_url.isEmpty()) {
+			Picasso.with(requireContext()).load(image_url).into(tour_image_view);
+			tour_image_view.setVisibility(View.VISIBLE);
+		}
+		if(tour.getId() > 0) {
+			done_button.setText(getString(R.string.update));
+		}
 	}
 
 	private AlertDialog buildDialog() {

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
@@ -20,7 +21,7 @@ public class CreatorViewModel
 
 	private final TourRepository tourRepo;
 	private Tour tour;
-	private APIException error;
+	private ErrorType error;
 
 	public CreatorViewModel(@NonNull Application application) {
 		super(application);
@@ -34,7 +35,7 @@ public class CreatorViewModel
 				try {
 					tour = tourRepo.create(tour);
 				} catch(APIException e) {
-					setError(e);
+					setError(e.getType());
 					m.postValue(null);
 					return;
 				}
@@ -42,7 +43,7 @@ public class CreatorViewModel
 				try {
 					tour = tourRepo.update(tour);
 				} catch(APIException e) {
-					setError(e);
+					setError(e.getType());
 					m.postValue(null);
 					return;
 				}
@@ -62,18 +63,25 @@ public class CreatorViewModel
 		tour.setImage(image_url);
 	}
 
-	public MutableLiveData<Tour> loadTour(Integer tour_id) {
+	public MutableLiveData<Tour> getTour(int tour_id) {
+		MutableLiveData<Tour> t = new MutableLiveData<>();
+		if(tour == null || tour.getId() != tour_id) {
+			return loadTour(tour_id);
+		}
+		new Thread(() -> t.postValue(tour));
+		return t;
+	}
+
+	private MutableLiveData<Tour> loadTour(Integer tour_id) {
 		MutableLiveData<Tour> t = new MutableLiveData<>();
 		new Thread(() -> {
-			if(tour == null) {
-				tour = new Tour();
-				if(tour_id > 0) {
-					try {
-						tour = tourRepo.getTour(tour_id);
-					} catch(APIException e) {
-						setError(e);
-						tour = null;
-					}
+			tour = new Tour();
+			if(tour_id > 0) {
+				try {
+					tour = tourRepo.getTour(tour_id);
+				} catch(APIException e) {
+					setError(e.getType());
+					tour = null;
 				}
 			}
 			t.postValue(tour);
@@ -81,15 +89,11 @@ public class CreatorViewModel
 		return t;
 	}
 
-	public Tour getTour() {
-		return tour;
-	}
-
-	public APIException getError() {
+	public ErrorType getError() {
 		return error;
 	}
 
-	private void setError(APIException error) {
+	private void setError(ErrorType error) {
 		this.error = error;
 	}
 
@@ -113,10 +117,6 @@ public class CreatorViewModel
 		} else {
 			tour.getPlaces().set(place.getOrder(), place);
 		}
-	}
-
-	public void reset() {
-		tour = null;
 	}
 
 }

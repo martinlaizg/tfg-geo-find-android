@@ -56,6 +56,7 @@ public class Tour {
 		id = 0;
 		name = "";
 		description = "";
+		min_level = PlayLevel.MAP;
 		places = new ArrayList<>();
 	}
 
