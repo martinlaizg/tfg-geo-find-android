@@ -11,7 +11,6 @@ import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Play;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.repository.PlayRepository;
-import com.martinlaizg.geofind.data.repository.RepositoryFactory;
 import com.martinlaizg.geofind.data.repository.TourRepository;
 
 import java.util.ArrayList;
@@ -29,8 +28,8 @@ public class TourViewModel
 
 	public TourViewModel(@NonNull Application application) {
 		super(application);
-		tourRepo = RepositoryFactory.getTourRepository(application);
-		playRepo = RepositoryFactory.getPlayRepository(application);
+		tourRepo = TourRepository.getInstance(application);
+		playRepo = PlayRepository.getInstance(application);
 	}
 
 	public MutableLiveData<Tour> getTour(int tour_id, int user_id) {

@@ -10,7 +10,6 @@ import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.enums.PlayLevel;
-import com.martinlaizg.geofind.data.repository.RepositoryFactory;
 import com.martinlaizg.geofind.data.repository.TourRepository;
 
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class CreatorViewModel
 
 	public CreatorViewModel(@NonNull Application application) {
 		super(application);
-		tourRepo = RepositoryFactory.getTourRepository(application);
+		tourRepo = TourRepository.getInstance(application);
 	}
 
 	public MutableLiveData<Tour> createTour() {

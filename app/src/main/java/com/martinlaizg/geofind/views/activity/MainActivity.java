@@ -2,11 +2,13 @@ package com.martinlaizg.geofind.views.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -21,6 +23,7 @@ import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.api.RetrofitInstance;
 import com.martinlaizg.geofind.data.access.database.entities.User;
+import com.martinlaizg.geofind.data.repository.UserRepository;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashSet;
@@ -90,6 +93,13 @@ public class MainActivity
 
 	private void setServicesToken(String token) {
 		RetrofitInstance.setToken(token);
+	}
+
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState,
+			@Nullable PersistableBundle persistentState) {
+		super.onCreate(savedInstanceState, persistentState);
+		UserRepository.getInstance(getApplication());
 	}
 
 	@Override

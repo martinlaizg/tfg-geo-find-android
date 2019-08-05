@@ -18,19 +18,18 @@ import retrofit2.Response;
 
 public class PlayService {
 
-	private static RestClient restClient;
+	private static final String TAG = PlayService.class.getSimpleName();
+	private static PlayService instance;
 
-	private static PlayService playService;
+	private RestClient restClient;
 
-	private final String TAG = PlayService.class.getSimpleName();
+	private PlayService(Application application) {
+		restClient = RetrofitInstance.getRestClient(application);
+	}
 
-	void instantiate(Application application) {
-		if(restClient == null) {
-			restClient = RetrofitInstance.getRestClient(application);
-		}
-		if(playService == null) {
-			playService = new PlayService();
-		}
+	public static PlayService getInstance(Application application) {
+		if(instance == null) instance = new PlayService(application);
+		return instance;
 	}
 
 	/**

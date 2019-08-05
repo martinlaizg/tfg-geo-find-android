@@ -9,7 +9,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.Play;
 import com.martinlaizg.geofind.data.repository.PlayRepository;
-import com.martinlaizg.geofind.data.repository.RepositoryFactory;
 
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class MainFragmentViewModel
 
 	public MainFragmentViewModel(@NonNull Application application) {
 		super(application);
-		playRepo = RepositoryFactory.getPlayRepository(application);
+		playRepo = PlayRepository.getInstance(application);
 	}
 
 	public APIException getError() {
