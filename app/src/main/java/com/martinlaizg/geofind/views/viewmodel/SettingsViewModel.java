@@ -7,7 +7,6 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
-import com.martinlaizg.geofind.data.repository.RepositoryFactory;
 import com.martinlaizg.geofind.data.repository.UserRepository;
 
 public class SettingsViewModel
@@ -20,7 +19,7 @@ public class SettingsViewModel
 
 	public SettingsViewModel(Application application) {
 		super(application);
-		userRepo = RepositoryFactory.getUserRepository(application);
+		userRepo = UserRepository.getInstance(application);
 	}
 
 	public APIException getError() {

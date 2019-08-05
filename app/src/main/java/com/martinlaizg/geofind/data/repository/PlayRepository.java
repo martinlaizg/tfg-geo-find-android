@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.service.PlayService;
-import com.martinlaizg.geofind.data.access.api.service.ServiceFactory;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
 import com.martinlaizg.geofind.data.access.database.dao.PlayDAO;
@@ -19,24 +18,30 @@ import java.util.List;
 public class PlayRepository {
 
 	private static final String TAG = PlayRepository.class.getSimpleName();
+	private static PlayRepository instance;
 
-	private static PlayDAO playDAO;
-	private static PlayService playService;
+	private PlayDAO playDAO;
+	private PlayService playService;
 
-	private static TourRepository tourRepo;
-	private static UserRepository userRepo;
+	private TourRepository tourRepo;
+	private UserRepository userRepo;
 
-	private static PlacePlayDAO placePlayDAO;
+	private PlacePlayDAO placePlayDAO;
 
-	void instantiate(Application application) {
+	private PlayRepository(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
 		playDAO = database.playDAO();
-		playService = ServiceFactory.getPlayService(application);
-
 		placePlayDAO = database.playPlaceDAO();
 
-		tourRepo = RepositoryFactory.getTourRepository(application);
-		userRepo = RepositoryFactory.getUserRepository(application);
+		playService = PlayService.getInstance(application);
+
+		tourRepo = TourRepository.getInstance(application);
+		userRepo = UserRepository.getInstance(application);
+	}
+
+	public static PlayRepository getInstance(Application application) {
+		if(instance == null) instance = new PlayRepository(application);
+		return instance;
 	}
 
 	/**

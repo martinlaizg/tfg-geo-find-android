@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
-import com.martinlaizg.geofind.data.repository.RepositoryFactory;
 import com.martinlaizg.geofind.data.repository.TourRepository;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public class TourListViewModel
 
 	public TourListViewModel(@NonNull Application application) {
 		super(application);
-		tourRepo = RepositoryFactory.getTourRepository(application);
+		tourRepo = TourRepository.getInstance(application);
 	}
 
 	public MutableLiveData<List<Tour>> getTours() {

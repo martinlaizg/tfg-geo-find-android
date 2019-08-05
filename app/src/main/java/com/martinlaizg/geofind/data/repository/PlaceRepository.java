@@ -10,11 +10,19 @@ import java.util.List;
 
 public class PlaceRepository {
 
-	private static PlaceDAO placeDAO;
+	private static final String TAG = PlaceRepository.class.getSimpleName();
+	private static PlaceRepository instance;
 
-	void instantiate(Application application) {
+	private PlaceDAO placeDAO;
+
+	private PlaceRepository(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
 		placeDAO = database.placeDAO();
+	}
+
+	public static PlaceRepository getInstance(Application application) {
+		if(instance == null) instance = new PlaceRepository(application);
+		return instance;
 	}
 
 	/**

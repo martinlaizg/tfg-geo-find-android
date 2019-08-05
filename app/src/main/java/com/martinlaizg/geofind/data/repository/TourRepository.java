@@ -3,7 +3,6 @@ package com.martinlaizg.geofind.data.repository;
 import android.app.Application;
 import android.util.Log;
 
-import com.martinlaizg.geofind.data.access.api.service.ServiceFactory;
 import com.martinlaizg.geofind.data.access.api.service.TourService;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
@@ -15,6 +14,7 @@ import java.util.List;
 public class TourRepository {
 
 	private static final String TAG = TourRepository.class.getSimpleName();
+	private static TourRepository instance;
 
 	private static TourService tourService;
 	private static TourDAO tourDAO;
@@ -22,12 +22,18 @@ public class TourRepository {
 	private static PlaceRepository placeRepo;
 	private static UserRepository userRepo;
 
-	void instantiate(Application application) {
+	private TourRepository(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
 		tourDAO = database.tourDAO();
-		tourService = ServiceFactory.getTourService(application);
-		placeRepo = RepositoryFactory.getPlaceRepository(application);
-		userRepo = RepositoryFactory.getUserRepository(application);
+		tourService = TourService.getInstance(application);
+
+		placeRepo = PlaceRepository.getInstance(application);
+		userRepo = UserRepository.getInstance(application);
+	}
+
+	public static TourRepository getInstance(Application application) {
+		if(instance == null) instance = new TourRepository(application);
+		return instance;
 	}
 
 	/**

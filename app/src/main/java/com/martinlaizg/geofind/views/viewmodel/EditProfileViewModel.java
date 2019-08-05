@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.martinlaizg.geofind.data.access.api.entities.Login;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.User;
-import com.martinlaizg.geofind.data.repository.RepositoryFactory;
 import com.martinlaizg.geofind.data.repository.UserRepository;
 
 public class EditProfileViewModel
@@ -19,7 +18,7 @@ public class EditProfileViewModel
 
 	public EditProfileViewModel(Application application) {
 		super(application);
-		userRepo = RepositoryFactory.getUserRepository(application);
+		userRepo = UserRepository.getInstance(application);
 	}
 
 	public MutableLiveData<User> updateUser(Login login, User user) {

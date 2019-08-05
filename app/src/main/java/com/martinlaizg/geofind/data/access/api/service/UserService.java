@@ -18,14 +18,18 @@ import retrofit2.Response;
 
 public class UserService {
 
+	private static final String TAG = UserService.class.getSimpleName();
+
+	private static UserService instance;
 	private static RestClient restClient;
 
-	private final String TAG = UserService.class.getSimpleName();
+	private UserService(Application application) {
+		restClient = RetrofitInstance.getRestClient(application);
+	}
 
-	void instantiate(Application application) {
-		if(restClient == null) {
-			restClient = RetrofitInstance.getRestClient(application);
-		}
+	public static UserService getInstance(Application application) {
+		if(instance == null) instance = new UserService(application);
+		return instance;
 	}
 
 	/**
