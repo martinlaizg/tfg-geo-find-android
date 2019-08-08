@@ -20,6 +20,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -34,6 +35,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
@@ -95,6 +97,14 @@ public class CreatePlaceFragment
 
 	@Override
 	public void onClick(View v) {
+		// Hide the keyboard
+		InputMethodManager editTextInput = (InputMethodManager) requireActivity()
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		View currentFocus = requireActivity().getCurrentFocus();
+		if(currentFocus != null) {
+			editTextInput.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+		}
+
 		alert_no_place_text.setVisibility(View.INVISIBLE);
 		Place place = getPlace();
 		if(place == null) return;
@@ -293,6 +303,15 @@ public class CreatePlaceFragment
 		new_place_map_view.onCreate(savedInstanceState);
 		new_place_map_view.onResume();
 		new_place_map_view.getMapAsync(this);
+
+		// Back button listener
+		requireActivity().getOnBackPressedDispatcher()
+				.addCallback(this, new OnBackPressedCallback(true) {
+					@Override
+					public void handleOnBackPressed() {
+						showExitDialog();
+					}
+				});
 		return view;
 	}
 
@@ -395,5 +414,14 @@ public class CreatePlaceFragment
 		}
 		marker = m;
 
+	}
+
+	private void showExitDialog() {
+		new MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.are_you_sure)
+				.setMessage(getString(R.string.exit_lose_data_alert))
+				.setPositiveButton(getString(R.string.ok), (dialog, which) -> {
+					Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+							.popBackStack();
+				}).show();
 	}
 }

@@ -117,4 +117,6 @@
     <string name="add_image_url">Add image URL</string>
     <string name="image_url">Image URL</string>
     <string name="update">Update</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="exit_lose_data_alert">You will lose the unsaved data</string>
 </resources>

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
@@ -60,7 +62,24 @@ public class CreatorFragment
 		adapter = new CreatorPlacesAdapter();
 		places_list.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		places_list.setAdapter(adapter);
+		// Back button callback
+		OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+			@Override
+			public void handleOnBackPressed() {
+				showExitDialog();
+			}
+		};
+		requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
 		return view;
+	}
+
+	private void showExitDialog() {
+		new MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.are_you_sure)
+				.setMessage(getString(R.string.exit_lose_data_alert))
+				.setPositiveButton(getString(R.string.ok), (dialog, which) -> {
+					Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+							.popBackStack();
+				}).show();
 	}
 
 	@Override
@@ -103,6 +122,12 @@ public class CreatorFragment
 		} else {
 			tour_description.setText(tour.getDescription());
 		}
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		viewModel.reset();
 	}
 
 	@Override

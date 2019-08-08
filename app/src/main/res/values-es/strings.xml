@@ -107,4 +107,7 @@
     <string name="app_version">Version de la aplicación</string>
     <string name="add_image_url">Añade URL de imagen</string>
     <string name="image_url">URL de la imagen</string>
+    <string name="are_you_sure">¿Estás seguro?</string>
+    <string name="exit_lose_data_alert">Perderás todos los datos no guardados</string>
+    <string name="update">Actualizar</string>
 </resources>

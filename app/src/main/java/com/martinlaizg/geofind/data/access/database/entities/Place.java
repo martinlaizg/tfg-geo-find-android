@@ -56,6 +56,8 @@ public class Place {
 	@Ignore
 	public Place() {
 		id = 0;
+		this.name = "";
+		this.description = "";
 	}
 
 	public int getId() {

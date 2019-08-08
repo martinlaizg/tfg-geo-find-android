@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
@@ -174,7 +175,7 @@ abstract class PlayTourFragment
 
 				// If has question display
 				if(place != null && place.getQuestion() != null && !place.getQuestion().isEmpty()) {
-					createDialog(place);
+					showQuestionDialog(place);
 					questionDialog.show();
 				} else {
 					completePlace();
@@ -207,16 +208,11 @@ abstract class PlayTourFragment
 		viewModel.completePlace(place.getId()).observe(this, place -> {
 			if(place == null) {
 				if(viewModel.tourIsCompleted()) {
-					AlertDialog.Builder questionDialogBuilder = new AlertDialog.Builder(
-							requireContext()).setTitle(R.string.tour_completed);
-					questionDialogBuilder.setPositiveButton(R.string.ok,
-					                                        (dialog, which) -> Navigation
-							                                        .findNavController(
-									                                        requireActivity(),
-									                                        R.id.main_fragment_holder)
-							                                        .popBackStack(R.id.navTour,
-							                                                      false));
-					questionDialogBuilder.show();
+					new MaterialAlertDialogBuilder(requireContext())
+							.setTitle(R.string.tour_completed) //
+							.setPositiveButton(R.string.ok, (dialog, which) -> Navigation
+									.findNavController(requireActivity(), R.id.main_fragment_holder)
+									.popBackStack(R.id.navTour, false)).show();
 					return;
 				}
 				APIException error = viewModel.getError();
@@ -243,8 +239,9 @@ abstract class PlayTourFragment
 	}
 
 	@SuppressLint("MissingPermission")
-	private void createDialog(Place place) {
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(requireContext());
+	private void showQuestionDialog(Place place) {
+		AlertDialog.Builder dialogBuilder = new MaterialAlertDialogBuilder(requireContext());
+
 		View dialogView = getLayoutInflater()
 				.inflate(R.layout.question_layout, new ConstraintLayout(requireContext()), false);
 		TextView question = dialogView.findViewById(R.id.question);

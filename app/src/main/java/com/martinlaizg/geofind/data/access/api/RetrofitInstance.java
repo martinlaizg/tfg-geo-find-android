@@ -21,8 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitInstance {
 
-	//	private static final String BASE_URL = "https://geofind1.herokuapp.com/api/";
-	private static final String BASE_URL = "http://192.168.1.36:8000/api/";
+	private static final String BASE_URL = "https://geofind1.herokuapp.com/api/";
 
 	private static final String TAG = RetrofitInstance.class.getSimpleName();
 

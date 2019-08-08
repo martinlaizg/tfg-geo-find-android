@@ -34,7 +34,9 @@
             app:argType="integer" />
         <action
             android:id="@+id/toEditTour"
-            app:destination="@+id/navCreator" />
+            app:destination="@+id/navCreator"
+            app:popUpTo="@+id/navCreateTour"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/navCreator"
@@ -43,7 +45,6 @@
         tools:layout="@layout/fragment_creator">
         <argument
             android:name="TOUR_ID"
-            android:defaultValue="0"
             app:argType="integer" />
         <action
             android:id="@+id/toCreatePlace"

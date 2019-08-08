@@ -68,7 +68,7 @@ public class CreatorViewModel
 		if(tour == null || tour.getId() != tour_id) {
 			return loadTour(tour_id);
 		}
-		new Thread(() -> t.postValue(tour));
+		new Thread(() -> t.postValue(tour)).start();
 		return t;
 	}
 
@@ -119,4 +119,8 @@ public class CreatorViewModel
 		}
 	}
 
+	public void reset() {
+		this.tour = null;
+		this.error = null;
+	}
 }
