@@ -110,4 +110,7 @@
     <string name="update">Update</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="exit_lose_data_alert">You will lose the unsaved data</string>
+    <string name="done">Done</string>
+    <string name="add_location">Add location</string>
+    <string name="select_location">Select location</string>
 </resources>

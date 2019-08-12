@@ -28,7 +28,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textCapSentences" />
+                android:inputType="textNoSuggestions|textCapSentences" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -49,35 +49,64 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="start"
                 android:inputType="textMultiLine|textCapSentences"
-                android:maxLines="3"
-                android:singleLine="false" />
+                android:lines="3"
+                android:maxLines="8" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/new_place_map_view"
             android:layout_width="0dp"
-            android:layout_height="250dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/new_place_description_layout" />
+            app:layout_constraintTop_toBottomOf="@id/new_place_description_layout"
+            tools:visibility="visible" />
 
         <TextView
-            android:id="@+id/alert_no_place_text"
+            android:id="@+id/new_place_address"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:ellipsize="end"
+            android:lines="2"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/new_place_location_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/new_place_location_button"
+            tools:text="Calle Los Chopos 35, San Vicente del Raspeig, Alicante, España"
+            tools:visibility="gone" />
+
+        <Button
+            android:id="@+id/new_place_location_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:text="@string/alert_text_no_place_selected"
-            android:textColor="@android:color/holo_red_light"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:visibility="invisible"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/add_location"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/new_place_address"
+            app:layout_constraintTop_toBottomOf="@+id/new_place_map_view" />
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/new_place_map_view"
-            tools:visibility="visible" />
+            app:layout_constraintTop_toBottomOf="@+id/new_place_location_button" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/new_place_image_button"
@@ -91,7 +120,7 @@
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/alert_no_place_text" />
+            app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
         <ImageView
             android:id="@+id/place_image_view"
@@ -100,11 +129,14 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:contentDescription="@string/place_image"
             android:scaleType="centerCrop"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/new_place_image_button"
-            tools:srcCompat="@tools:sample/backgrounds/scenic[9]" />
+            tools:srcCompat="@tools:sample/backgrounds/scenic[9]"
+            tools:visibility="visible" />
 
         <Switch
             android:id="@+id/question_switch"
@@ -200,7 +232,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/create_place"
+            android:id="@+id/new_place_create_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"

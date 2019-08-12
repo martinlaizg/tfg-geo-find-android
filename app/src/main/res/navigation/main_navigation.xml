@@ -22,6 +22,9 @@
             android:name="PLACE_POSITION"
             android:defaultValue="-1"
             app:argType="integer" />
+        <action
+            android:id="@+id/toCreatePlaceLocation"
+            app:destination="@id/siteCreatorFragment" />
     </fragment>
     <fragment
         android:id="@+id/navCreateTour"
@@ -164,4 +167,9 @@
     <action
         android:id="@+id/toEditProfile"
         app:destination="@id/editProfileFragment" />
+    <fragment
+        android:id="@+id/siteCreatorFragment"
+        android:name="com.martinlaizg.geofind.views.fragment.creator.CreatePlaceLocationFragment"
+        android:label="@string/select_location"
+        tools:layout="@layout/fragment_create_place_location" />
 </navigation>

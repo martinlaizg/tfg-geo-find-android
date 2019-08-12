@@ -22,6 +22,7 @@ public class CreatorViewModel
 	private final TourRepository tourRepo;
 	private Tour tour;
 	private ErrorType error;
+	private Place place;
 
 	public CreatorViewModel(@NonNull Application application) {
 		super(application);
@@ -104,23 +105,42 @@ public class CreatorViewModel
 				places;
 	}
 
-	public Place getPlace(int position) {
-		if(position > tour.getPlaces().size()) return null;
-		if(position < tour.getPlaces().size()) return tour.getPlaces().get(position);
-		return new Place();
+	public void retrievePlace(int position) {
+		if(place != null) return;
+		if(position > tour.getPlaces().size()) {
+			place = null;
+		} else if(position < tour.getPlaces().size()) {
+			place = tour.getPlaces().get(position);
+		} else {
+			place = new Place();
+			place.setOrder(position);
+		}
 	}
 
-	public void setPlace(Place place) {
+	public void savePlace() {
 		if(place.getOrder() == null) {
 			place.setOrder(tour.getPlaces().size());
 			tour.getPlaces().add(place);
 		} else {
 			tour.getPlaces().set(place.getOrder(), place);
 		}
+		this.place = null;
 	}
 
 	public void reset() {
 		this.tour = null;
 		this.error = null;
+	}
+
+	public Place getPlace() {
+		return place;
+	}
+
+	public void setPlace(Place place) {
+		this.place = place;
+	}
+
+	public Tour getStoredTour() {
+		return tour;
 	}
 }

@@ -110,4 +110,6 @@
     <string name="are_you_sure">¿Estás seguro?</string>
     <string name="exit_lose_data_alert">Perderás todos los datos no guardados</string>
     <string name="update">Actualizar</string>
+    <string name="done">Hecho</string>
+    <string name="add_location">Añadir localización</string>
 </resources>

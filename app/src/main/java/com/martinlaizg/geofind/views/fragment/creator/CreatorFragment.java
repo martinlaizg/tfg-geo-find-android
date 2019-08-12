@@ -132,6 +132,12 @@ public class CreatorFragment
 
 	@Override
 	public void onClick(View v) {
+		if(viewModel.getStoredTour().getPlaces().size() == 0) {
+			Toast.makeText(requireContext(), getString(R.string.at_least_one_place),
+			               Toast.LENGTH_SHORT).show();
+
+			return;
+		}
 		create_tour_button.setEnabled(false);
 		viewModel.createTour().observe(this, tour -> {
 			create_tour_button.setEnabled(true);
@@ -149,4 +155,5 @@ public class CreatorFragment
 					.navigate(R.id.toNewTour, b);
 		});
 	}
+
 }
