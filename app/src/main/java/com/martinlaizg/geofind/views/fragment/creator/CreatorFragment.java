@@ -76,10 +76,9 @@ public class CreatorFragment
 	private void showExitDialog() {
 		new MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.are_you_sure)
 				.setMessage(getString(R.string.exit_lose_data_alert))
-				.setPositiveButton(getString(R.string.ok), (dialog, which) -> {
-					Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-							.popBackStack();
-				}).show();
+				.setPositiveButton(getString(R.string.ok), (dialog, which) -> Navigation
+						.findNavController(requireActivity(), R.id.main_fragment_holder)
+						.popBackStack()).show();
 	}
 
 	@Override

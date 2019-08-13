@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.views.viewmodel.TourViewModel;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.Random;
@@ -82,9 +83,18 @@ public class PlaceFragment
 			place_description.setText(place.getDescription());
 
 			if(place.getImage() != null && !place.getImage().isEmpty()) {
-				Picasso.with(requireContext()).load(place.getImage()).into(place_image);
-			} else {
-				place_image.setImageResource(R.drawable.default_map_image);
+				Picasso.with(requireContext()).load(place.getImage())
+						.into(place_image, new Callback() {
+							@Override
+							public void onSuccess() {
+								place_image.setVisibility(View.VISIBLE);
+							}
+
+							@Override
+							public void onError() {
+								place_image.setVisibility(View.GONE);
+							}
+						});
 			}
 
 			int number = place.getOrder() + 1;

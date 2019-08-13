@@ -21,7 +21,7 @@ public class PlayService {
 	private static final String TAG = PlayService.class.getSimpleName();
 	private static PlayService instance;
 
-	private RestClient restClient;
+	private final RestClient restClient;
 
 	private PlayService(Application application) {
 		restClient = RetrofitInstance.getRestClient(application);
@@ -113,7 +113,7 @@ public class PlayService {
 		throw apiException;
 	}
 
-	public List<Play> getUserPlays(int user_id) throws APIException {
+	public List<Play> getUserPlays() {
 		return new ArrayList<>();
 	}
 }

@@ -16,6 +16,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.views.fragment.single.TourFragment;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -47,9 +48,19 @@ public class TourListAdapter
 		holder.tourDescription.setText(tour.getDescription());
 
 		if(tour.getImage() != null && !tour.getImage().isEmpty()) {
-			Picasso.with(context).load(tour.getImage()).into(holder.tour_image);
+			Picasso.with(context).load(tour.getImage()).into(holder.tour_image, new Callback() {
+				@Override
+				public void onSuccess() {
+					holder.tour_image.setVisibility(View.VISIBLE);
+				}
+
+				@Override
+				public void onError() {
+					holder.tour_image.setVisibility(View.GONE);
+				}
+			});
 		} else {
-			holder.tour_image.setImageResource(R.drawable.default_map_image);
+			holder.tour_image.setVisibility(View.GONE);
 		}
 
 		Bundle b = new Bundle();

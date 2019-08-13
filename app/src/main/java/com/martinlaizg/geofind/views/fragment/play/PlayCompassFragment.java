@@ -52,8 +52,10 @@ public class PlayCompassFragment
 		View view = inflater.inflate(R.layout.fragment_play_compass, container, false);
 		ButterKnife.bind(this, view);
 		sensorManager = (SensorManager) requireActivity().getSystemService(SENSOR_SERVICE);
-		accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-		magnetSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+		if(sensorManager != null) {
+			accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+			magnetSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+		}
 		return view;
 	}
 

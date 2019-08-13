@@ -1,6 +1,8 @@
 package com.martinlaizg.geofind.views.fragment.creator;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -95,7 +97,10 @@ public class CreatePlaceLocationFragment
 				}
 				locationManager = (LocationManager) requireActivity()
 						.getSystemService(LOCATION_SERVICE);
-				usrLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+				if(locationManager != null) {
+					usrLocation = locationManager
+							.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+				}
 				if(usrLocation == null) {
 					Log.e(TAG, "setMarker: fail to get last known location (GPS)");
 					return;
@@ -104,7 +109,7 @@ public class CreatePlaceLocationFragment
 			latLng = new LatLng(usrLocation.getLatitude(), usrLocation.getLongitude());
 		}
 
-		this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM));
+		this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM));
 	}
 
 	@Override
@@ -128,16 +133,32 @@ public class CreatePlaceLocationFragment
 						.popBackStack());
 	}
 
-	@SuppressLint("MissingPermission")
+	@Override
+	public void onResume() {
+		super.onResume();
+		setMarker();
+	}
+
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
 		this.googleMap = googleMap;
 		this.googleMap.setPadding(0, 0, 0, create_place_location_button.getHeight());
 		this.googleMap.setOnMapLongClickListener(this);
-		this.googleMap.setMyLocationEnabled(true);
-		this.googleMap.getUiSettings().setMyLocationButtonEnabled(true);
 		this.googleMap.getUiSettings().setAllGesturesEnabled(true);
 		setMarker();
+		// Check location permissions
+		if(requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) !=
+				PackageManager.PERMISSION_GRANTED &&
+				requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) !=
+						PackageManager.PERMISSION_GRANTED) {
+			// Request location permissions
+			requireActivity()
+					.requestPermissions(new String[]{ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION},
+					                    RC_LOCATION);
+			return;
+		}
+		this.googleMap.setMyLocationEnabled(true);
+		this.googleMap.getUiSettings().setMyLocationButtonEnabled(true);
 	}
 
 	@Override

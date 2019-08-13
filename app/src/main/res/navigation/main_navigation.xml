@@ -36,7 +36,7 @@
             android:defaultValue="0"
             app:argType="integer" />
         <action
-            android:id="@+id/toEditTour"
+            android:id="@+id/toCreator"
             app:destination="@+id/navCreator"
             app:popUpTo="@+id/navCreateTour"
             app:popUpToInclusive="true" />
@@ -56,6 +56,9 @@
             android:id="@+id/toNewTour"
             app:destination="@id/navTour"
             app:popUpTo="@+id/navTourList" />
+        <action
+            android:id="@+id/toEditTour"
+            app:destination="@id/navCreateTour" />
     </fragment>
     <fragment
         android:id="@+id/navTourList"
@@ -63,7 +66,7 @@
         android:label="@string/tour_list"
         tools:layout="@layout/fragment_tour_list">
         <action
-            android:id="@+id/toCreator"
+            android:id="@+id/toCreateTour"
             app:destination="@+id/navCreateTour" />
         <action
             android:id="@+id/toTour"

@@ -64,6 +64,15 @@ public class CreatorViewModel
 		tour.setImage(image_url);
 	}
 
+	/**
+	 * Get the tour by the id
+	 * If this.tour has the same id, return this.tour
+	 * Else load from server {@code loadTour(int}
+	 *
+	 * @param tour_id
+	 * 		the id of the tour
+	 * @return the tour
+	 */
 	public MutableLiveData<Tour> getTour(int tour_id) {
 		MutableLiveData<Tour> t = new MutableLiveData<>();
 		if(tour == null || tour.getId() != tour_id) {
@@ -73,6 +82,14 @@ public class CreatorViewModel
 		return t;
 	}
 
+	/**
+	 * Get the tour with the tour_id passed by parameter from the server
+	 * If the id is 0, return a new Tour
+	 *
+	 * @param tour_id
+	 * 		the id of the tour
+	 * @return the tour
+	 */
 	private MutableLiveData<Tour> loadTour(Integer tour_id) {
 		MutableLiveData<Tour> t = new MutableLiveData<>();
 		new Thread(() -> {
@@ -118,7 +135,7 @@ public class CreatorViewModel
 	}
 
 	public void savePlace() {
-		if(place.getOrder() == null) {
+		if(place.getOrder() == null || place.getOrder() >= tour.getPlaces().size()) {
 			place.setOrder(tour.getPlaces().size());
 			tour.getPlaces().add(place);
 		} else {
@@ -129,6 +146,7 @@ public class CreatorViewModel
 
 	public void reset() {
 		this.tour = null;
+		this.place = null;
 		this.error = null;
 	}
 

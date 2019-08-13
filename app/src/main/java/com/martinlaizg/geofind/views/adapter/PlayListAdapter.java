@@ -18,6 +18,7 @@ import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entities.Play;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.views.fragment.single.TourFragment;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -50,9 +51,17 @@ public class PlayListAdapter
 		holder.tour_description.setText(t.getDescription());
 
 		if(t.getImage() != null && !t.getImage().isEmpty()) {
-			Picasso.with(context).load(t.getImage()).into(holder.tour_image);
-		} else {
-			holder.tour_image.setImageResource(R.drawable.default_map_image);
+			Picasso.with(context).load(t.getImage()).into(holder.tour_image, new Callback() {
+				@Override
+				public void onSuccess() {
+					holder.tour_image.setVisibility(View.VISIBLE);
+				}
+
+				@Override
+				public void onError() {
+					holder.tour_image.setVisibility(View.GONE);
+				}
+			});
 		}
 		int completed = play.getPlaces().size();
 		int numPlaces = t.getPlaces().size();
@@ -61,7 +70,7 @@ public class PlayListAdapter
 		holder.tour_progress_text.setText(context.getString(R.string.div, completed, numPlaces));
 
 		Bundle b = new Bundle();
-		b.putInt(TourFragment.TOUR_ID, plays.get(i).getId());
+		b.putInt(TourFragment.TOUR_ID, plays.get(i).getTour_id());
 		holder.tour_card
 				.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.toTour, b));
 	}

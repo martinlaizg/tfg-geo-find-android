@@ -69,7 +69,7 @@ public class TourListFragment
 		User u = Preferences.getLoggedUser(sp);
 		if(u.getUser_type() != null && u.getUser_type() != UserType.USER) {
 			create_tour_button
-					.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreator));
+					.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreateTour));
 		} else {
 			create_tour_button.setOnClickListener(v -> Toast
 					.makeText(requireContext(), getString(R.string.no_permissions),

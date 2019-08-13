@@ -13,7 +13,7 @@ public class PlaceRepository {
 	private static final String TAG = PlaceRepository.class.getSimpleName();
 	private static PlaceRepository instance;
 
-	private PlaceDAO placeDAO;
+	private final PlaceDAO placeDAO;
 
 	private PlaceRepository(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);

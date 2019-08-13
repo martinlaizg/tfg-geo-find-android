@@ -96,12 +96,14 @@ public class CreatePlaceFragment
 				.getSystemService(Context.INPUT_METHOD_SERVICE);
 		View currentFocus = requireActivity().getCurrentFocus();
 		if(currentFocus != null) {
-			editTextInput.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+			Objects.requireNonNull(editTextInput)
+					.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
 		}
 
 		if(!storePlace()) return;
 
 		viewModel.savePlace();
+
 		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).popBackStack();
 	}
 
@@ -110,6 +112,7 @@ public class CreatePlaceFragment
 	 *
 	 * @return true if no has errors else false
 	 */
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	private boolean storePlace() {
 		// Get the name
 		String placeName = Objects.requireNonNull(new_place_name.getEditText()).getText().toString()
@@ -234,7 +237,7 @@ public class CreatePlaceFragment
 				.setText(getString(R.string.two_csv, position.latitude, position.longitude));
 		try {
 			locations = gc.getFromLocation(position.latitude, position.longitude, 1);
-			if(locations != null && locations.size() > 1) {
+			if(locations != null && locations.size() >= 1) {
 				new_place_address.setText(locations.get(0).getAddressLine(0));
 			}
 		} catch(IOException e) {
@@ -294,7 +297,8 @@ public class CreatePlaceFragment
 					.getSystemService(Context.INPUT_METHOD_SERVICE);
 			View currentFocus = requireActivity().getCurrentFocus();
 			if(currentFocus != null) {
-				editTextInput.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+				Objects.requireNonNull(editTextInput)
+						.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
 			}
 
 			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
@@ -365,7 +369,8 @@ public class CreatePlaceFragment
 					.getSystemService(Context.INPUT_METHOD_SERVICE);
 			View currentFocus = requireActivity().getCurrentFocus();
 			if(currentFocus != null) {
-				editTextInput.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+				Objects.requireNonNull(editTextInput)
+						.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
 			}
 		}).create();
 	}
@@ -373,9 +378,8 @@ public class CreatePlaceFragment
 	private void showExitDialog() {
 		new MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.are_you_sure)
 				.setMessage(getString(R.string.exit_lose_data_alert))
-				.setPositiveButton(getString(R.string.ok), (dialog, which) -> {
-					Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-							.popBackStack();
-				}).show();
+				.setPositiveButton(getString(R.string.ok), (dialog, which) -> Navigation
+						.findNavController(requireActivity(), R.id.main_fragment_holder)
+						.popBackStack()).show();
 	}
 }
