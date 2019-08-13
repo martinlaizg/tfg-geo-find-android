@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -123,6 +124,7 @@ abstract class PlayTourFragment
 		locationManager
 				.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOC_TIME_REQ, LOC_DIST_REQ,
 				                        this);
+		requireActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		updateView();
 	}
 
@@ -131,6 +133,7 @@ abstract class PlayTourFragment
 		super.onPause();
 		Log.i(TAG(), "onPause: delete location updates");
 		locationManager.removeUpdates(this);
+		requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 
 	private void setPlace(Place nextPlace) {
