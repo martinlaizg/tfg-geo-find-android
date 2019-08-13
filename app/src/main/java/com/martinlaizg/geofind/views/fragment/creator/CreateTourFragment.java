@@ -66,7 +66,6 @@ public class CreateTourFragment
 			final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.fragment_create_tour, container, false);
 		ButterKnife.bind(this, view);
-		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel.class);
 		OnBackPressedCallback callback = new OnBackPressedCallback(true) {
 			@Override
 			public void handleOnBackPressed() {
@@ -80,10 +79,9 @@ public class CreateTourFragment
 	private void showExitDialog() {
 		new MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.are_you_sure)
 				.setMessage(getString(R.string.exit_lose_data_alert))
-				.setPositiveButton(getString(R.string.ok), (dialog, which) -> {
-					Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-							.popBackStack();
-				}).show();
+				.setPositiveButton(getString(R.string.ok), (dialog, which) -> Navigation
+						.findNavController(requireActivity(), R.id.main_fragment_holder)
+						.popBackStack()).show();
 	}
 
 	@Override
@@ -94,6 +92,7 @@ public class CreateTourFragment
 			tour_id = b.getInt(TOUR_ID);
 		}
 		Log.i(TAG, "onViewCreated: Get tour with id = " + tour_id);
+		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel.class);
 		viewModel.getTour(tour_id).observe(this, this::setTour);
 
 		done_button.setOnClickListener(this);
@@ -196,7 +195,6 @@ public class CreateTourFragment
 				.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(requireContext()));
 		viewModel.updateTour(name, description, user.getId(), pl, image_url);
 		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-				.navigate(R.id.toEditTour);
+				.navigate(R.id.toCreator);
 	}
-
 }

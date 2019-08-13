@@ -17,7 +17,7 @@ public class MainFragmentViewModel
 
 	private static final String TAG = MainFragmentViewModel.class.getSimpleName();
 
-	private PlayRepository playRepo;
+	private final PlayRepository playRepo;
 	private APIException error;
 
 	public MainFragmentViewModel(@NonNull Application application) {

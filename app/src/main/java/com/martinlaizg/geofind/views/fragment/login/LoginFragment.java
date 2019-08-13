@@ -162,7 +162,7 @@ public class LoginFragment
 		ButterKnife.bind(this, view);
 
 		google_sign_in_button.setSize(SignInButton.SIZE_STANDARD);
-		google_sign_in_button.setOnClickListener(this::googleSignIn);
+		google_sign_in_button.setOnClickListener(v -> googleSignIn());
 
 		// Google SignIn Button
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(
@@ -173,7 +173,7 @@ public class LoginFragment
 		return view;
 	}
 
-	private void googleSignIn(View v) {
+	private void googleSignIn() {
 		Intent signInIntent = mGoogleSignInClient.getSignInIntent();
 		startActivityForResult(signInIntent, RC_SIGN_IN);
 	}

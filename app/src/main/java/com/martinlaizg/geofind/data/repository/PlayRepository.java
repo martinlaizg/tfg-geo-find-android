@@ -20,13 +20,13 @@ public class PlayRepository {
 	private static final String TAG = PlayRepository.class.getSimpleName();
 	private static PlayRepository instance;
 
-	private PlayDAO playDAO;
-	private PlayService playService;
+	private final PlayDAO playDAO;
+	private final PlayService playService;
 
-	private TourRepository tourRepo;
-	private UserRepository userRepo;
+	private final TourRepository tourRepo;
+	private final UserRepository userRepo;
 
-	private PlacePlayDAO placePlayDAO;
+	private final PlacePlayDAO placePlayDAO;
 
 	private PlayRepository(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
@@ -163,7 +163,7 @@ public class PlayRepository {
 	public List<Play> getUserPlays(int user_id) throws APIException {
 		List<Play> plays = playDAO.getUserPlays(user_id);
 		if(plays.isEmpty()) {
-			plays.addAll(playService.getUserPlays(user_id));
+			plays.addAll(playService.getUserPlays());
 			for(Play p : plays) {
 				userRepo.insert(p.getUser());
 				tourRepo.insert(p.getTour());
@@ -187,13 +187,9 @@ public class PlayRepository {
 
 	private void refreshUserPlays(int user_id) {
 		new Thread(() -> {
-			try {
-				List<Play> plays = playService.getUserPlays(user_id);
-				for(Play p : plays) {
-					insert(p);
-				}
-			} catch(APIException e) {
-				Log.e(TAG, "refreshUserPlays: ", e);
+			List<Play> plays = playService.getUserPlays();
+			for(Play p : plays) {
+				insert(p);
 			}
 		}).start();
 	}

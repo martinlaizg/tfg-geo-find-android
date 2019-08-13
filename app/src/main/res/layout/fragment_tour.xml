@@ -98,7 +98,7 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/tour_creator"
                 app:layout_constraintTop_toTopOf="@id/tour_creator"
-                tools:text="@sample/plays.json/data/num_places" />
+                tools:text="@sample/plays.json/data/name" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/places_list"

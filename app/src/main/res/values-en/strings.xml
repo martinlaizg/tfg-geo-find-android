@@ -3,7 +3,6 @@
     <string name="account_settings">Account settings</string>
     <string name="add_image">Add image</string>
     <string name="add_place">Add place</string>
-    <string name="alert_text_no_place_selected">You need to select a place on map</string>
     <string name="app_logo_description">App logo</string>
     <string name="confirm_password">Confirm secure</string>
     <string name="create_account">Create account</string>
@@ -39,7 +38,6 @@
     <string name="tour_creator">Tour creator</string>
     <string name="tour_list">Tour list</string>
     <string name="tour_without_name">Tour without name</string>
-    <string name="update_place">Update place</string>
     <string name="update_tour">Update tour</string>
     <string name="user_image">User image</string>
     <string name="username">Username</string>
@@ -59,7 +57,6 @@
     <string name="play_compass">Play compass</string>
     <string name="select_play_difficulty">Select play difficulty</string>
     <string name="play_therm">Play therm</string>
-    <string name="invalid_place">Invalid place</string>
     <string name="default_map_type">Default map type</string>
     <string name="message_to_support">Message to support</string>
     <string name="title">Title</string>
