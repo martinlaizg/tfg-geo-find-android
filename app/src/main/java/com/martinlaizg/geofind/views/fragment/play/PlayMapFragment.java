@@ -66,6 +66,9 @@ public class PlayMapFragment
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
 		this.googleMap = googleMap;
+		updateView();
+		this.googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+		this.googleMap.getUiSettings().setMapToolbarEnabled(false);
 		if(requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) !=
 				PackageManager.PERMISSION_GRANTED &&
 				requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) !=
@@ -76,9 +79,6 @@ public class PlayMapFragment
 			return;
 		}
 		this.googleMap.setMyLocationEnabled(true);
-		this.googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-		this.googleMap.getUiSettings().setMapToolbarEnabled(false);
-		updateView();
 	}
 
 	@Override
@@ -89,7 +89,6 @@ public class PlayMapFragment
 	void updateView() {
 
 		if(googleMap != null && usrLocation != null) {
-
 			CameraUpdate cu;
 			LatLngBounds.Builder builder = new LatLngBounds.Builder();
 			builder.include(new LatLng(usrLocation.getLatitude(), usrLocation.getLongitude()));

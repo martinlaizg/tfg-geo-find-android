@@ -62,7 +62,7 @@ abstract class PlayTourFragment
 	Place place;
 	Location usrLocation;
 	Location placeLocation;
-	float distance;
+	float distance = Float.MAX_VALUE;
 	private PlayTourViewModel viewModel;
 	private LocationManager locationManager;
 	private AlertDialog questionDialog;
