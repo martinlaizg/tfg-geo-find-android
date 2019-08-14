@@ -45,9 +45,8 @@ public class CreatorPlacesAdapter
 		Place place = places.get(position);
 
 		holder.place_name.setText(place.getName());
-		holder.place_delete_button.setOnClickListener(v -> {
-			showExitDialog(v.getContext(), position);
-		});
+		holder.place_delete_button
+				.setOnClickListener(v -> showExitDialog(v.getContext(), position));
 		holder.questionaire_icon.setVisibility(View.GONE);
 		if(place.getQuestion() != null) {
 			holder.questionaire_icon.setVisibility(View.VISIBLE);

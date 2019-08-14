@@ -113,4 +113,7 @@
     <string name="cancel">Cancelar</string>
     <string name="permanent_delete">Se borrará permanentemente</string>
     <string name="drag_handle">Manejador de arrastro</string>
+    <string name="completed">Completado</string>
+    <string name="in_progress">En progreso</string>
+    <string name="place_completed">Sitio completado</string>
 </resources>

@@ -61,8 +61,6 @@ public class CreatePlaceLocationFragment
 		if(requestCode == RC_LOCATION) {
 			if(grantResults.length > 0 && grantResults[0] == PERMISSION_GRANTED) {
 				if(googleMap != null) {
-					usrLocation = locationManager
-							.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 					setMarker();
 				}
 			}
