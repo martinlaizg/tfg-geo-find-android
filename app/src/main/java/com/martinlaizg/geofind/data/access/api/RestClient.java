@@ -19,7 +19,7 @@ import retrofit2.http.QueryMap;
 public interface RestClient {
 
 	/**
-	 * Get the entier list of {@link Tour}
+	 * Get the entire list of {@link Tour}
 	 *
 	 * @param params
 	 * 		the params to get tours

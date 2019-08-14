@@ -25,7 +25,7 @@ import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.Secure;
 import com.martinlaizg.geofind.data.access.api.entities.Login;
-import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
+import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.views.viewmodel.EditProfileViewModel;
 import com.squareup.picasso.Picasso;
@@ -205,9 +205,10 @@ public class EditProfileFragment
 		viewModel.updateUser(login, user).observe(this, newUser -> {
 			save_button.setEnabled(true);
 			if(newUser == null) {
-				APIException error = viewModel.getError();
-				Log.e(TAG, "updateUser: " + getString(R.string.something_went_wrong), error);
-				Toast.makeText(requireContext(), "Algo ha ido mal " + error.getType().toString(),
+				ErrorType error = viewModel.getError();
+				Log.e(TAG,
+				      "updateUser: " + getString(R.string.something_went_wrong) + error.toString());
+				Toast.makeText(requireContext(), "Algo ha ido mal " + error.toString(),
 				               Toast.LENGTH_SHORT).show();
 				return;
 			}

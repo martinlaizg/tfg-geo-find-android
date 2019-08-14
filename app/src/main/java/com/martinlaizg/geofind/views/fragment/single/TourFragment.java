@@ -22,7 +22,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
-import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
+import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.access.database.entities.User;
@@ -38,6 +38,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.view.View.GONE;
 
 public class TourFragment
 		extends Fragment {
@@ -58,6 +60,11 @@ public class TourFragment
 	RecyclerView places_list;
 	@BindView(R.id.other_places)
 	RecyclerView other_places;
+
+	@BindView(R.id.in_progress)
+	TextView in_progress;
+	@BindView(R.id.progress_divider)
+	View progress_divider;
 
 	@BindView(R.id.play_button)
 	MaterialButton play_button;
@@ -126,16 +133,37 @@ public class TourFragment
 
 			// Set places
 			List<Place> places = tour.getPlaces();
-			adapterCompleted.setPlaces(viewModel.getCompletedPlaces());
-			adapterNoCompleted.setPlaces(viewModel.getNoCompletedPlaces());
+			int numTotalPlaces = places.size();
+			List<Place> completedPlaces = viewModel.getCompletedPlaces();
+			adapterCompleted.setPlaces(completedPlaces);
+
+			for(int i = 0; i < places.size(); i++) {
+				for(Place p : completedPlaces) {
+					if(places.get(i).getId() == p.getId()) {
+						places.remove(i);
+						i--;
+						break;
+					}
+				}
+			}
+
+			adapterNoCompleted.setPlaces(places);
+			if(places.size() == 0) {
+				play_button.setText(getString(R.string.completed));
+				play_button.setEnabled(false);
+				in_progress.setVisibility(GONE);
+				progress_divider.setVisibility(GONE);
+
+			}
 			tour_num_places.setText(getResources().getQuantityString(R.plurals.number_place,
-			                                                         places.size(), places.size()));
+			                                                         numTotalPlaces,
+			                                                         numTotalPlaces));
 
 			play_button.setOnClickListener(v -> alert.show());
 			setDifficultyDialog(tour.getId(), tour.getMin_level());
 		} else {
-			APIException error = viewModel.getError();
-			if(error.getType() == null) {
+			ErrorType error = viewModel.getError();
+			if(error == null) {
 				Toast.makeText(requireContext(), getString(R.string.something_went_wrong),
 				               Toast.LENGTH_SHORT).show();
 				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)

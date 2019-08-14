@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.service.PlayService;
-import com.martinlaizg.geofind.data.access.api.service.ServiceFactory;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
 import com.martinlaizg.geofind.data.access.database.dao.PlayDAO;
@@ -19,24 +18,30 @@ import java.util.List;
 public class PlayRepository {
 
 	private static final String TAG = PlayRepository.class.getSimpleName();
+	private static PlayRepository instance;
 
-	private static PlayDAO playDAO;
-	private static PlayService playService;
+	private final PlayDAO playDAO;
+	private final PlayService playService;
 
-	private static TourRepository tourRepo;
-	private static UserRepository userRepo;
+	private final TourRepository tourRepo;
+	private final UserRepository userRepo;
 
-	private static PlacePlayDAO placePlayDAO;
+	private final PlacePlayDAO placePlayDAO;
 
-	void instantiate(Application application) {
+	private PlayRepository(Application application) {
 		AppDatabase database = AppDatabase.getInstance(application);
 		playDAO = database.playDAO();
-		playService = ServiceFactory.getPlayService(application);
-
 		placePlayDAO = database.playPlaceDAO();
 
-		tourRepo = RepositoryFactory.getTourRepository(application);
-		userRepo = RepositoryFactory.getUserRepository(application);
+		playService = PlayService.getInstance(application);
+
+		tourRepo = TourRepository.getInstance(application);
+		userRepo = UserRepository.getInstance(application);
+	}
+
+	public static PlayRepository getInstance(Application application) {
+		if(instance == null) instance = new PlayRepository(application);
+		return instance;
 	}
 
 	/**
@@ -158,7 +163,7 @@ public class PlayRepository {
 	public List<Play> getUserPlays(int user_id) throws APIException {
 		List<Play> plays = playDAO.getUserPlays(user_id);
 		if(plays.isEmpty()) {
-			plays.addAll(playService.getUserPlays(user_id));
+			plays.addAll(playService.getUserPlays());
 			for(Play p : plays) {
 				userRepo.insert(p.getUser());
 				tourRepo.insert(p.getTour());
@@ -182,13 +187,9 @@ public class PlayRepository {
 
 	private void refreshUserPlays(int user_id) {
 		new Thread(() -> {
-			try {
-				List<Play> plays = playService.getUserPlays(user_id);
-				for(Play p : plays) {
-					insert(p);
-				}
-			} catch(APIException e) {
-				Log.e(TAG, "refreshUserPlays: ", e);
+			List<Play> plays = playService.getUserPlays();
+			for(Play p : plays) {
+				insert(p);
 			}
 		}).start();
 	}

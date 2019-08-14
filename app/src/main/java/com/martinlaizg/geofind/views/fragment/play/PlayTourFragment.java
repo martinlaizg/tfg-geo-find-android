@@ -1,16 +1,15 @@
 package com.martinlaizg.geofind.views.fragment.play;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,11 +20,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
-import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
+import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.views.viewmodel.PlayTourViewModel;
@@ -60,7 +61,7 @@ abstract class PlayTourFragment
 	Place place;
 	Location usrLocation;
 	Location placeLocation;
-	float distance;
+	float distance = Float.MAX_VALUE;
 	private PlayTourViewModel viewModel;
 	private LocationManager locationManager;
 	private AlertDialog questionDialog;
@@ -122,6 +123,7 @@ abstract class PlayTourFragment
 		locationManager
 				.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOC_TIME_REQ, LOC_DIST_REQ,
 				                        this);
+		requireActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		updateView();
 	}
 
@@ -130,13 +132,12 @@ abstract class PlayTourFragment
 		super.onPause();
 		Log.i(TAG(), "onPause: delete location updates");
 		locationManager.removeUpdates(this);
+		requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 
 	private void setPlace(Place nextPlace) {
 		place = nextPlace;
-		placeLocation = new Location("");
-		placeLocation.setLatitude(place.getLat());
-		placeLocation.setLongitude(place.getLon());
+		placeLocation = place.getLocation();
 		place_name.setText(place.getName());
 		place_description.setText(place.getDescription());
 		int numCompletedPlaces = viewModel.getPlay().getPlaces().size() + 1;
@@ -174,10 +175,14 @@ abstract class PlayTourFragment
 
 				// If has question display
 				if(place != null && place.getQuestion() != null && !place.getQuestion().isEmpty()) {
-					createDialog(place);
+					showQuestionDialog(place);
 					questionDialog.show();
 				} else {
-					completePlace();
+					new MaterialAlertDialogBuilder(requireContext())
+							.setTitle(R.string.place_completed)//
+							.setPositiveButton(R.string.next,
+							                   (dialogInterface, i) -> dialogInterface.dismiss())
+							.setOnDismissListener(dialogInterface -> completePlace()).show();
 				}
 				return;
 			}
@@ -207,21 +212,16 @@ abstract class PlayTourFragment
 		viewModel.completePlace(place.getId()).observe(this, place -> {
 			if(place == null) {
 				if(viewModel.tourIsCompleted()) {
-					AlertDialog.Builder questionDialogBuilder = new AlertDialog.Builder(
-							requireContext()).setTitle(R.string.tour_completed);
-					questionDialogBuilder.setPositiveButton(R.string.ok,
-					                                        (dialog, which) -> Navigation
-							                                        .findNavController(
-									                                        requireActivity(),
-									                                        R.id.main_fragment_holder)
-							                                        .popBackStack(R.id.navTour,
-							                                                      false));
-					questionDialogBuilder.show();
+					new MaterialAlertDialogBuilder(requireContext())
+							.setTitle(R.string.tour_completed) //
+							.setPositiveButton(R.string.ok, (dialog, which) -> Navigation
+									.findNavController(requireActivity(), R.id.main_fragment_holder)
+									.popBackStack(R.id.navTour, false)).show();
 					return;
 				}
-				APIException error = viewModel.getError();
-				Log.e(TAG(), "completePlace: ", error);
-				Toast.makeText(requireContext(), viewModel.getError().getMessage(),
+				ErrorType error = viewModel.getError();
+				Log.e(TAG(), "completePlace: " + error.toString());
+				Toast.makeText(requireContext(), viewModel.getError().toString(),
 				               Toast.LENGTH_SHORT).show();
 
 			} else {
@@ -242,9 +242,9 @@ abstract class PlayTourFragment
 		});
 	}
 
-	@SuppressLint("MissingPermission")
-	private void createDialog(Place place) {
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(requireContext());
+	private void showQuestionDialog(Place place) {
+		AlertDialog.Builder dialogBuilder = new MaterialAlertDialogBuilder(requireContext());
+
 		View dialogView = getLayoutInflater()
 				.inflate(R.layout.question_layout, new ConstraintLayout(requireContext()), false);
 		TextView question = dialogView.findViewById(R.id.question);
@@ -270,10 +270,15 @@ abstract class PlayTourFragment
 
 		dialogBuilder.setView(dialogView);
 		questionDialog = dialogBuilder.create();
+		if(requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) !=
+				PackageManager.PERMISSION_GRANTED &&
+				requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) !=
+						PackageManager.PERMISSION_GRANTED) {
+			return;
+		}
 		questionDialog.setOnDismissListener(dialog -> locationManager
 				.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOC_TIME_REQ, LOC_DIST_REQ,
 				                        this));
-		;
 	}
 
 	private void showWrongAnswerToast() {

@@ -19,17 +19,19 @@ public class TourService {
 
 	private static RestClient restClient;
 
-	private static TourService tourService;
+	private static TourService instance;
 
 	private final String TAG = TourService.class.getSimpleName();
 
-	void instantiate(Application application) {
+	private TourService(Application application) {
 		if(restClient == null) {
 			restClient = RetrofitInstance.getRestClient(application);
 		}
-		if(tourService == null) {
-			tourService = new TourService();
-		}
+	}
+
+	public static TourService getInstance(Application application) {
+		if(instance == null) instance = new TourService(application);
+		return instance;
 	}
 
 	/**
