@@ -1,14 +1,12 @@
 package com.martinlaizg.geofind.views.fragment.creator;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -34,6 +32,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
+import com.martinlaizg.geofind.utils.KeyboardUtils;
 import com.martinlaizg.geofind.views.viewmodel.CreatorViewModel;
 import com.squareup.picasso.Picasso;
 
@@ -91,14 +90,7 @@ public class CreatePlaceFragment
 
 	@Override
 	public void onClick(View v) {
-		// Hide the keyboard
-		InputMethodManager editTextInput = (InputMethodManager) requireActivity()
-				.getSystemService(Context.INPUT_METHOD_SERVICE);
-		View currentFocus = requireActivity().getCurrentFocus();
-		if(currentFocus != null) {
-			Objects.requireNonNull(editTextInput)
-					.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
-		}
+		KeyboardUtils.hideKeyboard(requireActivity());
 
 		if(!storePlace()) return;
 
@@ -112,7 +104,6 @@ public class CreatePlaceFragment
 	 *
 	 * @return true if no has errors else false
 	 */
-	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	private boolean storePlace() {
 		// Get the name
 		String placeName = Objects.requireNonNull(new_place_name.getEditText()).getText().toString()
@@ -292,14 +283,7 @@ public class CreatePlaceFragment
 		new_place_location_button.setOnClickListener(v -> {
 			if(!storePlace()) return;
 
-			// Hide the keyboard
-			InputMethodManager editTextInput = (InputMethodManager) requireActivity()
-					.getSystemService(Context.INPUT_METHOD_SERVICE);
-			View currentFocus = requireActivity().getCurrentFocus();
-			if(currentFocus != null) {
-				Objects.requireNonNull(editTextInput)
-						.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
-			}
+			KeyboardUtils.hideKeyboard(requireActivity());
 
 			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
 					.navigate(R.id.toCreatePlaceLocation);
@@ -364,14 +348,8 @@ public class CreatePlaceFragment
 				place_image_view.setVisibility(View.VISIBLE);
 			}
 
-			// Hide the keyboard
-			InputMethodManager editTextInput = (InputMethodManager) requireActivity()
-					.getSystemService(Context.INPUT_METHOD_SERVICE);
-			View currentFocus = requireActivity().getCurrentFocus();
-			if(currentFocus != null) {
-				Objects.requireNonNull(editTextInput)
-						.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
-			}
+			KeyboardUtils.hideKeyboard(requireActivity());
+
 		}).create();
 	}
 

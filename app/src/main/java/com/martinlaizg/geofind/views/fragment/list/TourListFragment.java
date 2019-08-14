@@ -22,7 +22,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
-import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.data.enums.UserType;
 import com.martinlaizg.geofind.views.adapter.TourListAdapter;
@@ -68,8 +67,8 @@ public class TourListFragment
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
 		User u = Preferences.getLoggedUser(sp);
 		if(u.getUser_type() != null && u.getUser_type() != UserType.USER) {
-			create_tour_button
-					.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toCreateTour));
+			create_tour_button.setOnClickListener(
+					Navigation.createNavigateOnClickListener(R.id.toCreateTour));
 		} else {
 			create_tour_button.setOnClickListener(v -> Toast
 					.makeText(requireContext(), getString(R.string.no_permissions),
@@ -84,13 +83,13 @@ public class TourListFragment
 			if(tours != null) {
 				adapter.setTours(tours);
 			} else {
-				APIException error = viewModel.getError();
-				if(error.getType() == ErrorType.NETWORK) {
+				ErrorType error = viewModel.getError();
+				if(error == ErrorType.NETWORK) {
 					Toast.makeText(requireContext(),
 					               getResources().getString(R.string.network_error),
 					               Toast.LENGTH_SHORT).show();
 				} else {
-					Log.e(TAG, "onCreateView: ", error);
+					Log.e(TAG, "onCreateView: " + error);
 				}
 			}
 		});

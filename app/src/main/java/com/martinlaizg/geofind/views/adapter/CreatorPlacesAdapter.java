@@ -57,7 +57,6 @@ public class CreatorPlacesAdapter
 		holder.place_card.setOnClickListener(
 				v -> Navigation.findNavController(fragmentActivity, R.id.main_fragment_holder)
 						.navigate(R.id.toCreatePlace, b));
-
 	}
 
 	@Override
@@ -98,6 +97,17 @@ public class CreatorPlacesAdapter
 			this.places = places;
 			notifyDataSetChanged();
 		}
+	}
+
+	public void move(int from, int to) {
+		Place p = places.remove(from);
+		places.add(to, p);
+
+		for(int i = 0; i < places.size(); i++) {
+			places.get(i).setOrder(i);
+		}
+
+		notifyItemMoved(from, to);
 	}
 
 	class CreatorPlacesViewHolder

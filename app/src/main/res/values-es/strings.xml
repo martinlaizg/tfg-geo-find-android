@@ -112,4 +112,5 @@
     <string name="select_location">Seleccionar localización</string>
     <string name="cancel">Cancelar</string>
     <string name="permanent_delete">Se borrará permanentemente</string>
+    <string name="drag_handle">Manejador de arrastro</string>
 </resources>

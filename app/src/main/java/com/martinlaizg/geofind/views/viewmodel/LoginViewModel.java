@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.martinlaizg.geofind.data.access.api.entities.Login;
+import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.data.repository.UserRepository;
@@ -14,7 +15,7 @@ public class LoginViewModel
 		extends AndroidViewModel {
 
 	private final UserRepository userRepo;
-	private APIException error;
+	private ErrorType error;
 
 	public LoginViewModel(Application application) {
 		super(application);
@@ -28,7 +29,7 @@ public class LoginViewModel
 				User user = userRepo.login(login);
 				t.postValue(user);
 			} catch(APIException e) {
-				setError(e);
+				setError(e.getType());
 				t.postValue(null);
 			}
 		}).start();
@@ -42,18 +43,18 @@ public class LoginViewModel
 				User user = userRepo.registry(registry);
 				u.postValue(user);
 			} catch(APIException e) {
-				setError(e);
+				setError(e.getType());
 				u.postValue(null);
 			}
 		}).start();
 		return u;
 	}
 
-	public APIException getError() {
+	public ErrorType getError() {
 		return error;
 	}
 
-	private void setError(APIException error) {
+	private void setError(ErrorType error) {
 		this.error = error;
 	}
 

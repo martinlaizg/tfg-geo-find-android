@@ -62,23 +62,23 @@
                 style="@style/Widget.MaterialComponents.Chip.Action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 app:chipIcon="@drawable/ic_user_black"
                 app:layout_constraintStart_toStartOf="@+id/tour_description"
                 app:layout_constraintTop_toBottomOf="@id/tour_description"
                 tools:text="@sample/user.json/data/username" />
 
             <View
-                android:id="@+id/divider2"
+                android:id="@+id/completed_divider"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="?android:attr/listDivider"
+                app:layout_constraintBottom_toBottomOf="@+id/completed_text"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tour_creator" />
+                app:layout_constraintStart_toEndOf="@id/completed_text"
+                app:layout_constraintTop_toTopOf="@+id/completed_text" />
 
             <TextView
                 android:id="@+id/tour_num_places"
@@ -93,12 +93,21 @@
                 android:minWidth="90dp"
                 android:minLines="1"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                app:layout_constraintBottom_toBottomOf="@id/tour_creator"
+                app:layout_constraintBottom_toBottomOf="@+id/tour_creator"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/tour_creator"
-                app:layout_constraintTop_toTopOf="@id/tour_creator"
+                app:layout_constraintTop_toTopOf="@+id/tour_creator"
                 tools:text="@sample/plays.json/data/name" />
+
+            <TextView
+                android:id="@+id/completed_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/completed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tour_creator" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/places_list"
@@ -110,24 +119,36 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider2"
+                app:layout_constraintTop_toBottomOf="@+id/completed_text"
                 tools:itemCount="1"
                 tools:listitem="@layout/fragment_place_item"
                 tools:visibility="visible">
 
             </androidx.recyclerview.widget.RecyclerView>
 
+            <TextView
+                android:id="@+id/in_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/in_progress"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/places_list" />
+
             <View
                 android:id="@+id/progress_divider"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
                 android:background="@color/colorSecondary"
+                app:layout_constraintBottom_toBottomOf="@+id/in_progress"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/places_list" />
+                app:layout_constraintStart_toEndOf="@id/in_progress"
+                app:layout_constraintTop_toTopOf="@+id/in_progress" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/other_places"
@@ -139,7 +160,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/progress_divider"
+                app:layout_constraintTop_toBottomOf="@+id/in_progress"
                 tools:itemCount="3"
                 tools:listitem="@layout/fragment_place_item"
                 tools:visibility="visible">

@@ -112,4 +112,8 @@
     <string name="select_location">Select location</string>
     <string name="permanent_delete">It will be deleted permanently</string>
     <string name="cancel">Cancel</string>
+    <string name="drag_handle">Drag handle</string>
+    <string name="completed">Completed</string>
+    <string name="in_progress">In progress</string>
+    <string name="place_completed">Place completed</string>
 </resources>

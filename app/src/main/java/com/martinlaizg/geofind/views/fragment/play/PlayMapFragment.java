@@ -87,7 +87,6 @@ public class PlayMapFragment
 	}
 
 	void updateView() {
-
 		if(googleMap != null && usrLocation != null) {
 			CameraUpdate cu;
 			LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -107,6 +106,12 @@ public class PlayMapFragment
 				cu = CameraUpdateFactory.newLatLngBounds(cameraPosition, MAP_PADDING);
 			}
 			googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+			if(requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) ==
+					PackageManager.PERMISSION_GRANTED || requireActivity()
+					.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) ==
+					PackageManager.PERMISSION_GRANTED) {
+				this.googleMap.setMyLocationEnabled(true);
+			}
 			googleMap.animateCamera(cu);
 			Log.d(TAG, "updateView: zoom=" + googleMap.getCameraPosition().zoom);
 

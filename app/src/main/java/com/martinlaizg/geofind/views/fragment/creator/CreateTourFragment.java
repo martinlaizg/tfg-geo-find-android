@@ -1,13 +1,11 @@
 package com.martinlaizg.geofind.views.fragment.creator;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -29,6 +27,7 @@ import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.data.enums.PlayLevel;
+import com.martinlaizg.geofind.utils.KeyboardUtils;
 import com.martinlaizg.geofind.views.viewmodel.CreatorViewModel;
 import com.squareup.picasso.Picasso;
 
@@ -146,25 +145,13 @@ public class CreateTourFragment
 				tour_image_view.setVisibility(View.VISIBLE);
 			}
 
-			// Hide the keyboard
-			InputMethodManager editTextInput = (InputMethodManager) requireActivity()
-					.getSystemService(Context.INPUT_METHOD_SERVICE);
-			View currentFocus = requireActivity().getCurrentFocus();
-			if(currentFocus != null) {
-				editTextInput.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
-			}
+			KeyboardUtils.hideKeyboard(requireActivity());
 		}).create();
 	}
 
 	@Override
 	public void onClick(View v) {
-		// Hide the keyboard
-		InputMethodManager editTextInput = (InputMethodManager) requireActivity()
-				.getSystemService(Context.INPUT_METHOD_SERVICE);
-		View currentFocus = requireActivity().getCurrentFocus();
-		if(currentFocus != null) {
-			editTextInput.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
-		}
+		KeyboardUtils.hideKeyboard(requireActivity());
 
 		tour_name_layout.setError("");
 		String name = Objects.requireNonNull(tour_name_layout.getEditText()).getText().toString()

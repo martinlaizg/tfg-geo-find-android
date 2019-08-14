@@ -55,7 +55,8 @@
         <action
             android:id="@+id/toNewTour"
             app:destination="@id/navTour"
-            app:popUpTo="@+id/navTourList" />
+            app:popUpTo="@+id/navTour"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/toEditTour"
             app:destination="@id/navCreateTour" />

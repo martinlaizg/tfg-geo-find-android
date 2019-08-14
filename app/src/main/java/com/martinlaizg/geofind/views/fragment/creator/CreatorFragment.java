@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -62,6 +63,28 @@ public class CreatorFragment
 		adapter = new CreatorPlacesAdapter();
 		places_list.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		places_list.setAdapter(adapter);
+
+		ItemTouchHelper helper = new ItemTouchHelper(
+				new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
+					@Override
+					public boolean onMove(@NonNull RecyclerView recyclerView,
+							@NonNull RecyclerView.ViewHolder dragged,
+							@NonNull RecyclerView.ViewHolder target) {
+						int from = dragged.getAdapterPosition();
+						int to = target.getAdapterPosition();
+
+						adapter.move(from, to);
+						return false;
+					}
+
+					@Override
+					public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder,
+							int direction) {
+
+					}
+				});
+		helper.attachToRecyclerView(places_list);
+
 		// Back button callback
 		OnBackPressedCallback callback = new OnBackPressedCallback(true) {
 			@Override

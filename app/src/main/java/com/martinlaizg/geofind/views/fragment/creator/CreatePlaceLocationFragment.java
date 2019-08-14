@@ -1,7 +1,6 @@
 package com.martinlaizg.geofind.views.fragment.creator;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -56,7 +55,6 @@ public class CreatePlaceLocationFragment
 	private Location usrLocation;
 	private Location placeLocation;
 
-	@SuppressLint("MissingPermission")
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
 			@NonNull int[] grantResults) {

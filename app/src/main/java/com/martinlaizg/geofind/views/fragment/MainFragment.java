@@ -41,7 +41,6 @@ public class MainFragment
 
 	private User user;
 	private PlayListAdapter adapter;
-	@SuppressWarnings("FieldCanBeLocal")
 	private MainFragmentViewModel viewModel;
 
 	@Override

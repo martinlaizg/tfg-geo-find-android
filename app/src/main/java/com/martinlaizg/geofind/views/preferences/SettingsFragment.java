@@ -24,7 +24,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
-import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
+import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.views.viewmodel.SettingsViewModel;
 
 import java.util.Objects;
@@ -98,8 +98,8 @@ public class SettingsFragment
 
 			viewModel.sendMessage(title, message).observe(this, (ok) -> {
 				if(ok == null) {
-					APIException e = viewModel.getError();
-					Log.e(TAG, "setLogoutPreference: " + e.getType().toString());
+					ErrorType e = viewModel.getError();
+					Log.e(TAG, "setLogoutPreference: " + e);
 				} else if(ok) {
 					Toast.makeText(requireContext(), "Message sent", Toast.LENGTH_SHORT).show();
 					Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
