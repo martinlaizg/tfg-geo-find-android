@@ -70,7 +70,7 @@ public class PlayListAdapter
 		holder.tour_progress_text.setText(context.getString(R.string.div, completed, numPlaces));
 
 		Bundle b = new Bundle();
-		b.putInt(TourFragment.TOUR_ID, plays.get(i).getTour_id());
+		b.putInt(TourFragment.TOUR_ID, t.getId());
 		holder.tour_card
 				.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.toTour, b));
 	}
