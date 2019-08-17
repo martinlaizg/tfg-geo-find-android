@@ -1,0 +1,10 @@
+{
+	"comment" : "Plays",
+	"data" : [
+		{
+			"name" : "Lugar 1",
+			"description" : "Descripción del lugar 1",
+			"num_plays" : 5
+		}
+	]
+}

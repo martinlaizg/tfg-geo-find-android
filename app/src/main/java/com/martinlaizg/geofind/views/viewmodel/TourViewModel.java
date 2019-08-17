@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Play;
@@ -22,7 +23,7 @@ public class TourViewModel
 	private final TourRepository tourRepo;
 	private final PlayRepository playRepo;
 
-	private APIException error;
+	private ErrorType error;
 	private Tour tour;
 	private Play play;
 
@@ -39,7 +40,7 @@ public class TourViewModel
 				tour = tourRepo.getTour(tour_id);
 				play = playRepo.getPlay(user_id, tour_id);
 			} catch(APIException e) {
-				setError(e);
+				setError(e.getType());
 				tour = null;
 			}
 			m.postValue(tour);
@@ -60,11 +61,11 @@ public class TourViewModel
 		return p;
 	}
 
-	public APIException getError() {
+	public ErrorType getError() {
 		return error;
 	}
 
-	private void setError(APIException error) {
+	private void setError(ErrorType error) {
 		this.error = error;
 	}
 
@@ -75,22 +76,6 @@ public class TourViewModel
 	public List<Place> getCompletedPlaces() {
 		if(play != null) return play.getPlaces();
 		return new ArrayList<>();
-	}
-
-	public List<Place> getNoCompletedPlaces() {
-		List<Place> places = tour.getPlaces();
-		if(play == null) {
-			return places;
-		}
-		List<Place> noCompleted = new ArrayList<>();
-		for(Place tp : places) {
-			boolean completed = false;
-			for(Place pp : play.getPlaces()) {
-				if(tp.getId() == pp.getId()) completed = true;
-			}
-			if(!completed) noCompleted.add(tp);
-		}
-		return noCompleted;
 	}
 
 	public MutableLiveData<List<Place>> getPlaces(int tour_id, int user_id) {

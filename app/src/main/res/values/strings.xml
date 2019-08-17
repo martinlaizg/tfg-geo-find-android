@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name" translatable="false">GeoFind</string>
+    <string name="developer" translatable="false">Martín Laiz Gómez</string>
+    <string name="pref_map" translatable="false">map</string>
+    <string name="pref_satellite" translatable="false">satellite</string>
+    <string name="pref_map_type" translatable="false">map_type</string>
+    <string name="pref_support" translatable="false">support</string>
+    <string name="app_version_name" translatable="false">v0.4-SNAPSHOT</string>
+    <string name="div" translatable="false">%1$d/%2$d</string>
+    <string name="two_csv" translatable="false">%1$f,%2$f</string>
     <string name="account_settings">Account settings</string>
     <string name="add_image">Add image</string>
     <string name="add_place">Add place</string>
-    <string name="alert_text_no_place_selected">You need to select a place on map</string>
     <string name="app_logo_description">App logo</string>
     <string name="confirm_password">Confirm secure</string>
     <string name="create_account">Create account</string>
@@ -39,14 +47,10 @@
     <string name="tour_creator">Tour creator</string>
     <string name="tour_list">Tour list</string>
     <string name="tour_without_name">Tour without name</string>
-    <string name="update_place">Update place</string>
     <string name="update_tour">Update tour</string>
     <string name="user_image">User image</string>
     <string name="username">Username</string>
     <string name="text_too_long">Text too long</string>
-    <string name="app_name" translatable="false">GeoFind</string>
-    <string name="TODO" translatable="false">TODO</string>
-    <string name="developer" translatable="false">Martín Laiz Gómez</string>
     <string name="home">Home</string>
     <string name="play">Play</string>
     <string name="tour_not_permitted">Tour not permitted</string>
@@ -61,7 +65,6 @@
     <string name="play_compass">Play compass</string>
     <string name="select_play_difficulty">Select play difficulty</string>
     <string name="play_therm">Play therm</string>
-    <string name="invalid_place">Invalid place</string>
     <string name="default_map_type">Default map type</string>
     <string name="message_to_support">Message to support</string>
     <string name="title">Title</string>
@@ -74,9 +77,6 @@
     <string name="wrong_password">Wrong password</string>
     <string name="email_wrong_format">Wrong email format</string>
     <string name="your_account">Your account</string>
-    <string name="pref_map" translatable="false">map</string>
-    <string name="pref_satellite" translatable="false">satellite</string>
-    <string name="pref_map_type" translatable="false">map_type</string>
     <string name="edit_profile">Edit profile</string>
     <string name="save">Save</string>
     <string name="change_password">Change password</string>
@@ -106,14 +106,25 @@
     <string name="something_went_wrong">Something went wrong</string>
     <string name="tour_completed">Tour completed</string>
     <string name="ok">OK</string>
-    <string name="pref_support" translatable="false">support</string>
     <string name="send_message_to_support">Send message to support</string>
     <string name="errors_and_suggestions">Errors and suggestions</string>
     <string name="app_version">App version</string>
     <string name="app_developer">App developer</string>
-    <string name="app_version_name" translatable="false">v0.4-SNAPSHOT</string>
     <string name="rejected_location_access">Refused permission to location</string>
-    <string name="div" translatable="false">%1$d/%2$d</string>
     <string name="add_image_url">Add image URL</string>
     <string name="image_url">Image URL</string>
+    <string name="update">Update</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="exit_lose_data_alert">You will lose the unsaved data</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="done">Done</string>
+    <string name="add_location">Add location</string>
+    <string name="select_location">Select location</string>
+    <string name="permanent_delete">It will be deleted permanently</string>
+    <string name="cancel">Cancel</string>
+    <string name="drag_handle">Drag handle</string>
+    <string name="completed">Completed</string>
+    <string name="in_progress">In progress</string>
+    <string name="place_completed">Place completed</string>
 </resources>

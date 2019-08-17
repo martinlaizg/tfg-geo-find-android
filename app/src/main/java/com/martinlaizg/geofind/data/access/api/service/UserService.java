@@ -65,7 +65,7 @@ public class UserService {
 	 *
 	 * @param login
 	 * 		the login data
-	 * @return the registred user
+	 * @return the registered user
 	 * @throws APIException
 	 * 		exception from server
 	 */
@@ -116,7 +116,7 @@ public class UserService {
 	}
 
 	/**
-	 * Upadte user data
+	 * Update user data
 	 *
 	 * @param login
 	 * 		the login data

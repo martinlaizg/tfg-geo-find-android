@@ -22,6 +22,9 @@
             android:name="PLACE_POSITION"
             android:defaultValue="-1"
             app:argType="integer" />
+        <action
+            android:id="@+id/toCreatePlaceLocation"
+            app:destination="@id/siteCreatorFragment" />
     </fragment>
     <fragment
         android:id="@+id/navCreateTour"
@@ -32,6 +35,11 @@
             android:name="TOUR_ID"
             android:defaultValue="0"
             app:argType="integer" />
+        <action
+            android:id="@+id/toCreator"
+            app:destination="@+id/navCreator"
+            app:popUpTo="@+id/navCreateTour"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/navCreator"
@@ -40,7 +48,6 @@
         tools:layout="@layout/fragment_creator">
         <argument
             android:name="TOUR_ID"
-            android:defaultValue="0"
             app:argType="integer" />
         <action
             android:id="@+id/toCreatePlace"
@@ -48,7 +55,8 @@
         <action
             android:id="@+id/toNewTour"
             app:destination="@id/navTour"
-            app:popUpTo="@+id/navTourList" />
+            app:popUpTo="@+id/navTour"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/toEditTour"
             app:destination="@id/navCreateTour" />
@@ -59,8 +67,8 @@
         android:label="@string/tour_list"
         tools:layout="@layout/fragment_tour_list">
         <action
-            android:id="@+id/toCreator"
-            app:destination="@id/navCreator" />
+            android:id="@+id/toCreateTour"
+            app:destination="@+id/navCreateTour" />
         <action
             android:id="@+id/toTour"
             app:destination="@id/navTour" />
@@ -163,4 +171,9 @@
     <action
         android:id="@+id/toEditProfile"
         app:destination="@id/editProfileFragment" />
+    <fragment
+        android:id="@+id/siteCreatorFragment"
+        android:name="com.martinlaizg.geofind.views.fragment.creator.CreatePlaceLocationFragment"
+        android:label="@string/select_location"
+        tools:layout="@layout/fragment_create_place_location" />
 </navigation>

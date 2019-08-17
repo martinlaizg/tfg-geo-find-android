@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Tour;
@@ -20,7 +21,8 @@ public class CreatorViewModel
 
 	private final TourRepository tourRepo;
 	private Tour tour;
-	private APIException error;
+	private ErrorType error;
+	private Place place;
 
 	public CreatorViewModel(@NonNull Application application) {
 		super(application);
@@ -34,7 +36,7 @@ public class CreatorViewModel
 				try {
 					tour = tourRepo.create(tour);
 				} catch(APIException e) {
-					setError(e);
+					setError(e.getType());
 					m.postValue(null);
 					return;
 				}
@@ -42,7 +44,7 @@ public class CreatorViewModel
 				try {
 					tour = tourRepo.update(tour);
 				} catch(APIException e) {
-					setError(e);
+					setError(e.getType());
 					m.postValue(null);
 					return;
 				}
@@ -62,18 +64,42 @@ public class CreatorViewModel
 		tour.setImage(image_url);
 	}
 
-	public MutableLiveData<Tour> loadTour(Integer tour_id) {
+	/**
+	 * Get the tour by the id
+	 * If this.tour has the same id, return this.tour
+	 * Else load from server {@code loadTour(int}
+	 *
+	 * @param tour_id
+	 * 		the id of the tour
+	 * @return the tour
+	 */
+	public MutableLiveData<Tour> getTour(int tour_id) {
+		MutableLiveData<Tour> t = new MutableLiveData<>();
+		if(tour == null || tour.getId() != tour_id) {
+			return loadTour(tour_id);
+		}
+		new Thread(() -> t.postValue(tour)).start();
+		return t;
+	}
+
+	/**
+	 * Get the tour with the tour_id passed by parameter from the server
+	 * If the id is 0, return a new Tour
+	 *
+	 * @param tour_id
+	 * 		the id of the tour
+	 * @return the tour
+	 */
+	private MutableLiveData<Tour> loadTour(Integer tour_id) {
 		MutableLiveData<Tour> t = new MutableLiveData<>();
 		new Thread(() -> {
-			if(tour == null) {
-				tour = new Tour();
-				if(tour_id > 0) {
-					try {
-						tour = tourRepo.getTour(tour_id);
-					} catch(APIException e) {
-						setError(e);
-						tour = null;
-					}
+			tour = new Tour();
+			if(tour_id > 0) {
+				try {
+					tour = tourRepo.getTour(tour_id);
+				} catch(APIException e) {
+					setError(e.getType());
+					tour = null;
 				}
 			}
 			t.postValue(tour);
@@ -81,15 +107,11 @@ public class CreatorViewModel
 		return t;
 	}
 
-	public Tour getTour() {
-		return tour;
-	}
-
-	public APIException getError() {
+	public ErrorType getError() {
 		return error;
 	}
 
-	private void setError(APIException error) {
+	private void setError(ErrorType error) {
 		this.error = error;
 	}
 
@@ -100,23 +122,43 @@ public class CreatorViewModel
 				places;
 	}
 
-	public Place getPlace(int position) {
-		if(position > tour.getPlaces().size()) return null;
-		if(position < tour.getPlaces().size()) return tour.getPlaces().get(position);
-		return new Place();
+	public void retrievePlace(int position) {
+		if(place != null) return;
+		if(position > tour.getPlaces().size()) {
+			place = null;
+		} else if(position < tour.getPlaces().size()) {
+			place = tour.getPlaces().get(position);
+		} else {
+			place = new Place();
+			place.setOrder(position);
+		}
 	}
 
-	public void setPlace(Place place) {
-		if(place.getOrder() == null) {
+	public void savePlace() {
+		if(place.getOrder() == null || place.getOrder() >= tour.getPlaces().size()) {
 			place.setOrder(tour.getPlaces().size());
 			tour.getPlaces().add(place);
 		} else {
 			tour.getPlaces().set(place.getOrder(), place);
 		}
+		this.place = null;
 	}
 
 	public void reset() {
-		tour = null;
+		this.tour = null;
+		this.place = null;
+		this.error = null;
 	}
 
+	public Place getPlace() {
+		return place;
+	}
+
+	public void setPlace(Place place) {
+		this.place = place;
+	}
+
+	public Tour getStoredTour() {
+		return tour;
+	}
 }

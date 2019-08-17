@@ -1,5 +1,6 @@
 package com.martinlaizg.geofind.views.adapter;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.views.fragment.creator.CreatePlaceFragment;
@@ -43,7 +45,8 @@ public class CreatorPlacesAdapter
 		Place place = places.get(position);
 
 		holder.place_name.setText(place.getName());
-		holder.place_delete_button.setOnClickListener(v -> remove(position));
+		holder.place_delete_button
+				.setOnClickListener(v -> showExitDialog(v.getContext(), position));
 		holder.questionaire_icon.setVisibility(View.GONE);
 		if(place.getQuestion() != null) {
 			holder.questionaire_icon.setVisibility(View.VISIBLE);
@@ -53,7 +56,20 @@ public class CreatorPlacesAdapter
 		holder.place_card.setOnClickListener(
 				v -> Navigation.findNavController(fragmentActivity, R.id.main_fragment_holder)
 						.navigate(R.id.toCreatePlace, b));
+	}
 
+	@Override
+	public int getItemCount() {
+		return places.size();
+	}
+
+	private void showExitDialog(Context context, int position) {
+		new MaterialAlertDialogBuilder(context).setTitle(R.string.are_you_sure)
+				.setMessage(context.getString(R.string.permanent_delete))
+				.setPositiveButton(context.getString(R.string.ok),
+				                   (dialog, which) -> remove(position))
+				.setNegativeButton(context.getString(R.string.cancel),
+				                   (dialogInterface, i) -> dialogInterface.dismiss()).show();
 	}
 
 	private void remove(int position) {
@@ -62,11 +78,6 @@ public class CreatorPlacesAdapter
 			places.get(i).setOrder(i);
 		}
 		notifyDataSetChanged();
-	}
-
-	@Override
-	public int getItemCount() {
-		return places.size();
 	}
 
 	public CreatorPlacesAdapter() {
@@ -85,6 +96,17 @@ public class CreatorPlacesAdapter
 			this.places = places;
 			notifyDataSetChanged();
 		}
+	}
+
+	public void move(int from, int to) {
+		Place p = places.remove(from);
+		places.add(to, p);
+
+		for(int i = 0; i < places.size(); i++) {
+			places.get(i).setOrder(i);
+		}
+
+		notifyItemMoved(from, to);
 	}
 
 	class CreatorPlacesViewHolder

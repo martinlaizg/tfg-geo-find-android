@@ -22,6 +22,6 @@ public interface PlaceDAO {
 	@Query("SELECT * FROM places WHERE id = :placeId")
 	Place getPlace(int placeId);
 
-	@Query("SELECT * FROM places WHERE tour_id = :tour_id")
+	@Query("SELECT * FROM places WHERE tour_id = :tour_id ORDER BY `order` ASC")
 	List<Place> getTourPlaces(Integer tour_id);
 }

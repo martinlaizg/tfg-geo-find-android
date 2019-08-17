@@ -91,7 +91,7 @@ public class RegistryFragment
 		viewModel.registry(l).observe(this, (user) -> {
 			btn_registry.setEnabled(true);
 			if(user == null) {
-				if(viewModel.getError().getType() == ErrorType.EMAIL) {
+				if(viewModel.getError() == ErrorType.EMAIL) {
 					email_input.setError(getString(R.string.email_in_use));
 				} else {
 					Toast.makeText(requireContext(), getString(R.string.other_error),
