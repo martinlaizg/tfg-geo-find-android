@@ -31,8 +31,7 @@ before_install:
   - yes | sdkmanager "build-tools;29.0.2"
 
 script:
-  - ./gradlew clean build
-  - ./gradlew test
+  - ./gradlew clean
   - ./gradlew createOfflineTestCoverageReport
   - ./gradlew jacocoTestReport
 
