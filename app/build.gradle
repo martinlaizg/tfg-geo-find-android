@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'jacoco'
 
 android {
     signingConfigs {
@@ -47,29 +46,7 @@ android {
     }
 }
 
-jacoco {
-    toolVersion = '0.8.0'
-}
-
-tasks.withType(Test) {
-    jacoco.includeNoLocationClasses = true
-}
-
-task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
-    reports {
-        xml.enabled = true
-        html.enabled = true
-    }
-    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
-    def debugTree = fileTree(dir: "$project.buildDir/intermediates/classes/debug", excludes: fileFilter)
-    def mainSrc = "$project.projectDir/src/main/java"
-
-    sourceDirectories = files([mainSrc])
-    classDirectories = files([debugTree])
-    executionData = fileTree(dir: project.buildDir, includes: [
-            'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec'
-    ])
-}
+apply from: 'jacoco.gradle'
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')

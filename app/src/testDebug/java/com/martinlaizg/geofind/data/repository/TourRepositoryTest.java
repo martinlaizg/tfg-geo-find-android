@@ -48,12 +48,6 @@ public class TourRepositoryTest {
 
 	}
 
-	//	AppDatabase database = AppDatabase.getInstance(application);
-	//	tourDAO = database.tourDAO();
-	//	tourService = TourService.getInstance(application);
-	//	placeRepo = PlaceRepository.getInstance(application);
-	//	userRepo = UserRepository.getInstance(application);
-
 	@Test
 	public void getAllToursTest() {
 		when(tourDAO.getAll()).thenReturn(new ArrayList<>());
