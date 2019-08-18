@@ -31,9 +31,8 @@ before_install:
   - yes | sdkmanager "build-tools;29.0.2"
 
 script:
-  - ./gradlew clean
-  - ./gradlew createOfflineTestCoverageReport
-  - ./gradlew jacocoTestReport
+  - ./gradlew clean build
+  - ./gradlew clean jacocoTestReport
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
