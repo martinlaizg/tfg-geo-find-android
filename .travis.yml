@@ -33,6 +33,7 @@ before_install:
 script:
   - ./gradlew clean build
   - ./gradlew test
+  - ./gradlew createOfflineTestCoverageReport
   - ./gradlew jacocoTestReport
 
 after_success:
