@@ -5,6 +5,7 @@ branches:
   only:
     - master
     - dev
+    - old-tests
 
 android:
   components:
