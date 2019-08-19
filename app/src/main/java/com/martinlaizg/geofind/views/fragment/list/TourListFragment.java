@@ -4,12 +4,17 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
@@ -22,10 +27,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.api.error.ErrorType;
+import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.data.enums.UserType;
 import com.martinlaizg.geofind.views.adapter.TourListAdapter;
+import com.martinlaizg.geofind.views.fragment.single.TourFragment;
 import com.martinlaizg.geofind.views.viewmodel.TourListViewModel;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,6 +65,8 @@ public class TourListFragment
 		tour_list.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		adapter = new TourListAdapter();
 		tour_list.setAdapter(adapter);
+		// Set that this fragment has options in toolbar
+		setHasOptionsMenu(true);
 		return view;
 	}
 
@@ -93,5 +104,46 @@ public class TourListFragment
 				}
 			}
 		});
+	}
+
+	@Override
+	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+		inflater.inflate(R.menu.toolbar_menu, menu);
+
+		SearchView searchView = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
+		searchView.setIconifiedByDefault(false);
+		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				List<Tour> tours = adapter.getTours();
+				if(tours.size() == 1) {
+					Tour tour = tours.get(0);
+					Bundle args = new Bundle();
+					args.putInt(TourFragment.TOUR_ID, tour.getId());
+					Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+							.navigate(R.id.toTour, args);
+				}
+				return false;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				adapter.getFilter().filter(newText);
+				return false;
+			}
+		});
+
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+		switch(item.getItemId()) {
+			case R.id.app_bar_search:
+
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }

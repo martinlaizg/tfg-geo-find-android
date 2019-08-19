@@ -114,14 +114,19 @@ public class CreatorFragment
 		viewModel.getTour(tour_id).observe(this, this::setTour);
 
 		add_place_button.setOnClickListener(v -> {
-			Bundle p = new Bundle();
-			p.putInt(CreatePlaceFragment.PLACE_POSITION, viewModel.getPlaces().size());
+			Bundle c = new Bundle();
+			c.putInt(CreatePlaceFragment.PLACE_POSITION, viewModel.getPlaces().size());
 			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-					.navigate(R.id.toCreatePlace, p);
+					.navigate(R.id.toCreatePlace, c);
 		});
-		edit_button.setOnClickListener(
-				v -> Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-						.navigate(R.id.toEditTour));
+		int finalTour_id = tour_id;
+		edit_button.setOnClickListener(v -> {
+			Bundle c = new Bundle();
+			c.putInt(CreateTourFragment.TOUR_ID, finalTour_id);
+
+			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+					.navigate(R.id.toEditTour, c);
+		});
 		create_tour_button.setOnClickListener(this);
 	}
 

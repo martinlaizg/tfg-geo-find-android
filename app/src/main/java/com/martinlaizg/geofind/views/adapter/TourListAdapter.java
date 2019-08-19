@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,9 +28,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TourListAdapter
-		extends RecyclerView.Adapter<TourListAdapter.ToursViewHolder> {
+		extends RecyclerView.Adapter<TourListAdapter.ToursViewHolder>
+		implements Filterable {
 
 	private List<Tour> tours = new ArrayList<>();
+	private List<Tour> allTours = new ArrayList<>();
 	private Context context;
 
 	@NonNull
@@ -74,8 +78,46 @@ public class TourListAdapter
 		return tours.size();
 	}
 
+	@Override
+	public Filter getFilter() {
+		return new Filter() {
+			@Override
+			protected FilterResults performFiltering(CharSequence charSequence) {
+				List<Tour> filtered = new ArrayList<>();
+				if(charSequence == null || charSequence.length() == 0) {
+					filtered.addAll(allTours);
+				} else {
+					String filter = charSequence.toString().toLowerCase().trim();
+
+					for(Tour t : allTours) {
+						if(t.getName().toLowerCase().contains(filter) ||
+								t.getDescription().toLowerCase().contains(filter)) {
+							filtered.add(t);
+						}
+					}
+				}
+				FilterResults results = new FilterResults();
+				results.values = filtered;
+				return results;
+			}
+
+			@Override
+			@SuppressWarnings("unchecked")
+			protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+				tours.clear();
+				tours.addAll((List) filterResults.values);
+				notifyDataSetChanged();
+			}
+		};
+	}
+
+	public List<Tour> getTours() {
+		return tours;
+	}
+
 	public void setTours(List<Tour> tours) {
 		this.tours = tours;
+		this.allTours = new ArrayList<>(tours);
 		notifyDataSetChanged();
 	}
 

@@ -6,9 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
@@ -18,9 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
+import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.database.entities.Play;
 import com.martinlaizg.geofind.data.access.database.entities.User;
-import com.martinlaizg.geofind.views.activity.MainActivity;
 import com.martinlaizg.geofind.views.adapter.PlayListAdapter;
 import com.martinlaizg.geofind.views.viewmodel.MainFragmentViewModel;
 
@@ -38,6 +40,8 @@ public class MainFragment
 	TextView toursCompletedText;
 	@BindView(R.id.toursInProgressText)
 	TextView toursInProgressText;
+	@BindView(R.id.toursCompletedCard)
+	CardView toursCompletedCard;
 
 	private User user;
 	private PlayListAdapter adapter;
@@ -51,20 +55,16 @@ public class MainFragment
 
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireActivity());
 		user = Preferences.getLoggedUser(sp);
-		MainActivity mainActivity = (MainActivity) requireActivity();
 		if(user == null) {
 			// If user is not logged, go to LoginFragment
-			mainActivity.setToolbarAndDrawer(false);
 			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
 					.navigate(R.id.toLogin);
 			return null;
 		}
-		mainActivity.setToolbarAndDrawer(true);
 
 		toursInProgressView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		adapter = new PlayListAdapter();
 		toursInProgressView.setAdapter(adapter);
-
 		return view;
 	}
 
@@ -72,6 +72,17 @@ public class MainFragment
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		viewModel = ViewModelProviders.of(this).get(MainFragmentViewModel.class);
 		viewModel.getUserPlays(user.getId()).observe(this, plays -> {
+			if(plays == null) {
+				ErrorType error = viewModel.getError();
+				switch(error) {
+					case NETWORK:
+						Toast.makeText(requireContext(), getString(R.string.network_error),
+						               Toast.LENGTH_SHORT).show();
+						break;
+				}
+				return;
+			}
+			toursCompletedCard.setVisibility(View.VISIBLE);
 			adapter.setPlays(plays);
 			int inProgress = 0;
 			int completed = 0;

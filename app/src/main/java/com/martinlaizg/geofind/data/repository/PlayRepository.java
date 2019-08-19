@@ -167,7 +167,7 @@ public class PlayRepository {
 		// Remove out of date
 		for(int i = 0; i < plays.size(); i++) {
 			if(plays.get(i).isOutOfDate()) {
-				plays.remove(i);
+				playDAO.delete(plays.remove(i));
 				i--;
 			}
 		}

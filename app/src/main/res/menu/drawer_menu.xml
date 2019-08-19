@@ -2,10 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@id/toMain"
+            android:id="@+id/navMain"
             android:title="@string/home" />
         <item
-            android:id="@id/toTourList"
+            android:id="@+id/navTourList"
             android:title="@string/tour" />
     </group>
 
@@ -13,10 +13,10 @@
         <menu>
             <group android:checkableBehavior="none">
                 <item
-                    android:id="@id/toEditProfile"
+                    android:id="@+id/navEditProfile"
                     android:title="@string/edit_profile" />
                 <item
-                    android:id="@id/toSettings"
+                    android:id="@+id/navSettings"
                     android:title="@string/settings" />
             </group>
         </menu>

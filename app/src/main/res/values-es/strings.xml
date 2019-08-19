@@ -116,4 +116,6 @@
     <string name="completed">Completado</string>
     <string name="in_progress">En progreso</string>
     <string name="place_completed">Sitio completado</string>
+    <string name="app_info">Información de la aplicación</string>
+    <string name="search">Buscar</string>
 </resources>

@@ -55,8 +55,8 @@
         <action
             android:id="@+id/toNewTour"
             app:destination="@id/navTour"
-            app:popUpTo="@+id/navTour"
-            app:popUpToInclusive="true" />
+            app:popUpTo="@+id/navTourList"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/toEditTour"
             app:destination="@id/navCreateTour" />
@@ -138,10 +138,6 @@
         app:destination="@id/navTourList"
         app:launchSingleTop="true" />
     <action
-        android:id="@+id/toSettings"
-        app:destination="@id/navSettings"
-        app:launchSingleTop="true" />
-    <action
         android:id="@+id/toLogin"
         app:destination="@id/navLogin"
         app:launchSingleTop="true"
@@ -163,14 +159,11 @@
         android:label="@string/play_therm"
         tools:layout="@layout/fragment_play_therm" />
     <fragment
-        android:id="@+id/editProfileFragment"
+        android:id="@+id/navEditProfile"
         android:name="com.martinlaizg.geofind.views.fragment.EditProfileFragment"
         android:label="@string/profile"
         tools:layout="@layout/fragment_edit_profile" />
 
-    <action
-        android:id="@+id/toEditProfile"
-        app:destination="@id/editProfileFragment" />
     <fragment
         android:id="@+id/siteCreatorFragment"
         android:name="com.martinlaizg.geofind.views.fragment.creator.CreatePlaceLocationFragment"

@@ -127,4 +127,6 @@
     <string name="completed">Completed</string>
     <string name="in_progress">In progress</string>
     <string name="place_completed">Place completed</string>
+    <string name="search">Search</string>
+    <string name="app_info">App info</string>
 </resources>
