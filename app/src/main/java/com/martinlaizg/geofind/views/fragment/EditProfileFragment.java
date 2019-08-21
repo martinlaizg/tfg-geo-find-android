@@ -208,7 +208,8 @@ public class EditProfileFragment
 				ErrorType error = viewModel.getError();
 				Log.e(TAG,
 				      "updateUser: " + getString(R.string.something_went_wrong) + error.toString());
-				Toast.makeText(requireContext(), "Algo ha ido mal " + error.toString(),
+				Toast.makeText(requireContext(),
+				               getString(R.string.something_went_wrong) + error.toString(),
 				               Toast.LENGTH_SHORT).show();
 				return;
 			}

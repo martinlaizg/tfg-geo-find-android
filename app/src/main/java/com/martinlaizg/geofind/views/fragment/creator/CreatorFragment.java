@@ -145,7 +145,7 @@ public class CreatorFragment
 			tour_name.setText(tour.getName());
 		}
 		if(tour.getDescription().isEmpty()) {
-			tour_description.setText(getResources().getString(R.string.without_decription));
+			tour_description.setText(getResources().getString(R.string.without_description));
 		} else {
 			tour_description.setText(tour.getDescription());
 		}

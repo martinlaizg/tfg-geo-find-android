@@ -102,7 +102,7 @@ public class RegistryFragment
 			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
 			Preferences.setLoggedUser(sp, user);
 			Preferences.setLogin(sp, l);
-			Toast.makeText(requireActivity(), getString(R.string.registred), Toast.LENGTH_LONG)
+			Toast.makeText(requireActivity(), getString(R.string.registered), Toast.LENGTH_LONG)
 					.show();
 			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
 					.popBackStack();

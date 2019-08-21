@@ -47,9 +47,9 @@ public class CreatorPlacesAdapter
 		holder.place_name.setText(place.getName());
 		holder.place_delete_button
 				.setOnClickListener(v -> showExitDialog(v.getContext(), position));
-		holder.questionaire_icon.setVisibility(View.GONE);
+		holder.questionnaire_icon.setVisibility(View.GONE);
 		if(place.getQuestion() != null) {
-			holder.questionaire_icon.setVisibility(View.VISIBLE);
+			holder.questionnaire_icon.setVisibility(View.VISIBLE);
 		}
 		Bundle b = new Bundle();
 		b.putInt(CreatePlaceFragment.PLACE_POSITION, position);
@@ -88,11 +88,7 @@ public class CreatorPlacesAdapter
 		this.fragmentActivity = fragmentActivity;
 		if(places != null) {
 			// sort elements
-			places.sort((o1, o2) -> o1.getOrder() > o2.getOrder() ?
-					1 :
-					o1.getOrder() < o2.getOrder() ?
-							-1 :
-							0);
+			places.sort((o1, o2) -> o1.getOrder().compareTo(o2.getOrder()));
 			this.places = places;
 			notifyDataSetChanged();
 		}
@@ -118,8 +114,8 @@ public class CreatorPlacesAdapter
 		MaterialButton place_delete_button;
 		@BindView(R.id.place_name)
 		TextView place_name;
-		@BindView(R.id.questionaire_icon)
-		ImageView questionaire_icon;
+		@BindView(R.id.questionnaire_icon)
+		ImageView questionnaire_icon;
 
 		CreatorPlacesViewHolder(View view) {
 			super(view);

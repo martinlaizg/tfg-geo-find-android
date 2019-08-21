@@ -63,7 +63,7 @@
     <string name="message">Message</string>
     <string name="send">Send</string>
     <string name="email_in_use">Email already in use</string>
-    <string name="wrong_login">We can not loggin</string>
+    <string name="wrong_login">We can not login</string>
     <string name="service_provider_problem">Problem with service provider</string>
     <string name="wrong_email">Wrong email</string>
     <string name="wrong_password">Wrong password</string>
@@ -87,11 +87,11 @@
     <string name="required_question">Question is required</string>
     <string name="required_answer">The answer is required</string>
     <string name="answer_repeated">The answer can not be repeated</string>
-    <string name="without_decription">Without description</string>
+    <string name="without_description">Without description</string>
     <string name="wrong_answer">Wrong answer</string>
     <string name="at_least_one_place">At least one place</string>
     <string name="no_permissions">No has permission</string>
-    <string name="registred">Registred</string>
+    <string name="registered">Registered</string>
     <string name="click_edit">Click edit</string>
     <string name="place_area_description">Place area</string>
     <string name="place_distance_km">%.2f km</string>
@@ -118,4 +118,5 @@
     <string name="place_completed">Place completed</string>
     <string name="search">Search</string>
     <string name="app_info">App info</string>
+    <string name="no_tours_match">There is no tours</string>
 </resources>

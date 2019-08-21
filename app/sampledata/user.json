@@ -3,6 +3,8 @@
 	"data" : {
 		"name" : "Martin Laiz Gomez",
 		"username" : "martinlaizg",
-		"email" : "martinlaizg@gmail.com"
+		"email" : "martinlaizg@gmail.com",
+		"progress_tours" : "Tienes 5 tours en progreso",
+		"completed_tours" : "Has completado 23 tours"
 	}
 }

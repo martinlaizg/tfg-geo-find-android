@@ -10,10 +10,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -23,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
@@ -31,10 +35,10 @@ import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.data.enums.UserType;
 import com.martinlaizg.geofind.views.adapter.TourListAdapter;
-import com.martinlaizg.geofind.views.fragment.single.TourFragment;
 import com.martinlaizg.geofind.views.viewmodel.TourListViewModel;
 
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,19 +46,23 @@ import butterknife.ButterKnife;
 public class TourListFragment
 		extends Fragment {
 
+	private static final String SEARCH_QUERY = "SEARCH_QUERY";
 	private static final String TAG = TourListFragment.class.getSimpleName();
 
 	@BindView(R.id.tour_list)
 	RecyclerView tour_list;
-
 	@BindView(R.id.create_tour_button)
 	FloatingActionButton create_tour_button;
-
 	@BindView(R.id.swipe_refresh)
 	SwipeRefreshLayout swipe_refresh;
+	@BindView(R.id.no_tours_card)
+	MaterialCardView no_tours_card;
+	@BindView(R.id.no_tours_card_text)
+	TextView no_tours_card_text;
 
 	private TourListViewModel viewModel;
 	private TourListAdapter adapter;
+	private String stringQuery;
 
 	@Nullable
 	@Override
@@ -65,8 +73,29 @@ public class TourListFragment
 		tour_list.setLayoutManager(new LinearLayoutManager(requireActivity()));
 		adapter = new TourListAdapter();
 		tour_list.setAdapter(adapter);
-		// Set that this fragment has options in toolbar
-		setHasOptionsMenu(true);
+
+		Bundle arguments = getArguments();
+		if(arguments != null) {
+			stringQuery = arguments.getString(TourListFragment.SEARCH_QUERY, "");
+			stringQuery = stringQuery.trim();
+			if(!stringQuery.isEmpty()) { // With search
+				swipe_refresh.setEnabled(false);
+			} else {
+				stringQuery = null;
+				// Set that this fragment has options in toolbar
+				setHasOptionsMenu(true);
+			}
+		}
+		requireActivity().getOnBackPressedDispatcher()
+				.addCallback(this, new OnBackPressedCallback(true) {
+					@Override
+					public void handleOnBackPressed() {
+						Objects.requireNonNull(
+								((AppCompatActivity) requireActivity()).getSupportActionBar())
+								.setSubtitle(null);
+					}
+				});
+
 		return view;
 	}
 
@@ -74,7 +103,8 @@ public class TourListFragment
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		viewModel = ViewModelProviders.of(this).get(TourListViewModel.class);
 		swipe_refresh.setRefreshing(true);
-		refreshTours();
+		viewModel.getTours(stringQuery).observe(this, this::setTours);
+
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
 		User u = Preferences.getLoggedUser(sp);
 		if(u.getUser_type() != null && u.getUser_type() != UserType.USER) {
@@ -85,25 +115,36 @@ public class TourListFragment
 					.makeText(requireContext(), getString(R.string.no_permissions),
 					          Toast.LENGTH_SHORT).show());
 		}
-		swipe_refresh.setOnRefreshListener(this::refreshTours);
+		swipe_refresh.setOnRefreshListener(
+				() -> viewModel.getTours(stringQuery).observe(this, this::setTours));
 	}
 
-	private void refreshTours() {
-		viewModel.getTours().observe(this, tours -> {
-			swipe_refresh.setRefreshing(false);
-			if(tours != null) {
-				adapter.setTours(tours);
-			} else {
-				ErrorType error = viewModel.getError();
-				if(error == ErrorType.NETWORK) {
-					Toast.makeText(requireContext(),
-					               getResources().getString(R.string.network_error),
-					               Toast.LENGTH_SHORT).show();
-				} else {
-					Log.e(TAG, "onCreateView: " + error);
-				}
+	private void setTours(List<Tour> tours) {
+		swipe_refresh.setRefreshing(false);
+		if(tours != null) {
+			if(tours.isEmpty()) {
+				swipe_refresh.setVisibility(View.GONE);
+				no_tours_card.setVisibility(View.VISIBLE);
+				no_tours_card_text.setText(getString(R.string.no_tours_match));
+				return;
 			}
-		});
+			adapter.setTours(tours);
+		} else {
+			ErrorType error = viewModel.getError();
+			if(error == ErrorType.NETWORK) {
+				Toast.makeText(requireContext(), getResources().getString(R.string.network_error),
+				               Toast.LENGTH_SHORT).show();
+			} else {
+				Log.e(TAG, "onCreateView: " + error);
+			}
+		}
+	}
+
+	@Override
+	public void onStart() {
+		Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar())
+				.setSubtitle(stringQuery);
+		super.onStart();
 	}
 
 	@Override
@@ -116,33 +157,27 @@ public class TourListFragment
 		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 			@Override
 			public boolean onQueryTextSubmit(String query) {
-				List<Tour> tours = adapter.getTours();
-				if(tours.size() == 1) {
-					Tour tour = tours.get(0);
-					Bundle args = new Bundle();
-					args.putInt(TourFragment.TOUR_ID, tour.getId());
-					Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-							.navigate(R.id.toTour, args);
-				}
-				return false;
+				Bundle args = new Bundle();
+				args.putString(SEARCH_QUERY, query);
+				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+						.navigate(R.id.searchTours, args);
+				return true;
 			}
 
 			@Override
 			public boolean onQueryTextChange(String newText) {
 				adapter.getFilter().filter(newText);
-				return false;
+				return true;
 			}
 		});
-
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-		switch(item.getItemId()) {
-			case R.id.app_bar_search:
-
-				return true;
+		if(item.getItemId() == R.id.app_bar_search) {
+			swipe_refresh.setEnabled(false);
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}

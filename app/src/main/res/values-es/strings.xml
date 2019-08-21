@@ -87,12 +87,12 @@
     <string name="required_answer">La respuesta es obligatoria</string>
     <string name="required_question">La pregunta es obligatoria</string>
     <string name="with_question">Con pregunta</string>
-    <string name="without_decription">Sin descripción</string>
+    <string name="without_description">Sin descripción</string>
     <string name="at_least_one_place">Al menos un sitio</string>
     <string name="wrong_answer">Respuesta incorrecta</string>
     <string name="no_permissions">No tienes permisos</string>
     <string name="click_edit">Click en editar</string>
-    <string name="registred">Registrado</string>
+    <string name="registered">Registrado</string>
     <string name="place_area_description">Área del sitio</string>
     <string name="place_distance_km">%.2f km</string>
     <string name="something_went_wrong">Algo ha ido mal</string>
@@ -118,4 +118,5 @@
     <string name="place_completed">Sitio completado</string>
     <string name="app_info">Información de la aplicación</string>
     <string name="search">Buscar</string>
+    <string name="no_tours_match">No hay tours</string>
 </resources>

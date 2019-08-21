@@ -4,6 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     app:startDestination="@id/navMain">
 
+    <action
+        android:id="@+id/toMain"
+        app:destination="@id/navMain"
+        app:launchSingleTop="true"
+        app:popUpTo="@+id/navMain"
+        app:popUpToInclusive="true" />
+    <action
+        app:destination="@id/navTourList"
+        app:launchSingleTop="true" />
+    <action
+        android:id="@+id/toLogin"
+        app:destination="@id/navLogin"
+        app:launchSingleTop="true"
+        app:popUpTo="@+id/navMain"
+        app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/navMain"
         android:name="com.martinlaizg.geofind.views.fragment.MainFragment"
@@ -18,37 +33,34 @@
         android:name="com.martinlaizg.geofind.views.fragment.creator.CreatePlaceFragment"
         android:label="@string/create_place"
         tools:layout="@layout/fragment_create_place">
+        <action
+            android:id="@+id/toCreatePlaceLocation"
+            app:destination="@id/siteCreatorFragment" />
         <argument
             android:name="PLACE_POSITION"
             android:defaultValue="-1"
             app:argType="integer" />
-        <action
-            android:id="@+id/toCreatePlaceLocation"
-            app:destination="@id/siteCreatorFragment" />
     </fragment>
     <fragment
         android:id="@+id/navCreateTour"
         android:name="com.martinlaizg.geofind.views.fragment.creator.CreateTourFragment"
         android:label="@string/tour_creator"
         tools:layout="@layout/fragment_create_tour">
-        <argument
-            android:name="TOUR_ID"
-            android:defaultValue="0"
-            app:argType="integer" />
         <action
             android:id="@+id/toCreator"
             app:destination="@+id/navCreator"
             app:popUpTo="@+id/navCreateTour"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="TOUR_ID"
+            android:defaultValue="0"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/navCreator"
         android:name="com.martinlaizg.geofind.views.fragment.creator.CreatorFragment"
         android:label="@string/tour_creator"
         tools:layout="@layout/fragment_creator">
-        <argument
-            android:name="TOUR_ID"
-            app:argType="integer" />
         <action
             android:id="@+id/toCreatePlace"
             app:destination="@id/navCreatePlace" />
@@ -60,6 +72,9 @@
         <action
             android:id="@+id/toEditTour"
             app:destination="@id/navCreateTour" />
+        <argument
+            android:name="TOUR_ID"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/navTourList"
@@ -72,16 +87,18 @@
         <action
             android:id="@+id/toTour"
             app:destination="@id/navTour" />
+        <action
+            android:id="@+id/searchTours"
+            app:destination="@id/navTourList" />
+        <argument
+            android:name="SEARCH_QUERY"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/navTour"
         android:name="com.martinlaizg.geofind.views.fragment.single.TourFragment"
         android:label="@string/tour"
         tools:layout="@layout/fragment_tour">
-        <argument
-            android:name="TOUR_ID"
-            android:defaultValue="0"
-            app:argType="integer" />
         <action
             android:id="@+id/toPlace"
             app:destination="@id/navPlace" />
@@ -97,6 +114,10 @@
         <action
             android:id="@+id/toPlayTherm"
             app:destination="@id/navPlayTherm" />
+        <argument
+            android:name="TOUR_ID"
+            android:defaultValue="0"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/navPlace"
@@ -127,22 +148,6 @@
         android:name="com.martinlaizg.geofind.views.fragment.login.RegistryFragment"
         android:label="@string/registry"
         tools:layout="@layout/fragment_registry" />
-    <action
-        android:id="@+id/toMain"
-        app:destination="@id/navMain"
-        app:launchSingleTop="true"
-        app:popUpTo="@+id/navMain"
-        app:popUpToInclusive="true" />
-    <action
-        android:id="@+id/toTourList"
-        app:destination="@id/navTourList"
-        app:launchSingleTop="true" />
-    <action
-        android:id="@+id/toLogin"
-        app:destination="@id/navLogin"
-        app:launchSingleTop="true"
-        app:popUpTo="@+id/navMain"
-        app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/navPlayTour"
         android:name="com.martinlaizg.geofind.views.fragment.play.PlayMapFragment"

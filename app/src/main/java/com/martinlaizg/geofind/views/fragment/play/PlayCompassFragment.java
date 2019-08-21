@@ -39,7 +39,7 @@ public class PlayCompassFragment
 	ImageView navigation_image;
 
 	private SensorManager sensorManager;
-	private Sensor accelSensor;
+	private Sensor accelerationSensor;
 	private Sensor magnetSensor;
 	// Degree from north to destination 0 -> 360
 	private float bearing;
@@ -53,7 +53,7 @@ public class PlayCompassFragment
 		ButterKnife.bind(this, view);
 		sensorManager = (SensorManager) requireActivity().getSystemService(SENSOR_SERVICE);
 		if(sensorManager != null) {
-			accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+			accelerationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 			magnetSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 		}
 		return view;
@@ -116,14 +116,14 @@ public class PlayCompassFragment
 	@Override
 	public void onResume() {
 		super.onResume();
-		sensorManager.registerListener(this, accelSensor, SensorManager.SENSOR_DELAY_NORMAL);
+		sensorManager.registerListener(this, accelerationSensor, SensorManager.SENSOR_DELAY_NORMAL);
 		sensorManager.registerListener(this, magnetSensor, SensorManager.SENSOR_DELAY_NORMAL);
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		sensorManager.unregisterListener(this, accelSensor);
+		sensorManager.unregisterListener(this, accelerationSensor);
 		sensorManager.unregisterListener(this, magnetSensor);
 	}
 

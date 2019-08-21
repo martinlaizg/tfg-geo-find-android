@@ -189,4 +189,18 @@ public class TourRepository {
 		return t;
 	}
 
+	/**
+	 * Get tours from de server with the stringQuery and insert into the database
+	 *
+	 * @param stringQuery
+	 * 		the string
+	 * @return the list of tours
+	 */
+	public List<Tour> getTours(String stringQuery) throws APIException {
+		List<Tour> tours = tourService.getTours(stringQuery);
+		for(Tour t : tours) {
+			insert(t);
+		}
+		return tours;
+	}
 }
