@@ -26,6 +26,8 @@ import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.views.adapter.PlayListAdapter;
 import com.martinlaizg.geofind.views.viewmodel.MainFragmentViewModel;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -71,34 +73,34 @@ public class MainFragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		viewModel = ViewModelProviders.of(this).get(MainFragmentViewModel.class);
-		viewModel.getUserPlays(user.getId()).observe(this, plays -> {
-			if(plays == null) {
-				ErrorType error = viewModel.getError();
-				switch(error) {
-					case NETWORK:
-						Toast.makeText(requireContext(), getString(R.string.network_error),
-						               Toast.LENGTH_SHORT).show();
-						break;
-				}
-				return;
-			}
-			toursCompletedCard.setVisibility(View.VISIBLE);
-			adapter.setPlays(plays);
-			int inProgress = 0;
-			int completed = 0;
-			for(Play p : plays) {
-				if(p.isCompleted()) {
-					completed++;
-				} else {
-					inProgress++;
-				}
-			}
-			toursCompletedText.setText(getResources()
-					                           .getQuantityString(R.plurals.you_complete_num_places,
-					                                              completed, completed));
-			toursInProgressText.setText(getResources()
-					                            .getQuantityString(R.plurals.you_progress_tours,
-					                                               inProgress, inProgress));
-		});
+		viewModel.getUserPlays(user.getId()).observe(this, this::setPlays);
 	}
+
+	private void setPlays(List<Play> plays) {
+		if(plays == null) {
+			ErrorType error = viewModel.getError();
+			if(error == ErrorType.NETWORK) {
+				Toast.makeText(requireContext(), getString(R.string.network_error),
+				               Toast.LENGTH_SHORT).show();
+			}
+			return;
+		}
+		toursCompletedCard.setVisibility(View.VISIBLE);
+		adapter.setPlays(plays);
+		int inProgress = 0;
+		int completed = 0;
+		for(Play p : plays) {
+			if(p.isCompleted()) {
+				completed++;
+			} else {
+				inProgress++;
+			}
+		}
+		toursCompletedText.setText(getResources()
+				                           .getQuantityString(R.plurals.you_complete_num_places,
+				                                              completed, completed));
+		toursInProgressText.setText(getResources().getQuantityString(R.plurals.you_progress_tours,
+		                                                             inProgress, inProgress));
+	}
+
 }

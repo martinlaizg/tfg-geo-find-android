@@ -11,6 +11,7 @@
         app:popUpTo="@+id/navMain"
         app:popUpToInclusive="true" />
     <action
+        android:id="@+id/toTourList"
         app:destination="@id/navTourList"
         app:launchSingleTop="true" />
     <action

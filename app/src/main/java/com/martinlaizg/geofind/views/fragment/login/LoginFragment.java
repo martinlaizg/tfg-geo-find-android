@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,7 +25,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
@@ -57,12 +57,13 @@ public class LoginFragment
 	MaterialButton login_button;
 	@BindView(R.id.login_register_button)
 	MaterialButton registry_button;
+	@BindView(R.id.fake_google_sign_in_button)
+	MaterialButton fake_google_sign_in_button;
 
 	@BindView(R.id.load_layout)
 	ConstraintLayout load_layout;
-
-	@BindView(R.id.google_sign_in_button)
-	SignInButton google_sign_in_button;
+	@BindView(R.id.login_scroll)
+	ScrollView login_scroll;
 
 	private LoginViewModel viewModel;
 	private GoogleSignInClient mGoogleSignInClient;
@@ -71,7 +72,8 @@ public class LoginFragment
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(requestCode == RC_SIGN_IN) {
-			load_layout.setVisibility(View.VISIBLE);
+			login_scroll.setBackgroundColor(
+					getResources().getColor(android.R.color.background_light, null));
 			Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 			handleSignInResult(task);
 			return;
@@ -154,9 +156,7 @@ public class LoginFragment
 		View view = inflater.inflate(R.layout.fragment_login, container, false);
 		ButterKnife.bind(this, view);
 
-		google_sign_in_button.setSize(SignInButton.SIZE_STANDARD);
-		google_sign_in_button.setOnClickListener(v -> googleSignIn());
-
+		fake_google_sign_in_button.setOnClickListener(v -> googleSignIn());
 		// Google SignIn Button
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(
 				GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.client_id))

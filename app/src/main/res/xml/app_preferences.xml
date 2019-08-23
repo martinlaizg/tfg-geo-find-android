@@ -10,10 +10,10 @@
         android:title="@string/default_map_type" />
 
     <Preference
+        android:icon="@drawable/ic_info_outline"
         android:key="@string/pref_support"
         android:summary="@string/send_message_to_support"
-        android:title="@string/errors_and_suggestions"
-        android:icon="@drawable/ic_info_outline"/>
+        android:title="@string/errors_and_suggestions" />
 
     <Preference
         android:key="@string/log_out"

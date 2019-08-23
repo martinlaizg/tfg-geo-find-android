@@ -24,7 +24,6 @@ import butterknife.ButterKnife;
 public class PlaceListAdapter
 		extends RecyclerView.Adapter<PlaceListAdapter.PlaceViewHolder> {
 
-	private final int disabled_color;
 	private final boolean completed;
 	private List<Place> places;
 
@@ -46,8 +45,8 @@ public class PlaceListAdapter
 		holder.place_card
 				.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toPlace, b));
 		if(completed) {
-			holder.place_name.setTextColor(disabled_color);
-			holder.place_description.setTextColor(disabled_color);
+			holder.place_name.setEnabled(false);
+			holder.place_description.setEnabled(false);
 		}
 	}
 
@@ -56,10 +55,9 @@ public class PlaceListAdapter
 		return places.size();
 	}
 
-	public PlaceListAdapter(boolean completed, int disabled_color) {
+	public PlaceListAdapter(boolean completed) {
 		places = new ArrayList<>();
 		this.completed = completed;
-		this.disabled_color = disabled_color;
 	}
 
 	public void setPlaces(List<Place> places) {

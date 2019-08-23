@@ -119,4 +119,6 @@
     <string name="search">Search</string>
     <string name="app_info">App info</string>
     <string name="no_tours_match">There is no tours</string>
+    <string name="places">Places</string>
+    <string name="log_in_with_google">Log in with Google</string>
 </resources>
