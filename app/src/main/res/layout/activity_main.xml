@@ -42,10 +42,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/colorPrimaryLight"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/drawer_header"
         app:itemBackground="@drawable/drawable_selected_item"
-        app:itemTextColor="@color/colorPrimaryDark"
         app:menu="@menu/drawer_menu" />
 </androidx.drawerlayout.widget.DrawerLayout>

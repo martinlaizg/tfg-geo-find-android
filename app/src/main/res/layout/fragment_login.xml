@@ -20,7 +20,6 @@
             android:layout_marginEnd="8dp"
             android:contentDescription="@string/app_logo_description"
             android:src="@drawable/ic_geo_find_logo"
-            android:tint="@color/colorSecondaryDark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -94,6 +93,10 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            app:boxCornerRadiusBottomEnd="24dp"
+            app:boxCornerRadiusBottomStart="24dp"
+            app:boxCornerRadiusTopEnd="24dp"
+            app:boxCornerRadiusTopStart="24dp"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -103,7 +106,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -113,6 +118,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            app:boxCornerRadiusBottomEnd="24dp"
+            app:boxCornerRadiusBottomStart="24dp"
+            app:boxCornerRadiusTopEnd="24dp"
+            app:boxCornerRadiusTopStart="24dp"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -124,7 +133,9 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/secure"
                 android:imeOptions="actionDone"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp" />
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

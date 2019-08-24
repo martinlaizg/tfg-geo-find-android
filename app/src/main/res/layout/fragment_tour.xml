@@ -73,6 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="@string/completed"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tour_creator" />
 
@@ -83,7 +84,6 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/in_progress"
-                android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/places_list" />
@@ -113,7 +113,6 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:background="?android:attr/listDivider"
                 app:layout_constraintBottom_toBottomOf="@+id/completed_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/completed_text"
@@ -125,7 +124,6 @@
                 android:layout_height="1dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
-                android:background="@color/colorSecondary"
                 app:layout_constraintBottom_toBottomOf="@+id/in_progress_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/in_progress_text"
@@ -196,6 +194,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/play"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

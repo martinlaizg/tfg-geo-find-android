@@ -45,8 +45,7 @@ public class PlaceListAdapter
 		holder.place_card
 				.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toPlace, b));
 		if(completed) {
-			holder.place_name.setEnabled(false);
-			holder.place_description.setEnabled(false);
+			holder.completePlace();
 		}
 	}
 
@@ -56,8 +55,8 @@ public class PlaceListAdapter
 	}
 
 	public PlaceListAdapter(boolean completed) {
-		places = new ArrayList<>();
 		this.completed = completed;
+		this.places = new ArrayList<>();
 	}
 
 	public void setPlaces(List<Place> places) {
@@ -68,6 +67,7 @@ public class PlaceListAdapter
 	class PlaceViewHolder
 			extends RecyclerView.ViewHolder {
 
+		private final int completedColor;
 		@BindView(R.id.place_name)
 		TextView place_name;
 		@BindView(R.id.place_description)
@@ -77,7 +77,14 @@ public class PlaceListAdapter
 
 		PlaceViewHolder(@NonNull View itemView) {
 			super(itemView);
+			completedColor = itemView.getContext().getResources()
+					.getColor(R.color.colorPrimaryLightAlpha, null);
 			ButterKnife.bind(this, itemView);
+		}
+
+		void completePlace() {
+			place_name.setTextColor(completedColor);
+			place_description.setTextColor(completedColor);
 		}
 	}
 }
