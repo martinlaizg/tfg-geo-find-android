@@ -1,9 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'jacoco-android'
-
 
 android {
-
     signingConfigs {
         debug {
             storePassword 'android'
@@ -12,7 +9,10 @@ android {
             storeFile file('../android-studio-settings/debug.jks')
         }
     }
+
     compileSdkVersion 29
+    buildToolsVersion = '29.0.2'
+
     defaultConfig {
         applicationId 'com.martinlaizg.geofind'
         minSdkVersion 26
@@ -23,10 +23,6 @@ android {
     }
 
     buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
         debug {
             testCoverageEnabled true
             signingConfig signingConfigs.debug
@@ -37,13 +33,21 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    buildToolsVersion = '29.0.2'
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+            returnDefaultValues = true
+        }
+    }
 }
 
+apply from: 'jacoco.gradle'
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
+    // AndroidX
     implementation 'androidx.activity:activity:1.1.0-alpha02'
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.cardview:cardview:1.0.0'
@@ -60,26 +64,10 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.room:room-runtime:2.1.0'
     implementation 'androidx.viewpager:viewpager:1.0.0'
-
-    implementation 'com.google.android.gms:play-services-auth:17.0.0'
-    implementation 'com.google.android.gms:play-services-location:17.0.0'
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
-    implementation 'com.google.android.material:material:1.1.0-alpha09'
-
-    implementation 'com.jakewharton:butterknife:10.1.0'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
-    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
-
-    testImplementation 'androidx.arch.core:core-testing:2.0.1'
-    testImplementation 'androidx.test:core:1.2.0'
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:2.19.0'
-
     annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.0.0'
     annotationProcessor 'androidx.room:room-compiler:2.1.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
 
+    // AndroidX Test
     androidTestImplementation 'androidx.test:rules:1.2.0'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-accessibility:3.2.0'
@@ -90,5 +78,40 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso.idling:idling-concurrent:3.2.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.ext:truth:1.2.0'
+    testImplementation 'androidx.arch.core:core-testing:2.0.1'
+    testImplementation 'androidx.test:core:1.2.0'
+
+    // Google
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.material:material:1.1.0-alpha09'
     androidTestImplementation 'com.google.truth:truth:0.45'
+
+    // Retrofit
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+
+    // Butterknife
+    implementation 'com.jakewharton:butterknife:10.1.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
+
+    // Picasso
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+
+    // Testing
+    testImplementation 'junit:junit:4.12'
+
+    // Mockito
+    testImplementation 'org.mockito:mockito-core:3.0.0'
+
+    // PowerMock
+    testImplementation 'org.mockito:mockito-core:3.0.0'
+    testImplementation 'org.powermock:powermock-core:2.0.2'
+    testImplementation 'org.powermock:powermock-module-junit4:2.0.2'
+    testImplementation 'org.powermock:powermock-api-mockito2:2.0.2'
+    androidTestImplementation 'org.mockito:mockito-core:3.0.0'
+    androidTestImplementation 'org.powermock:powermock-core:2.0.2'
+    androidTestImplementation 'org.powermock:powermock-module-junit4:2.0.2'
+    androidTestImplementation 'org.powermock:powermock-api-mockito2:2.0.2'
 }

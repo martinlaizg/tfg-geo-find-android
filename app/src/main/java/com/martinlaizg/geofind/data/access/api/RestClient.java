@@ -138,4 +138,14 @@ public interface RestClient {
 	 */
 	@PUT("users/{user_id}")
 	Call<User> updateUser(@Path("user_id") Integer user_id, @Body Login login);
+
+	/**
+	 * Get the list of plays of the user
+	 *
+	 * @param user_id
+	 * 		the id of the user
+	 * @return the list of plays
+	 */
+	@GET("users/{user_id}/plays")
+	Call<List<Play>> getUserPlays(@Path("user_id") Integer user_id);
 }

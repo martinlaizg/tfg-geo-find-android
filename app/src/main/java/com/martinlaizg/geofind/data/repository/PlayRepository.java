@@ -157,40 +157,50 @@ public class PlayRepository {
 	 * Get the list of plays of users
 	 *
 	 * @param user_id
-	 * 		the id of the user to get plays
+	 * 		the id of the user
 	 * @return the list of plays
+	 * @throws APIException
+	 * 		the exception from the database
 	 */
 	public List<Play> getUserPlays(int user_id) throws APIException {
 		List<Play> plays = playDAO.getUserPlays(user_id);
+		// Remove out of date
+		for(int i = 0; i < plays.size(); i++) {
+			if(plays.get(i).isOutOfDate()) {
+				plays.remove(i);
+				i--;
+			}
+		}
 		if(plays.isEmpty()) {
-			plays.addAll(playService.getUserPlays());
+			plays.addAll(playService.getUserPlays(user_id));
 			for(Play p : plays) {
 				userRepo.insert(p.getUser());
 				tourRepo.insert(p.getTour());
 				userRepo.insert(p.getTour().getCreator());
-				playDAO.insert(p);
+				insert(p);
 			}
 		} else {
 			for(int i = 0; i < plays.size(); i++) {
-				if(plays.get(i).isOutOfDate()) {
-					plays.remove(i);
-					i--;
-				} else {
-					plays.get(i).setTour(tourRepo.getTour(plays.get(i).getTour_id()));
-					plays.get(i).setPlaces(placePlayDAO.getPlayPlace(plays.get(i).getId()));
-				}
+				plays.get(i).setTour(tourRepo.getTour(plays.get(i).getTour_id()));
+				plays.get(i).setPlaces(placePlayDAO.getPlayPlace(plays.get(i).getId()));
 			}
 		}
-		refreshUserPlays(user_id);
 		return plays;
 	}
 
-	private void refreshUserPlays(int user_id) {
-		new Thread(() -> {
-			List<Play> plays = playService.getUserPlays();
-			for(Play p : plays) {
-				insert(p);
-			}
-		}).start();
+	/**
+	 * Refresh the list of plays of the user
+	 * From the server into the database
+	 *
+	 * @param user_id
+	 * 		the id of the user
+	 * @throws APIException
+	 * 		exception from the server
+	 */
+	private void refreshPlays(int user_id) throws APIException {
+		List<Play> plays = playService.getUserPlays(user_id);
+		for(Play p : plays) {
+			insert(p);
+		}
 	}
 }
