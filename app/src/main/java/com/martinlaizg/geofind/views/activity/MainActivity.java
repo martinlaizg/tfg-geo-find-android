@@ -2,15 +2,21 @@ package com.martinlaizg.geofind.views.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -21,6 +27,7 @@ import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.api.RetrofitInstance;
 import com.martinlaizg.geofind.data.access.database.entities.User;
+import com.martinlaizg.geofind.data.repository.UserRepository;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashSet;
@@ -37,11 +44,13 @@ public class MainActivity
 
 	@BindView(R.id.drawer_layout)
 	DrawerLayout drawer_layout;
-	@BindView(R.id.main_toolbar)
-	Toolbar toolbar;
-
 	@BindView(R.id.drawer_nav_view)
 	NavigationView navigationView;
+	@BindView(R.id.toolbar)
+	Toolbar toolbar;
+
+	private NavController navController;
+	private AppBarConfiguration appBarConfiguration;
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -51,8 +60,6 @@ public class MainActivity
 				User u = Preferences.getLoggedUser(sharedPreferences);
 				if(u != null) {
 					setDrawerHeader(u.getUsername(), u.getName(), u.getImage());
-				} else {
-					setToolbarAndDrawer(false);
 				}
 				break;
 			case Preferences.TOKEN:
@@ -79,17 +86,30 @@ public class MainActivity
 		}
 	}
 
-	public void setToolbarAndDrawer(boolean visibility) {
-		toolbar.setVisibility(visibility ?
-				                      View.VISIBLE :
-				                      View.GONE);
-		drawer_layout.setDrawerLockMode(visibility ?
-				                                DrawerLayout.LOCK_MODE_UNLOCKED :
-				                                DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-	}
-
 	private void setServicesToken(String token) {
 		RetrofitInstance.setToken(token);
+	}
+
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState,
+			@Nullable PersistableBundle persistentState) {
+		super.onCreate(savedInstanceState, persistentState);
+		UserRepository.getInstance(getApplication());
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+		return NavigationUI.onNavDestinationSelected(item, navController) ||
+				super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onBackPressed() {
+		if(drawer_layout.isDrawerOpen(GravityCompat.START)) {
+			drawer_layout.closeDrawer(GravityCompat.START);
+		} else {
+			super.onBackPressed();
+		}
 	}
 
 	@Override
@@ -114,17 +134,23 @@ public class MainActivity
 		setContentView(R.layout.activity_main);
 		ButterKnife.bind(this);
 
-		NavController navController = Navigation.findNavController(this, R.id.main_fragment_holder);
+		setSupportActionBar(toolbar);
 
+		// Set Navigation Controller
+		navController = Navigation.findNavController(this, R.id.main_fragment_holder);
+
+		// Setup the navigation view (drawer)
+		NavigationUI.setupWithNavController(navigationView, navController);
+
+		// Set the toolbar
 		Set<Integer> topLevelDestinations = new HashSet<>();
 		topLevelDestinations.add(R.id.navMain);
 		topLevelDestinations.add(R.id.navTourList);
-		AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-				topLevelDestinations).setDrawerLayout(drawer_layout).build();
-
-		setSupportActionBar(toolbar);
-		NavigationUI.setupWithNavController(navigationView, navController);
+		appBarConfiguration = new AppBarConfiguration.Builder(topLevelDestinations)
+				.setDrawerLayout(drawer_layout).build();
 		NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
+
+		navController.addOnDestinationChangedListener(this::onDestinationChangedListener);
 
 		PreferenceManager.setDefaultValues(this, R.xml.app_preferences, false);
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
@@ -134,5 +160,22 @@ public class MainActivity
 		}
 		String token = Preferences.getToken(sp);
 		setServicesToken(token);
+	}
+
+	private void onDestinationChangedListener(NavController navController,
+			NavDestination destination, Bundle bundle) {
+		if(destination.getId() == R.id.navLogin || destination.getId() == R.id.navRegistry) {
+			toolbar.setVisibility(View.GONE);
+			drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+		} else {
+			toolbar.setVisibility(View.VISIBLE);
+			drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+		}
+	}
+
+	@Override
+	public boolean onSupportNavigateUp() {
+		return NavigationUI.navigateUp(navController, appBarConfiguration) ||
+				super.onSupportNavigateUp();
 	}
 }

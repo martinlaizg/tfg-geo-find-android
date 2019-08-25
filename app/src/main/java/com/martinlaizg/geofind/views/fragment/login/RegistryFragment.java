@@ -91,7 +91,7 @@ public class RegistryFragment
 		viewModel.registry(l).observe(this, (user) -> {
 			btn_registry.setEnabled(true);
 			if(user == null) {
-				if(viewModel.getError().getType() == ErrorType.EMAIL) {
+				if(viewModel.getError() == ErrorType.EMAIL) {
 					email_input.setError(getString(R.string.email_in_use));
 				} else {
 					Toast.makeText(requireContext(), getString(R.string.other_error),
@@ -102,7 +102,7 @@ public class RegistryFragment
 			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
 			Preferences.setLoggedUser(sp, user);
 			Preferences.setLogin(sp, l);
-			Toast.makeText(requireActivity(), getString(R.string.registred), Toast.LENGTH_LONG)
+			Toast.makeText(requireActivity(), getString(R.string.registered), Toast.LENGTH_LONG)
 					.show();
 			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
 					.popBackStack();

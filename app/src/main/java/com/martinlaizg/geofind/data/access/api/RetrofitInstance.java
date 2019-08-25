@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
-import com.martinlaizg.geofind.data.repository.RepositoryFactory;
 import com.martinlaizg.geofind.data.repository.UserRepository;
 import com.martinlaizg.geofind.utils.DateUtils;
 
@@ -33,9 +32,6 @@ public class RetrofitInstance {
 	private static UserRepository userRepo;
 
 	public static RestClient getRestClient(Application application) {
-		if(userRepo == null) {
-			userRepo = RepositoryFactory.getUserRepository(application);
-		}
 		if(sp == null) {
 			sp = PreferenceManager.getDefaultSharedPreferences(application.getApplicationContext());
 		}
@@ -55,6 +51,9 @@ public class RetrofitInstance {
 				Response response = chain.proceed(newRequest);
 				if(response.code() == 401) { // Code 401 Unauthorized
 					try {
+						if(userRepo == null) {
+							userRepo = UserRepository.getInstance();
+						}
 						userRepo.reLogin();
 					} catch(APIException e) {
 						Log.e(TAG, "Fail relogin", e);

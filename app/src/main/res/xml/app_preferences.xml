@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
-        android:id="@+id/pref_map_type"
         android:defaultValue="@string/pref_map"
         android:entries="@array/map_types"
         android:entryValues="@array/pref_map_types"
@@ -11,17 +10,16 @@
         android:title="@string/default_map_type" />
 
     <Preference
-        android:id="@+id/pref_error_and_support"
+        android:icon="@drawable/ic_info_outline"
         android:key="@string/pref_support"
         android:summary="@string/send_message_to_support"
         android:title="@string/errors_and_suggestions" />
 
     <Preference
-        android:id="@+id/pref_log_out"
-        android:key="@string/log_out"
+        android:key="@string/pref_log_out"
         android:title="@string/log_out" />
 
-    <PreferenceCategory android:title="Información de la app">
+    <PreferenceCategory android:title="@string/app_info">
 
         <Preference
             android:summary="@string/app_version_name"
@@ -32,4 +30,4 @@
 
     </PreferenceCategory>
 
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

@@ -1,6 +1,7 @@
 package com.martinlaizg.geofind.views.fragment.single;
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.views.viewmodel.TourViewModel;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.Random;
@@ -58,6 +60,7 @@ public class PlaceFragment
 			@Nullable Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_place, container, false);
 		ButterKnife.bind(this, view);
+		place_description.setMovementMethod(new ScrollingMovementMethod());
 		place_map.onCreate(savedInstanceState);
 		place_map.onResume();
 		place_map.getMapAsync(this);
@@ -82,9 +85,18 @@ public class PlaceFragment
 			place_description.setText(place.getDescription());
 
 			if(place.getImage() != null && !place.getImage().isEmpty()) {
-				Picasso.with(requireContext()).load(place.getImage()).into(place_image);
-			} else {
-				place_image.setImageResource(R.drawable.default_map_image);
+				Picasso.with(requireContext()).load(place.getImage())
+						.into(place_image, new Callback() {
+							@Override
+							public void onSuccess() {
+								place_image.setVisibility(View.VISIBLE);
+							}
+
+							@Override
+							public void onError() {
+								place_image.setVisibility(View.GONE);
+							}
+						});
 			}
 
 			int number = place.getOrder() + 1;

@@ -6,23 +6,26 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.Play;
 import com.martinlaizg.geofind.data.repository.PlayRepository;
-import com.martinlaizg.geofind.data.repository.RepositoryFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayTourViewModel
 		extends AndroidViewModel {
 
 	private final PlayRepository playRepo;
 
-	private APIException error;
+	private ErrorType error;
 	private Play play;
 
 	public PlayTourViewModel(@NonNull Application application) {
 		super(application);
-		playRepo = RepositoryFactory.getPlayRepository(application);
+		playRepo = PlayRepository.getInstance(application);
 	}
 
 	public MutableLiveData<Place> loadPlay(int user_id, int tour_id) {
@@ -35,23 +38,34 @@ public class PlayTourViewModel
 				}
 				m.postValue(getNextPlace());
 			} catch(APIException e) {
-				setError(e);
+				setError(e.getType());
 			}
 		}).start();
 		return m;
 	}
 
-	public Place getNextPlace() {
-		int numCompletedPlaces = play.getPlaces().size();
-		if(numCompletedPlaces >= play.getTour().getPlaces().size()) return null;
-		return play.getTour().getPlaces().get(numCompletedPlaces);
+	private Place getNextPlace() {
+		List<Place> places = new ArrayList<>(play.getTour().getPlaces());
+		for(int i = 0; i < places.size(); i++) {
+			for(Place p : play.getPlaces()) {
+				if(places.get(i).getId() == p.getId()) {
+					places.remove(i);
+					i--;
+					break;
+				}
+			}
+		}
+		if(places.size() == 0) return null;
+		return places.get(0);
 	}
 
-	public APIException getError() {
-		return error;
+	public ErrorType getError() {
+		return error != null ?
+				error :
+				ErrorType.OTHER;
 	}
 
-	private void setError(APIException error) {
+	private void setError(ErrorType error) {
 		this.error = error;
 	}
 
@@ -63,10 +77,13 @@ public class PlayTourViewModel
 		MutableLiveData<Place> c = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
+				if(play.getId() == 0) {
+					play = playRepo.createPlay(play.getUser_id(), play.getUser_id());
+				}
 				play = playRepo.completePlace(play.getId(), place_id);
 				c.postValue(getNextPlace());
 			} catch(APIException e) {
-				setError(e);
+				setError(e.getType());
 				c.postValue(null);
 			}
 		}).start();

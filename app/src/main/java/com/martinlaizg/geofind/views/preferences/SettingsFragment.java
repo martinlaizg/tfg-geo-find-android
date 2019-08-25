@@ -1,6 +1,5 @@
 package com.martinlaizg.geofind.views.preferences;
 
-import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.preference.Preference;
@@ -23,7 +24,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
-import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
+import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.views.viewmodel.SettingsViewModel;
 
 import java.util.Objects;
@@ -45,38 +46,13 @@ public class SettingsFragment
 	@Override
 	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 		addPreferencesFromResource(R.xml.app_preferences);
-
-		findPreference(getString(R.string.log_out))
-				.setOnPreferenceClickListener(getLogOutListener());
+		requireActivity().setTheme(R.style.AppTheme_ScreenPreferences);
 		createSupportMessageDialog();
-		findPreference("support").setOnPreferenceClickListener(preference -> {
-			dialog.show();
-			return true;
-		});
-	}
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(
-				GoogleSignInOptions.DEFAULT_SIGN_IN)
-				.requestIdToken(getResources().getString(R.string.client_id)).requestEmail()
-				.build();
-		mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
-		return super.onCreateView(inflater, container, savedInstanceState);
-	}
-
-	private Preference.OnPreferenceClickListener getLogOutListener() {
-		return preference -> {
-			mGoogleSignInClient.signOut().addOnCompleteListener(requireActivity(), task -> {
-				SharedPreferences sp = PreferenceManager
-						.getDefaultSharedPreferences(requireContext());
-				Preferences.logout(sp);
-				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-						.popBackStack();
-			});
-			return true;
-		};
+		Preference preference = findPreference(getString(R.string.pref_log_out));
+		if(preference != null) preference.setOnPreferenceClickListener(this::onLogOut);
+		preference = findPreference(getString(R.string.pref_support));
+		if(preference != null) preference.setOnPreferenceClickListener(this::onSupport);
 	}
 
 	private void createSupportMessageDialog() {
@@ -103,8 +79,8 @@ public class SettingsFragment
 
 			viewModel.sendMessage(title, message).observe(this, (ok) -> {
 				if(ok == null) {
-					APIException e = viewModel.getError();
-					Log.e(TAG, "setLogoutPreference: " + e.getType().toString());
+					ErrorType e = viewModel.getError();
+					Log.e(TAG, "setLogoutPreference: " + e);
 				} else if(ok) {
 					Toast.makeText(requireContext(), "Message sent", Toast.LENGTH_SHORT).show();
 					Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
@@ -118,5 +94,31 @@ public class SettingsFragment
 		});
 		builder.setView(view);
 		dialog = builder.create();
+	}
+
+	private boolean onLogOut(Preference preference) {
+		mGoogleSignInClient.signOut().addOnCompleteListener(requireActivity(), task -> {
+			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
+			Preferences.logout(sp);
+			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+					.navigate(R.id.toMain);
+		});
+		return true;
+	}
+
+	private boolean onSupport(Preference preference) {
+		dialog.show();
+		return true;
+	}
+
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(
+				GoogleSignInOptions.DEFAULT_SIGN_IN)
+				.requestIdToken(getResources().getString(R.string.client_id)).requestEmail()
+				.build();
+		mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
+		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 }

@@ -1,5 +1,7 @@
 package com.martinlaizg.geofind.data.access.database.entities;
 
+import android.location.Location;
+
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
@@ -56,6 +58,8 @@ public class Place {
 	@Ignore
 	public Place() {
 		id = 0;
+		this.name = "";
+		this.description = "";
 	}
 
 	public int getId() {
@@ -194,5 +198,27 @@ public class Place {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	public Location getLocation() {
+		if(lat == null || lon == null) return null;
+		Location l = new Location("");
+		l.setLatitude(this.lat);
+		l.setLongitude(this.lon);
+		return l;
+	}
+
+	public void setLocation(Location location) {
+		if(location == null) return;
+		lat = location.getLatitude();
+		lon = location.getLongitude();
+	}
+
+	public void setCompleteQuestion(String question, String correctAnswer, String secondAnswer,
+			String thirdAnswer) {
+		this.question = question;
+		this.answer = correctAnswer;
+		this.answer2 = secondAnswer;
+		this.answer3 = thirdAnswer;
 	}
 }

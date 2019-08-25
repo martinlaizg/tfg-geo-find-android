@@ -1,12 +1,50 @@
 <resources>
 
-    <!-- Basic theme -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="colorAccent">@color/colorSecondary</item>
-        <item name="android:textColor">@color/light_black</item>
+        <item name="colorControlNormal">@color/textOnPrimary</item>
+        <item name="android:fontFamily">@font/main_font</item>
+        <item name="android:textColorPrimary">@color/textOnSecondary</item>
+        <item name="android:textColorSecondary">@color/textOnPrimary</item>
+        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:subtitleTextColor">@color/textOnSecondary</item>
     </style>
+
+    <style name="AppTheme.TextView.Small" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="AppTheme.TextView.Medium" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="AppTheme.TextView.Big" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="AppTheme.TextView.ExtraLarge" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">26sp</item>
+    </style>
+
+    <style name="AppTheme.Button" parent="Widget.MaterialComponents.Button"></style>
+
+    <style name="AppTheme.Button.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton"></style>
+
+    <style name="AppTheme.TextInputLayout.Outlined" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox"></style>
+
+    <style name="AppTheme.CardView" parent="Widget.MaterialComponents.CardView"></style>
+
+    <style name="AppTheme.AppBarLayout" parent="@style/Widget.MaterialComponents.AppBarLayout.Primary">
+        <item name="android:textColorPrimary">@color/textOnPrimary</item>
+    </style>
+
+    <style name="AppTheme.ScreenPreferences">
+        <item name="android:textColorSecondary">@color/textOnSecondary</item>
+    </style>
+
+    <style name="AppTheme.NavigationView" parent="@style/Widget.MaterialComponents.NavigationView"></style>
 
 </resources>

@@ -1,15 +1,16 @@
 package com.martinlaizg.geofind.views.fragment.play;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,11 +21,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
 
-import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
-import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
+import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 import com.martinlaizg.geofind.views.viewmodel.PlayTourViewModel;
@@ -41,7 +44,7 @@ abstract class PlayTourFragment
 
 	public static final String TOUR_ID = "TOUR_ID";
 
-	static final int PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION = 1;
+	private static final int PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION = 1;
 
 	private static final float DISTANCE_TO_COMPLETE = 15;
 	private static final long LOC_TIME_REQ = 200;
@@ -59,7 +62,8 @@ abstract class PlayTourFragment
 	Place place;
 	Location usrLocation;
 	Location placeLocation;
-	float distance;
+	float distance = Float.MAX_VALUE;
+	private boolean lock = false;
 	private PlayTourViewModel viewModel;
 	private LocationManager locationManager;
 	private AlertDialog questionDialog;
@@ -73,12 +77,15 @@ abstract class PlayTourFragment
 					permissions[1].equals(Manifest.permission.ACCESS_FINE_LOCATION) &&
 					grantResults[1] == PackageManager.PERMISSION_GRANTED) {
 				Log.d(TAG(), "onRequestPermissionsResult: success");
+				setPlace(place);
+				return;
 			}
 			Log.d(TAG(), "onRequestPermissionsResult: deny");
+			requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+					                   Manifest.permission.ACCESS_FINE_LOCATION},
+			                   PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION);
 		}
 	}
-
-	protected abstract String TAG();
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -97,13 +104,6 @@ abstract class PlayTourFragment
 						.popBackStack(R.id.navTour, false);
 				return;
 			}
-
-			// If has question build it
-			if(place.getQuestion() != null && !place.getQuestion().isEmpty()) {
-				createDialog(place);
-			} else {
-				questionDialog = null;
-			}
 			setPlace(place);
 		});
 	}
@@ -111,9 +111,44 @@ abstract class PlayTourFragment
 	@Override
 	public void onResume() {
 		super.onResume();
-		Log.i(TAG(), "onResume: check location permissions");
 		locationManager = (LocationManager) requireActivity()
 				.getSystemService(Context.LOCATION_SERVICE);
+		requireActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		requestLocationUpdates();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		removeLocationUpdates();
+		requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+	}
+
+	private void removeLocationUpdates() {
+		Log.i(TAG(), "remove location updates");
+		locationManager.removeUpdates(this);
+	}
+
+	protected abstract String TAG();
+
+	private void setPlace(Place nextPlace) {
+		Log.d(TAG(), "setPlace: ");
+		distance = Float.MAX_VALUE;
+		requestLocationUpdates();
+		place = nextPlace;
+		placeLocation = place.getLocation();
+		place_name.setText(place.getName());
+		place_description.setText(place.getDescription());
+		int numCompletedPlaces = viewModel.getPlay().getPlaces().size() + 1;
+		int numPlaces = viewModel.getPlay().getTour().getPlaces().size();
+		place_complete.setText(getResources().getQuantityString(R.plurals.place_number_number,
+		                                                        numCompletedPlaces,
+		                                                        numCompletedPlaces, numPlaces));
+		updateView();
+	}
+
+	private void requestLocationUpdates() {
+		Log.d(TAG(), "request location updates");
 		if(requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) !=
 				PackageManager.PERMISSION_GRANTED &&
 				requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) !=
@@ -124,22 +159,14 @@ abstract class PlayTourFragment
 			return;
 		}
 		usrLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		Log.i(TAG(), "onResume: start request location updates");
 		locationManager
 				.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOC_TIME_REQ, LOC_DIST_REQ,
 				                        this);
-		updateView();
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		Log.i(TAG(), "onPause: delete location updates");
-		locationManager.removeUpdates(this);
 	}
 
 	abstract void updateView();
 
+	@SuppressLint("MissingPermission")
 	@Override
 	public void onLocationChanged(@NonNull Location location) {
 		Log.d(TAG(), "onLocationChanged: ");
@@ -160,15 +187,9 @@ abstract class PlayTourFragment
 				Log.d(TAG(), "updateView: distance=" + distance + "m");
 			}
 			if(distance < DISTANCE_TO_COMPLETE) {
-				locationManager.removeUpdates(this);
 				Log.d(TAG(), "updateView: user arrive to the place");
-
-				// If has question display
-				if(questionDialog != null && !questionDialog.isShowing()) {
-					questionDialog.show();
-				} else {
-					completePlace();
-				}
+				removeLocationUpdates();
+				showCompleteDialog(place);
 				return;
 			}
 		}
@@ -177,110 +198,94 @@ abstract class PlayTourFragment
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		Log.i(TAG(), "onStatusChanged: ");
+		Log.d(TAG(), "onStatusChanged: ");
 	}
 
 	@Override
 	public void onProviderEnabled(String provider) {
-		Log.i(TAG(), "onProviderEnabled: ");
+		Log.d(TAG(), "onProviderEnabled: ");
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
-		Log.i(TAG(), "onProviderDisabled: ");
+		Log.d(TAG(), "onProviderDisabled: ");
 	}
 
 	private void completePlace() {
-		// hide question dialog if exist and is showing
+		Log.d(TAG(), "completePlace: ");
 		if(questionDialog != null && questionDialog.isShowing()) questionDialog.dismiss();
 		viewModel.completePlace(place.getId()).observe(this, place -> {
 			if(place == null) {
 				if(viewModel.tourIsCompleted()) {
-					AlertDialog.Builder questionDialogBuilder = new AlertDialog.Builder(
-							requireContext()).setTitle(R.string.tour_completed);
-					questionDialogBuilder.setPositiveButton(R.string.ok,
-					                                        (dialog, which) -> Navigation
-							                                        .findNavController(
-									                                        requireActivity(),
-									                                        R.id.main_fragment_holder)
-							                                        .popBackStack(R.id.navTour,
-							                                                      false));
-					questionDialogBuilder.show();
+					completeTour();
 					return;
 				}
-				APIException error = viewModel.getError();
-				Log.e(TAG(), "completePlace: ", error);
-				Toast.makeText(requireContext(), viewModel.getError().getMessage(),
-				               Toast.LENGTH_SHORT).show();
-
+				ErrorType error = viewModel.getError();
+				error.showToast(requireContext());
 			} else {
-				Log.d(TAG(), "updateView: Place done");
+				Log.d(TAG(), "updateView: Place completed");
 				setPlace(place);
-				if(requireActivity()
-						.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) !=
-						PackageManager.PERMISSION_GRANTED && requireActivity()
-						.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) !=
-						PackageManager.PERMISSION_GRANTED) {
-					Toast.makeText(requireContext(), R.string.rejected_location_access,
-					               Toast.LENGTH_SHORT).show();
-					return;
-				}
-				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOC_TIME_REQ,
-				                                       LOC_DIST_REQ, this);
 			}
 		});
 	}
 
-	private void setPlace(Place nextPlace) {
-		place = nextPlace;
-		placeLocation = new Location("");
-		placeLocation.setLatitude(place.getLat());
-		placeLocation.setLongitude(place.getLon());
-		place_name.setText(place.getName());
-		place_description.setText(place.getDescription());
-		int numCompletedPlaces = viewModel.getPlay().getPlaces().size() + 1;
-		int numPlaces = viewModel.getPlay().getTour().getPlaces().size();
-		place_complete.setText(getResources().getQuantityString(R.plurals.place_number_number,
-		                                                        numCompletedPlaces,
-		                                                        numCompletedPlaces, numPlaces));
-		updateView();
+	private void completeTour() {
+		Log.d(TAG(), "completeTour: ");
+		new MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.tour_completed) //
+				.setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss())
+				.setOnDismissListener(dialogInterface -> Navigation
+						.findNavController(requireActivity(), R.id.main_fragment_holder)
+						.popBackStack(R.id.navTour, false)).show();
 	}
 
-	private void createDialog(Place place) {
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(requireContext());
-		View dialogView = getLayoutInflater()
-				.inflate(R.layout.question_layout, new ConstraintLayout(requireContext()), false);
-		TextView question = dialogView.findViewById(R.id.question);
-		question.setText(place.getQuestion());
-		List<MaterialCardView> cards = Arrays.asList(dialogView.findViewById(R.id.answer1_layout),
-		                                             dialogView.findViewById(R.id.answer2_layout),
-		                                             dialogView.findViewById(R.id.answer3_layout));
-		List<TextView> texts = Arrays.asList(dialogView.findViewById(R.id.answer1),
-		                                     dialogView.findViewById(R.id.answer2),
-		                                     dialogView.findViewById(R.id.answer3));
+	private void showCompleteDialog(Place place) {
+		Log.d(TAG(), "showCompleteDialog: show dialog");
+		MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(requireContext());
 
-		// Get random position to start
-		int i = new Random().nextInt(cards.size());
+		if(place != null && place.getQuestion() != null && !place.getQuestion().isEmpty()) {
+			// Inflate view
+			View dialogView = getLayoutInflater()
+					.inflate(R.layout.question_layout, new ConstraintLayout(requireContext()),
+					         false);
+			// Set question
+			TextView question = dialogView.findViewById(R.id.question);
+			question.setText(place.getQuestion());
+			List<MaterialButton> texts = Arrays.asList(dialogView.findViewById(R.id.answer1),
+			                                           dialogView.findViewById(R.id.answer2),
+			                                           dialogView.findViewById(R.id.answer3));
+			// Set answers
+			// Get random position to start
+			int i = new Random().nextInt(texts.size());
 
-		// Set correct answer
-		texts.get(i).setText(place.getAnswer());
-		cards.get(i).setOnClickListener(v -> completePlace());
-		i++;
-		i %= cards.size();
-		// set second answer
-		texts.get(i).setText(place.getAnswer2());
-		cards.get(i).setOnClickListener(v -> showWrongAnswerToast());
-		i++;
-		i %= cards.size();
-		texts.get(i).setText(place.getAnswer3());
-		cards.get(i).setOnClickListener(v -> showWrongAnswerToast());
-
-		dialogBuilder.setView(dialogView);
+			// Set correct answer
+			texts.get(i).setText(place.getAnswer());
+			texts.get(i).setOnClickListener(v -> completePlace());
+			i++;
+			i %= texts.size();
+			// set second answer
+			texts.get(i).setText(place.getAnswer2());
+			texts.get(i).setOnClickListener(v -> showWrongAnswerToast());
+			i++;
+			i %= texts.size();
+			// set third answer
+			texts.get(i).setText(place.getAnswer3());
+			texts.get(i).setOnClickListener(v -> showWrongAnswerToast());
+			// Set view
+			dialogBuilder.setView(dialogView);
+		} else {
+			dialogBuilder.setTitle(getString(R.string.place_completed))//
+					.setPositiveButton(R.string.next, (dialogInterface, i) -> completePlace())
+					.setOnDismissListener(dialogInterface -> requestLocationUpdates());
+		}
 		questionDialog = dialogBuilder.create();
+		questionDialog.show();
 	}
 
 	private void showWrongAnswerToast() {
+		Log.d(TAG(), "showWrongAnswerToast: clicked wrong answer");
+		if(questionDialog != null && questionDialog.isShowing()) questionDialog.dismiss();
 		Toast.makeText(requireContext(), getString(R.string.wrong_answer), Toast.LENGTH_SHORT)
 				.show();
+		requestLocationUpdates();
 	}
 }

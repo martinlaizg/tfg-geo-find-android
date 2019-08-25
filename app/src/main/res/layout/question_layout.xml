@@ -12,79 +12,57 @@
 
         <TextView
             android:id="@+id/question"
+            style="@style/AppTheme.TextView.Big"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:gravity="center_horizontal"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="16sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@sample/places.json/data/question[0]" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/answer1_layout"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/answer1"
+            style="@style/AppTheme.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
-            app:cardBackgroundColor="@color/colorSecondary"
             app:contentPadding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/question">
+            app:layout_constraintTop_toBottomOf="@+id/question"
+            tools:text="@sample/places.json/data/answer1" />
 
-            <TextView
-                android:id="@+id/answer1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                tools:text="@sample/places.json/data/answer1" />
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/answer2_layout"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/answer2"
+            style="@style/AppTheme.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            app:cardBackgroundColor="@color/colorSecondary"
             app:contentPadding="8dp"
-            app:layout_constraintEnd_toEndOf="@+id/answer1_layout"
-            app:layout_constraintStart_toStartOf="@+id/answer1_layout"
-            app:layout_constraintTop_toBottomOf="@+id/answer1_layout">
+            app:layout_constraintEnd_toEndOf="@+id/answer1"
+            app:layout_constraintStart_toStartOf="@+id/answer1"
+            app:layout_constraintTop_toBottomOf="@+id/answer1"
+            tools:text="@sample/places.json/data/answer2[0]" />
 
-            <TextView
-                android:id="@+id/answer2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                tools:text="@sample/places.json/data/answer2[0]" />
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/answer3_layout"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/answer3"
+            style="@style/AppTheme.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@color/colorSecondary"
             app:contentPadding="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/answer2_layout"
-            app:layout_constraintStart_toStartOf="@+id/answer2_layout"
-            app:layout_constraintTop_toBottomOf="@+id/answer2_layout">
+            app:layout_constraintEnd_toEndOf="@+id/answer2"
+            app:layout_constraintStart_toStartOf="@+id/answer2"
+            app:layout_constraintTop_toBottomOf="@+id/answer2"
+            tools:text="@sample/places.json/data/answer3[0]" />
 
-            <TextView
-                android:id="@+id/answer3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                tools:text="@sample/places.json/data/answer3[0]" />
-        </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

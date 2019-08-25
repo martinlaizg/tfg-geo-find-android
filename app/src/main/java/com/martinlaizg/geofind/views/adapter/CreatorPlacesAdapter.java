@@ -1,5 +1,6 @@
 package com.martinlaizg.geofind.views.adapter;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,18 +15,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.views.fragment.creator.CreatePlaceFragment;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class CreatorPlacesAdapter
-		extends RecyclerView.Adapter<CreatorPlacesAdapter.CreatorPlacesViewHolder> {
+		extends RecyclerView.Adapter<CreatorPlacesAdapter.CreatorPlacesViewHolder>
+		implements ItemTouchHelperAdapter {
 
 	private List<Place> places;
 	private FragmentActivity fragmentActivity;
@@ -43,17 +47,31 @@ public class CreatorPlacesAdapter
 		Place place = places.get(position);
 
 		holder.place_name.setText(place.getName());
-		holder.place_delete_button.setOnClickListener(v -> remove(position));
-		holder.questionaire_icon.setVisibility(View.GONE);
+		holder.place_delete_button
+				.setOnClickListener(v -> showExitDialog(v.getContext(), position));
+		holder.questionnaire_icon.setVisibility(View.GONE);
 		if(place.getQuestion() != null) {
-			holder.questionaire_icon.setVisibility(View.VISIBLE);
+			holder.questionnaire_icon.setVisibility(View.VISIBLE);
 		}
 		Bundle b = new Bundle();
-		b.putInt(CreatePlaceFragment.PLACE_POSITION, position);
+		b.putInt(CreatePlaceFragment.PLACE_POSITION, place.getOrder());
 		holder.place_card.setOnClickListener(
 				v -> Navigation.findNavController(fragmentActivity, R.id.main_fragment_holder)
 						.navigate(R.id.toCreatePlace, b));
+	}
 
+	@Override
+	public int getItemCount() {
+		return places.size();
+	}
+
+	private void showExitDialog(Context context, int position) {
+		new MaterialAlertDialogBuilder(context).setTitle(R.string.are_you_sure)
+				.setMessage(context.getString(R.string.permanent_delete))
+				.setPositiveButton(context.getString(R.string.ok),
+				                   (dialog, which) -> remove(position))
+				.setNegativeButton(context.getString(R.string.cancel),
+				                   (dialogInterface, i) -> dialogInterface.dismiss()).show();
 	}
 
 	private void remove(int position) {
@@ -65,8 +83,16 @@ public class CreatorPlacesAdapter
 	}
 
 	@Override
-	public int getItemCount() {
-		return places.size();
+	public void onItemMove(int from, int to) {
+		Collections.swap(places, from, to);
+
+		for(int i = 0; i < places.size(); i++) {
+			places.get(i).setOrder(i);
+		}
+
+		notifyItemMoved(from, to);
+		notifyItemChanged(from);
+		notifyItemChanged(to);
 	}
 
 	public CreatorPlacesAdapter() {
@@ -77,11 +103,7 @@ public class CreatorPlacesAdapter
 		this.fragmentActivity = fragmentActivity;
 		if(places != null) {
 			// sort elements
-			places.sort((o1, o2) -> o1.getOrder() > o2.getOrder() ?
-					1 :
-					o1.getOrder() < o2.getOrder() ?
-							-1 :
-							0);
+			places.sort((o1, o2) -> o1.getOrder().compareTo(o2.getOrder()));
 			this.places = places;
 			notifyDataSetChanged();
 		}
@@ -96,8 +118,8 @@ public class CreatorPlacesAdapter
 		MaterialButton place_delete_button;
 		@BindView(R.id.place_name)
 		TextView place_name;
-		@BindView(R.id.questionaire_icon)
-		ImageView questionaire_icon;
+		@BindView(R.id.questionnaire_icon)
+		ImageView questionnaire_icon;
 
 		CreatorPlacesViewHolder(View view) {
 			super(view);

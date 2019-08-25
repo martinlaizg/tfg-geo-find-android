@@ -19,17 +19,19 @@ public class TourService {
 
 	private static RestClient restClient;
 
-	private static TourService tourService;
+	private static TourService instance;
 
 	private final String TAG = TourService.class.getSimpleName();
 
-	void instantiate(Application application) {
+	private TourService(Application application) {
 		if(restClient == null) {
 			restClient = RetrofitInstance.getRestClient(application);
 		}
-		if(tourService == null) {
-			tourService = new TourService();
-		}
+	}
+
+	public static TourService getInstance(Application application) {
+		if(instance == null) instance = new TourService(application);
+		return instance;
 	}
 
 	/**
@@ -121,6 +123,24 @@ public class TourService {
 		APIException apiException;
 		try {
 			response = restClient.update(tour.getId(), tour).execute();
+			if(response.isSuccessful()) {
+				return response.body();
+			}
+			apiException = ErrorUtils.parseError(response);
+		} catch(Exception e) {
+			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
+			Log.e(TAG, "update: ", e);
+		}
+		throw apiException;
+	}
+
+	public List<Tour> getTours(String stringQuery) throws APIException {
+		Response<List<Tour>> response;
+		APIException apiException;
+		HashMap<String, String> params = new HashMap<>();
+		params.put("q", stringQuery);
+		try {
+			response = restClient.getTours(params).execute();
 			if(response.isSuccessful()) {
 				return response.body();
 			}

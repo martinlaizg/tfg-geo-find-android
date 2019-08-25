@@ -27,7 +27,8 @@ public interface PlayDAO {
 	@Query("SELECT * FROM plays WHERE tour_id = :tour_id AND user_id = :user_id")
 	Play getPlay(int user_id, int tour_id);
 
-	@Query("SELECT p.* FROM places p INNER JOIN place_play pp ON p.id=pp.place_id WHERE pp.play_id = :play_id")
+	@Query("SELECT p.* FROM places p INNER JOIN place_play pp ON p.id=pp.place_id WHERE pp" +
+			       ".play_id = :play_id ORDER BY `order` ASC")
 	List<Place> getPlaces(Integer play_id);
 
 	@Query("SELECT * from plays WHERE id = :play_id")

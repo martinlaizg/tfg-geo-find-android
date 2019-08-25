@@ -1,6 +1,5 @@
 package com.martinlaizg.geofind.views.fragment.login;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,7 +25,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
@@ -35,7 +33,8 @@ import com.martinlaizg.geofind.R;
 import com.martinlaizg.geofind.config.Preferences;
 import com.martinlaizg.geofind.data.Secure;
 import com.martinlaizg.geofind.data.access.api.entities.Login;
-import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
+import com.martinlaizg.geofind.data.access.api.error.ErrorType;
+import com.martinlaizg.geofind.utils.KeyboardUtils;
 import com.martinlaizg.geofind.views.viewmodel.LoginViewModel;
 
 import java.util.Objects;
@@ -58,12 +57,13 @@ public class LoginFragment
 	MaterialButton login_button;
 	@BindView(R.id.login_register_button)
 	MaterialButton registry_button;
+	@BindView(R.id.fake_google_sign_in_button)
+	MaterialButton fake_google_sign_in_button;
 
 	@BindView(R.id.load_layout)
 	ConstraintLayout load_layout;
-
-	@BindView(R.id.google_sign_in_button)
-	SignInButton google_sign_in_button;
+	@BindView(R.id.login_scroll)
+	ScrollView login_scroll;
 
 	private LoginViewModel viewModel;
 	private GoogleSignInClient mGoogleSignInClient;
@@ -72,7 +72,8 @@ public class LoginFragment
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(requestCode == RC_SIGN_IN) {
-			load_layout.setVisibility(View.VISIBLE);
+			login_scroll.setBackgroundColor(
+					getResources().getColor(android.R.color.background_light, null));
 			Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 			handleSignInResult(task);
 			return;
@@ -104,32 +105,16 @@ public class LoginFragment
 			email_input.setError("");
 			password_input.setError("");
 			if(user == null) {
-				@SuppressWarnings("ThrowableNotThrown") APIException e = viewModel.getError();
-				switch(e.getType()) {
-					case TOKEN:
-					case PROVIDER:
-					case PROVIDER_LOGIN:
-						Toast.makeText(requireContext(),
-						               getString(R.string.service_provider_problem),
-						               Toast.LENGTH_SHORT).show();
-						break;
+				ErrorType e = viewModel.getError();
+				switch(e) {
 					case EMAIL:
 						email_input.setError(getString(R.string.wrong_email));
 						break;
 					case PASSWORD:
 						password_input.setError(getString(R.string.wrong_password));
 						break;
-					case SECURE:
-						Toast.makeText(requireContext(), getString(R.string.wrong_login),
-						               Toast.LENGTH_SHORT).show();
-						break;
-					case NETWORK:
-						Toast.makeText(requireContext(), getString(R.string.network_error),
-						               Toast.LENGTH_SHORT).show();
-						break;
 					default:
-						Toast.makeText(requireContext(), getString(R.string.other_error),
-						               Toast.LENGTH_SHORT).show();
+						e.showToast(requireContext());
 				}
 			} else {
 				SharedPreferences sp = PreferenceManager
@@ -146,13 +131,7 @@ public class LoginFragment
 			load_layout.setVisibility(View.GONE);
 		});
 
-		// Hide the keyboard
-		InputMethodManager editTextInput = (InputMethodManager) requireActivity()
-				.getSystemService(Context.INPUT_METHOD_SERVICE);
-		View currentFocus = requireActivity().getCurrentFocus();
-		if(currentFocus != null) {
-			editTextInput.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
-		}
+		KeyboardUtils.hideKeyboard(requireActivity());
 	}
 
 	@Override
@@ -161,9 +140,7 @@ public class LoginFragment
 		View view = inflater.inflate(R.layout.fragment_login, container, false);
 		ButterKnife.bind(this, view);
 
-		google_sign_in_button.setSize(SignInButton.SIZE_STANDARD);
-		google_sign_in_button.setOnClickListener(this::googleSignIn);
-
+		fake_google_sign_in_button.setOnClickListener(v -> googleSignIn());
 		// Google SignIn Button
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(
 				GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.client_id))
@@ -173,7 +150,7 @@ public class LoginFragment
 		return view;
 	}
 
-	private void googleSignIn(View v) {
+	private void googleSignIn() {
 		Intent signInIntent = mGoogleSignInClient.getSignInIntent();
 		startActivityForResult(signInIntent, RC_SIGN_IN);
 	}
