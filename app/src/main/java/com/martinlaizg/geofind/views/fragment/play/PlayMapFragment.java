@@ -74,6 +74,7 @@ public class PlayMapFragment
 		return TAG;
 	}
 
+	@SuppressWarnings("MissingPermission")
 	void updateView() {
 		Log.d(TAG, "updateView: ");
 		if(googleMap != null && usrLocation != null) {
