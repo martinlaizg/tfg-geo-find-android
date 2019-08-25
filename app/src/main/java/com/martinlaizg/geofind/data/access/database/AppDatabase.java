@@ -22,7 +22,7 @@ import com.martinlaizg.geofind.data.access.database.entities.Tour;
 import com.martinlaizg.geofind.data.access.database.entities.User;
 
 @Database(entities = {User.class, Tour.class, Place.class, Play.class, PlacePlay.class},
-          version = 7, exportSchema = false)
+          version = 9, exportSchema = false)
 @TypeConverters(
 		{DateTypeConverter.class, PlayLevelTypeConverter.class, UserTypeTypeConverter.class})
 public abstract class AppDatabase
