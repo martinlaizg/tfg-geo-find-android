@@ -8,7 +8,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/play_button"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/play_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -26,59 +27,24 @@
                 android:layout_marginEnd="8dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textAppearance="@style/AppTheme.TextView.Big"
                 app:layout_constraintEnd_toStartOf="@id/edit_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@sample/plays.json/data/name" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/edit_button"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginEnd="16dp"
-                android:text="@string/edit"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/tour_description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:ellipsize="end"
-                android:maxLines="5"
-                android:minLines="1"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                app:layout_constraintEnd_toEndOf="@+id/edit_button"
+                android:layout_marginEnd="16dp"
+                android:scrollbars="vertical"
+                android:textAppearance="@style/AppTheme.TextView.Medium"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/tour_name"
                 app:layout_constraintTop_toBottomOf="@id/tour_name"
                 tools:text="@sample/plays.json/data/description" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/tour_creator"
-                style="@style/Widget.MaterialComponents.Chip.Action"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:chipIcon="@drawable/ic_user_black"
-                app:layout_constraintStart_toStartOf="@+id/tour_description"
-                app:layout_constraintTop_toBottomOf="@id/tour_description"
-                tools:text="@sample/user.json/data/username" />
-
-            <View
-                android:id="@+id/completed_divider"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintBottom_toBottomOf="@+id/completed_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/completed_text"
-                app:layout_constraintTop_toTopOf="@+id/completed_text" />
 
             <TextView
                 android:id="@+id/tour_num_places"
@@ -92,7 +58,7 @@
                 android:maxLines="1"
                 android:minWidth="90dp"
                 android:minLines="1"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textAppearance="@style/AppTheme.TextView.Medium"
                 app:layout_constraintBottom_toBottomOf="@+id/tour_creator"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -106,66 +72,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="@string/completed"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tour_creator" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/places_list"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/completed_text"
-                tools:itemCount="1"
-                tools:listitem="@layout/fragment_place_item"
-                tools:visibility="visible">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
             <TextView
-                android:id="@+id/in_progress"
+                android:id="@+id/in_progress_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/in_progress"
-                android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/places_list" />
-
-            <View
-                android:id="@+id/progress_divider"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="8dp"
-                android:background="@color/colorSecondary"
-                app:layout_constraintBottom_toBottomOf="@+id/in_progress"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/in_progress"
-                app:layout_constraintTop_toTopOf="@+id/in_progress" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/other_places"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/in_progress"
-                tools:itemCount="3"
-                tools:listitem="@layout/fragment_place_item"
-                tools:visibility="visible">
-
-            </androidx.recyclerview.widget.RecyclerView>
 
             <TextView
                 android:id="@+id/empty_text"
@@ -185,6 +105,84 @@
                 app:layout_constraintVertical_bias="1.0"
                 tools:visibility="gone" />
 
+            <View
+                android:id="@+id/completed_divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/completed_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/completed_text"
+                app:layout_constraintTop_toTopOf="@+id/completed_text" />
+
+            <View
+                android:id="@+id/in_progress_divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/in_progress_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/in_progress_text"
+                app:layout_constraintTop_toTopOf="@+id/in_progress_text" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/places_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/completed_text"
+                tools:itemCount="1"
+                tools:listitem="@layout/fragment_place_item"
+                tools:visibility="visible">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/other_places"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/in_progress_text"
+                tools:itemCount="3"
+                tools:listitem="@layout/fragment_place_item"
+                tools:visibility="visible">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/edit_button"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/edit"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/tour_creator"
+                style="@style/AppTheme.TextView.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:chipIcon="@drawable/ic_user_black"
+                app:layout_constraintStart_toStartOf="@+id/tour_description"
+                app:layout_constraintTop_toBottomOf="@id/tour_description"
+                tools:text="@sample/user.json/data/username" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
@@ -195,6 +193,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/play"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

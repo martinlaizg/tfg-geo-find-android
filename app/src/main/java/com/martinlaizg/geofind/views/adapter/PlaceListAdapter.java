@@ -24,7 +24,6 @@ import butterknife.ButterKnife;
 public class PlaceListAdapter
 		extends RecyclerView.Adapter<PlaceListAdapter.PlaceViewHolder> {
 
-	private final int disabled_color;
 	private final boolean completed;
 	private List<Place> places;
 
@@ -46,8 +45,7 @@ public class PlaceListAdapter
 		holder.place_card
 				.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toPlace, b));
 		if(completed) {
-			holder.place_name.setTextColor(disabled_color);
-			holder.place_description.setTextColor(disabled_color);
+			holder.completePlace();
 		}
 	}
 
@@ -56,10 +54,9 @@ public class PlaceListAdapter
 		return places.size();
 	}
 
-	public PlaceListAdapter(boolean completed, int disabled_color) {
-		places = new ArrayList<>();
+	public PlaceListAdapter(boolean completed) {
 		this.completed = completed;
-		this.disabled_color = disabled_color;
+		this.places = new ArrayList<>();
 	}
 
 	public void setPlaces(List<Place> places) {
@@ -70,6 +67,7 @@ public class PlaceListAdapter
 	class PlaceViewHolder
 			extends RecyclerView.ViewHolder {
 
+		private final int completedColor;
 		@BindView(R.id.place_name)
 		TextView place_name;
 		@BindView(R.id.place_description)
@@ -79,7 +77,14 @@ public class PlaceListAdapter
 
 		PlaceViewHolder(@NonNull View itemView) {
 			super(itemView);
+			completedColor = itemView.getContext().getResources()
+					.getColor(R.color.colorPrimaryLightAlpha, null);
 			ButterKnife.bind(this, itemView);
+		}
+
+		void completePlace() {
+			place_name.setTextColor(completedColor);
+			place_description.setTextColor(completedColor);
 		}
 	}
 }

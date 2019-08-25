@@ -46,32 +46,13 @@ public class SettingsFragment
 	@Override
 	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 		addPreferencesFromResource(R.xml.app_preferences);
-
-		Preference preference = findPreference(getString(R.string.log_out));
-		if(preference != null) preference.setOnPreferenceClickListener(getLogOutListener());
-
+		requireActivity().setTheme(R.style.AppTheme_ScreenPreferences);
 		createSupportMessageDialog();
 
-		preference = findPreference("support");
-		if(preference != null) {
-			preference.setOnPreferenceClickListener(pref -> {
-				dialog.show();
-				return true;
-			});
-		}
-	}
-
-	private Preference.OnPreferenceClickListener getLogOutListener() {
-		return preference -> {
-			mGoogleSignInClient.signOut().addOnCompleteListener(requireActivity(), task -> {
-				SharedPreferences sp = PreferenceManager
-						.getDefaultSharedPreferences(requireContext());
-				Preferences.logout(sp);
-				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-						.popBackStack();
-			});
-			return true;
-		};
+		Preference preference = findPreference(getString(R.string.pref_log_out));
+		if(preference != null) preference.setOnPreferenceClickListener(this::onLogOut);
+		preference = findPreference(getString(R.string.pref_support));
+		if(preference != null) preference.setOnPreferenceClickListener(this::onSupport);
 	}
 
 	private void createSupportMessageDialog() {
@@ -113,6 +94,21 @@ public class SettingsFragment
 		});
 		builder.setView(view);
 		dialog = builder.create();
+	}
+
+	private boolean onLogOut(Preference preference) {
+		mGoogleSignInClient.signOut().addOnCompleteListener(requireActivity(), task -> {
+			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(requireContext());
+			Preferences.logout(sp);
+			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+					.navigate(R.id.toMain);
+		});
+		return true;
+	}
+
+	private boolean onSupport(Preference preference) {
+		dialog.show();
+		return true;
 	}
 
 	@Override

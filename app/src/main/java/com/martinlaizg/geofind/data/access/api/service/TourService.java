@@ -133,4 +133,22 @@ public class TourService {
 		}
 		throw apiException;
 	}
+
+	public List<Tour> getTours(String stringQuery) throws APIException {
+		Response<List<Tour>> response;
+		APIException apiException;
+		HashMap<String, String> params = new HashMap<>();
+		params.put("q", stringQuery);
+		try {
+			response = restClient.getTours(params).execute();
+			if(response.isSuccessful()) {
+				return response.body();
+			}
+			apiException = ErrorUtils.parseError(response);
+		} catch(Exception e) {
+			apiException = new APIException(ErrorType.NETWORK, e.getMessage());
+			Log.e(TAG, "update: ", e);
+		}
+		throw apiException;
+	}
 }

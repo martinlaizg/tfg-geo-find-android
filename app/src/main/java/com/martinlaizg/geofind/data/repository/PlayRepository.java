@@ -1,9 +1,7 @@
 package com.martinlaizg.geofind.data.repository;
 
 import android.app.Application;
-import android.util.Log;
 
-import com.martinlaizg.geofind.data.access.api.error.ErrorType;
 import com.martinlaizg.geofind.data.access.api.service.PlayService;
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException;
 import com.martinlaizg.geofind.data.access.database.AppDatabase;
@@ -56,40 +54,31 @@ public class PlayRepository {
 	 * 		exception from API
 	 */
 	public Play getPlay(int user_id, int tour_id) throws APIException {
-		Play p = playDAO.getPlay(user_id, tour_id);         // Get the play from the database
+		// Get from database
+		Play p = playDAO.getPlay(user_id, tour_id);
 		if(p != null) {
-			if(p.isOutOfDate()) {       // If is out of date remove from database
+			// Check out of date
+			if(p.isOutOfDate()) {
 				playDAO.delete(p);
-				p = null;
 			} else {                    // If not retrieve data
 				p.setTour(tourRepo.getTour(tour_id));
 				p.setUser(userRepo.getUser(user_id));
 				p.setPlaces(playDAO.getPlaces(p.getId()));
+				return p;
 			}
 		}
-		if(p == null) {                 // The play no exist on database or is out of date
-			try {
-				p = playService.getUserPlay(user_id, tour_id);  // Get from server
-			} catch(APIException e) {
-				// If no exist
-				if(e.getType() == ErrorType.EXIST) {
-					Log.i(TAG, "getPlay: The play do not exist");
-					try {
-						// Create the play
-						p = playService.createUserPlay(user_id, tour_id);
-					} catch(APIException ex) {
-						Log.e(TAG, "getPlay: ", ex);
-						return null;
-					}
-				} else {
-					Log.e(TAG, "getPlay: Other error", e);
-					throw e;
-				}
-			}
-			if(p == null) return null;
+		// Get from server
+		try {
+			p = playService.getUserPlay(user_id, tour_id);
 			p.setUser_id(p.getUser().getId());
 			p.setTour_id(p.getTour().getId());
 			insert(p);
+		} catch(APIException e) {
+			p = null;
+		}
+		if(p == null) {
+			p = new Play(tour_id, user_id);
+			p.setTour(tourRepo.getTour(tour_id));
 		}
 		return p;
 	}
@@ -167,7 +156,7 @@ public class PlayRepository {
 		// Remove out of date
 		for(int i = 0; i < plays.size(); i++) {
 			if(plays.get(i).isOutOfDate()) {
-				plays.remove(i);
+				playDAO.delete(plays.remove(i));
 				i--;
 			}
 		}

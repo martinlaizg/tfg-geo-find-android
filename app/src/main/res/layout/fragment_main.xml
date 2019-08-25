@@ -9,28 +9,26 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/toursCompletedCard"
-                android:layout_width="0dp"
+                style="@style/AppTheme.CardView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                app:cardBackgroundColor="@color/colorPrimaryLight"
+                android:visibility="visible"
                 app:cardCornerRadius="8dp"
-                app:contentPadding="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:contentPadding="16dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -40,42 +38,34 @@
                         android:id="@+id/toursCompletedText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
+                        android:textAppearance="@style/AppTheme.TextView.Medium"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="Has completado 256 plays" />
+                        tools:text="@sample/user.json/data/completed_tours" />
 
                     <TextView
                         android:id="@+id/toursInProgressText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:textColor="@android:color/white"
+                        android:textAppearance="@style/AppTheme.TextView.Medium"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/toursCompletedText"
-                        tools:text="Tienes 6 plays en progreso" />
+                        tools:text="@sample/user.json/data/progress_tours" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/toursInProgressView"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toursCompletedCard"
                 tools:itemCount="1"
-                tools:listitem="@layout/fragment_play_item" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                tools:listitem="@layout/fragment_tour_item" />
+        </LinearLayout>
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

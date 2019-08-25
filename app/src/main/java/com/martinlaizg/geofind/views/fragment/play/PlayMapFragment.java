@@ -1,8 +1,6 @@
 package com.martinlaizg.geofind.views.fragment.play;
 
-import android.Manifest;
 import android.app.AlertDialog;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -69,16 +67,6 @@ public class PlayMapFragment
 		updateView();
 		this.googleMap.getUiSettings().setMyLocationButtonEnabled(false);
 		this.googleMap.getUiSettings().setMapToolbarEnabled(false);
-		if(requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) !=
-				PackageManager.PERMISSION_GRANTED &&
-				requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) !=
-						PackageManager.PERMISSION_GRANTED) {
-			requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
-					                   Manifest.permission.ACCESS_FINE_LOCATION},
-			                   PERMISSION_ACCESS_COARSE_AND_FINE_LOCATION);
-			return;
-		}
-		this.googleMap.setMyLocationEnabled(true);
 	}
 
 	@Override
@@ -86,8 +74,11 @@ public class PlayMapFragment
 		return TAG;
 	}
 
+	@SuppressWarnings("MissingPermission")
 	void updateView() {
+		Log.d(TAG, "updateView: ");
 		if(googleMap != null && usrLocation != null) {
+			this.googleMap.setMyLocationEnabled(true);
 			CameraUpdate cu;
 			LatLngBounds.Builder builder = new LatLngBounds.Builder();
 			builder.include(new LatLng(usrLocation.getLatitude(), usrLocation.getLongitude()));
@@ -106,12 +97,6 @@ public class PlayMapFragment
 				cu = CameraUpdateFactory.newLatLngBounds(cameraPosition, MAP_PADDING);
 			}
 			googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-			if(requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) ==
-					PackageManager.PERMISSION_GRANTED || requireActivity()
-					.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) ==
-					PackageManager.PERMISSION_GRANTED) {
-				this.googleMap.setMyLocationEnabled(true);
-			}
 			googleMap.animateCamera(cu);
 			Log.d(TAG, "updateView: zoom=" + googleMap.getCameraPosition().zoom);
 

@@ -1,6 +1,7 @@
 package com.martinlaizg.geofind.views.fragment.single;
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,7 @@ public class PlaceFragment
 			@Nullable Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_place, container, false);
 		ButterKnife.bind(this, view);
+		place_description.setMovementMethod(new ScrollingMovementMethod());
 		place_map.onCreate(savedInstanceState);
 		place_map.onResume();
 		place_map.getMapAsync(this);

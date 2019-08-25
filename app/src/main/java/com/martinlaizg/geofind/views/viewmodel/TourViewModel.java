@@ -73,14 +73,10 @@ public class TourViewModel
 		return tour.getPlaces();
 	}
 
-	public List<Place> getCompletedPlaces() {
-		if(play != null) return play.getPlaces();
-		return new ArrayList<>();
-	}
-
-	public MutableLiveData<List<Place>> getPlaces(int tour_id, int user_id) {
-		MutableLiveData<List<Place>> m = new MutableLiveData<>();
-		new Thread(() -> m.postValue(new ArrayList<>())).start();
-		return m;
+	@NonNull
+	public List<Place> getPlayPlaces() {
+		return play == null ?
+				new ArrayList<>() :
+				play.getPlaces();
 	}
 }

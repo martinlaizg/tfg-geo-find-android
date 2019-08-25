@@ -10,6 +10,7 @@ import androidx.room.PrimaryKey;
 import com.martinlaizg.geofind.utils.DateUtils;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -24,8 +25,7 @@ import static androidx.room.ForeignKey.CASCADE;
 public class Play {
 
 	@PrimaryKey
-	@NonNull
-	private final Integer id;
+	private final int id;
 	private Integer tour_id;
 	private Integer user_id;
 	private Date created_at;
@@ -50,15 +50,11 @@ public class Play {
 	}
 
 	@Ignore
-	public Play() {
-		this.id = 0;
-	}
-
-	@Ignore
 	public Play(int tour_id, int user_id) {
 		this.id = 0;
 		this.tour_id = tour_id;
 		this.user_id = user_id;
+		this.places = new ArrayList<>();
 	}
 
 	@NonNull

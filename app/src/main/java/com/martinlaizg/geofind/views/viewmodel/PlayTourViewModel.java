@@ -60,7 +60,9 @@ public class PlayTourViewModel
 	}
 
 	public ErrorType getError() {
-		return error;
+		return error != null ?
+				error :
+				ErrorType.OTHER;
 	}
 
 	private void setError(ErrorType error) {
@@ -75,6 +77,9 @@ public class PlayTourViewModel
 		MutableLiveData<Place> c = new MutableLiveData<>();
 		new Thread(() -> {
 			try {
+				if(play.getId() == 0) {
+					play = playRepo.createPlay(play.getUser_id(), play.getUser_id());
+				}
 				play = playRepo.completePlace(play.getId(), place_id);
 				c.postValue(getNextPlace());
 			} catch(APIException e) {

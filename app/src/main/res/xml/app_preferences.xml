@@ -10,15 +10,16 @@
         android:title="@string/default_map_type" />
 
     <Preference
+        android:icon="@drawable/ic_info_outline"
         android:key="@string/pref_support"
         android:summary="@string/send_message_to_support"
         android:title="@string/errors_and_suggestions" />
 
     <Preference
-        android:key="@string/log_out"
+        android:key="@string/pref_log_out"
         android:title="@string/log_out" />
 
-    <PreferenceCategory android:title="Información de la app">
+    <PreferenceCategory android:title="@string/app_info">
 
         <Preference
             android:summary="@string/app_version_name"

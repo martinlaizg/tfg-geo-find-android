@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="place_list">Lista de sitios</string>
-    <string name="account_settings">Ajustes de cuenta</string>
     <string name="add_image">Añadir imagen</string>
     <string name="add_place">Añadir sitio</string>
     <string name="app_logo_description">Logo de la aplicación</string>
@@ -42,7 +41,6 @@
     <string name="update_tour">Actualizar tour</string>
     <string name="user_image">Imagen del usuario</string>
     <string name="username">Nombre de usuario</string>
-    <string name="rejected_location_access">Denegado permiso de localización</string>
     <string name="home">Inicio</string>
     <string name="place_distance_m">%d m</string>
     <string name="play">Jugar</string>
@@ -64,7 +62,6 @@
     <string name="send">Enviar</string>
     <string name="email_in_use">El email ya se está usando</string>
     <string name="email_wrong_format">Email con formato incorrecto</string>
-    <string name="service_provider_problem">Problema con proveedor de  servicio</string>
     <string name="wrong_email">Email incorrecto</string>
     <string name="wrong_login">No se ha podido iniciar sesión</string>
     <string name="wrong_password">Contraseña incorrecta</string>
@@ -87,12 +84,12 @@
     <string name="required_answer">La respuesta es obligatoria</string>
     <string name="required_question">La pregunta es obligatoria</string>
     <string name="with_question">Con pregunta</string>
-    <string name="without_decription">Sin descripción</string>
+    <string name="without_description">Sin descripción</string>
     <string name="at_least_one_place">Al menos un sitio</string>
     <string name="wrong_answer">Respuesta incorrecta</string>
     <string name="no_permissions">No tienes permisos</string>
     <string name="click_edit">Click en editar</string>
-    <string name="registred">Registrado</string>
+    <string name="registered">Registrado</string>
     <string name="place_area_description">Área del sitio</string>
     <string name="place_distance_km">%.2f km</string>
     <string name="something_went_wrong">Algo ha ido mal</string>
@@ -116,4 +113,22 @@
     <string name="completed">Completado</string>
     <string name="in_progress">En progreso</string>
     <string name="place_completed">Sitio completado</string>
+    <string name="app_info">Información de la aplicación</string>
+    <string name="search">Buscar</string>
+    <string name="no_tours_match">No hay tours</string>
+    <string name="auth_error">Error de autenticación</string>
+    <string name="email_error">Error de email</string>
+    <string name="existence_error">Error de existencia</string>
+    <string name="expired_error">Error de expirado</string>
+    <string name="id_error">Error de id</string>
+    <string name="log_in_with_google">Inicio de sesión con Google</string>
+    <string name="password_error">Error de contraseña</string>
+    <string name="places">Sitios</string>
+    <string name="provider_error">Error de proveedor</string>
+    <string name="provider_login_error">Error de proveedor de login</string>
+    <string name="secure_error">Error de secure</string>
+    <string name="token_error">Error de token</string>
+    <string name="tour_id_error">Error de tour</string>
+    <string name="user_id_error">Error de usuario</string>
+    <string name="username_error">Error de nombre de usuario</string>
 </resources>

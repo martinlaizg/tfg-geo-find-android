@@ -100,7 +100,7 @@ public class CreatePlaceFragment
 	}
 
 	/**
-	 * Sotre the place data (name, description, image, question) into the viewModel {@link Place}
+	 * Store the place data (name, description, image, question) into the viewModel {@link Place}
 	 *
 	 * @return true if no has errors else false
 	 */
@@ -327,6 +327,7 @@ public class CreatePlaceFragment
 		// Set image
 		place_image_view.setVisibility(View.GONE);
 		if(place.getImage() != null && !place.getImage().isEmpty()) {
+			image_url = place.getImage();
 			Picasso.with(requireContext()).load(image_url).into(place_image_view);
 			place_image_view.setVisibility(View.VISIBLE);
 		}

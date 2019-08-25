@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name" translatable="false">GeoFind</string>
     <string name="developer" translatable="false">Martín Laiz Gómez</string>
+    <string name="pref_log_out" translatable="false">log_out</string>
     <string name="pref_map" translatable="false">map</string>
     <string name="pref_satellite" translatable="false">satellite</string>
     <string name="pref_map_type" translatable="false">map_type</string>
@@ -9,7 +10,6 @@
     <string name="app_version_name" translatable="false">v0.4-SNAPSHOT</string>
     <string name="div" translatable="false">%1$d/%2$d</string>
     <string name="two_csv" translatable="false">%1$f,%2$f</string>
-    <string name="account_settings">Account settings</string>
     <string name="add_image">Add image</string>
     <string name="add_place">Add place</string>
     <string name="app_logo_description">App logo</string>
@@ -71,8 +71,7 @@
     <string name="message">Message</string>
     <string name="send">Send</string>
     <string name="email_in_use">Email already in use</string>
-    <string name="wrong_login">We can not loggin</string>
-    <string name="service_provider_problem">Problem with service provider</string>
+    <string name="wrong_login">We can not login</string>
     <string name="wrong_email">Wrong email</string>
     <string name="wrong_password">Wrong password</string>
     <string name="email_wrong_format">Wrong email format</string>
@@ -95,11 +94,11 @@
     <string name="required_question">Question is required</string>
     <string name="required_answer">The answer is required</string>
     <string name="answer_repeated">The answer can not be repeated</string>
-    <string name="without_decription">Without description</string>
+    <string name="without_description">Without description</string>
     <string name="wrong_answer">Wrong answer</string>
     <string name="at_least_one_place">At least one place</string>
     <string name="no_permissions">No has permission</string>
-    <string name="registred">Registred</string>
+    <string name="registered">Registered</string>
     <string name="click_edit">Click edit</string>
     <string name="place_area_description">Place area</string>
     <string name="place_distance_km">%.2f km</string>
@@ -110,14 +109,11 @@
     <string name="errors_and_suggestions">Errors and suggestions</string>
     <string name="app_version">App version</string>
     <string name="app_developer">App developer</string>
-    <string name="rejected_location_access">Refused permission to location</string>
     <string name="add_image_url">Add image URL</string>
     <string name="image_url">Image URL</string>
     <string name="update">Update</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="exit_lose_data_alert">You will lose the unsaved data</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="done">Done</string>
     <string name="add_location">Add location</string>
     <string name="select_location">Select location</string>
@@ -127,4 +123,22 @@
     <string name="completed">Completed</string>
     <string name="in_progress">In progress</string>
     <string name="place_completed">Place completed</string>
+    <string name="search">Search</string>
+    <string name="app_info">App info</string>
+    <string name="no_tours_match">There is no tours</string>
+    <string name="places">Places</string>
+    <string name="log_in_with_google">Log in with Google</string>
+    <string name="username_error">Username error</string>
+    <string name="email_error">Email error</string>
+    <string name="password_error">Password error</string>
+    <string name="id_error">Id error</string>
+    <string name="tour_id_error">Tour error</string>
+    <string name="user_id_error">User error</string>
+    <string name="existence_error">Existence error</string>
+    <string name="token_error">Token error</string>
+    <string name="provider_error">Provider error</string>
+    <string name="provider_login_error">Provider_login error</string>
+    <string name="secure_error">Secure error</string>
+    <string name="auth_error">Auth error</string>
+    <string name="expired_error">Expired error</string>
 </resources>
