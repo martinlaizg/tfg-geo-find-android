@@ -21,13 +21,15 @@ import com.martinlaizg.geofind.data.access.database.entities.Place;
 import com.martinlaizg.geofind.views.fragment.creator.CreatePlaceFragment;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class CreatorPlacesAdapter
-		extends RecyclerView.Adapter<CreatorPlacesAdapter.CreatorPlacesViewHolder> {
+		extends RecyclerView.Adapter<CreatorPlacesAdapter.CreatorPlacesViewHolder>
+		implements ItemTouchHelperAdapter {
 
 	private List<Place> places;
 	private FragmentActivity fragmentActivity;
@@ -52,7 +54,7 @@ public class CreatorPlacesAdapter
 			holder.questionnaire_icon.setVisibility(View.VISIBLE);
 		}
 		Bundle b = new Bundle();
-		b.putInt(CreatePlaceFragment.PLACE_POSITION, position);
+		b.putInt(CreatePlaceFragment.PLACE_POSITION, place.getOrder());
 		holder.place_card.setOnClickListener(
 				v -> Navigation.findNavController(fragmentActivity, R.id.main_fragment_holder)
 						.navigate(R.id.toCreatePlace, b));
@@ -80,6 +82,19 @@ public class CreatorPlacesAdapter
 		notifyDataSetChanged();
 	}
 
+	@Override
+	public void onItemMove(int from, int to) {
+		Collections.swap(places, from, to);
+
+		for(int i = 0; i < places.size(); i++) {
+			places.get(i).setOrder(i);
+		}
+
+		notifyItemMoved(from, to);
+		notifyItemChanged(from);
+		notifyItemChanged(to);
+	}
+
 	public CreatorPlacesAdapter() {
 		places = new ArrayList<>();
 	}
@@ -92,17 +107,6 @@ public class CreatorPlacesAdapter
 			this.places = places;
 			notifyDataSetChanged();
 		}
-	}
-
-	public void move(int from, int to) {
-		Place p = places.remove(from);
-		places.add(to, p);
-
-		for(int i = 0; i < places.size(); i++) {
-			places.get(i).setOrder(i);
-		}
-
-		notifyItemMoved(from, to);
 	}
 
 	class CreatorPlacesViewHolder

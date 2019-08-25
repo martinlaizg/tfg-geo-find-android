@@ -9,7 +9,7 @@
         app:destination="@id/navMain"
         app:launchSingleTop="true"
         app:popUpTo="@+id/navMain"
-        app:popUpToInclusive="true" />
+        app:popUpToInclusive="false" />
     <action
         android:id="@+id/toTourList"
         app:destination="@id/navTourList"
@@ -17,9 +17,7 @@
     <action
         android:id="@+id/toLogin"
         app:destination="@id/navLogin"
-        app:launchSingleTop="true"
-        app:popUpTo="@+id/navMain"
-        app:popUpToInclusive="true" />
+        app:launchSingleTop="true" />
     <fragment
         android:id="@+id/navMain"
         android:name="com.martinlaizg.geofind.views.fragment.MainFragment"
@@ -108,7 +106,7 @@
             app:destination="@id/navCreator" />
         <action
             android:id="@+id/toPlayTour"
-            app:destination="@id/navPlayTour" />
+            app:destination="@id/navPlayMap" />
         <action
             android:id="@+id/toPlayCompass"
             app:destination="@id/navPlayCompass" />
@@ -150,7 +148,7 @@
         android:label="@string/registry"
         tools:layout="@layout/fragment_registry" />
     <fragment
-        android:id="@+id/navPlayTour"
+        android:id="@+id/navPlayMap"
         android:name="com.martinlaizg.geofind.views.fragment.play.PlayMapFragment"
         android:label="@string/play_tour"
         tools:layout="@layout/fragment_play_map" />

@@ -107,30 +107,14 @@ public class LoginFragment
 			if(user == null) {
 				ErrorType e = viewModel.getError();
 				switch(e) {
-					case TOKEN:
-					case PROVIDER:
-					case PROVIDER_LOGIN:
-						Toast.makeText(requireContext(),
-						               getString(R.string.service_provider_problem),
-						               Toast.LENGTH_SHORT).show();
-						break;
 					case EMAIL:
 						email_input.setError(getString(R.string.wrong_email));
 						break;
 					case PASSWORD:
 						password_input.setError(getString(R.string.wrong_password));
 						break;
-					case SECURE:
-						Toast.makeText(requireContext(), getString(R.string.wrong_login),
-						               Toast.LENGTH_SHORT).show();
-						break;
-					case NETWORK:
-						Toast.makeText(requireContext(), getString(R.string.network_error),
-						               Toast.LENGTH_SHORT).show();
-						break;
 					default:
-						Toast.makeText(requireContext(), getString(R.string.other_error),
-						               Toast.LENGTH_SHORT).show();
+						e.showToast(requireContext());
 				}
 			} else {
 				SharedPreferences sp = PreferenceManager

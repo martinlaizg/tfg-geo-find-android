@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+    <group
+        android:id="@+id/main_actions"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/navMain"
             android:title="@string/home" />
@@ -9,16 +13,14 @@
             android:title="@string/tour" />
     </group>
 
-    <item android:title="@string/account_settings">
-        <menu>
-            <group android:checkableBehavior="none">
-                <item
-                    android:id="@+id/navEditProfile"
-                    android:title="@string/edit_profile" />
-                <item
-                    android:id="@+id/navSettings"
-                    android:title="@string/settings" />
-            </group>
-        </menu>
-    </item>
+    <group
+        android:id="@+id/account_actions"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/navEditProfile"
+            android:title="@string/edit_profile" />
+        <item
+            android:id="@+id/navSettings"
+            android:title="@string/settings" />
+    </group>
 </menu>

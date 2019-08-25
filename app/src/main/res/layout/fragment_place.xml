@@ -11,46 +11,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
-        <ImageView
-            android:id="@+id/place_image"
-            android:layout_width="0dp"
-            android:layout_height="175dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:contentDescription="@string/place_image"
-            android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/place_position"
-            tools:srcCompat="@tools:sample/backgrounds/scenic[11]" />
-
-        <ImageView
-            android:id="@+id/map_circle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/place_area_description"
-            app:layout_constraintBottom_toBottomOf="@+id/place_map"
-            app:layout_constraintEnd_toEndOf="@+id/place_map"
-            app:layout_constraintStart_toStartOf="@+id/place_map"
-            app:layout_constraintTop_toTopOf="@+id/place_map"
-            app:srcCompat="@drawable/circle"
-            tools:visibility="visible" />
-
         <TextView
-            android:id="@+id/place_description"
+            android:id="@+id/place_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:scrollbars="vertical"
-            android:singleLine="false"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="@style/AppTheme.TextView.Big"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@sample/places.json/data/name" />
+
+        <TextView
+            android:id="@+id/place_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:scrollbars="vertical"
+            android:textAppearance="@style/AppTheme.TextView.Medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/place_name"
             app:layout_constraintTop_toBottomOf="@id/place_name"
             tools:text="@sample/places.json/data/description[1]" />
 
@@ -67,20 +52,19 @@
             app:layout_constraintTop_toBottomOf="@id/place_description"
             tools:text="@sample/places.json/data/completeness" />
 
-        <TextView
-            android:id="@+id/place_name"
-            style="@style/TextAppearance.MaterialComponents.Headline5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/place_image"
+            android:layout_width="0dp"
+            android:layout_height="175dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:ellipsize="end"
-            android:maxWidth="240dp"
-            android:maxLines="2"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/place_image"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="@sample/places.json/data/name" />
+            app:layout_constraintTop_toBottomOf="@id/place_position"
+            tools:srcCompat="@tools:sample/backgrounds/scenic[11]" />
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/place_map"
@@ -92,6 +76,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/place_image" />
+
+        <ImageView
+            android:id="@+id/map_circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/place_area_description"
+            app:layout_constraintBottom_toBottomOf="@+id/place_map"
+            app:layout_constraintEnd_toEndOf="@+id/place_map"
+            app:layout_constraintStart_toStartOf="@+id/place_map"
+            app:layout_constraintTop_toTopOf="@+id/place_map"
+            app:srcCompat="@drawable/circle"
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

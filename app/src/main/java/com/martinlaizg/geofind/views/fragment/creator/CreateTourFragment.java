@@ -181,7 +181,10 @@ public class CreateTourFragment
 		User user = Preferences
 				.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(requireContext()));
 		viewModel.updateTour(name, description, user.getId(), pl, image_url);
+		int id = viewModel.getStoredTour().getId();
+		Bundle args = new Bundle();
+		args.putInt(CreatorFragment.TOUR_ID, id);
 		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-				.navigate(R.id.toCreator);
+				.navigate(R.id.toCreator, args);
 	}
 }

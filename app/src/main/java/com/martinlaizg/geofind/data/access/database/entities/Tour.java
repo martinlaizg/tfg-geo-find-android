@@ -18,7 +18,7 @@ import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "tours", foreignKeys = @ForeignKey(entity = User.class, parentColumns = "id",
                                                        childColumns = "creator_id",
-                                                       onDelete = CASCADE),
+                                                       onDelete = CASCADE, onUpdate = CASCADE),
         indices = @Index("creator_id"))
 public class Tour {
 

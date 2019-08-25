@@ -60,7 +60,7 @@ public class TourRepository {
 		if(tours.isEmpty()) {
 			tours = refreshTours();
 		} else {
-			// start the refresh on new thread to do it in background
+			// start the refresh in background
 			new Thread(() -> {
 				try {
 					refreshTours();

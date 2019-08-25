@@ -70,11 +70,9 @@ public class CreatorFragment
 					public boolean onMove(@NonNull RecyclerView recyclerView,
 							@NonNull RecyclerView.ViewHolder dragged,
 							@NonNull RecyclerView.ViewHolder target) {
-						int from = dragged.getAdapterPosition();
-						int to = target.getAdapterPosition();
-
-						adapter.move(from, to);
-						return false;
+						adapter.onItemMove(dragged.getAdapterPosition(),
+						                   target.getAdapterPosition());
+						return true;
 					}
 
 					@Override

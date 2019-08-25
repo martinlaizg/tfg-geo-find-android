@@ -123,7 +123,7 @@ public class CreatorViewModel
 	}
 
 	public void retrievePlace(int position) {
-		if(place != null) return;
+		if(place != null && place.getOrder() == position) return;
 		if(position > tour.getPlaces().size()) {
 			place = null;
 		} else if(position < tour.getPlaces().size()) {

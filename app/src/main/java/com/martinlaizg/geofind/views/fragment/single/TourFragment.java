@@ -3,6 +3,7 @@ package com.martinlaizg.geofind.views.fragment.single;
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,6 +87,7 @@ public class TourFragment
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_tour, container, false);
 		ButterKnife.bind(this, view);
+		tour_description.setMovementMethod(new ScrollingMovementMethod());
 		return view;
 	}
 
@@ -149,9 +151,18 @@ public class TourFragment
 	private void setPlaces(Tour tour) {
 		List<Place> places = new ArrayList<>(tour.getPlaces());
 		List<Place> playPlaces = viewModel.getPlayPlaces();
+		int numTotalPlaces = places.size();
+		tour_num_places.setText(getResources()
+				                        .getQuantityString(R.plurals.number_place, numTotalPlaces,
+				                                           numTotalPlaces));
+
+		play_button.setOnClickListener(v -> alert.show());
+		setDifficultyDialog(tour.getId(), tour.getMin_level());
+
 		if(playPlaces.size() == 0) {
 			// Not played yet
 			in_progress_text.setText(getString(R.string.places));
+			adapterNoCompleted.setPlaces(places);
 			completed_divider.setVisibility(View.GONE);
 			completed_text.setVisibility(View.GONE);
 			places_list.setVisibility(View.GONE);
@@ -159,10 +170,6 @@ public class TourFragment
 		}
 
 		// In progress
-		int numTotalPlaces = places.size();
-		tour_num_places.setText(getResources()
-				                        .getQuantityString(R.plurals.number_place, numTotalPlaces,
-				                                           numTotalPlaces));
 		adapterCompleted.setPlaces(playPlaces);
 
 		for(int i = 0; i < places.size(); i++) {
@@ -183,8 +190,6 @@ public class TourFragment
 			in_progress_divider.setVisibility(View.GONE);
 		}
 
-		play_button.setOnClickListener(v -> alert.show());
-		setDifficultyDialog(tour.getId(), tour.getMin_level());
 	}
 
 	private void setDifficultyDialog(int tour_id, PlayLevel min_level) {
