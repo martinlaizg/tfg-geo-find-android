@@ -7,7 +7,7 @@
     <string name="pref_satellite" translatable="false">satellite</string>
     <string name="pref_map_type" translatable="false">map_type</string>
     <string name="pref_support" translatable="false">support</string>
-    <string name="app_version_name" translatable="false">v0.4-SNAPSHOT</string>
+    <string name="app_version_name" translatable="false">v0.4</string>
     <string name="div" translatable="false">%1$d/%2$d</string>
     <string name="two_csv" translatable="false">%1$f,%2$f</string>
     <string name="add_image">Add image</string>
