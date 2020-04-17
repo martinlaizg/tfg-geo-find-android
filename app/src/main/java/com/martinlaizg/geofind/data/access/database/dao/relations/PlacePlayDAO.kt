@@ -9,9 +9,9 @@ import com.martinlaizg.geofind.data.access.database.entities.PlacePlay
 
 @Dao
 interface PlacePlayDAO {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(placePlay: PlacePlay?)
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	fun insert(placePlay: PlacePlay?)
 
-    @Query("SELECT p.* FROM places p INNER JOIN place_play pp ON p.id = pp.placeId WHERE pp.playId = :playId")
-    fun getPlayPlace(playId: Int?): List<Place?>?
+	@Query("SELECT p.* FROM places p INNER JOIN place_play pp ON p.id = pp.placeId WHERE pp.playId = :playId")
+	fun getPlayPlace(playId: Int?): List<Place?>?
 }

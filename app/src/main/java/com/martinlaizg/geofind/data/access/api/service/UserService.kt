@@ -13,128 +13,128 @@ import retrofit2.Response
 import java.util.*
 
 class UserService private constructor(application: Application) {
-    /**
-     * Login request
-     * If login provider is own request /login/{provider}
-     * ie: /login/own
-     * ie: /login/google
-     *
-     * @param login
-     * login object
-     * @return the logged user
-     * @throws APIException
-     * api exception
-     */
-    @Throws(APIException::class)
-    fun login(login: Login?): User? {
-        val response: Response<User?>
-        var apiException: APIException?
-        try {
-            response = restClient!!.login(login).execute()
-            if (response.isSuccessful) {
-                return response.body()
-            }
-            apiException = ErrorUtils.parseError(response)
-        } catch (e: Exception) {
-            apiException = APIException(ErrorType.NETWORK, e.message!!)
-            Log.e(TAG, "login: ", e)
-        }
-        throw apiException!!
-    }
+	/**
+	 * Login request
+	 * If login provider is own request /login/{provider}
+	 * ie: /login/own
+	 * ie: /login/google
+	 *
+	 * @param login
+	 * login object
+	 * @return the logged user
+	 * @throws APIException
+	 * api exception
+	 */
+	@Throws(APIException::class)
+	fun login(login: Login?): User? {
+		val response: Response<User?>
+		var apiException: APIException?
+		try {
+			response = restClient!!.login(login).execute()
+			if (response.isSuccessful) {
+				return response.body()
+			}
+			apiException = ErrorUtils.parseError(response)
+		} catch (e: Exception) {
+			apiException = APIException(ErrorType.NETWORK, e.message!!)
+			Log.e(TAG, "login: ", e)
+		}
+		throw apiException!!
+	}
 
-    /**
-     * Registry the user
-     *
-     * @param login
-     * the login data
-     * @return the registered user
-     * @throws APIException
-     * exception from server
-     */
-    @Throws(APIException::class)
-    fun registry(login: Login?): User? {
-        val response: Response<User?>
-        var apiException: APIException?
-        try {
-            response = restClient!!.registry(login).execute()
-            if (response.isSuccessful) {
-                return response.body()
-            }
-            apiException = ErrorUtils.parseError(response)
-        } catch (e: Exception) {
-            apiException = APIException(ErrorType.NETWORK, e.message!!)
-        }
-        throw apiException!!
-    }
+	/**
+	 * Registry the user
+	 *
+	 * @param login
+	 * the login data
+	 * @return the registered user
+	 * @throws APIException
+	 * exception from server
+	 */
+	@Throws(APIException::class)
+	fun registry(login: Login?): User? {
+		val response: Response<User?>
+		var apiException: APIException?
+		try {
+			response = restClient!!.registry(login).execute()
+			if (response.isSuccessful) {
+				return response.body()
+			}
+			apiException = ErrorUtils.parseError(response)
+		} catch (e: Exception) {
+			apiException = APIException(ErrorType.NETWORK, e.message!!)
+		}
+		throw apiException!!
+	}
 
-    /**
-     * Send message to support
-     *
-     * @param title
-     * the title
-     * @param message
-     * the message
-     * @throws APIException
-     * exception from server
-     */
-    @Throws(APIException::class)
-    fun sendMessage(title: String, message: String) {
-        val response: Response<Void?>
-        val apiException: APIException
-        try {
-            val params: MutableMap<String, String> = HashMap()
-            params["title"] = title
-            params["message"] = message
-            response = restClient!!.sendSupportMessage(params).execute()
-            if (response.isSuccessful) {
-                return
-            }
-            throw ErrorUtils.parseError(response)!!
-        } catch (e: Exception) {
-            apiException = APIException(ErrorType.NETWORK, e.message!!)
-            throw apiException
-        }
-    }
+	/**
+	 * Send message to support
+	 *
+	 * @param title
+	 * the title
+	 * @param message
+	 * the message
+	 * @throws APIException
+	 * exception from server
+	 */
+	@Throws(APIException::class)
+	fun sendMessage(title: String, message: String) {
+		val response: Response<Void?>
+		val apiException: APIException
+		try {
+			val params: MutableMap<String, String> = HashMap()
+			params["title"] = title
+			params["message"] = message
+			response = restClient!!.sendSupportMessage(params).execute()
+			if (response.isSuccessful) {
+				return
+			}
+			throw ErrorUtils.parseError(response)!!
+		} catch (e: Exception) {
+			apiException = APIException(ErrorType.NETWORK, e.message!!)
+			throw apiException
+		}
+	}
 
-    /**
-     * Update user data
-     *
-     * @param login
-     * the login data
-     * @param user
-     * the user data
-     * @return the new user
-     * @throws APIException
-     * exception from server
-     */
-    @Throws(APIException::class)
-    fun update(login: Login?, user: User?): User? {
-        val response: Response<User?>
-        val apiException: APIException
-        try {
-            login.setUser(user)
-            response = restClient!!.updateUser(user.getId(), login).execute()
-            if (response.isSuccessful) {
-                return response.body()
-            }
-            throw ErrorUtils.parseError(response)!!
-        } catch (e: Exception) {
-            apiException = APIException(ErrorType.NETWORK, e.message!!)
-            throw apiException
-        }
-    }
+	/**
+	 * Update user data
+	 *
+	 * @param login
+	 * the login data
+	 * @param user
+	 * the user data
+	 * @return the new user
+	 * @throws APIException
+	 * exception from server
+	 */
+	@Throws(APIException::class)
+	fun update(login: Login?, user: User?): User? {
+		val response: Response<User?>
+		val apiException: APIException
+		try {
+			login.setUser(user)
+			response = restClient!!.updateUser(user.getId(), login).execute()
+			if (response.isSuccessful) {
+				return response.body()
+			}
+			throw ErrorUtils.parseError(response)!!
+		} catch (e: Exception) {
+			apiException = APIException(ErrorType.NETWORK, e.message!!)
+			throw apiException
+		}
+	}
 
-    companion object {
-        private val TAG = UserService::class.java.simpleName
-        private var instance: UserService? = null
-        private var restClient: RestClient?
-        fun getInstance(application: Application): UserService? {
-            if (instance == null) instance = UserService(application)
-            return instance
-        }
-    }
+	companion object {
+		private val TAG = UserService::class.java.simpleName
+		private var instance: UserService? = null
+		private var restClient: RestClient?
+		fun getInstance(application: Application): UserService {
+			if (instance == null) instance = UserService(application)
+			return instance
+		}
+	}
 
-    init {
-        restClient = RetrofitInstance.getRestClient(application)
-    }
+	init {
+		restClient = RetrofitInstance.getRestClient(application)
+	}
 }

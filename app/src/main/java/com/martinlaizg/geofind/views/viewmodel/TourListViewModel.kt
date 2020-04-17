@@ -9,32 +9,32 @@ import com.martinlaizg.geofind.data.access.database.entities.Tour
 import com.martinlaizg.geofind.data.repository.TourRepository
 
 class TourListViewModel(application: Application) : AndroidViewModel(application) {
-    private val tourRepo: TourRepository?
-    var error: ErrorType? = null
-        private set
+	private val tourRepo: TourRepository?
+	var error: ErrorType? = null
+		private set
 
-    fun getTours(stringQuery: String?): MutableLiveData<MutableList<Tour?>?> {
-        val tours = MutableLiveData<MutableList<Tour?>?>()
-        Thread(Runnable {
-            try {
-                if (stringQuery != null) {
-                    tours.postValue(tourRepo!!.getTours(stringQuery))
-                } else {
-                    tours.postValue(tourRepo.getAllTours())
-                }
-            } catch (e: APIException) {
-                error = e.type
-                tours.postValue(null)
-            }
-        }).start()
-        return tours
-    }
+	fun getTours(stringQuery: String?): MutableLiveData<MutableList<Tour?>?> {
+		val tours = MutableLiveData<MutableList<Tour?>?>()
+		Thread(Runnable {
+			try {
+				if (stringQuery != null) {
+					tours.postValue(tourRepo!!.getTours(stringQuery))
+				} else {
+					tours.postValue(tourRepo.getAllTours())
+				}
+			} catch (e: APIException) {
+				error = e.type
+				tours.postValue(null)
+			}
+		}).start()
+		return tours
+	}
 
-    companion object {
-        private val TAG = TourListViewModel::class.java.simpleName
-    }
+	companion object {
+		private val TAG = TourListViewModel::class.java.simpleName
+	}
 
-    init {
-        tourRepo = TourRepository.Companion.getInstance(application)
-    }
+	init {
+		tourRepo = TourRepository.Companion.getInstance(application)
+	}
 }

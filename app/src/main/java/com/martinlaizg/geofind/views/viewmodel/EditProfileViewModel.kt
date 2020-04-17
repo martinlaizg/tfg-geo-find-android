@@ -10,24 +10,24 @@ import com.martinlaizg.geofind.data.access.database.entities.User
 import com.martinlaizg.geofind.data.repository.UserRepository
 
 class EditProfileViewModel(application: Application) : AndroidViewModel(application) {
-    private val userRepo: UserRepository?
-    var error: ErrorType? = null
-        private set
+	private val userRepo: UserRepository?
+	var error: ErrorType? = null
+		private set
 
-    fun updateUser(login: Login?, user: User?): MutableLiveData<User?> {
-        val u = MutableLiveData<User?>()
-        Thread(Runnable {
-            try {
-                u.postValue(userRepo!!.updateUser(login, user))
-            } catch (e: APIException) {
-                error = e.type
-                u.postValue(null)
-            }
-        }).start()
-        return u
-    }
+	fun updateUser(login: Login?, user: User?): MutableLiveData<User?> {
+		val u = MutableLiveData<User?>()
+		Thread(Runnable {
+			try {
+				u.postValue(userRepo!!.updateUser(login, user))
+			} catch (e: APIException) {
+				error = e.type
+				u.postValue(null)
+			}
+		}).start()
+		return u
+	}
 
-    init {
-        userRepo = UserRepository.Companion.getInstance(application)
-    }
+	init {
+		userRepo = UserRepository.Companion.getInstance(application)
+	}
 }

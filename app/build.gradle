@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     signingConfigs {
@@ -43,8 +43,6 @@ android {
         }
     }
 }
-
-apply from: 'jacoco.gradle'
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -95,7 +93,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'
 
     // Butterknife
-    implementation 'com.jakewharton:butterknife:10.2.1'
+    annotationProcessor 'com.jakewharton:butterknife:10.2.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
 
     // Picasso
@@ -119,6 +117,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.2'
 }
 repositories {
     mavenCentral()
