@@ -89,7 +89,7 @@ class TourListFragment : Fragment() {
 		viewModel!!.getTours(stringQuery).observe(this, Observer { tours: MutableList<Tour?>? -> setTours(tours) })
 		val sp = PreferenceManager.getDefaultSharedPreferences(requireContext())
 		val u = Preferences.getLoggedUser(sp)
-		if (u.user_type != null && u.user_type != UserType.USER) {
+		if (u.userType != null && u.userType != UserType.USER) {
 			create_tour_button!!.setOnClickListener(
 					Navigation.createNavigateOnClickListener(R.id.toCreateTour))
 		} else {

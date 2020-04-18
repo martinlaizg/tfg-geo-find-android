@@ -12,7 +12,7 @@ interface TourDAO {
 	 * the tour to be inserted
 	 */
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	fun insert(tour: Tour?)
+	fun insert(tour: Tour)
 
 	/**
 	 * Update a tour
@@ -21,7 +21,7 @@ interface TourDAO {
 	 * the tour to be updated
 	 */
 	@Update
-	fun update(tour: Tour?)
+	fun update(tour: Tour)
 
 	/**
 	 * Get a single tour by id
@@ -31,7 +31,7 @@ interface TourDAO {
 	 * @return the tour
 	 */
 	@Query("SELECT * FROM tours WHERE id = :tourId")
-	fun getTour(tourId: Int?): Tour?
+	fun getTour(tourId: Int): Tour
 
 	/**
 	 * Delete a single tour by id
@@ -48,5 +48,5 @@ interface TourDAO {
 	 * @return the list of tours
 	 */
 	@get:Query("SELECT * FROM tours")
-	val all: MutableList<Tour?>?
+	val all: MutableList<Tour>
 }

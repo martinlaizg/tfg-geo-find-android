@@ -5,22 +5,30 @@ import com.martinlaizg.geofind.data.enums.PlayLevel
 import com.martinlaizg.geofind.utils.DateUtils
 import java.sql.Date
 import java.util.*
+import kotlin.collections.ArrayList
 
-@Entity(tableName = "tours", foreignKeys = [ForeignKey(entity = User::class, parentColumns = "id", childColumns = "creator_id", onDelete = ForeignKey.CASCADE, onUpdate = ForeignKey.CASCADE)], indices = [Index("creator_id")])
+@Entity(tableName = "tours",
+		foreignKeys = [ForeignKey(entity = User::class, parentColumns = ["id"], childColumns = ["creator_id"], onDelete = ForeignKey.CASCADE, onUpdate = ForeignKey.CASCADE)],
+		indices = [Index("creator_id")])
 class Tour {
 	@PrimaryKey
 	val id: Int
 	private var name: String
 	private var description: String
-	var image: String? = null
-	private var min_level: PlayLevel
-	var created_at: Date? = null
-	var updated_at: Date? = null
-	var creator_id: Int? = null
+	private var minLevel: PlayLevel
+	private var image: String? = null
+	private var createdAt: Date? = null
+	private var updatedAt: Date? = null
+	private var creatorId: Int? = null
+
 	private var updated: Date? = null
+		get() = Date(Calendar.getInstance().timeInMillis)
+		set(value) {
+			field = value ?: Date(Calendar.getInstance().timeInMillis)
+		}
 
 	@Ignore
-	var places: MutableList<Place?>? = null
+	var places: MutableList<Place> = ArrayList()
 
 	@Ignore
 	var creator: User? = null
@@ -31,10 +39,10 @@ class Tour {
 		this.name = name
 		this.description = description
 		image = null
-		this.min_level = minLevel
-		this.created_at = createdAt
-		this.updated_at = updatedAt
-		this.creator_id = creatorId
+		this.minLevel = minLevel
+		this.createdAt = createdAt
+		this.updatedAt = updatedAt
+		this.creatorId = creatorId
 		this.updated = updated
 	}
 
@@ -43,58 +51,19 @@ class Tour {
 		id = 0
 		name = ""
 		description = ""
-		min_level = PlayLevel.MAP
+		minLevel = PlayLevel.MAP
 		places = ArrayList()
-	}//
+	}
 
-	//
 	val isValid: Boolean
 		get() {
-			for (p in places!!) {
-				if (!p!!.isValid) return false
+			for (p in places) {
+				if (!p.isValid) return false
 			}
-			return getName() != null && !getName()!!.isEmpty() && //
-					getDescription() != null && !getDescription()!!.isEmpty() && //
-					getMinLevel() != null
+			return name.isNotEmpty() && description.isNotEmpty()
 		}
-
-	fun getName(): String? {
-		return name
-	}
-
-	fun setName(name: String) {
-		this.name = name
-	}
-
-	//-------------------------
-	fun getDescription(): String? {
-		return description
-	}
-
-	fun setDescription(description: String) {
-		this.description = description
-	}
-
-	fun getMinLevel(): PlayLevel? {
-		return min_level
-	}
-
-	fun setMinLevel(minLevel: PlayLevel) {
-		this.min_level = minLevel
-	}
 
 	val isOutOfDate: Boolean
 		get() = DateUtils.isDateExpire(updated)
-
-	fun getUpdated(): Date {
-		return Date(Calendar.getInstance().time.time)
-	}
-
-	fun setUpdated(updated: Date?) {
-		if (updated == null) {
-			this.updated = Date(Calendar.getInstance().time.time)
-		}
-		this.updated = updated
-	}
 
 }

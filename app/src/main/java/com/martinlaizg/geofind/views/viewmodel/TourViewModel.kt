@@ -10,7 +10,6 @@ import com.martinlaizg.geofind.data.access.database.entities.Play
 import com.martinlaizg.geofind.data.access.database.entities.Tour
 import com.martinlaizg.geofind.data.repository.PlayRepository
 import com.martinlaizg.geofind.data.repository.TourRepository
-import java.util.*
 
 class TourViewModel(application: Application) : AndroidViewModel(application) {
 	private val tourRepo: TourRepository?
@@ -37,7 +36,7 @@ class TourViewModel(application: Application) : AndroidViewModel(application) {
 	fun getPlace(placeId: Int): MutableLiveData<Place?> {
 		val p = MutableLiveData<Place?>()
 		Thread(label@ Runnable {
-			for (place in tour.getPlaces()) {
+			for (place in tour?.places ?: ArrayList()) {
 				if (place.id == placeId) {
 					p.postValue(place)
 					return@label
@@ -47,11 +46,11 @@ class TourViewModel(application: Application) : AndroidViewModel(application) {
 		return p
 	}
 
-	val places: List<Place?>?
-		get() = tour.getPlaces()
+	val places: List<Place>
+		get() = tour?.places ?: ArrayList()
 
 	val playPlaces: List<Place>
-		get() = if (play == null) ArrayList() else play.getPlaces()
+		get() = play?.places ?: ArrayList()
 
 	init {
 		tourRepo = TourRepository.Companion.getInstance(application)

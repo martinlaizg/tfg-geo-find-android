@@ -10,7 +10,7 @@ import com.martinlaizg.geofind.utils.DateUtils
 import java.sql.Date
 import java.util.*
 
-@Entity(tableName = "users", indices = [Index(["id"])])
+@Entity(tableName = "users", indices = [Index("id")])
 class User {
 	@PrimaryKey
 	val id: Int
@@ -18,9 +18,9 @@ class User {
 	var username: String? = null
 	var name: String? = null
 	var image: String? = null
-	var user_type: UserType? = null
-	var created_at: Date? = null
-	var updated_at: Date? = null
+	var userType: UserType? = null
+	var createdAt: Date? = null
+	var updatedAt: Date? = null
 	private var updated: Date? = null
 
 	@Ignore
@@ -35,9 +35,9 @@ class User {
 		this.email = email
 		this.username = username
 		this.name = name
-		this.user_type = userType
-		this.created_at = createdAt
-		this.updated_at = updatedAt
+		this.userType = userType
+		this.createdAt = createdAt
+		this.updatedAt = updatedAt
 	}
 
 	@Ignore

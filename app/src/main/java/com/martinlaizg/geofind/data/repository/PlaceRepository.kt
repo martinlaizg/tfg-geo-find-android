@@ -6,7 +6,20 @@ import com.martinlaizg.geofind.data.access.database.dao.PlaceDAO
 import com.martinlaizg.geofind.data.access.database.entities.Place
 
 class PlaceRepository private constructor(application: Application) {
-	private val placeDAO: PlaceDAO?
+
+	private val tag = PlaceRepository::class.simpleName
+	private val placeDAO: PlaceDAO = AppDatabase.getDatabase(application).placeDAO()
+
+	companion object {
+		private var instance: PlaceRepository? = null
+		fun getInstance(application: Application): PlaceRepository {
+			return instance ?: synchronized(this) {
+				val newInstance = PlaceRepository(application)
+				instance = newInstance
+				newInstance
+			}
+		}
+	}
 
 	/**
 	 * Insert a List of Place into the database
@@ -14,8 +27,8 @@ class PlaceRepository private constructor(application: Application) {
 	 * @param places
 	 * places to be inserted
 	 */
-	fun insert(places: List<Place?>?) {
-		for (p in places!!) insert(p)
+	fun insert(places: List<Place>) {
+		for (p in places) insert(p)
 	}
 
 	/**
@@ -24,8 +37,8 @@ class PlaceRepository private constructor(application: Application) {
 	 * @param place
 	 * place to be inserted
 	 */
-	private fun insert(place: Place?) {
-		val p = placeDAO!!.getPlace(place.getId())
+	private fun insert(place: Place) {
+		val p = placeDAO.getPlace(place.id)
 		if (p == null) {
 			placeDAO.insert(place)
 		} else {
@@ -41,20 +54,6 @@ class PlaceRepository private constructor(application: Application) {
 	 * @return the list of places
 	 */
 	fun getTourPlaces(tourId: Int?): MutableList<Place?>? {
-		return placeDAO!!.getTourPlaces(tourId)
-	}
-
-	companion object {
-		private val TAG = PlaceRepository::class.java.simpleName
-		private var instance: PlaceRepository? = null
-		fun getInstance(application: Application): PlaceRepository? {
-			if (instance == null) instance = PlaceRepository(application)
-			return instance
-		}
-	}
-
-	init {
-		val database: AppDatabase = AppDatabase.Companion.getDatabase(application)
-		placeDAO = database.placeDAO()
+		return placeDAO.getTourPlaces(tourId)
 	}
 }

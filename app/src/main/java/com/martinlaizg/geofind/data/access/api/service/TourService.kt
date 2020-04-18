@@ -3,7 +3,7 @@ package com.martinlaizg.geofind.data.access.api.service
 import android.app.Application
 import android.util.Log
 import com.martinlaizg.geofind.data.access.api.RestClient
-import com.martinlaizg.geofind.data.access.api.RetrofitInstance
+import com.martinlaizg.geofind.data.access.api.RetrofitFactory
 import com.martinlaizg.geofind.data.access.api.error.ErrorType
 import com.martinlaizg.geofind.data.access.api.error.ErrorUtils
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException
@@ -12,7 +12,20 @@ import retrofit2.Response
 import java.util.*
 
 class TourService private constructor(application: Application) {
-	private val TAG = TourService::class.java.simpleName
+
+	private val tag = TourService::class.simpleName
+	private var restClient: RestClient = RetrofitFactory.getRestClient(application)
+
+	companion object {
+		private var instance: TourService? = null
+		fun getInstance(application: Application): TourService {
+			return instance ?: synchronized(this) {
+				val newInstance = TourService(application)
+				instance = newInstance
+				newInstance
+			}
+		}
+	}
 
 	/**
 	 * Retrieve all tours form de server
@@ -27,14 +40,14 @@ class TourService private constructor(application: Application) {
 			val response: Response<MutableList<Tour?>?>
 			var apiException: APIException?
 			try {
-				response = restClient!!.getTours(HashMap()).execute()
+				response = restClient.getTours(HashMap()).execute()
 				if (response.isSuccessful) {
 					return response.body()
 				}
 				apiException = ErrorUtils.parseError(response)
 			} catch (e: Exception) {
 				apiException = APIException(ErrorType.NETWORK, e.message!!)
-				Log.e(TAG, "getTours: ", e)
+				Log.e(tag, "getTours: ", e)
 			}
 			throw apiException!!
 		}
@@ -53,14 +66,14 @@ class TourService private constructor(application: Application) {
 		val response: Response<Tour?>
 		var apiException: APIException?
 		try {
-			response = restClient!!.createTour(tour).execute()
+			response = restClient.createTour(tour).execute()
 			if (response.isSuccessful) {
 				return response.body()
 			}
 			apiException = ErrorUtils.parseError(response)
 		} catch (e: Exception) {
 			apiException = APIException(ErrorType.NETWORK, e.message!!)
-			Log.e(TAG, "create: ", e)
+			Log.e(tag, "create: ", e)
 		}
 		throw apiException!!
 	}
@@ -79,14 +92,14 @@ class TourService private constructor(application: Application) {
 		val response: Response<Tour?>
 		var apiException: APIException?
 		try {
-			response = restClient!!.getTour(id).execute()
+			response = restClient.getTour(id).execute()
 			if (response.isSuccessful) {
 				return response.body()
 			}
 			apiException = ErrorUtils.parseError(response)
 		} catch (e: Exception) {
 			apiException = APIException(ErrorType.NETWORK, e.message!!)
-			Log.e(TAG, "getTour: ", e)
+			Log.e(tag, "getTour: ", e)
 		}
 		throw apiException!!
 	}
@@ -101,18 +114,18 @@ class TourService private constructor(application: Application) {
 	 * server errors
 	 */
 	@Throws(APIException::class)
-	fun update(tour: Tour?): Tour? {
+	fun update(tour: Tour): Tour? {
 		val response: Response<Tour?>
 		var apiException: APIException?
 		try {
-			response = restClient!!.update(tour.getId(), tour).execute()
+			response = restClient.update(tour.id, tour).execute()
 			if (response.isSuccessful) {
 				return response.body()
 			}
 			apiException = ErrorUtils.parseError(response)
 		} catch (e: Exception) {
 			apiException = APIException(ErrorType.NETWORK, e.message!!)
-			Log.e(TAG, "update: ", e)
+			Log.e(tag, "update: ", e)
 		}
 		throw apiException!!
 	}
@@ -124,30 +137,15 @@ class TourService private constructor(application: Application) {
 		val params = HashMap<String?, String?>()
 		params["q"] = stringQuery
 		try {
-			response = restClient!!.getTours(params).execute()
+			response = restClient.getTours(params).execute()
 			if (response.isSuccessful) {
 				return response.body()
 			}
 			apiException = ErrorUtils.parseError(response)
 		} catch (e: Exception) {
 			apiException = APIException(ErrorType.NETWORK, e.message!!)
-			Log.e(TAG, "update: ", e)
+			Log.e(tag, "update: ", e)
 		}
 		throw apiException!!
-	}
-
-	companion object {
-		private var restClient: RestClient? = null
-		private var instance: TourService? = null
-		fun getInstance(application: Application): TourService? {
-			if (instance == null) instance = TourService(application)
-			return instance
-		}
-	}
-
-	init {
-		if (restClient == null) {
-			restClient = RetrofitInstance.getRestClient(application)
-		}
 	}
 }

@@ -10,7 +10,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -19,27 +18,15 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.preference.PreferenceManager
-import butterknife.BindView
-import butterknife.ButterKnife
-import com.google.android.material.navigation.NavigationView
 import com.martinlaizg.geofind.R
 import com.martinlaizg.geofind.config.Preferences
-import com.martinlaizg.geofind.data.access.api.RetrofitInstance
+import com.martinlaizg.geofind.data.access.api.RetrofitFactory
 import com.martinlaizg.geofind.data.repository.UserRepository
+import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 class MainActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
-	@kotlin.jvm.JvmField
-	@BindView(R.id.drawer_layout)
-	var drawer_layout: DrawerLayout? = null
 
-	@kotlin.jvm.JvmField
-	@BindView(R.id.drawer_nav_view)
-	var navigationView: NavigationView? = null
-
-	@kotlin.jvm.JvmField
-	@BindView(R.id.toolbar)
-	var toolbar: Toolbar? = null
 	private var navController: NavController? = null
 	private var appBarConfiguration: AppBarConfiguration? = null
 	override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
@@ -76,12 +63,13 @@ class MainActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
 	}
 
 	private fun setServicesToken(token: String?) {
-		RetrofitInstance.setToken(token)
+		RetrofitFactory.token = token
 	}
 
 	override fun onCreate(savedInstanceState: Bundle?,
 	                      persistentState: PersistableBundle?) {
 		super.onCreate(savedInstanceState, persistentState)
+		setContentView(R.layout.activity_main)
 		UserRepository.Companion.getInstance(application)
 	}
 
@@ -115,7 +103,6 @@ class MainActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
-		ButterKnife.bind(this)
 		setSupportActionBar(toolbar)
 
 		// Set Navigation Controller
@@ -135,9 +122,7 @@ class MainActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
 		PreferenceManager.setDefaultValues(this, R.xml.app_preferences, false)
 		val sp = PreferenceManager.getDefaultSharedPreferences(this)
 		val u = Preferences.getLoggedUser(sp)
-		if (u != null) {
-			setDrawerHeader(u.username, u.name, u.image)
-		}
+		setDrawerHeader(u.username, u.name, u.image)
 		val token = Preferences.getToken(sp)
 		setServicesToken(token)
 	}

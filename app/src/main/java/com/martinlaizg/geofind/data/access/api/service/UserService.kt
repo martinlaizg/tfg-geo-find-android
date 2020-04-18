@@ -3,7 +3,7 @@ package com.martinlaizg.geofind.data.access.api.service
 import android.app.Application
 import android.util.Log
 import com.martinlaizg.geofind.data.access.api.RestClient
-import com.martinlaizg.geofind.data.access.api.RetrofitInstance
+import com.martinlaizg.geofind.data.access.api.RetrofitFactory
 import com.martinlaizg.geofind.data.access.api.entities.Login
 import com.martinlaizg.geofind.data.access.api.error.ErrorType
 import com.martinlaizg.geofind.data.access.api.error.ErrorUtils
@@ -13,6 +13,21 @@ import retrofit2.Response
 import java.util.*
 
 class UserService private constructor(application: Application) {
+
+	private val TAG = UserService::class.java.simpleName
+	private var restClient: RestClient = RetrofitFactory.getRestClient(application)
+
+	companion object {
+		private var instance: UserService? = null
+		fun getInstance(application: Application): UserService {
+			return instance ?: synchronized(this) {
+				val newInstance = UserService(application)
+				instance = newInstance
+				newInstance
+			}
+		}
+	}
+
 	/**
 	 * Login request
 	 * If login provider is own request /login/{provider}
@@ -26,11 +41,11 @@ class UserService private constructor(application: Application) {
 	 * api exception
 	 */
 	@Throws(APIException::class)
-	fun login(login: Login?): User? {
+	fun login(login: Login): User? {
 		val response: Response<User?>
 		var apiException: APIException?
 		try {
-			response = restClient!!.login(login).execute()
+			response = restClient.login(login).execute()
 			if (response.isSuccessful) {
 				return response.body()
 			}
@@ -52,11 +67,11 @@ class UserService private constructor(application: Application) {
 	 * exception from server
 	 */
 	@Throws(APIException::class)
-	fun registry(login: Login?): User? {
+	fun registry(login: Login): User? {
 		val response: Response<User?>
 		var apiException: APIException?
 		try {
-			response = restClient!!.registry(login).execute()
+			response = restClient.registry(login).execute()
 			if (response.isSuccessful) {
 				return response.body()
 			}
@@ -85,7 +100,7 @@ class UserService private constructor(application: Application) {
 			val params: MutableMap<String, String> = HashMap()
 			params["title"] = title
 			params["message"] = message
-			response = restClient!!.sendSupportMessage(params).execute()
+			response = restClient.sendSupportMessage(params).execute()
 			if (response.isSuccessful) {
 				return
 			}
@@ -108,12 +123,12 @@ class UserService private constructor(application: Application) {
 	 * exception from server
 	 */
 	@Throws(APIException::class)
-	fun update(login: Login?, user: User?): User? {
+	fun update(login: Login, user: User): User? {
 		val response: Response<User?>
 		val apiException: APIException
 		try {
-			login.setUser(user)
-			response = restClient!!.updateUser(user.getId(), login).execute()
+			login.user = user
+			response = restClient.updateUser(user.id, login).execute()
 			if (response.isSuccessful) {
 				return response.body()
 			}
@@ -124,17 +139,4 @@ class UserService private constructor(application: Application) {
 		}
 	}
 
-	companion object {
-		private val TAG = UserService::class.java.simpleName
-		private var instance: UserService? = null
-		private var restClient: RestClient?
-		fun getInstance(application: Application): UserService {
-			if (instance == null) instance = UserService(application)
-			return instance
-		}
-	}
-
-	init {
-		restClient = RetrofitInstance.getRestClient(application)
-	}
 }

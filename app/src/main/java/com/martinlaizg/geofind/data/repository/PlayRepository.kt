@@ -1,6 +1,7 @@
 package com.martinlaizg.geofind.data.repository
 
 import android.app.Application
+import android.util.Log
 import com.martinlaizg.geofind.data.access.api.service.PlayService
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException
 import com.martinlaizg.geofind.data.access.database.AppDatabase
@@ -10,11 +11,14 @@ import com.martinlaizg.geofind.data.access.database.entities.PlacePlay
 import com.martinlaizg.geofind.data.access.database.entities.Play
 
 class PlayRepository private constructor(application: Application) {
-	private val playDAO: PlayDAO?
-	private val playService: PlayService?
-	private val tourRepo: TourRepository?
-	private val userRepo: UserRepository?
-	private val placePlayDAO: PlacePlayDAO?
+
+	private val tag = PlayRepository::class.simpleName
+
+	private val playDAO: PlayDAO
+	private val playService: PlayService
+	private val tourRepo: TourRepository
+	private val userRepo: UserRepository
+	private val placePlayDAO: PlacePlayDAO
 
 	/**
 	 * Get the play between user and tour
@@ -28,34 +32,26 @@ class PlayRepository private constructor(application: Application) {
 	 * exception from API
 	 */
 	@Throws(APIException::class)
-	fun getPlay(userId: Int, tourId: Int): Play {
-		// Get from database
-		var p = playDAO!!.getPlay(userId, tourId)
-		if (p != null) {
-			// Check out of date
+	fun getPlay(userId: Int, tourId: Int): Play? {
+		try {
+			var p: Play = playDAO.getPlay(userId, tourId) ?: playService.getUserPlay(userId, tourId)
 			if (p.isOutOfDate) {
 				playDAO.delete(p)
 			} else {                    // If not retrieve data
-				p.tour = tourRepo!!.getTour(tourId)
-				p.user = userRepo!!.getUser(userId)
+				p.tour = tourRepo.getTour(tourId)
+				p.user = userRepo.getUser(userId)
 				p.places = playDAO.getPlaces(p.id)
 				return p
 			}
-		}
-		// Get from server
-		try {
-			p = playService!!.getUserPlay(userId, tourId)
-			p.user_id = p.user.id
-			p.tour_id = p.tour.id
+			// Get from server
+			p = playService.getUserPlay(userId, tourId)
+			p.userId = p.user?.id ?: 0
+			p.tourId = p.tour?.id ?: 0
 			insert(p)
 		} catch (e: APIException) {
-			p = null
+			Log.e(tag, "Error retrieving a play for user=$userId and tour=$tourId", e)
 		}
-		if (p == null) {
-			p = Play(tourId, userId)
-			p.tour = tourRepo!!.getTour(tourId)
-		}
-		return p
+		return null
 	}
 
 	/**
@@ -65,20 +61,18 @@ class PlayRepository private constructor(application: Application) {
 	 * @param play
 	 * Play to be inserted
 	 */
-	private fun insert(play: Play?) {
-		if (play != null) {
-			userRepo!!.insert(play.user)
-			tourRepo!!.insert(play.tour)
-			val p = playDAO!!.getPlay(play.id)
-			if (p == null) {
-				playDAO.insert(play)
-			} else {
-				playDAO.update(play)
-			}
-			for (place in play.places) {
-				val pp = PlacePlay(place.id, play.id)
-				placePlayDAO!!.insert(pp)
-			}
+	private fun insert(play: Play) {
+		userRepo.insert(play.user)
+		tourRepo.insert(play.tour)
+		val p = playDAO.getPlay(play.id)
+		if (p == null) {
+			playDAO.insert(play)
+		} else {
+			playDAO.update(play)
+		}
+		for (place in play.places) {
+			val pp = PlacePlay(place.id, play.id)
+			placePlayDAO.insert(pp)
 		}
 	}
 
@@ -95,9 +89,9 @@ class PlayRepository private constructor(application: Application) {
 	 */
 	@Throws(APIException::class)
 	fun completePlace(playId: Int, placeId: Int): Play? {
-		val p = playService!!.createPlacePlay(playId, placeId)
+		val p = playService.createPlacePlay(playId, placeId)
 		val pp = PlacePlay(placeId, playId)
-		placePlayDAO!!.insert(pp)
+		placePlayDAO.insert(pp)
 		return p
 	}
 
@@ -114,8 +108,10 @@ class PlayRepository private constructor(application: Application) {
 	 */
 	@Throws(APIException::class)
 	fun createPlay(userId: Int, tourId: Int): Play? {
-		val p = playService!!.createUserPlay(userId, tourId)
-		insert(p)
+		val p = playService.createUserPlay(userId, tourId)
+		if (p != null) {
+			insert(p)
+		}
 		return p
 	}
 
@@ -129,8 +125,8 @@ class PlayRepository private constructor(application: Application) {
 	 * the exception from the database
 	 */
 	@Throws(APIException::class)
-	fun getUserPlays(userId: Int): List<Play?>? {
-		val plays = playDAO!!.getUserPlays(userId)
+	fun getUserPlays(userId: Int): List<Play> {
+		val plays = playDAO.getUserPlays(userId)
 		// Remove out of date
 		var i = 0
 		while (i < plays!!.size) {
@@ -141,16 +137,16 @@ class PlayRepository private constructor(application: Application) {
 			i++
 		}
 		if (plays.isEmpty()) {
-			plays.addAll(playService!!.getUserPlays(userId)!!)
+			plays.addAll(playService.getUserPlays(userId))
 			for (p in plays) {
-				userRepo!!.insert(p.user)
-				tourRepo!!.insert(p.tour)
-				userRepo.insert(p.tour.creator)
+				userRepo.insert(p.user)
+				tourRepo.insert(p.tour)
+				userRepo.insert(p.tour!!.creator)
 				insert(p)
 			}
 		} else {
 			for (i in plays.indices) {
-				plays[i].tour = tourRepo!!.getTour(plays[i].tour_id)
+				plays[i].tour = tourRepo.getTour(plays[i].tourId)
 				plays[i].places = placePlayDAO!!.getPlayPlace(plays[i].id)
 			}
 		}
@@ -170,8 +166,8 @@ class PlayRepository private constructor(application: Application) {
 		val database: AppDatabase = AppDatabase.Companion.getDatabase(application)
 		playDAO = database.playDAO()
 		placePlayDAO = database.playPlaceDAO()
-		playService = PlayService.Companion.getInstance(application)
-		tourRepo = TourRepository.Companion.getInstance(application)
-		userRepo = UserRepository.Companion.getInstance(application)
+		playService = PlayService.getInstance(application)
+		tourRepo = TourRepository.getInstance(application)
+		userRepo = UserRepository.getInstance(application)
 	}
 }

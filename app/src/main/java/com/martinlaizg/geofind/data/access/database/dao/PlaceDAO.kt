@@ -6,14 +6,14 @@ import com.martinlaizg.geofind.data.access.database.entities.Place
 @Dao
 interface PlaceDAO {
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	fun insert(place: Place?)
+	fun insert(place: Place)
 
 	@Update
-	fun update(place: Place?)
+	fun update(place: Place)
 
 	@Query("SELECT * FROM places WHERE id = :placeId")
-	fun getPlace(placeId: Int): Place?
+	fun getPlace(placeId: Int): Place
 
-	@Query("SELECT * FROM places WHERE tour_id = :tourId ORDER BY `order` ASC")
-	fun getTourPlaces(tourId: Int?): MutableList<Place?>?
+	@Query("SELECT * FROM places WHERE tourId = :tourId ORDER BY `order` ASC")
+	fun getTourPlaces(tourId: Int): MutableList<Place>
 }

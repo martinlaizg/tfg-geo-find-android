@@ -3,7 +3,7 @@ package com.martinlaizg.geofind.data.access.api.service
 import android.app.Application
 import android.util.Log
 import com.martinlaizg.geofind.data.access.api.RestClient
-import com.martinlaizg.geofind.data.access.api.RetrofitInstance
+import com.martinlaizg.geofind.data.access.api.RetrofitFactory
 import com.martinlaizg.geofind.data.access.api.error.ErrorType
 import com.martinlaizg.geofind.data.access.api.error.ErrorUtils
 import com.martinlaizg.geofind.data.access.api.service.exceptions.APIException
@@ -26,13 +26,13 @@ class PlayService private constructor(application: Application) {
 	 * exception from server
 	 */
 	@Throws(APIException::class)
-	fun getUserPlay(userId: Int, tourId: Int): Play? {
+	fun getUserPlay(userId: Int, tourId: Int): Play {
 		val response: Response<Play?>
 		var apiException: APIException?
 		try {
 			response = restClient!!.getUserPlay(tourId, userId).execute()
 			if (response.isSuccessful) {
-				return response.body()
+				return response.body()!!
 			}
 			apiException = ErrorUtils.parseError(response)
 		} catch (e: IOException) {
@@ -54,8 +54,8 @@ class PlayService private constructor(application: Application) {
 	 */
 	@Throws(APIException::class)
 	fun createUserPlay(userId: Int, tourId: Int): Play? {
-		val response: Response<Play?>
-		var apiException: APIException?
+		val response: Response<Play>
+		var apiException: APIException
 		try {
 			response = restClient!!.createUserPlay(tourId, userId).execute()
 			if (response.isSuccessful) {
@@ -65,7 +65,7 @@ class PlayService private constructor(application: Application) {
 		} catch (e: IOException) {
 			apiException = APIException(ErrorType.NETWORK, e.message!!)
 		}
-		throw apiException!!
+		throw apiException
 	}
 
 	/**
@@ -80,7 +80,7 @@ class PlayService private constructor(application: Application) {
 	 * exception from the server
 	 */
 	@Throws(APIException::class)
-	fun createPlacePlay(playId: Int?, placeId: Int?): Play? {
+	fun createPlacePlay(playId: Int, placeId: Int): Play? {
 		val response: Response<Play?>
 		var apiException: APIException?
 		try {
@@ -97,13 +97,13 @@ class PlayService private constructor(application: Application) {
 	}
 
 	@Throws(APIException::class)
-	fun getUserPlays(userId: Int): List<Play?>? {
-		val response: Response<List<Play?>?>
+	fun getUserPlays(userId: Int): List<Play> {
+		val response: Response<List<Play>>
 		var apiException: APIException?
 		try {
 			response = restClient!!.getUserPlays(userId).execute()
 			if (response.isSuccessful) {
-				return response.body()
+				return response.body() ?: ArrayList()
 			}
 			apiException = ErrorUtils.parseError(response)
 		} catch (e: IOException) {
@@ -116,13 +116,16 @@ class PlayService private constructor(application: Application) {
 	companion object {
 		private val TAG = PlayService::class.java.simpleName
 		private var instance: PlayService? = null
-		fun getInstance(application: Application): PlayService? {
-			if (instance == null) instance = PlayService(application)
-			return instance
+		fun getInstance(application: Application): PlayService {
+			return instance ?: synchronized(this) {
+				val newInstance = PlayService(application)
+				instance = newInstance
+				newInstance
+			}
 		}
 	}
 
 	init {
-		restClient = RetrofitInstance.getRestClient(application)
+		restClient = RetrofitFactory.getRestClient(application)
 	}
 }

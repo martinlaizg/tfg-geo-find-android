@@ -48,7 +48,7 @@ interface RestClient {
 	 * @return the tour updated
 	 */
 	@PUT("tours/{tour_id}")
-	fun update(@Path("tour_id") tourId: Int?, @Body tour: Tour?): Call<Tour?>
+	fun update(@Path("tour_id") tourId: Int?, @Body tour: Tour): Call<Tour>
 
 	/**
 	 * Get the [Play] by `tour_id` and `user_id`
@@ -60,7 +60,7 @@ interface RestClient {
 	 * @return the play
 	 */
 	@GET("tours/{tour_id}/users/{user_id}/play")
-	fun getUserPlay(@Path("tour_id") tourId: Int?, @Path("user_id") userId: Int?): Call<Play?>
+	fun getUserPlay(@Path("tour_id") tourId: Int, @Path("user_id") userId: Int): Call<Play>
 
 	/**
 	 * Create the empty [Play] by `tour_id` and `user_id`
@@ -72,7 +72,7 @@ interface RestClient {
 	 * @return the play
 	 */
 	@POST("tours/{tour_id}/users/{user_id}/play")
-	fun createUserPlay(@Path("tour_id") tourId: Int?, @Path("user_id") userId: Int?): Call<Play?>
+	fun createUserPlay(@Path("tour_id") tourId: Int, @Path("user_id") userId: Int): Call<Play>
 
 	/**
 	 * Log in the user
@@ -82,7 +82,7 @@ interface RestClient {
 	 * @return the logged user
 	 */
 	@POST("login")
-	fun login(@Body login: Login?): Call<User?>
+	fun login(@Body login: Login): Call<User>
 
 	/**
 	 * Registry the user
@@ -92,7 +92,7 @@ interface RestClient {
 	 * @return the new [User]
 	 */
 	@POST("users")
-	fun registry(@Body login: Login?): Call<User?>
+	fun registry(@Body login: Login): Call<User>
 
 	/**
 	 * Create the play of a place
@@ -104,8 +104,8 @@ interface RestClient {
 	 * @return the new [Play] with the place
 	 */
 	@POST("plays/{play_id}/places/{place_id}")
-	fun createPlacePlay(@Path("play_id") playId: Int?,
-	                    @Path("place_id") placeId: Int?): Call<Play?>
+	fun createPlacePlay(@Path("play_id") playId: Int,
+	                    @Path("place_id") placeId: Int): Call<Play>
 
 	/**
 	 * Send a message to support
@@ -115,7 +115,7 @@ interface RestClient {
 	 * @return nothing
 	 */
 	@POST("support")
-	fun sendSupportMessage(@QueryMap params: Map<String, String>?): Call<Void?>
+	fun sendSupportMessage(@QueryMap params: Map<String, String>): Call<Void>
 
 	/**
 	 * Update the data of the user
@@ -127,7 +127,7 @@ interface RestClient {
 	 * @return the new user
 	 */
 	@PUT("users/{user_id}")
-	fun updateUser(@Path("user_id") userId: Int?, @Body login: Login?): Call<User?>
+	fun updateUser(@Path("user_id") userId: Int, @Body login: Login): Call<User>
 
 	/**
 	 * Get the list of plays of the user
@@ -137,5 +137,5 @@ interface RestClient {
 	 * @return the list of plays
 	 */
 	@GET("users/{user_id}/plays")
-	fun getUserPlays(@Path("user_id") userId: Int?): Call<List<Play?>?>
+	fun getUserPlays(@Path("user_id") userId: Int): Call<List<Play>>
 }

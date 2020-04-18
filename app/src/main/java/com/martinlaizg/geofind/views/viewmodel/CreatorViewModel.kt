@@ -49,7 +49,7 @@ class CreatorViewModel(application: Application) : AndroidViewModel(application)
 		storedTour!!.name = name
 		storedTour!!.description = description
 		storedTour.setCreator_id(creatorId)
-		storedTour!!.min_level = pl
+		storedTour!!.minLevel = pl
 		storedTour.setImage(imageUrl)
 	}
 

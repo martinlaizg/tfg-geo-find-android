@@ -15,14 +15,24 @@ import com.martinlaizg.geofind.data.access.database.entities.User
 class UserRepository private constructor(application: Application) {
 
 	private val tag = UserRepository::class.simpleName
-	private var instance: UserRepository? = null
 
 	private val userDAO: UserDAO
 	private val userService: UserService
 	private val sp: SharedPreferences
 
-	fun getInstance(application: Application): UserRepository {
-		return instance ?: UserRepository(application)
+	companion object {
+		private var instance: UserRepository? = null
+		fun getInstance(application: Application): UserRepository {
+			return instance ?: synchronized(this) {
+				val newInstance = UserRepository(application)
+				instance = newInstance
+				newInstance
+			}
+		}
+
+		fun getInstance(): UserRepository? {
+			return instance
+		}
 	}
 
 	init {
@@ -107,7 +117,7 @@ class UserRepository private constructor(application: Application) {
 	 * the API exception
 	 */
 	@Throws(APIException::class)
-	fun updateUser(login: Login?, user: User?): User? {
+	fun updateUser(login: Login, user: User): User? {
 		val u = userService.update(login, user)
 		userDAO.insert(u)
 		return u

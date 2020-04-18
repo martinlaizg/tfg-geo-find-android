@@ -8,7 +8,34 @@ import com.martinlaizg.geofind.data.access.database.AppDatabase
 import com.martinlaizg.geofind.data.access.database.dao.TourDAO
 import com.martinlaizg.geofind.data.access.database.entities.Tour
 
-class TourRepository private constructor(application: Application) {// start the refresh in background// If the list of tours is empty wait for refresh
+class TourRepository private constructor(application: Application) {
+
+	private var tourService: TourService
+	private var tourDAO: TourDAO
+	private var placeRepo: PlaceRepository
+	private var userRepo: UserRepository
+
+	companion object {
+		private val TAG = TourRepository::class.java.simpleName
+		private var instance: TourRepository? = null
+
+		@kotlin.jvm.JvmStatic
+		fun getInstance(application: Application): TourRepository {
+			return instance ?: synchronized(this) {
+				val newInstance = TourRepository(application)
+				instance = newInstance
+				newInstance
+			}
+		}
+	}
+
+	init {
+		tourDAO = AppDatabase.getDatabase(application).tourDAO()
+		tourService = TourService.getInstance(application)
+		placeRepo = PlaceRepository.getInstance(application)
+		userRepo = UserRepository.getInstance(application)
+	}
+
 	/**
 	 * Get the list of tours from local and removes the outdated ones
 	 * At the same time refresh the local tours with the server
@@ -16,25 +43,25 @@ class TourRepository private constructor(application: Application) {// start the
 	 * @return the list of elements
 	 */
 	@get:Throws(APIException::class)
-	val allTours: MutableList<Tour?>?
+	val allTours: MutableList<Tour>
 		get() {
-			var tours = tourDAO.getAll()
+			var tours = tourDAO.all
 			var i = 0
-			while (i < tours!!.size) {
-				if (tours!![i]!!.isOutOfDate) {
-					tours!!.removeAt(i)
+			while (i < tours.size) {
+				if (tours[i].isOutOfDate) {
+					tours.removeAt(i)
 					i--
 				} else {
-					val t = tours!![i]
-					t.creator = userRepo!!.getUser(t.creator_id)
+					val t = tours[i]
+					t.creator = userRepo.getUser(t.creator?.id ?: 0)
 					t.places = placeRepo!!.getTourPlaces(t.id)
-					tours!![i] = t
+					tours[i] = t
 				}
 				i++
 			}
 
 			// If the list of tours is empty wait for refresh
-			if (tours!!.isEmpty()) {
+			if (tours.isEmpty()) {
 				tours = refreshTours()
 			} else {
 				// start the refresh in background
@@ -141,7 +168,7 @@ class TourRepository private constructor(application: Application) {// start the
 			t = tourService!!.getTour(id)
 			insert(t)
 		} else {
-			t.creator = userRepo!!.getUser(t.creator_id)
+			t.creator = userRepo.getUser(t.creatorId)
 			t.places = placeRepo!!.getTourPlaces(id)
 		}
 		return t
@@ -156,33 +183,10 @@ class TourRepository private constructor(application: Application) {// start the
 	 */
 	@Throws(APIException::class)
 	fun getTours(stringQuery: String?): MutableList<Tour?>? {
-		val tours = tourService!!.getTours(stringQuery)
+		val tours = tourService.getTours(stringQuery)
 		for (t in tours!!) {
 			insert(t)
 		}
 		return tours
-	}
-
-	companion object {
-		private val TAG = TourRepository::class.java.simpleName
-		private var instance: TourRepository? = null
-		private var tourService: TourService?
-		private var tourDAO: TourDAO?
-		private var placeRepo: PlaceRepository?
-		private var userRepo: UserRepository?
-
-		@kotlin.jvm.JvmStatic
-		fun getInstance(application: Application): TourRepository? {
-			if (instance == null) instance = TourRepository(application)
-			return instance
-		}
-	}
-
-	init {
-		val database: AppDatabase = AppDatabase.Companion.getDatabase(application)
-		tourDAO = database.tourDAO()
-		tourService = TourService.Companion.getInstance(application)
-		placeRepo = PlaceRepository.Companion.getInstance(application)
-		userRepo = UserRepository.Companion.getInstance(application)
 	}
 }

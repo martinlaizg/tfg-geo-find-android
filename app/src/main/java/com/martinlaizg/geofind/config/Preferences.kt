@@ -27,7 +27,7 @@ object Preferences {
 	}
 
 	fun setLogin(sp: SharedPreferences?, login: Login?) {
-		val loginString = login!!.toJson()
+		val loginString = login!!.json
 		sp!!.edit().putString(LOGIN, loginString).apply()
 	}
 

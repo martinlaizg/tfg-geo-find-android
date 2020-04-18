@@ -130,7 +130,7 @@ class TourFragment : Fragment() {
 			if (tour.places.isEmpty()) {
 				empty_text!!.visibility = View.VISIBLE
 			}
-			if (user != null && user.getId() == tour.creator_id) {
+			if (user != null && user.getId() == tour.creatorId) {
 				val b = Bundle()
 				b.putInt(CreatorFragment.Companion.TOUR_ID, tour.id)
 				edit_button!!.setOnClickListener(
@@ -157,7 +157,7 @@ class TourFragment : Fragment() {
 				.getQuantityString(R.plurals.number_place, numTotalPlaces,
 						numTotalPlaces)
 		play_button!!.setOnClickListener { v: View? -> alert!!.show() }
-		setDifficultyDialog(tour.id, tour.min_level)
+		setDifficultyDialog(tour.id, tour.minLevel)
 		if (playPlaces.size == 0) {
 			// Not played yet
 			in_progress_text!!.text = getString(R.string.places)

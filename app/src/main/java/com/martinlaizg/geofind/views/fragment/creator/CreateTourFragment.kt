@@ -109,7 +109,7 @@ class CreateTourFragment : Fragment(), View.OnClickListener {
 		Objects.requireNonNull(tour_name_layout!!.editText).setText(tour.name)
 		Objects.requireNonNull(tour_description_layout!!.editText)
 				.setText(tour.description)
-		difficulty_spinner!!.setSelection(tour.min_level!!.ordinal)
+		difficulty_spinner!!.setSelection(tour.minLevel!!.ordinal)
 		tour_image_view!!.visibility = View.GONE
 		if (tour.image != null) image_url = tour.image
 		if (!image_url!!.isEmpty()) {
