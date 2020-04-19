@@ -11,7 +11,7 @@ class Place {
 	@PrimaryKey
 	val id: Int
 	var name: String
-	private var description: String
+	var description: String
 
 	private var lat: Double? = null
 	private var lon: Double? = null

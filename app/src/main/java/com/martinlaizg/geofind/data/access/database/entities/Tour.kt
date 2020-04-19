@@ -13,10 +13,10 @@ import kotlin.collections.ArrayList
 class Tour {
 	@PrimaryKey
 	val id: Int
-	private var name: String
-	private var description: String
+	var name: String
+	var description: String
 	private var minLevel: PlayLevel
-	private var image: String? = null
+	var image: String? = null
 	private var createdAt: Date? = null
 	private var updatedAt: Date? = null
 	var creatorId: Int? = null

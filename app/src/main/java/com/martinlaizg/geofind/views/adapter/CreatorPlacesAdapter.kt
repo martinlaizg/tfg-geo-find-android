@@ -19,11 +19,20 @@ import com.martinlaizg.geofind.data.access.database.entities.Place
 import com.martinlaizg.geofind.views.adapter.CreatorPlacesAdapter.CreatorPlacesViewHolder
 import com.martinlaizg.geofind.views.fragment.creator.CreatePlaceFragment
 import java.util.*
+import kotlin.collections.ArrayList
 
 class CreatorPlacesAdapter : RecyclerView.Adapter<CreatorPlacesViewHolder>(), ItemTouchHelperAdapter {
 
-	private var places: List<Place>
-	private var fragmentActivity: FragmentActivity? = null
+	var places: List<Place> = ArrayList()
+		set(value) {
+			field = value.sortedBy { place -> place.order }
+			notifyDataSetChanged()
+			notifyDataSetChanged()
+		}
+
+	var fragmentActivity: FragmentActivity? = null
+
+	override fun getItemCount(): Int = places.size
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CreatorPlacesViewHolder {
 		val view = LayoutInflater.from(parent.context)
@@ -32,10 +41,6 @@ class CreatorPlacesAdapter : RecyclerView.Adapter<CreatorPlacesViewHolder>(), It
 	}
 
 	override fun onBindViewHolder(holder: CreatorPlacesViewHolder, position: Int) = holder.bind(places[position], position)
-
-	override fun getItemCount(): Int {
-		return places.size
-	}
 
 	private fun showExitDialog(context: Context, position: Int) {
 		MaterialAlertDialogBuilder(context)
@@ -64,24 +69,11 @@ class CreatorPlacesAdapter : RecyclerView.Adapter<CreatorPlacesViewHolder>(), It
 		notifyItemChanged(toPosition)
 	}
 
-	fun setPlaces(fragmentActivity: FragmentActivity, newPlaces: List<Place>) {
-		this.fragmentActivity = fragmentActivity
-		places = newPlaces.sortedBy { place -> place.order }
-		notifyDataSetChanged()
-	}
-
 	inner class CreatorPlacesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-		var mPlaceCard: MaterialCardView
-		var mPlaceDeleteButton: MaterialButton
-		var mPlaceName: TextView
-		var mQuestionnaireIcon: ImageView
-
-		init {
-			mPlaceCard = view.findViewById(R.id.place_card)
-			mPlaceDeleteButton = view.findViewById(R.id.place_delete_button)
-			mPlaceName = view.findViewById(R.id.place_name)
-			mQuestionnaireIcon = view.findViewById(R.id.questionnaire_icon)
-		}
+		private var mPlaceCard: MaterialCardView = view.findViewById(R.id.place_card)
+		private var mPlaceDeleteButton: MaterialButton = view.findViewById(R.id.place_delete_button)
+		private var mPlaceName: TextView = view.findViewById(R.id.place_name)
+		private var mQuestionnaireIcon: ImageView = view.findViewById(R.id.questionnaire_icon)
 
 		fun bind(place: Place, position: Int) {
 			mPlaceName.text = place.name
@@ -91,16 +83,12 @@ class CreatorPlacesAdapter : RecyclerView.Adapter<CreatorPlacesViewHolder>(), It
 				mQuestionnaireIcon.visibility = View.VISIBLE
 			}
 			val b = Bundle()
-			b.putInt(CreatePlaceFragment.Companion.PLACE_POSITION, place.order!!)
+			b.putInt(CreatePlaceFragment.PLACE_POSITION, place.order!!)
 			mPlaceCard.setOnClickListener {
 				Navigation.findNavController(fragmentActivity!!, R.id.main_fragment_holder)
 						.navigate(R.id.toCreatePlace, b)
 			}
 		}
 
-	}
-
-	init {
-		places = ArrayList()
 	}
 }

@@ -124,7 +124,8 @@ class CreatorFragment : Fragment(), View.OnClickListener {
 			viewModel.getError()
 			return
 		}
-		adapter!!.setPlaces(requireActivity(), tour.places)
+		adapter!!.places = tour.places
+		adapter!!.fragmentActivity = requireActivity()
 		if (tour.id != 0) {
 			create_tour_button!!.setText(R.string.update_tour)
 		}
