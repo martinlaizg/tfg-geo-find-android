@@ -35,14 +35,14 @@ class TourService private constructor(application: Application) {
 	 * server errors
 	 */
 	@get:Throws(APIException::class)
-	val allTours: MutableList<Tour?>?
+	val allTours: MutableList<Tour>
 		get() {
-			val response: Response<MutableList<Tour?>?>
+			val response: Response<MutableList<Tour>>
 			var apiException: APIException?
 			try {
 				response = restClient.getTours(HashMap()).execute()
 				if (response.isSuccessful) {
-					return response.body()
+					return response.body() ?: mutableListOf()
 				}
 				apiException = ErrorUtils.parseError(response)
 			} catch (e: Exception) {
@@ -62,9 +62,9 @@ class TourService private constructor(application: Application) {
 	 * server errors
 	 */
 	@Throws(APIException::class)
-	fun create(tour: Tour?): Tour? {
-		val response: Response<Tour?>
-		var apiException: APIException?
+	fun create(tour: Tour): Tour? {
+		val response: Response<Tour>
+		var apiException: APIException
 		try {
 			response = restClient.createTour(tour).execute()
 			if (response.isSuccessful) {
@@ -75,7 +75,7 @@ class TourService private constructor(application: Application) {
 			apiException = APIException(ErrorType.NETWORK, e.message!!)
 			Log.e(tag, "create: ", e)
 		}
-		throw apiException!!
+		throw apiException
 	}
 
 	/**
@@ -88,7 +88,7 @@ class TourService private constructor(application: Application) {
 	 * server errors
 	 */
 	@Throws(APIException::class)
-	fun getTour(id: Int?): Tour? {
+	fun getTour(id: Int): Tour? {
 		val response: Response<Tour?>
 		var apiException: APIException?
 		try {
@@ -131,15 +131,15 @@ class TourService private constructor(application: Application) {
 	}
 
 	@Throws(APIException::class)
-	fun getTours(stringQuery: String?): MutableList<Tour?>? {
-		val response: Response<MutableList<Tour?>?>
-		var apiException: APIException?
-		val params = HashMap<String?, String?>()
+	fun getTours(stringQuery: String): MutableList<Tour> {
+		val response: Response<MutableList<Tour>>
+		var apiException: APIException
+		val params = HashMap<String, String>()
 		params["q"] = stringQuery
 		try {
 			response = restClient.getTours(params).execute()
 			if (response.isSuccessful) {
-				return response.body()
+				return response.body() ?: mutableListOf()
 			}
 			apiException = ErrorUtils.parseError(response)
 		} catch (e: Exception) {
@@ -148,4 +148,5 @@ class TourService private constructor(application: Application) {
 		}
 		throw apiException!!
 	}
+
 }

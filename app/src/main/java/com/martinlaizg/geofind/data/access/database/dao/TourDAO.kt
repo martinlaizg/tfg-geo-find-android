@@ -31,7 +31,7 @@ interface TourDAO {
 	 * @return the tour
 	 */
 	@Query("SELECT * FROM tours WHERE id = :tourId")
-	fun getTour(tourId: Int): Tour
+	fun getTour(tourId: Int): Tour?
 
 	/**
 	 * Delete a single tour by id

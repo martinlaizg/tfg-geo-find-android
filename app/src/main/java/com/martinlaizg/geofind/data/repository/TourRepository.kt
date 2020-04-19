@@ -38,7 +38,7 @@ class TourRepository private constructor(application: Application) {
 
 	/**
 	 * Get the list of tours from local and removes the outdated ones
-	 * At the same time refresh the local tours with the server
+	 * At the same time refresh the local tours with the server data
 	 *
 	 * @return the list of elements
 	 */
@@ -54,7 +54,7 @@ class TourRepository private constructor(application: Application) {
 				} else {
 					val t = tours[i]
 					t.creator = userRepo.getUser(t.creator?.id ?: 0)
-					t.places = placeRepo!!.getTourPlaces(t.id)
+					t.places = placeRepo.getTourPlaces(t.id)
 					tours[i] = t
 				}
 				i++
@@ -83,8 +83,8 @@ class TourRepository private constructor(application: Application) {
 	 * the server exception
 	 */
 	@Throws(APIException::class)
-	private fun refreshTours(): MutableList<Tour?>? {
-		val tours = tourService.getAllTours()
+	private fun refreshTours(): MutableList<Tour> {
+		val tours = tourService.allTours
 		for (t in tours!!) {
 			insert(t)
 		}
@@ -100,14 +100,14 @@ class TourRepository private constructor(application: Application) {
 	 */
 	fun insert(tour: Tour?) {
 		if (tour != null) {
-			userRepo!!.insert(tour.creator)
-			val t = tourDAO!!.getTour(tour.id)
+			userRepo.insert(tour.creator)
+			val t = tourDAO.getTour(tour.id)
 			if (t == null) {
-				tourDAO!!.insert(tour)
+				tourDAO.insert(tour)
 			} else {
-				tourDAO!!.update(tour)
+				tourDAO.update(tour)
 			}
-			placeRepo!!.insert(tour.places)
+			placeRepo.insert(tour.places)
 		}
 	}
 
@@ -115,22 +115,22 @@ class TourRepository private constructor(application: Application) {
 	 * Update the tour on server and local
 	 * If the tour is removed from server, return null
 	 *
-	 * @param tour
+	 * @param newTour
 	 * tour to update
 	 * @return tour updated or null if no exist on server
 	 * @throws APIException
 	 * exception from server
 	 */
 	@Throws(APIException::class)
-	fun update(tour: Tour?): Tour? {
-		var tour = tour
-		val tourId = tour.getId()
-		tour = tourService!!.update(tour)
+	fun update(newTour: Tour): Tour {
+		var tour = newTour
+		val tourId = tour.id
+		val updatedTour = tourService.update(newTour)
 		if (tour != null) {
-			tourDAO!!.delete(tour.id)
+			tourDAO.delete(tour.id)
 			insert(tour)
 		} else {
-			tourDAO!!.delete(tourId)
+			tourDAO.delete(tourId)
 		}
 		return tour
 	}
@@ -145,11 +145,10 @@ class TourRepository private constructor(application: Application) {
 	 * the exception from API
 	 */
 	@Throws(APIException::class)
-	fun create(tour: Tour?): Tour? {
-		var tour = tour
-		tour = tourService!!.create(tour)
-		tour?.let { insert(it) }
-		return tour
+	fun create(tour: Tour): Tour? {
+		val createdTour = tourService.create(tour)
+		createdTour?.let { insert(it) }
+		return createdTour
 	}
 
 	/**
@@ -162,14 +161,14 @@ class TourRepository private constructor(application: Application) {
 	 * the server exception
 	 */
 	@Throws(APIException::class)
-	fun getTour(id: Int?): Tour? {
-		var t = tourDAO!!.getTour(id)
+	fun getTour(id: Int): Tour? {
+		var t = tourDAO.getTour(id)
 		if (t == null) {
-			t = tourService!!.getTour(id)
+			t = tourService.getTour(id)
 			insert(t)
 		} else {
-			t.creator = userRepo.getUser(t.creatorId)
-			t.places = placeRepo!!.getTourPlaces(id)
+			t.creator = userRepo.getUser(t.creatorId!!)
+			t.places = placeRepo.getTourPlaces(id)
 		}
 		return t
 	}
@@ -182,7 +181,7 @@ class TourRepository private constructor(application: Application) {
 	 * @return the list of tours
 	 */
 	@Throws(APIException::class)
-	fun getTours(stringQuery: String?): MutableList<Tour?>? {
+	fun getTours(stringQuery: String): MutableList<Tour> {
 		val tours = tourService.getTours(stringQuery)
 		for (t in tours!!) {
 			insert(t)

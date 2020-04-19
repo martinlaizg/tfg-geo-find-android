@@ -12,7 +12,7 @@ interface PlaceDAO {
 	fun update(place: Place)
 
 	@Query("SELECT * FROM places WHERE id = :placeId")
-	fun getPlace(placeId: Int): Place
+	fun getPlace(placeId: Int): Place?
 
 	@Query("SELECT * FROM places WHERE tourId = :tourId ORDER BY `order` ASC")
 	fun getTourPlaces(tourId: Int): MutableList<Place>

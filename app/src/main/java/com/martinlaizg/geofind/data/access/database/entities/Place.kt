@@ -10,16 +10,16 @@ import com.google.android.gms.maps.model.LatLng
 class Place {
 	@PrimaryKey
 	val id: Int
-	private var name: String
+	var name: String
 	private var description: String
 
 	private var lat: Double? = null
 	private var lon: Double? = null
 	private var tourId: Int? = null
-	private var order: Int? = null
+	var order: Int? = null
 
 	// Question
-	private var question: String? = null
+	var question: String? = null
 	private var answer: String? = null
 	private var answer2: String? = null
 	private var answer3: String? = null

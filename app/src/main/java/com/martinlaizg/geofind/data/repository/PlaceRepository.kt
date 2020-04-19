@@ -53,7 +53,7 @@ class PlaceRepository private constructor(application: Application) {
 	 * tour id of the places
 	 * @return the list of places
 	 */
-	fun getTourPlaces(tourId: Int?): MutableList<Place?>? {
+	fun getTourPlaces(tourId: Int): MutableList<Place> {
 		return placeDAO.getTourPlaces(tourId)
 	}
 }

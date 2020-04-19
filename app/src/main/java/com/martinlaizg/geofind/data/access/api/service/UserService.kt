@@ -132,7 +132,7 @@ class UserService private constructor(application: Application) {
 			if (response.isSuccessful) {
 				return response.body()
 			}
-			throw ErrorUtils.parseError(response)!!
+			throw ErrorUtils.parseError(response)
 		} catch (e: Exception) {
 			apiException = APIException(ErrorType.NETWORK, e.message!!)
 			throw apiException

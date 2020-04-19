@@ -16,14 +16,14 @@ interface PlayDAO {
 	fun update(play: Play)
 
 	@Query("SELECT * FROM plays WHERE tourId = :tourId AND userId = :userId")
-	fun getPlay(userId: Int, tourId: Int): Play
+	fun getPlay(userId: Int, tourId: Int): Play?
 
 	@Query("SELECT p.* FROM places p INNER JOIN place_play pp ON p.id=pp.place_id WHERE pp" +
 			".play_id = :play_id ORDER BY `order` ASC")
 	fun getPlaces(playId: Int): List<Place>
 
 	@Query("SELECT * from plays WHERE id = :playId")
-	fun getPlay(playId: Int): Play
+	fun getPlay(playId: Int): Play?
 
 	@Query("SELECT * FROM plays WHERE userId = :userId")
 	fun getUserPlays(userId: Int): MutableList<Play>

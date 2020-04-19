@@ -19,7 +19,7 @@ class Tour {
 	private var image: String? = null
 	private var createdAt: Date? = null
 	private var updatedAt: Date? = null
-	private var creatorId: Int? = null
+	var creatorId: Int? = null
 
 	private var updated: Date? = null
 		get() = Date(Calendar.getInstance().timeInMillis)

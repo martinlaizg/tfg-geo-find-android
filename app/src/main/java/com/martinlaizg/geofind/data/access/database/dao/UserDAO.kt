@@ -12,5 +12,5 @@ interface UserDAO {
 	fun update(user: User)
 
 	@Query("SELECT * FROM users WHERE id = :userId")
-	fun getUser(userId: Int): User
+	fun getUser(userId: Int): User?
 }

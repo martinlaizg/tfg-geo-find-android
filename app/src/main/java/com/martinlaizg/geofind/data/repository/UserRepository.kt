@@ -53,7 +53,7 @@ class UserRepository private constructor(application: Application) {
 	 * exception from API
 	 */
 	@Throws(APIException::class)
-	fun registry(login: Login?): User? {
+	fun registry(login: Login): User? {
 		val user = userService.registry(login)
 		if (user != null) {
 			userDAO.insert(user)
@@ -119,7 +119,7 @@ class UserRepository private constructor(application: Application) {
 	@Throws(APIException::class)
 	fun updateUser(login: Login, user: User): User? {
 		val u = userService.update(login, user)
-		userDAO.insert(u)
+		u?.let { userDAO.insert(it) }
 		return u
 	}
 
@@ -139,7 +139,7 @@ class UserRepository private constructor(application: Application) {
 	 */
 	@Throws(APIException::class)
 	fun login(login: Login?): User? {
-		val user = userService.login(login)
+		val user = userService.login(login!!)
 		if (user != null) {
 			userDAO.insert(user)
 			Preferences.setLogin(sp, login)

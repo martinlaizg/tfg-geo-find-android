@@ -16,7 +16,7 @@ interface RestClient {
 	 * @return the list of tours
 	 */
 	@GET("tours")
-	fun getTours(@QueryMap params: Map<String?, String?>?): Call<MutableList<Tour?>?>
+	fun getTours(@QueryMap params: Map<String, String>): Call<MutableList<Tour>>
 
 	/**
 	 * Create the tour
@@ -26,7 +26,7 @@ interface RestClient {
 	 * @return the created tour
 	 */
 	@POST("tours")
-	fun createTour(@Body tour: Tour?): Call<Tour?>
+	fun createTour(@Body tour: Tour): Call<Tour>
 
 	/**
 	 * Get a single tour
@@ -36,7 +36,7 @@ interface RestClient {
 	 * @return the tour
 	 */
 	@GET("tours/{tour_id}")
-	fun getTour(@Path("tour_id") tourId: Int?): Call<Tour?>
+	fun getTour(@Path("tour_id") tourId: Int): Call<Tour>
 
 	/**
 	 * Update the tour with the `tour_id` with the data in `tour`
@@ -48,7 +48,7 @@ interface RestClient {
 	 * @return the tour updated
 	 */
 	@PUT("tours/{tour_id}")
-	fun update(@Path("tour_id") tourId: Int?, @Body tour: Tour): Call<Tour>
+	fun update(@Path("tour_id") tourId: Int, @Body tour: Tour): Call<Tour>
 
 	/**
 	 * Get the [Play] by `tour_id` and `user_id`
