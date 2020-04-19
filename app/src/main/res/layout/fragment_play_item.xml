@@ -123,7 +123,6 @@
                 android:autoSizeStepGranularity="1sp"
                 android:autoSizeTextType="uniform"
                 android:gravity="center_vertical"
-                android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="@+id/tour_progress"
                 app:layout_constraintEnd_toEndOf="@+id/tour_progress"
                 app:layout_constraintStart_toStartOf="@+id/tour_progress"

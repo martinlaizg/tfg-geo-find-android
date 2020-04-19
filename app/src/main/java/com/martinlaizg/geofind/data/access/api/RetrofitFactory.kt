@@ -12,8 +12,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitFactory {
-	private val TAG = RetrofitFactory::class.simpleName
-	private val BASE_URL: String = "https://geofind1.herokuapp.com/api/"
+	private val tag = RetrofitFactory::class.simpleName
+	private const val BASE_URL: String = "https://geofind1.herokuapp.com/api/"
 
 	var token: String? = null
 	private val bearerToken: String
@@ -26,7 +26,7 @@ object RetrofitFactory {
 
 	fun getRetrofitInstance(): Retrofit {
 		return retrofitInstance ?: synchronized(this) {
-			Log.d(TAG, "Instantiate")
+			Log.d(tag, "Instantiate")
 			val okHttpClient = OkHttpClient.Builder()
 					.addInterceptor(AuthInterceptor(userRepo, sp!!, bearerToken))
 					.build()

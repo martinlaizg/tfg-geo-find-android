@@ -309,7 +309,7 @@ class CreatePlaceFragment : Fragment(), View.OnClickListener, OnMapReadyCallback
 	}
 
 	companion object {
-		val PLACE_POSITION = "PLACE_POSITION"
-		val CAMERA_UPDATE_ZOOM = 15
+		const val PLACE_POSITION = "PLACE_POSITION"
+		const val CAMERA_UPDATE_ZOOM = 15
 	}
 }

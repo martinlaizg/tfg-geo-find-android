@@ -19,9 +19,9 @@ class Play {
 	private var createdAt: Date = Date(Calendar.getInstance().timeInMillis)
 	private var updatedAt: Date = Date(Calendar.getInstance().timeInMillis)
 
-	private var updated: Date = Date(Calendar.getInstance().timeInMillis)
+	var updated: Date? = null
 		get() = Date(Calendar.getInstance().timeInMillis)
-		set
+		private set
 
 	@Ignore
 	var tour: Tour? = null
@@ -40,13 +40,13 @@ class Play {
 	@Ignore
 	var places: List<Place> = ArrayList()
 
-	constructor(id: Int, tourId: Int, userId: Int, createdAt: Date, updatedAt: Date, updated: Date) {
+	constructor(id: Int, tourId: Int, userId: Int, createdAt: Date, updatedAt: Date, newUpdated: Date) {
 		this.id = id
 		this.tourId = tourId
 		this.userId = userId
 		this.createdAt = createdAt
 		this.updatedAt = updatedAt
-		this.updated = updated
+		this.updated = newUpdated
 	}
 
 	@Ignore

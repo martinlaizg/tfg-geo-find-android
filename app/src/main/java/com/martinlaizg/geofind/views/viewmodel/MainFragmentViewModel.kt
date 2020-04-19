@@ -9,7 +9,9 @@ import com.martinlaizg.geofind.data.access.database.entities.Play
 import com.martinlaizg.geofind.data.repository.PlayRepository
 
 class MainFragmentViewModel(application: Application) : AndroidViewModel(application) {
-	private val playRepo: PlayRepository?
+
+	private val playRepo: PlayRepository = PlayRepository.getInstance(application)
+
 	var error: ErrorType? = null
 		private set
 
@@ -17,20 +19,12 @@ class MainFragmentViewModel(application: Application) : AndroidViewModel(applica
 		val plays = MutableLiveData<List<Play>>()
 		Thread(Runnable {
 			try {
-				plays.postValue(playRepo!!.getUserPlays(userId))
+				plays.postValue(playRepo.getUserPlays(userId))
 			} catch (e: APIException) {
 				error = e.type
 				plays.postValue(null)
 			}
 		}).start()
 		return plays
-	}
-
-	companion object {
-		private val TAG = MainFragmentViewModel::class.java.simpleName
-	}
-
-	init {
-		playRepo = PlayRepository.getInstance(application)
 	}
 }

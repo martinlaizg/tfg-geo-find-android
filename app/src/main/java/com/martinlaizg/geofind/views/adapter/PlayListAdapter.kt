@@ -56,11 +56,11 @@ class PlayListAdapter : RecyclerView.Adapter<PlaysViewHolder>() {
 		}
 
 		var tourImage: ImageView = itemView.findViewById(R.id.tour_image)
-		var tourName: TextView = itemView.findViewById(R.id.tour_name)
-		var tourCreator: TextView = itemView.findViewById(R.id.tour_creator)
-		var tourDescription: TextView = itemView.findViewById(R.id.tour_description)
-		var tourCard: MaterialCardView = itemView.findViewById(R.id.tour_card)
-		var tourProgress: ProgressBar = itemView.findViewById(R.id.tour_progress)
-		var tourProgressText: TextView = itemView.findViewById(R.id.tour_progress_text)
+		private var tourName: TextView = itemView.findViewById(R.id.tour_name)
+		private var tourCreator: TextView = itemView.findViewById(R.id.tour_creator)
+		private var tourDescription: TextView = itemView.findViewById(R.id.tour_description)
+		private var tourCard: MaterialCardView = itemView.findViewById(R.id.tour_card)
+		private var tourProgress: ProgressBar = itemView.findViewById(R.id.tour_progress)
+		private var tourProgressText: TextView = itemView.findViewById(R.id.tour_progress_text)
 	}
 }

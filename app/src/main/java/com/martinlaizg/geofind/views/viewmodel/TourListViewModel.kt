@@ -26,10 +26,6 @@ class TourListViewModel(application: Application) : AndroidViewModel(application
 		return tours
 	}
 
-	companion object {
-		private val TAG = TourListViewModel::class.java.simpleName
-	}
-
 	init {
 		tourRepo = TourRepository.getInstance(application)
 	}

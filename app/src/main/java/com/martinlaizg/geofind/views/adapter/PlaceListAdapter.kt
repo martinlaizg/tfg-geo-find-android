@@ -35,9 +35,9 @@ class PlaceListAdapter(private val completed: Boolean) : RecyclerView.Adapter<Pl
 
 	inner class PlaceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 		private val completedColor: Int = itemView.context.resources.getColor(R.color.colorPrimaryLightAlpha, null)
-		var placeName: TextView = itemView.findViewById(R.id.place_name)
-		var placeDescription: TextView = itemView.findViewById(R.id.place_description)
-		var placeCard: CardView = itemView.findViewById(R.id.place_card)
+		private var placeName: TextView = itemView.findViewById(R.id.place_name)
+		private var placeDescription: TextView = itemView.findViewById(R.id.place_description)
+		private var placeCard: CardView = itemView.findViewById(R.id.place_card)
 
 		private fun completePlace() {
 			placeName.setTextColor(completedColor)

@@ -26,8 +26,8 @@ import com.martinlaizg.geofind.views.viewmodel.CreatorViewModel
 
 class CreatePlaceLocationFragment : Fragment(), OnMapReadyCallback, OnMapLongClickListener {
 
-	var mapView: MapView? = null
-	var createPlaceLocationButton: MaterialButton? = null
+	private var mapView: MapView? = null
+	private var createPlaceLocationButton: MaterialButton? = null
 
 	private var viewModel: CreatorViewModel? = null
 	private var googleMap: GoogleMap? = null

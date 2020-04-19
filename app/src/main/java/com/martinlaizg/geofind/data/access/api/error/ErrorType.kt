@@ -5,7 +5,7 @@ import com.martinlaizg.geofind.R
 /**
  * Types of error from de server
  */
-enum class ErrorType(private val message: Int) {
+enum class ErrorType(val message: Int) {
 	OTHER(R.string.other_error),
 	NETWORK(R.string.network_error),
 	USERNAME(R.string.username_error),

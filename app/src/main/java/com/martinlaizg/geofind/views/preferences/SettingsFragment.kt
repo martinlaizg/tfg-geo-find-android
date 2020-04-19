@@ -17,7 +17,6 @@ import androidx.preference.PreferenceManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.tasks.Task
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import com.martinlaizg.geofind.R
@@ -25,7 +24,7 @@ import com.martinlaizg.geofind.config.Preferences
 import com.martinlaizg.geofind.views.viewmodel.SettingsViewModel
 
 class SettingsFragment : PreferenceFragmentCompat() {
-	
+
 	private var dialog: AlertDialog? = null
 	private var viewModel: SettingsViewModel? = null
 	private var mGoogleSignInClient: GoogleSignInClient? = null
@@ -64,16 +63,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
 			val title = titleLayout.editText!!.text.toString()
 			val message = messageTextLayout.editText!!.text.toString()
 			viewModel!!.sendMessage(title, message).observe(this, Observer { ok: Boolean? ->
-				if (ok == null) {
-					val e = viewModel!!.error
-					Log.e(TAG, "setLogoutPreference: $e")
-				} else if (ok) {
-					Toast.makeText(requireContext(), "Message sent", Toast.LENGTH_SHORT).show()
-					Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-							.popBackStack()
-					dialog!!.dismiss()
-				} else {
-					Toast.makeText(requireContext(), "Message no sent", Toast.LENGTH_SHORT).show()
+				when {
+					ok == null -> {
+						val e = viewModel!!.error
+						Log.e(TAG, "setLogoutPreference: $e")
+					}
+					ok -> {
+						Toast.makeText(requireContext(), "Message sent", Toast.LENGTH_SHORT).show()
+						Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
+								.popBackStack()
+						dialog!!.dismiss()
+					}
+					else -> {
+						Toast.makeText(requireContext(), "Message no sent", Toast.LENGTH_SHORT).show()
+					}
 				}
 			})
 		}
@@ -82,7 +85,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 	}
 
 	private fun onLogOut(): Boolean {
-		mGoogleSignInClient!!.signOut().addOnCompleteListener(requireActivity()) { task: Task<Void?>? ->
+		mGoogleSignInClient!!.signOut().addOnCompleteListener(requireActivity()) {
 			val sp = PreferenceManager.getDefaultSharedPreferences(requireContext())
 			Preferences.logout(sp)
 			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)

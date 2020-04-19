@@ -7,7 +7,6 @@ import com.martinlaizg.geofind.data.access.database.entities.Place
 
 class PlaceRepository private constructor(application: Application) {
 
-	private val tag = PlaceRepository::class.simpleName
 	private val placeDAO: PlaceDAO = AppDatabase.getDatabase(application).placeDAO()
 
 	companion object {

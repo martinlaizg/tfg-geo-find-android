@@ -27,7 +27,7 @@ class AuthInterceptor(private var userRepo: UserRepository?,
 				}
 				userRepo!!.reLogin()
 			} catch (e: APIException) {
-				Log.e(tag, "Fail relogin", e)
+				Log.e(tag, "Fail login", e)
 			}
 			newRequest = originalRequest.newBuilder()
 					.addHeader("Authorization", bearerToken)

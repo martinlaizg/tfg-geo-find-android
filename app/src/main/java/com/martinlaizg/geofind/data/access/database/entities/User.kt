@@ -19,8 +19,8 @@ class User {
 	var name: String? = null
 	var image: String? = null
 	var userType: UserType? = null
-	var createdAt: Date? = null
-	var updatedAt: Date? = null
+	private var createdAt: Date? = null
+	private var updatedAt: Date? = null
 	private var updated: Date? = null
 
 	@Ignore

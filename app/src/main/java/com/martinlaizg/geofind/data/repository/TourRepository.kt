@@ -10,10 +10,10 @@ import com.martinlaizg.geofind.data.access.database.entities.Tour
 
 class TourRepository private constructor(application: Application) {
 
-	private var tourService: TourService
-	private var tourDAO: TourDAO
-	private var placeRepo: PlaceRepository
-	private var userRepo: UserRepository
+	private var tourService: TourService = TourService.getInstance(application)
+	private var tourDAO: TourDAO = AppDatabase.getDatabase(application).tourDAO()
+	private var placeRepo: PlaceRepository = PlaceRepository.getInstance(application)
+	private var userRepo: UserRepository = UserRepository.getInstance(application)
 
 	companion object {
 		private val TAG = TourRepository::class.java.simpleName
@@ -27,13 +27,6 @@ class TourRepository private constructor(application: Application) {
 				newInstance
 			}
 		}
-	}
-
-	init {
-		tourDAO = AppDatabase.getDatabase(application).tourDAO()
-		tourService = TourService.getInstance(application)
-		placeRepo = PlaceRepository.getInstance(application)
-		userRepo = UserRepository.getInstance(application)
 	}
 
 	/**

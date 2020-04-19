@@ -22,10 +22,10 @@ import com.martinlaizg.geofind.views.viewmodel.MainFragmentViewModel
 
 class MainFragment : Fragment() {
 
-	var toursInProgressView: RecyclerView? = null
-	var toursCompletedText: TextView? = null
-	var toursInProgressText: TextView? = null
-	var toursCompletedCard: CardView? = null
+	private var toursInProgressView: RecyclerView? = null
+	private var toursCompletedText: TextView? = null
+	private var toursInProgressText: TextView? = null
+	private var toursCompletedCard: CardView? = null
 
 	private var user: User? = null
 	private var adapter: PlayListAdapter? = null

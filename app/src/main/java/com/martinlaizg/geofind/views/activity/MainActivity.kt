@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
 		}
 		(headerView.findViewById<View>(R.id.drawer_header_name) as TextView).text = name
 		(headerView.findViewById<View>(R.id.drawer_header_username) as TextView).text = username
-		if (image != null && !image.isEmpty()) {
+		if (image != null && image.isNotEmpty()) {
 			headerView.findViewById<ImageView>(R.id.drawer_user_image)
 		}
 	}

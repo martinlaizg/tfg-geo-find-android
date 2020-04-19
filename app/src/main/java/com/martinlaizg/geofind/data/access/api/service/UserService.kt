@@ -14,7 +14,7 @@ import java.util.*
 
 class UserService private constructor(application: Application) {
 
-	private val TAG = UserService::class.java.simpleName
+	private val tag = UserService::class.java.simpleName
 	private var restClient: RestClient = RetrofitFactory.getRestClient(application)
 
 	companion object {
@@ -52,7 +52,7 @@ class UserService private constructor(application: Application) {
 			apiException = ErrorUtils.parseError(response)
 		} catch (e: Exception) {
 			apiException = APIException(ErrorType.NETWORK, e.message!!)
-			Log.e(TAG, "login: ", e)
+			Log.e(tag, "login: ", e)
 		}
 		throw apiException!!
 	}
@@ -104,7 +104,7 @@ class UserService private constructor(application: Application) {
 			if (response.isSuccessful) {
 				return
 			}
-			throw ErrorUtils.parseError(response)!!
+			throw ErrorUtils.parseError(response)
 		} catch (e: Exception) {
 			apiException = APIException(ErrorType.NETWORK, e.message!!)
 			throw apiException

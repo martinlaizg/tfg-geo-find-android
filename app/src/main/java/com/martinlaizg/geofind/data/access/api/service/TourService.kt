@@ -146,6 +146,6 @@ class TourService private constructor(application: Application) {
 			apiException = APIException(ErrorType.NETWORK, e.message!!)
 			Log.e(tag, "update: ", e)
 		}
-		throw apiException!!
+		throw apiException
 	}
 }
