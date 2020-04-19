@@ -28,7 +28,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 		return t
 	}
 
-	fun registry(registry: Login?): MutableLiveData<User?> {
+	fun registry(registry: Login): MutableLiveData<User?> {
 		val u = MutableLiveData<User?>()
 		Thread(Runnable {
 			try {
@@ -43,6 +43,6 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 	}
 
 	init {
-		userRepo = UserRepository.Companion.getInstance(application)
+		userRepo = UserRepository.getInstance(application)
 	}
 }

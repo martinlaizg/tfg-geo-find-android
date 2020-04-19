@@ -88,7 +88,7 @@ class TourListAdapter : RecyclerView.Adapter<ToursViewHolder>(), Filterable {
 				tourImage.visibility = View.GONE
 			}
 			val b = Bundle()
-			b.putInt(TourFragment.Companion.TOUR_ID, tour.id)
+			b.putInt(TourFragment.TOUR_ID, tour.id)
 			materialCardView.setOnClickListener { v: View? -> Navigation.findNavController(v!!).navigate(R.id.toTour, b) }
 		}
 	}

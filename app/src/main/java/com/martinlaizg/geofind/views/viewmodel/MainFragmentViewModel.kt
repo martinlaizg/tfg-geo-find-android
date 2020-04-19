@@ -13,8 +13,8 @@ class MainFragmentViewModel(application: Application) : AndroidViewModel(applica
 	var error: ErrorType? = null
 		private set
 
-	fun getUserPlays(userId: Int): MutableLiveData<List<Play?>?> {
-		val plays = MutableLiveData<List<Play?>?>()
+	fun getUserPlays(userId: Int): MutableLiveData<List<Play>> {
+		val plays = MutableLiveData<List<Play>>()
 		Thread(Runnable {
 			try {
 				plays.postValue(playRepo!!.getUserPlays(userId))
@@ -31,6 +31,6 @@ class MainFragmentViewModel(application: Application) : AndroidViewModel(applica
 	}
 
 	init {
-		playRepo = PlayRepository.Companion.getInstance(application)
+		playRepo = PlayRepository.getInstance(application)
 	}
 }

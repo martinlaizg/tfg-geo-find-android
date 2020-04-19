@@ -15,7 +15,7 @@ class Tour {
 	val id: Int
 	var name: String
 	var description: String
-	private var minLevel: PlayLevel
+	var minLevel: PlayLevel
 	var image: String? = null
 	private var createdAt: Date? = null
 	private var updatedAt: Date? = null
@@ -65,5 +65,4 @@ class Tour {
 
 	val isOutOfDate: Boolean
 		get() = DateUtils.isDateExpire(updated)
-
 }

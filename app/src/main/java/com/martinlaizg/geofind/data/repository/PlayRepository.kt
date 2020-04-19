@@ -129,8 +129,8 @@ class PlayRepository private constructor(application: Application) {
 		val plays = playDAO.getUserPlays(userId)
 		// Remove out of date
 		var i = 0
-		while (i < plays!!.size) {
-			if (plays[i]!!.isOutOfDate) {
+		while (i < plays.size) {
+			if (plays[i].isOutOfDate) {
 				playDAO.delete(plays.removeAt(i))
 				i--
 			}
@@ -145,25 +145,27 @@ class PlayRepository private constructor(application: Application) {
 				insert(p)
 			}
 		} else {
-			for (i in plays.indices) {
-				plays[i].tour = tourRepo.getTour(plays[i].tourId)
-				plays[i].places = placePlayDAO!!.getPlayPlace(plays[i].id)
+			for (index in plays.indices) {
+				plays[index].tour = tourRepo.getTour(plays[index].tourId)
+				plays[index].places = placePlayDAO.getPlayPlace(plays[index].id)
 			}
 		}
 		return plays
 	}
 
 	companion object {
-		private val TAG = PlayRepository::class.java.simpleName
 		private var instance: PlayRepository? = null
-		fun getInstance(application: Application): PlayRepository? {
-			if (instance == null) instance = PlayRepository(application)
-			return instance
+		fun getInstance(application: Application): PlayRepository {
+			return instance ?: synchronized(this) {
+				val newInstance = PlayRepository(application)
+				instance = newInstance
+				newInstance
+			}
 		}
 	}
 
 	init {
-		val database: AppDatabase = AppDatabase.Companion.getDatabase(application)
+		val database: AppDatabase = AppDatabase.getDatabase(application)
 		playDAO = database.playDAO()
 		placePlayDAO = database.playPlaceDAO()
 		playService = PlayService.getInstance(application)

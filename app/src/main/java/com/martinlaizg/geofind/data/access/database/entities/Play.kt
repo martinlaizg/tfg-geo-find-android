@@ -68,5 +68,4 @@ class Play {
 				false
 			}
 		}
-
 }

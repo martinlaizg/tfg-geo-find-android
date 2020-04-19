@@ -16,8 +16,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.preference.PreferenceManager
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
@@ -28,54 +26,48 @@ import com.martinlaizg.geofind.data.access.database.entities.Tour
 import com.martinlaizg.geofind.data.enums.PlayLevel
 import com.martinlaizg.geofind.utils.KeyboardUtils
 import com.martinlaizg.geofind.views.viewmodel.CreatorViewModel
-import com.squareup.picasso.Picasso
-import java.util.*
 
 class CreateTourFragment : Fragment(), View.OnClickListener {
-	@kotlin.jvm.JvmField
-	@BindView(R.id.tour_name_layout)
-	var tour_name_layout: TextInputLayout? = null
 
-	@kotlin.jvm.JvmField
-	@BindView(R.id.tour_description_layout)
-	var tour_description_layout: TextInputLayout? = null
+	private var tourNameLayout: TextInputLayout? = null
+	private var tourDescriptionLayout: TextInputLayout? = null
+	private var tourImageView: ImageView? = null
+	private var doneButton: MaterialButton? = null
+	private var addImageButton: MaterialButton? = null
+	private var difficultySpinner: Spinner? = null
 
-	@kotlin.jvm.JvmField
-	@BindView(R.id.tour_image_view)
-	var tour_image_view: ImageView? = null
-
-	@kotlin.jvm.JvmField
-	@BindView(R.id.done_button)
-	var done_button: MaterialButton? = null
-
-	@kotlin.jvm.JvmField
-	@BindView(R.id.add_image_button)
-	var add_image_button: MaterialButton? = null
-
-	@kotlin.jvm.JvmField
-	@BindView(R.id.difficulty_spinner)
-	var difficulty_spinner: Spinner? = null
 	private var viewModel: CreatorViewModel? = null
-	private var image_url: String? = ""
+	private var imageUrl: String? = ""
+
+	companion object {
+		const val TOUR_ID = "TOUR_ID"
+		private val TAG = CreateTourFragment::class.java.simpleName
+	}
+
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
 	                          savedInstanceState: Bundle?): View? {
 		val view = inflater.inflate(R.layout.fragment_create_tour, container, false)
-		ButterKnife.bind(this, view)
+		tourNameLayout = view.findViewById(R.id.tour_name_layout)
+		tourDescriptionLayout = view.findViewById(R.id.tour_description_layout)
+		tourImageView = view.findViewById(R.id.tour_image_view)
+		doneButton = view.findViewById(R.id.done_button)
+		addImageButton = view.findViewById(R.id.add_image_button)
+		difficultySpinner = view.findViewById(R.id.difficulty_spinner)
+
 		val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
 			override fun handleOnBackPressed() {
 				showExitDialog()
 			}
 		}
-		requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+		requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 		return view
 	}
 
 	private fun showExitDialog() {
 		MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.are_you_sure)
 				.setMessage(getString(R.string.exit_lose_data_alert))
-				.setPositiveButton(getString(R.string.ok)) { dialog: DialogInterface?, which: Int ->
-					Navigation
-							.findNavController(requireActivity(), R.id.main_fragment_holder)
+				.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+					Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
 							.popBackStack()
 				}.show()
 	}
@@ -88,9 +80,9 @@ class CreateTourFragment : Fragment(), View.OnClickListener {
 		}
 		Log.i(TAG, "onViewCreated: Get tour with id = $tourId")
 		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel::class.java)
-		viewModel!!.getTour(tourId).observe(this, Observer { tour: Tour? -> setTour(tour) })
-		done_button!!.setOnClickListener(this)
-		add_image_button!!.setOnClickListener { v: View? ->
+		viewModel!!.getTour(tourId).observe(viewLifecycleOwner, Observer { tour: Tour? -> setTour(tour) })
+		doneButton!!.setOnClickListener(this)
+		addImageButton!!.setOnClickListener {
 			val alertDialog = buildDialog()
 			alertDialog.show()
 		}
@@ -98,7 +90,7 @@ class CreateTourFragment : Fragment(), View.OnClickListener {
 
 	private fun setTour(tour: Tour?) {
 		if (tour == null) {
-			val error = viewModel.getError()
+			val error = viewModel!!.error
 			Log.e(TAG, "setTour: Error getting the tour$error")
 			if (error == ErrorType.EXIST) {
 				Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
@@ -106,18 +98,17 @@ class CreateTourFragment : Fragment(), View.OnClickListener {
 			}
 			return
 		}
-		Objects.requireNonNull(tour_name_layout!!.editText).setText(tour.name)
-		Objects.requireNonNull(tour_description_layout!!.editText)
-				.setText(tour.description)
-		difficulty_spinner!!.setSelection(tour.minLevel!!.ordinal)
-		tour_image_view!!.visibility = View.GONE
-		if (tour.image != null) image_url = tour.image
-		if (!image_url!!.isEmpty()) {
-			Picasso.with(requireContext()).load(image_url).into(tour_image_view)
-			tour_image_view!!.visibility = View.VISIBLE
+		tourNameLayout!!.editText!!.setText(tour.name)
+		tourDescriptionLayout!!.editText!!.setText(tour.description)
+		difficultySpinner!!.setSelection(tour.minLevel.ordinal)
+		tourImageView!!.visibility = View.GONE
+		if (tour.image != null) imageUrl = tour.image
+		if (imageUrl!!.isNotEmpty()) {
+			tourImageView!!.visibility = View.VISIBLE
+			TODO("load image")
 		}
 		if (tour.id > 0) {
-			done_button!!.text = getString(R.string.update)
+			doneButton!!.text = getString(R.string.update)
 		}
 	}
 
@@ -127,13 +118,13 @@ class CreateTourFragment : Fragment(), View.OnClickListener {
 		val inflater = requireActivity().layoutInflater
 		val view = inflater.inflate(R.layout.add_image_layout, LinearLayout(requireContext()))
 		val imageUrlLayout: TextInputLayout = view.findViewById(R.id.image_url_layout)
-		Objects.requireNonNull(imageUrlLayout.editText).setText(image_url)
-		return builder.setView(view).setPositiveButton(R.string.ok) { dialog: DialogInterface?, id: Int ->
-			image_url = Objects.requireNonNull(imageUrlLayout.editText).text.toString()
-			tour_image_view!!.visibility = View.GONE
-			if (!image_url!!.isEmpty()) {
-				Picasso.with(requireContext()).load(image_url).into(tour_image_view)
-				tour_image_view!!.visibility = View.VISIBLE
+		imageUrlLayout.editText!!.setText(imageUrl)
+		return builder.setView(view).setPositiveButton(R.string.ok) { _: DialogInterface?, _: Int ->
+			imageUrl = imageUrlLayout.editText!!.text.toString()
+			tourImageView!!.visibility = View.GONE
+			if (imageUrl!!.isNotEmpty()) {
+				tourImageView!!.visibility = View.VISIBLE
+				TODO("load image")
 			}
 			KeyboardUtils.hideKeyboard(requireActivity())
 		}.create()
@@ -141,41 +132,33 @@ class CreateTourFragment : Fragment(), View.OnClickListener {
 
 	override fun onClick(v: View) {
 		KeyboardUtils.hideKeyboard(requireActivity())
-		tour_name_layout!!.error = ""
-		val name = Objects.requireNonNull(tour_name_layout!!.editText).text.toString()
-				.trim { it <= ' ' }
+		tourNameLayout!!.error = ""
+		val name = tourNameLayout!!.editText!!.text.toString().trim()
 		if (name.isEmpty()) {
-			tour_name_layout!!.error = getString(R.string.required_name)
+			tourNameLayout!!.error = getString(R.string.required_name)
 			return
 		}
-		tour_name_layout!!.error = ""
+		tourNameLayout!!.error = ""
 		if (name.length > resources.getInteger(R.integer.max_name_length)) {
-			tour_name_layout!!.error = getString(R.string.text_too_long)
+			tourNameLayout!!.error = getString(R.string.text_too_long)
 			return
 		}
-		tour_description_layout!!.error = ""
-		val description = Objects.requireNonNull(tour_description_layout!!.editText).text
-				.toString().trim { it <= ' ' }
+		tourDescriptionLayout!!.error = ""
+		val description = tourDescriptionLayout!!.editText!!.text.toString().trim()
 		if (description.isEmpty()) {
-			tour_description_layout!!.error = getString(R.string.required_description)
+			tourDescriptionLayout!!.error = getString(R.string.required_description)
 			return
 		}
 		if (description.length > resources.getInteger(R.integer.max_description_length)) {
-			tour_description_layout!!.error = getString(R.string.text_too_long)
+			tourDescriptionLayout!!.error = getString(R.string.text_too_long)
 			return
 		}
-		val pl: PlayLevel = PlayLevel.Companion.getPlayLevel(difficulty_spinner!!.selectedItemPosition)
+		val pl: PlayLevel = PlayLevel.getPlayLevel(difficultySpinner!!.selectedItemPosition)
 		val user = Preferences.getLoggedUser(PreferenceManager.getDefaultSharedPreferences(requireContext()))
-		viewModel!!.updateTour(name, description, user.id, pl, image_url)
-		val id = viewModel.getStoredTour().id
+		viewModel!!.updateTour(name, description, user.id, pl, imageUrl)
+		val id = viewModel!!.storedTour!!.id
 		val args = Bundle()
-		args.putInt(CreatorFragment.Companion.TOUR_ID, id)
-		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
-				.navigate(R.id.toCreator, args)
-	}
-
-	companion object {
-		const val TOUR_ID = "TOUR_ID"
-		private val TAG = CreateTourFragment::class.java.simpleName
+		args.putInt(CreatorFragment.TOUR_ID, id)
+		Navigation.findNavController(requireActivity(), R.id.main_fragment_holder).navigate(R.id.toCreator, args)
 	}
 }

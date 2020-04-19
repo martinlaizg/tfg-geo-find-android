@@ -13,15 +13,11 @@ class TourListViewModel(application: Application) : AndroidViewModel(application
 	var error: ErrorType? = null
 		private set
 
-	fun getTours(stringQuery: String?): MutableLiveData<MutableList<Tour?>?> {
-		val tours = MutableLiveData<MutableList<Tour?>?>()
+	fun getTours(stringQuery: String): MutableLiveData<MutableList<Tour>> {
+		val tours = MutableLiveData<MutableList<Tour>>()
 		Thread(Runnable {
 			try {
-				if (stringQuery != null) {
-					tours.postValue(tourRepo!!.getTours(stringQuery))
-				} else {
-					tours.postValue(tourRepo.getAllTours())
-				}
+				tours.postValue(tourRepo!!.getTours(stringQuery))
 			} catch (e: APIException) {
 				error = e.type
 				tours.postValue(null)
@@ -35,6 +31,6 @@ class TourListViewModel(application: Application) : AndroidViewModel(application
 	}
 
 	init {
-		tourRepo = TourRepository.Companion.getInstance(application)
+		tourRepo = TourRepository.getInstance(application)
 	}
 }

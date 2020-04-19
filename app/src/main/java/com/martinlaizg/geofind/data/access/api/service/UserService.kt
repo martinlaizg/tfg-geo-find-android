@@ -138,5 +138,4 @@ class UserService private constructor(application: Application) {
 			throw apiException
 		}
 	}
-
 }

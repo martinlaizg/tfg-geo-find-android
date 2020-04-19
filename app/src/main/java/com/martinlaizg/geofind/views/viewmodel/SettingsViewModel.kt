@@ -33,6 +33,6 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 	}
 
 	init {
-		userRepo = UserRepository.Companion.getInstance(application)
+		userRepo = UserRepository.getInstance(application)
 	}
 }

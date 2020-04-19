@@ -35,11 +35,11 @@ class TourViewModel(application: Application) : AndroidViewModel(application) {
 
 	fun getPlace(placeId: Int): MutableLiveData<Place?> {
 		val p = MutableLiveData<Place?>()
-		Thread(label@ Runnable {
+		Thread(Runnable {
 			for (place in tour?.places ?: ArrayList()) {
 				if (place.id == placeId) {
 					p.postValue(place)
-					return@label
+					return@Runnable
 				}
 			}
 		}).start()
@@ -53,7 +53,7 @@ class TourViewModel(application: Application) : AndroidViewModel(application) {
 		get() = play?.places ?: ArrayList()
 
 	init {
-		tourRepo = TourRepository.Companion.getInstance(application)
-		playRepo = PlayRepository.Companion.getInstance(application)
+		tourRepo = TourRepository.getInstance(application)
+		playRepo = PlayRepository.getInstance(application)
 	}
 }

@@ -63,5 +63,4 @@ class User {
 		}
 		this.updated = updated
 	}
-
 }

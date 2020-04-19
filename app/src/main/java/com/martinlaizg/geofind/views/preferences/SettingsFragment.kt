@@ -23,12 +23,13 @@ import com.google.android.material.textfield.TextInputLayout
 import com.martinlaizg.geofind.R
 import com.martinlaizg.geofind.config.Preferences
 import com.martinlaizg.geofind.views.viewmodel.SettingsViewModel
-import java.util.*
 
 class SettingsFragment : PreferenceFragmentCompat() {
+	
 	private var dialog: AlertDialog? = null
 	private var viewModel: SettingsViewModel? = null
 	private var mGoogleSignInClient: GoogleSignInClient? = null
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		viewModel = ViewModelProviders.of(requireActivity()).get(SettingsViewModel::class.java)
@@ -39,9 +40,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
 		requireActivity().setTheme(R.style.AppTheme_ScreenPreferences)
 		createSupportMessageDialog()
 		var preference = findPreference<Preference>(getString(R.string.pref_log_out))
-		if (preference != null) preference.onPreferenceClickListener = Preference.OnPreferenceClickListener { preference: Preference -> onLogOut() }
+		if (preference != null) preference.onPreferenceClickListener = Preference.OnPreferenceClickListener { onLogOut() }
 		preference = findPreference(getString(R.string.pref_support))
-		if (preference != null) preference.onPreferenceClickListener = Preference.OnPreferenceClickListener { preference: Preference -> onSupport() }
+		if (preference != null) preference.onPreferenceClickListener = Preference.OnPreferenceClickListener { onSupport() }
 	}
 
 	private fun createSupportMessageDialog() {
@@ -51,14 +52,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
 		val titleLayout: TextInputLayout = view.findViewById(R.id.title_layout)
 		val messageTextLayout: TextInputLayout = view.findViewById(R.id.message_text_layout)
 		val sendButton: MaterialButton = view.findViewById(R.id.send_button)
-		sendButton.setOnClickListener { v: View? ->
-			if (Objects.requireNonNull(titleLayout.editText).text.toString().trim { it <= ' ' }
-							.isEmpty()) {
+		sendButton.setOnClickListener {
+			if (titleLayout.editText!!.text.toString().trim().isEmpty()) {
 				titleLayout.error = "You should fill it"
 				return@setOnClickListener
 			}
-			if (Objects.requireNonNull(messageTextLayout.editText).text.toString().trim { it <= ' ' }
-							.isEmpty()) {
+			if (messageTextLayout.editText!!.text.toString().trim().isEmpty()) {
 				messageTextLayout.error = "You should fill it"
 				return@setOnClickListener
 			}
@@ -66,7 +65,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 			val message = messageTextLayout.editText!!.text.toString()
 			viewModel!!.sendMessage(title, message).observe(this, Observer { ok: Boolean? ->
 				if (ok == null) {
-					val e = viewModel.getError()
+					val e = viewModel!!.error
 					Log.e(TAG, "setLogoutPreference: $e")
 				} else if (ok) {
 					Toast.makeText(requireContext(), "Message sent", Toast.LENGTH_SHORT).show()

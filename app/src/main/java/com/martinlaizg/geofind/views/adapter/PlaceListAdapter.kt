@@ -48,12 +48,11 @@ class PlaceListAdapter(private val completed: Boolean) : RecyclerView.Adapter<Pl
 			placeName.text = place.name
 			placeDescription.text = place.description
 			val b = Bundle()
-			b.putInt(PlaceFragment.Companion.PLACE_ID, place.id)
+			b.putInt(PlaceFragment.PLACE_ID, place.id)
 			placeCard.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.toPlace, b))
 			if (completed) {
 				completePlace()
 			}
 		}
 	}
-
 }

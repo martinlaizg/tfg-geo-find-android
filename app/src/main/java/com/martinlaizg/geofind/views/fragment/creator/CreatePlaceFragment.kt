@@ -14,8 +14,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
@@ -28,69 +26,64 @@ import com.martinlaizg.geofind.R
 import com.martinlaizg.geofind.data.access.database.entities.Place
 import com.martinlaizg.geofind.utils.KeyboardUtils
 import com.martinlaizg.geofind.views.viewmodel.CreatorViewModel
-import com.squareup.picasso.Picasso
 import java.io.IOException
-import java.util.*
 
 class CreatePlaceFragment : Fragment(), View.OnClickListener, OnMapReadyCallback {
-	@kotlin.jvm.JvmField
-	@BindView(R.id.new_place_name_layout)
-	var new_place_name: TextInputLayout? = null
 
-	@kotlin.jvm.JvmField
-	@BindView(R.id.new_place_description_layout)
-	var new_place_description: TextInputLayout? = null
+	private var newPlaceMapView: MapView? = null
+	private var newPlaceAddress: TextView? = null
+	private var placeImageView: ImageView? = null
 
-	@kotlin.jvm.JvmField
-	@BindView(R.id.new_place_create_button)
-	var create_button: MaterialButton? = null
+	private var newPlaceName: TextInputLayout? = null
+	private var newPlaceDescription: TextInputLayout? = null
 
-	@kotlin.jvm.JvmField
-	@BindView(R.id.new_place_map_view)
-	var new_place_map_view: MapView? = null
+	private var createButton: MaterialButton? = null
+	private var newPlaceLocationButton: MaterialButton? = null
+	private var newPlaceImageButton: MaterialButton? = null
+	private var questionSwitch: Switch? = null
 
-	@kotlin.jvm.JvmField
-	@BindView(R.id.new_place_address)
-	var new_place_address: TextView? = null
+	private var questionLayout: ConstraintLayout? = null
+	private var newPlaceQuestion: TextInputLayout? = null
+	private var newPlaceCorrectAnswer: TextInputLayout? = null
+	private var newPlaceAnswer2: TextInputLayout? = null
+	private var newPlaceAnswer3: TextInputLayout? = null
 
-	@kotlin.jvm.JvmField
-	@BindView(R.id.new_place_location_button)
-	var new_place_location_button: MaterialButton? = null
-
-	@kotlin.jvm.JvmField
-	@BindView(R.id.new_place_image_button)
-	var new_place_image_button: MaterialButton? = null
-
-	@kotlin.jvm.JvmField
-	@BindView(R.id.place_image_view)
-	var place_image_view: ImageView? = null
-
-	@kotlin.jvm.JvmField
-	@BindView(R.id.question_switch)
-	var question_switch: Switch? = null
-
-	@kotlin.jvm.JvmField
-	@BindView(R.id.question_layout)
-	var question_layout: ConstraintLayout? = null
-
-	@kotlin.jvm.JvmField
-	@BindView(R.id.new_place_question)
-	var new_place_question: TextInputLayout? = null
-
-	@kotlin.jvm.JvmField
-	@BindView(R.id.new_place_correct_answer)
-	var new_place_correct_answer: TextInputLayout? = null
-
-	@kotlin.jvm.JvmField
-	@BindView(R.id.new_place_answer_2)
-	var new_place_answer_2: TextInputLayout? = null
-
-	@kotlin.jvm.JvmField
-	@BindView(R.id.new_place_answer_3)
-	var new_place_answer_3: TextInputLayout? = null
 	private var viewModel: CreatorViewModel? = null
 	private var googleMap: GoogleMap? = null
-	private var image_url: String? = null
+	private var imageUrl: String? = null
+
+	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+	                          savedInstanceState: Bundle?): View? {
+		val view = inflater.inflate(R.layout.fragment_create_place, container, false)
+
+		newPlaceMapView = view.findViewById(R.id.new_place_map_view)
+		newPlaceAddress = view.findViewById(R.id.new_place_address)
+		placeImageView = view.findViewById(R.id.place_image_view)
+
+		newPlaceName = view.findViewById(R.id.new_place_name_layout)
+		newPlaceDescription = view.findViewById(R.id.new_place_description_layout)
+
+		createButton = view.findViewById(R.id.new_place_create_button)
+		newPlaceLocationButton = view.findViewById(R.id.new_place_location_button)
+		newPlaceImageButton = view.findViewById(R.id.new_place_image_button)
+		questionSwitch = view.findViewById(R.id.question_switch)
+
+		questionLayout = view.findViewById(R.id.question_layout)
+		newPlaceQuestion = view.findViewById(R.id.new_place_question)
+		newPlaceCorrectAnswer = view.findViewById(R.id.new_place_correct_answer)
+		newPlaceAnswer2 = view.findViewById(R.id.new_place_answer_2)
+		newPlaceAnswer3 = view.findViewById(R.id.new_place_answer_3)
+
+		// Back button listener
+		requireActivity().onBackPressedDispatcher
+				.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+					override fun handleOnBackPressed() {
+						showExitDialog()
+					}
+				})
+		return view
+	}
+
 	override fun onClick(v: View) {
 		KeyboardUtils.hideKeyboard(requireActivity())
 		if (!storePlace()) return
@@ -105,37 +98,34 @@ class CreatePlaceFragment : Fragment(), View.OnClickListener, OnMapReadyCallback
 	 */
 	private fun storePlace(): Boolean {
 		// Get the name
-		val placeName = Objects.requireNonNull(new_place_name!!.editText).text.toString()
-				.trim { it <= ' ' }
+		val placeName = newPlaceName!!.editText!!.text.toString().trim()
 		if (placeName.isEmpty()) {
-			new_place_name!!.error = getString(R.string.required_name)
+			newPlaceName!!.error = getString(R.string.required_name)
 			return false
 		}
 		if (placeName.length > resources.getInteger(R.integer.max_name_length)) {
-			new_place_name!!.error = getString(R.string.text_too_long)
+			newPlaceName!!.error = getString(R.string.text_too_long)
 			return false
 		}
-		new_place_name!!.error = ""
+		newPlaceName!!.error = ""
 
 		// Get the description
-		val placeDescription = Objects.requireNonNull(new_place_description!!.editText)
-				.text.toString().trim { it <= ' ' }
+		val placeDescription = newPlaceDescription!!.editText!!.text.toString().trim()
 		if (placeDescription.isEmpty()) {
-			new_place_description!!.error = getString(R.string.required_description)
+			newPlaceDescription!!.error = getString(R.string.required_description)
 			return false
 		}
-		if (placeDescription.length >
-				resources.getInteger(R.integer.max_description_length)) {
-			new_place_description!!.error = getString(R.string.text_too_long)
+		if (placeDescription.length > resources.getInteger(R.integer.max_description_length)) {
+			newPlaceDescription!!.error = getString(R.string.text_too_long)
 			return false
 		}
-		new_place_description!!.error = ""
+		newPlaceDescription!!.error = ""
 
 		// Get the question
 		val question = storeQuestion()
 		if (!question) return false
-		viewModel.getPlace().name = placeName
-		viewModel.getPlace().description = placeDescription
+		viewModel!!.place!!.name = placeName
+		viewModel!!.place!!.description = placeDescription
 		return true
 	}
 
@@ -145,57 +135,52 @@ class CreatePlaceFragment : Fragment(), View.OnClickListener, OnMapReadyCallback
 	 * @return true if no has errors else false
 	 */
 	private fun storeQuestion(): Boolean {
-		if (!question_switch!!.isChecked) {
-			viewModel.getPlace().question = null
-			viewModel.getPlace().answer = null
-			viewModel.getPlace().answer2 = null
-			viewModel.getPlace().answer3 = null
+		if (!questionSwitch!!.isChecked) {
+			viewModel!!.place!!.question = null
+			viewModel!!.place!!.answer = null
+			viewModel!!.place!!.answer2 = null
+			viewModel!!.place!!.answer3 = null
 			return true
 		}
 
 		// Check the question
-		val question = Objects.requireNonNull(new_place_question!!.editText).text
-				.toString().trim { it <= ' ' }
-		new_place_question!!.error = ""
+		val question = newPlaceQuestion!!.editText!!.text.toString().trim()
+		newPlaceQuestion!!.error = ""
 		if (question.isEmpty()) {
-			new_place_question!!.error = getString(R.string.required_question)
+			newPlaceQuestion!!.error = getString(R.string.required_question)
 			return false
 		}
 
 		// Check the correct answer
-		val correctAnswer = Objects.requireNonNull(new_place_correct_answer!!.editText)
-				.text.toString().trim { it <= ' ' }
-		new_place_correct_answer!!.error = ""
+		val correctAnswer = newPlaceCorrectAnswer!!.editText!!.text.toString().trim()
+		newPlaceCorrectAnswer!!.error = ""
 		if (correctAnswer.isEmpty()) {
-			new_place_correct_answer!!.error = getString(R.string.required_answer)
+			newPlaceCorrectAnswer!!.error = getString(R.string.required_answer)
 			return false
 		}
 
 		// Check the second answer
-		val secondAnswer = Objects.requireNonNull(new_place_answer_2!!.editText).text
-				.toString().trim { it <= ' ' }
-		new_place_answer_2!!.error = ""
+		val secondAnswer = newPlaceAnswer2!!.editText!!.text.toString().trim()
+		newPlaceAnswer2!!.error = ""
 		if (secondAnswer.isEmpty()) {
-			new_place_answer_2!!.error = getString(R.string.required_answer)
+			newPlaceAnswer2!!.error = getString(R.string.required_answer)
 			return false
 		}
 
 		// Check the third answer
-		val thirdAnswer = Objects.requireNonNull(new_place_answer_3!!.editText).text
-				.toString().trim { it <= ' ' }
-		new_place_answer_3!!.error = ""
+		val thirdAnswer = newPlaceAnswer3!!.editText!!.text.toString().trim()
+		newPlaceAnswer3!!.error = ""
 		if (thirdAnswer.isEmpty()) {
-			new_place_answer_3!!.error = getString(R.string.required_answer)
+			newPlaceAnswer3!!.error = getString(R.string.required_answer)
 			return false
 		}
 		if (secondAnswer == thirdAnswer) {
-			new_place_answer_3!!.error = getString(R.string.answer_repeated)
+			newPlaceAnswer3!!.error = getString(R.string.answer_repeated)
 			return false
 		}
 
 		// Set the values
-		viewModel.getPlace()
-				.setCompleteQuestion(question, correctAnswer, secondAnswer, thirdAnswer)
+		viewModel!!.place!!.fillQuestion(question, correctAnswer, secondAnswer, thirdAnswer)
 		return true
 	}
 
@@ -203,7 +188,7 @@ class CreatePlaceFragment : Fragment(), View.OnClickListener, OnMapReadyCallback
 		this.googleMap = googleMap
 		this.googleMap!!.uiSettings.setAllGesturesEnabled(false)
 		this.googleMap!!.clear()
-		setPosition(viewModel.getPlace())
+		setPosition(viewModel!!.place)
 	}
 
 	private fun setPosition(place: Place?) {
@@ -211,18 +196,17 @@ class CreatePlaceFragment : Fragment(), View.OnClickListener, OnMapReadyCallback
 		val position = place.position ?: return
 
 		// Change button text
-		new_place_location_button!!.text = getString(R.string.update)
-		new_place_address!!.visibility = View.VISIBLE
+		newPlaceLocationButton!!.text = getString(R.string.update)
+		newPlaceAddress!!.visibility = View.VISIBLE
 
 		// Get address
 		val gc = Geocoder(requireContext())
 		val locations: List<Address>?
-		new_place_address
-				.setText(getString(R.string.two_csv, position.latitude, position.longitude))
+		newPlaceAddress!!.text = getString(R.string.two_csv, position.latitude, position.longitude)
 		try {
 			locations = gc.getFromLocation(position.latitude, position.longitude, 1)
-			if (locations != null && locations.size >= 1) {
-				new_place_address!!.text = locations[0].getAddressLine(0)
+			if (locations != null && locations.isNotEmpty()) {
+				newPlaceAddress!!.text = locations[0].getAddressLine(0)
 			}
 		} catch (e: IOException) {
 			e.printStackTrace()
@@ -235,39 +219,24 @@ class CreatePlaceFragment : Fragment(), View.OnClickListener, OnMapReadyCallback
 		}
 	}
 
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-	                          savedInstanceState: Bundle?): View? {
-		val view = inflater.inflate(R.layout.fragment_create_place, container, false)
-		ButterKnife.bind(this, view)
-		// Back button listener
-		requireActivity().onBackPressedDispatcher
-				.addCallback(this, object : OnBackPressedCallback(true) {
-					override fun handleOnBackPressed() {
-						showExitDialog()
-					}
-				})
-		return view
-	}
-
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		// Show/hide question layout
-		question_switch!!.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
-			question_layout
-					.setVisibility(if (isChecked) View.VISIBLE else View.GONE)
+		questionSwitch!!.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+			questionLayout!!.visibility = if (isChecked) View.VISIBLE else View.GONE
 		}
 		viewModel = ViewModelProviders.of(requireActivity()).get(CreatorViewModel::class.java)
 		val b = arguments
 		if (b != null) {
-			val position = b.getInt(PLACE_POSITION, viewModel.getPlaces().size)
+			val position = b.getInt(PLACE_POSITION, viewModel!!.places.size)
 			viewModel!!.retrievePlace(position)
 			setPlace()
 		}
-		create_button!!.setOnClickListener(this)
-		new_place_image_button!!.setOnClickListener { v: View? ->
+		createButton!!.setOnClickListener(this)
+		newPlaceImageButton!!.setOnClickListener {
 			val alertDialog = buildDialog()
 			alertDialog.show()
 		}
-		new_place_location_button!!.setOnClickListener { v: View? ->
+		newPlaceLocationButton!!.setOnClickListener {
 			if (!storePlace()) return@setOnClickListener
 			KeyboardUtils.hideKeyboard(requireActivity())
 			Navigation.findNavController(requireActivity(), R.id.main_fragment_holder)
@@ -276,7 +245,7 @@ class CreatePlaceFragment : Fragment(), View.OnClickListener, OnMapReadyCallback
 	}
 
 	private fun setPlace() {
-		val place = viewModel.getPlace()
+		val place = viewModel!!.place
 		if (place == null) {
 			Toast.makeText(requireContext(), getString(R.string.something_went_wrong),
 					Toast.LENGTH_SHORT).show()
@@ -286,35 +255,29 @@ class CreatePlaceFragment : Fragment(), View.OnClickListener, OnMapReadyCallback
 		}
 
 		// Set name
-		if (place.name != null) {
-			Objects.requireNonNull(new_place_name!!.editText).setText(place.name)
-		}
+		newPlaceName!!.editText!!.setText(place.name)
 
 		// Set description
-		if (place.description != null) {
-			Objects.requireNonNull(new_place_description!!.editText)
-					.setText(place.description)
-		}
+		newPlaceDescription!!.editText!!.setText(place.description)
 		// Set location marker
 		setPosition(place)
 
 		// Set question
-		question_switch!!.isChecked = false
+		questionSwitch!!.isChecked = false
 		if (place.question != null) {
-			question_switch!!.isChecked = true
-			Objects.requireNonNull(new_place_question!!.editText).setText(place.question)
-			Objects.requireNonNull(new_place_correct_answer!!.editText)
-					.setText(place.answer)
-			Objects.requireNonNull(new_place_answer_2!!.editText).setText(place.answer2)
-			Objects.requireNonNull(new_place_answer_3!!.editText).setText(place.answer3)
+			questionSwitch!!.isChecked = true
+			newPlaceQuestion!!.editText!!.setText(place.question)
+			newPlaceCorrectAnswer!!.editText!!.setText(place.answer)
+			newPlaceAnswer2!!.editText!!.setText(place.answer2)
+			newPlaceAnswer3!!.editText!!.setText(place.answer3)
 		}
 
 		// Set image
-		place_image_view!!.visibility = View.GONE
-		if (place.image != null && !place.image.isEmpty()) {
-			image_url = place.image
-			Picasso.with(requireContext()).load(image_url).into(place_image_view)
-			place_image_view!!.visibility = View.VISIBLE
+		placeImageView!!.visibility = View.GONE
+		if (place.image != null && place.image!!.isNotEmpty()) {
+			imageUrl = place.image
+			placeImageView!!.visibility = View.VISIBLE
+			TODO("load image")
 		}
 	}
 
@@ -324,13 +287,12 @@ class CreatePlaceFragment : Fragment(), View.OnClickListener, OnMapReadyCallback
 		val inflater = requireActivity().layoutInflater
 		val view = inflater.inflate(R.layout.add_image_layout, LinearLayout(requireContext()))
 		val imageUrlLayout: TextInputLayout = view.findViewById(R.id.image_url_layout)
-		Objects.requireNonNull(imageUrlLayout.editText).setText(image_url)
-		return builder.setView(view).setPositiveButton(R.string.ok) { dialog: DialogInterface?, id: Int ->
-			image_url = Objects.requireNonNull(imageUrlLayout.editText).text.toString()
-			place_image_view!!.visibility = View.GONE
-			if (!image_url!!.isEmpty()) {
-				Picasso.with(requireContext()).load(image_url).into(place_image_view)
-				place_image_view!!.visibility = View.VISIBLE
+		imageUrlLayout.editText!!.setText(imageUrl)
+		return builder.setView(view).setPositiveButton(R.string.ok) { _: DialogInterface?, _: Int ->
+			imageUrl = imageUrlLayout.editText!!.text.toString()
+			placeImageView!!.visibility = View.GONE
+			if (imageUrl!!.isNotEmpty()) {
+				TODO("load image")
 			}
 			KeyboardUtils.hideKeyboard(requireActivity())
 		}.create()
@@ -339,7 +301,7 @@ class CreatePlaceFragment : Fragment(), View.OnClickListener, OnMapReadyCallback
 	private fun showExitDialog() {
 		MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.are_you_sure)
 				.setMessage(getString(R.string.exit_lose_data_alert))
-				.setPositiveButton(getString(R.string.ok)) { dialog: DialogInterface?, which: Int ->
+				.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
 					Navigation
 							.findNavController(requireActivity(), R.id.main_fragment_holder)
 							.popBackStack()
@@ -347,8 +309,7 @@ class CreatePlaceFragment : Fragment(), View.OnClickListener, OnMapReadyCallback
 	}
 
 	companion object {
-		const val PLACE_POSITION = "PLACE_POSITION"
-		private val TAG = CreatePlaceFragment::class.java.simpleName
-		private const val CAMERA_UPDATE_ZOOM = 15
+		val PLACE_POSITION = "PLACE_POSITION"
+		val CAMERA_UPDATE_ZOOM = 15
 	}
 }

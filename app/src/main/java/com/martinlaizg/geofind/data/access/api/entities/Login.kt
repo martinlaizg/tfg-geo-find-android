@@ -4,8 +4,8 @@ import com.google.gson.GsonBuilder
 import com.martinlaizg.geofind.data.access.database.entities.User
 
 class Login constructor(private val email: String?,
-                        private val secure: String?,
-                        private val provider: Provider? = Provider.OWN) {
+                        var secure: String?,
+                        val provider: Provider? = Provider.OWN) {
 	enum class Provider {
 		OWN, GOOGLE
 	}
@@ -14,5 +14,4 @@ class Login constructor(private val email: String?,
 
 	val json: String
 		get() = GsonBuilder().create().toJson(this)
-
 }

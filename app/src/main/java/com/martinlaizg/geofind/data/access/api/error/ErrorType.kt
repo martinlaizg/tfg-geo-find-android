@@ -22,5 +22,4 @@ enum class ErrorType(private val message: Int) {
 	AUTH(R.string.auth_error),
 	EXPIRED(R.string.expired_error),
 	COMPLETE(R.string.completed);
-
 }

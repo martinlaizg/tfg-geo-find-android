@@ -89,6 +89,5 @@ class CreatorPlacesAdapter : RecyclerView.Adapter<CreatorPlacesViewHolder>(), It
 						.navigate(R.id.toCreatePlace, b)
 			}
 		}
-
 	}
 }

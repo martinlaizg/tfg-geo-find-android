@@ -6,26 +6,24 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import android.widget.ImageView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.martinlaizg.geofind.R
+import kotlin.math.abs
 
 class PlayCompassFragment : PlayTourFragment(), SensorEventListener {
+
 	private val accData = FloatArray(3)
 	private val magnetData = FloatArray(3)
 	private val rotationMatrix = FloatArray(9)
 	private val mOrientation = FloatArray(3)
 
-	@kotlin.jvm.JvmField
-	@BindView(R.id.navigation_image)
-	var navigation_image: ImageView? = null
+	private var navigationImage: ImageView? = null
+
 	private var sensorManager: SensorManager? = null
 	private var accelerationSensor: Sensor? = null
 	private var magnetSensor: Sensor? = null
@@ -36,7 +34,7 @@ class PlayCompassFragment : PlayTourFragment(), SensorEventListener {
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
 	                          savedInstanceState: Bundle?): View? {
 		val view = inflater.inflate(R.layout.fragment_play_compass, container, false)
-		ButterKnife.bind(this, view)
+		navigationImage = view.findViewById(R.id.navigation_image)
 		sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
 		if (sensorManager != null) {
 			accelerationSensor = sensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
@@ -62,13 +60,12 @@ class PlayCompassFragment : PlayTourFragment(), SensorEventListener {
 
 			// Get user orientation
 			var userOrientation = Math.toDegrees(mOrientation[0].toDouble()).toFloat()
-			if (userOrientation < 0) userOrientation = 360 + userOrientation
+			if (userOrientation < 0) userOrientation += 360
 
 			// Get orientation
 			var direction = bearing - userOrientation
-			if (direction < 0) direction = 360 + direction
-			Log.i(TAG, " direction $direction  \timgRot $imgRotation")
-			if (Math.abs(imgRotation - direction) < 180) {
+			if (direction < 0) direction += 360
+			if (abs(imgRotation - direction) < 180) {
 				// Smooth the movement
 				val alpha = 0.95f
 				direction = imgRotation * alpha + direction * (1 - alpha)
@@ -80,17 +77,13 @@ class PlayCompassFragment : PlayTourFragment(), SensorEventListener {
 			// set the animation after the end of the reservation status
 			ra.fillAfter = false
 			// Start the animation
-			navigation_image!!.startAnimation(ra)
+			navigationImage!!.startAnimation(ra)
 			imgRotation = direction
 		}
 	}
 
 	override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
 		// Do nothing
-	}
-
-	override fun getTag(): String {
-		return TAG
 	}
 
 	override fun onResume() {
@@ -105,19 +98,10 @@ class PlayCompassFragment : PlayTourFragment(), SensorEventListener {
 		sensorManager!!.unregisterListener(this, magnetSensor)
 	}
 
-	public override fun updateView() {
+	override fun updateView() {
 		if (usrLocation != null && placeLocation != null) {
 			bearing = usrLocation!!.bearingTo(placeLocation)
-			if (bearing < 0) bearing = 360 + bearing
-			//			declination = new GeomagneticField((float) usrLocation.getLatitude(),
-			//			                                   (float) usrLocation.getLongitude(),
-			//			                                   (float) usrLocation.getAltitude(),
-			//			                                   System.currentTimeMillis()).getDeclination();
+			if (bearing < 0) bearing += 360
 		}
-	}
-
-	companion object {
-		private val TAG = PlayCompassFragment::class.java.simpleName
-		private const val MIN_ROTATION = 8f
 	}
 }

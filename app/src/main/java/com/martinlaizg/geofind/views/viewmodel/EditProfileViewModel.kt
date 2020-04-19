@@ -14,7 +14,7 @@ class EditProfileViewModel(application: Application) : AndroidViewModel(applicat
 	var error: ErrorType? = null
 		private set
 
-	fun updateUser(login: Login?, user: User?): MutableLiveData<User?> {
+	fun updateUser(login: Login, user: User): MutableLiveData<User?> {
 		val u = MutableLiveData<User?>()
 		Thread(Runnable {
 			try {
@@ -28,6 +28,6 @@ class EditProfileViewModel(application: Application) : AndroidViewModel(applicat
 	}
 
 	init {
-		userRepo = UserRepository.Companion.getInstance(application)
+		userRepo = UserRepository.getInstance(application)
 	}
 }

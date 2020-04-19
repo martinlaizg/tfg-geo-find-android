@@ -62,6 +62,5 @@ class PlayListAdapter : RecyclerView.Adapter<PlaysViewHolder>() {
 		var tourCard: MaterialCardView = itemView.findViewById(R.id.tour_card)
 		var tourProgress: ProgressBar = itemView.findViewById(R.id.tour_progress)
 		var tourProgressText: TextView = itemView.findViewById(R.id.tour_progress_text)
-
 	}
 }

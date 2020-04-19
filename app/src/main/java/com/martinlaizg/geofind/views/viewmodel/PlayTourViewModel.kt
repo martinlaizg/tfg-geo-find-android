@@ -11,7 +11,9 @@ import com.martinlaizg.geofind.data.repository.PlayRepository
 import java.util.*
 
 class PlayTourViewModel(application: Application) : AndroidViewModel(application) {
-	private val playRepo: PlayRepository?
+
+	private val playRepo: PlayRepository = PlayRepository.getInstance(application)
+
 	var error: ErrorType? = null
 		get() = if (field != null) field else ErrorType.OTHER
 		private set
@@ -22,7 +24,7 @@ class PlayTourViewModel(application: Application) : AndroidViewModel(application
 		val m = MutableLiveData<Place?>()
 		Thread(Runnable {
 			try {
-				play = playRepo!!.getPlay(userId, tourId)
+				play = playRepo.getPlay(userId, tourId)
 				if (play == null) {
 					play = playRepo.createPlay(userId, tourId)
 				}
@@ -35,30 +37,21 @@ class PlayTourViewModel(application: Application) : AndroidViewModel(application
 	}
 
 	private val nextPlace: Place?
-		private get() {
-			val places: List<Place?> = ArrayList(play.getTour().places)
-			var i = 0
-			while (i < places.size) {
-				for (p in play.getPlaces()) {
-					if (places[i].getId() == p.id) {
-						places.removeAt(i)
-						i--
-						break
-					}
-				}
-				i++
-			}
-			return if (places.size == 0) null else places[0]
+		get() {
+			val totalPlaces: List<Place> = ArrayList(play!!.tour!!.places)
+			val idsPlayedPlaces = play!!.places.map(Place::id)
+			val notPlayedPlaces = totalPlaces.filter { !idsPlayedPlaces.contains(it.id) }
+			return if (totalPlaces.isEmpty()) null else notPlayedPlaces.first()
 		}
 
 	fun completePlace(placeId: Int): MutableLiveData<Place?> {
 		val c = MutableLiveData<Place?>()
 		Thread(Runnable {
 			try {
-				if (play.getId() == 0) {
-					play = playRepo!!.createPlay(play.getUser_id(), play.getUser_id())
+				if (play!!.id == 0) {
+					play = playRepo.createPlay(play!!.userId, play!!.userId)
 				}
-				play = playRepo!!.completePlace(play.getId(), placeId)
+				play = playRepo.completePlace(play!!.id, placeId)
 				c.postValue(nextPlace)
 			} catch (e: APIException) {
 				error = e.type
@@ -69,10 +62,6 @@ class PlayTourViewModel(application: Application) : AndroidViewModel(application
 	}
 
 	fun tourIsCompleted(): Boolean {
-		return play.getPlaces().size == play.getTour().places.size
-	}
-
-	init {
-		playRepo = PlayRepository.Companion.getInstance(application)
+		return play!!.places.size == play!!.tour!!.places.size
 	}
 }

@@ -26,5 +26,4 @@ class PlacePlay(var placeId: Int, var playId: Int) {
 
 	val isOutOfDate: Boolean
 		get() = DateUtils.isDateExpire(updated)
-
 }

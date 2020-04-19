@@ -85,7 +85,7 @@ class TourRepository private constructor(application: Application) {
 	@Throws(APIException::class)
 	private fun refreshTours(): MutableList<Tour> {
 		val tours = tourService.allTours
-		for (t in tours!!) {
+		for (t in tours) {
 			insert(t)
 		}
 		return tours
@@ -123,16 +123,11 @@ class TourRepository private constructor(application: Application) {
 	 */
 	@Throws(APIException::class)
 	fun update(newTour: Tour): Tour {
-		var tour = newTour
-		val tourId = tour.id
-		val updatedTour = tourService.update(newTour)
-		if (tour != null) {
-			tourDAO.delete(tour.id)
-			insert(tour)
-		} else {
-			tourDAO.delete(tourId)
-		}
-		return tour
+		newTour.id
+		tourService.update(newTour)
+		tourDAO.delete(newTour.id)
+		insert(newTour)
+		return newTour
 	}
 
 	/**
@@ -183,7 +178,7 @@ class TourRepository private constructor(application: Application) {
 	@Throws(APIException::class)
 	fun getTours(stringQuery: String): MutableList<Tour> {
 		val tours = tourService.getTours(stringQuery)
-		for (t in tours!!) {
+		for (t in tours) {
 			insert(t)
 		}
 		return tours

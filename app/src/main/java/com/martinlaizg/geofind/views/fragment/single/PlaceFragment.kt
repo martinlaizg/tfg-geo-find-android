@@ -10,8 +10,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
@@ -20,48 +18,37 @@ import com.google.android.gms.maps.model.LatLng
 import com.martinlaizg.geofind.R
 import com.martinlaizg.geofind.data.access.database.entities.Place
 import com.martinlaizg.geofind.views.viewmodel.TourViewModel
-import com.squareup.picasso.Callback
-import com.squareup.picasso.Picasso
 import java.util.*
 
 class PlaceFragment : Fragment(), OnMapReadyCallback {
-	@kotlin.jvm.JvmField
-	@BindView(R.id.place_name)
-	var place_name: TextView? = null
 
-	@kotlin.jvm.JvmField
-	@BindView(R.id.place_description)
-	var place_description: TextView? = null
+	private var placeName: TextView? = null
+	private var placeDescription: TextView? = null
+	private var placePosition: TextView? = null
+	private var placeImage: ImageView? = null
+	private var placeMap: MapView? = null
+	private var mapCircle: ImageView? = null
 
-	@kotlin.jvm.JvmField
-	@BindView(R.id.place_position)
-	var place_position: TextView? = null
-
-	@kotlin.jvm.JvmField
-	@BindView(R.id.place_image)
-	var place_image: ImageView? = null
-
-	@kotlin.jvm.JvmField
-	@BindView(R.id.place_map)
-	var place_map: MapView? = null
-
-	@kotlin.jvm.JvmField
-	@BindView(R.id.map_circle)
-	var map_circle: ImageView? = null
-	private var place_id = 0
+	private var placeId = 0
 	private var googleMap: GoogleMap? = null
 	private var viewModel: TourViewModel? = null
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
 	                          savedInstanceState: Bundle?): View? {
 		val view = inflater.inflate(R.layout.fragment_place, container, false)
-		ButterKnife.bind(this, view)
-		place_description!!.movementMethod = ScrollingMovementMethod()
-		place_map!!.onCreate(savedInstanceState)
-		place_map!!.onResume()
-		place_map!!.getMapAsync(this)
+		placeName = view.findViewById(R.id.place_name)
+		placeDescription = view.findViewById(R.id.place_description)
+		placePosition = view.findViewById(R.id.place_position)
+		placeImage = view.findViewById(R.id.place_image)
+		placeMap = view.findViewById(R.id.place_map)
+		mapCircle = view.findViewById(R.id.map_circle)
+
+		placeDescription!!.movementMethod = ScrollingMovementMethod()
+		placeMap!!.onCreate(savedInstanceState)
+		placeMap!!.onResume()
+		placeMap!!.getMapAsync(this)
 		val b = arguments
 		if (b != null) {
-			place_id = b.getInt(PLACE_ID)
+			placeId = b.getInt(PLACE_ID)
 		}
 		return view
 	}
@@ -69,28 +56,19 @@ class PlaceFragment : Fragment(), OnMapReadyCallback {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		viewModel = ViewModelProviders.of(requireActivity()).get(TourViewModel::class.java)
-		viewModel!!.getPlace(place_id).observe(this, Observer { place: Place? -> setPlace(place) })
+		viewModel!!.getPlace(placeId).observe(viewLifecycleOwner, Observer { place: Place? -> setPlace(place) })
 	}
 
 	private fun setPlace(place: Place?) {
 		if (place != null) {
-			place_name!!.text = place.name
-			place_description!!.text = place.description
-			if (place.image != null && !place.image.isEmpty()) {
-				Picasso.with(requireContext()).load(place.image)
-						.into(place_image, object : Callback {
-							override fun onSuccess() {
-								place_image!!.visibility = View.VISIBLE
-							}
-
-							fun onError() {
-								place_image!!.visibility = View.GONE
-							}
-						})
+			placeName!!.text = place.name
+			placeDescription!!.text = place.description
+			if (place.image != null && place.image!!.isNotEmpty()) {
+				TODO("load image")
 			}
-			val number = place.order + 1
-			val total = viewModel.getPlaces().size
-			place_position!!.text = resources
+			val number = place.order!! + 1
+			val total = viewModel!!.places.size
+			placePosition!!.text = resources
 					.getQuantityString(R.plurals.place_number_number, number,
 							number, total)
 			if (googleMap != null) {
@@ -105,7 +83,7 @@ class PlaceFragment : Fragment(), OnMapReadyCallback {
 	}
 
 	override fun onMapReady(googleMap: GoogleMap) {
-		map_circle!!.visibility = View.VISIBLE
+		mapCircle!!.visibility = View.VISIBLE
 		googleMap.uiSettings.setAllGesturesEnabled(false)
 		googleMap.uiSettings.isMyLocationButtonEnabled = false
 		googleMap.uiSettings.isMapToolbarEnabled = false

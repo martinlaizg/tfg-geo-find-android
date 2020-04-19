@@ -17,8 +17,9 @@ object ErrorUtils {
 				.responseBodyConverter<APIException>(APIException::class.java, arrayOfNulls(0))
 		var error: APIException? = APIException(ErrorType.OTHER)
 		try {
-			if (response.errorBody() != null) {
-				error = converter.convert(response.errorBody()) ?: error
+			val errorBody = response.errorBody()
+			if (errorBody != null) {
+				error = converter.convert(errorBody) ?: error
 			}
 		} catch (e: IOException) {
 			return APIException(ErrorType.OTHER)

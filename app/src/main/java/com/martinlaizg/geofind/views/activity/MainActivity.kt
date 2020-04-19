@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
 	                      persistentState: PersistableBundle?) {
 		super.onCreate(savedInstanceState, persistentState)
 		setContentView(R.layout.activity_main)
-		UserRepository.Companion.getInstance(application)
+		UserRepository.getInstance(application)
 	}
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {

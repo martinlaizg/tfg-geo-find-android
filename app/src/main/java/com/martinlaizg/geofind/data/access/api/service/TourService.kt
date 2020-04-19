@@ -148,5 +148,4 @@ class TourService private constructor(application: Application) {
 		}
 		throw apiException!!
 	}
-
 }
