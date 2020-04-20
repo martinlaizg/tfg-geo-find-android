@@ -15,7 +15,7 @@ object KeyboardUtils {
 		val editTextInput = activity
 				.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 		val currentFocus = activity.currentFocus
-		if (currentFocus != null && editTextInput != null) {
+		if (currentFocus != null) {
 			editTextInput.hideSoftInputFromWindow(currentFocus.windowToken, 0)
 		}
 	}

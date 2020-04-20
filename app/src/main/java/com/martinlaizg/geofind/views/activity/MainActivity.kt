@@ -34,9 +34,7 @@ class MainActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
 		when (key) {
 			Preferences.USER -> {
 				val u = Preferences.getLoggedUser(sharedPreferences)
-				if (u != null) {
-					setDrawerHeader(u.username, u.name, u.image)
-				}
+				setDrawerHeader(u.username, u.name, u.image)
 			}
 			Preferences.TOKEN -> {
 				val token = Preferences.getToken(sharedPreferences)
@@ -46,17 +44,11 @@ class MainActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
 	}
 
 	private fun setDrawerHeader(username: String?, name: String?, image: String?) {
-		var username = username
-		var name = name
 		val headerView = navigationView!!.getHeaderView(0)
-		if (name == null) {
-			name = getString(R.string.your_account)
-		}
-		if (username == null) {
-			username = ""
-		}
 		(headerView.findViewById<View>(R.id.drawer_header_name) as TextView).text = name
+				?: getString(R.string.your_account)
 		(headerView.findViewById<View>(R.id.drawer_header_username) as TextView).text = username
+				?: ""
 		if (image != null && image.isNotEmpty()) {
 			headerView.findViewById<ImageView>(R.id.drawer_user_image)
 		}
@@ -118,7 +110,7 @@ class MainActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
 		appBarConfiguration = AppBarConfiguration.Builder(topLevelDestinations)
 				.setDrawerLayout(drawer_layout).build()
 		NavigationUI.setupWithNavController(toolbar!!, navController!!, appBarConfiguration!!)
-		navController!!.addOnDestinationChangedListener { navController: NavController, destination: NavDestination, bundle: Bundle? -> onDestinationChangedListener(destination) }
+		navController!!.addOnDestinationChangedListener { _: NavController, destination: NavDestination, _: Bundle? -> onDestinationChangedListener(destination) }
 		PreferenceManager.setDefaultValues(this, R.xml.app_preferences, false)
 		val sp = PreferenceManager.getDefaultSharedPreferences(this)
 		val u = Preferences.getLoggedUser(sp)
